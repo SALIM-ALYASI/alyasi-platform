@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Service;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Relation::enforceMorphMap([
+            'service' => Service::class,
+
+            // نضيفها عند إنشاء الموديلات
+            // 'news'      => News::class,
+            // 'project'   => Project::class,
+            // 'page'      => Page::class,
+            // 'community' => Community::class,
+        ]);
     }
 }
