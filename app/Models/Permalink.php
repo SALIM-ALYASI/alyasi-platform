@@ -13,16 +13,28 @@ class Permalink extends Model
      * الحقول المسموح بحفظها جماعيًا.
      */
     protected $fillable = [
+        'linkable_type',
+        'linkable_id',
         'locale',
         'slug',
     ];
+
+    /**
+     * تحويل أنواع الحقول.
+     */
+    protected function casts(): array
+    {
+        return [
+            'linkable_id' => 'integer',
+        ];
+    }
 
     /**
      * العنصر المرتبط بالرابط الدائم.
      *
      * قد يكون:
      * Service
-     * News
+     * NewsArticle
      * Project
      * Page
      */
@@ -37,7 +49,8 @@ class Permalink extends Model
     public function redirects(): HasMany
     {
         return $this->hasMany(
-            PermalinkRedirect::class
+            PermalinkRedirect::class,
+            'permalink_id'
         );
     }
 
@@ -50,7 +63,10 @@ class Permalink extends Model
     ): Builder {
         $locale ??= app()->getLocale();
 
-        return $query->where('locale', $locale);
+        return $query->where(
+            'locale',
+            $locale
+        );
     }
 
     /**
@@ -73,7 +89,13 @@ class Permalink extends Model
      */
     public function path(): string
     {
-        return '/' . $this->locale . '/' . $this->slug;
+        return route(
+            'news.show',
+            [
+                'slug' => $this->slug,
+            ],
+            false
+        );
     }
 
     /**
@@ -81,6 +103,11 @@ class Permalink extends Model
      */
     public function url(): string
     {
-        return url($this->path());
+        return route(
+            'news.show',
+            [
+                'slug' => $this->slug,
+            ]
+        );
     }
 }

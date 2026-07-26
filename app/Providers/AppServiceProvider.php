@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\NewsArticle;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
@@ -23,12 +24,15 @@ class AppServiceProvider extends ServiceProvider
     {
         Relation::enforceMorphMap([
             'service' => Service::class,
+            'news_article' => NewsArticle::class,
 
-            // نضيفها عند إنشاء الموديلات
-            // 'news'      => News::class,
-            // 'project'   => Project::class,
-            // 'page'      => Page::class,
-            // 'community' => Community::class,
+            /*
+             * نضيف الموديلات لاحقًا بعد إنشائها فعليًا.
+             *
+             * 'project'   => Project::class,
+             * 'page'      => Page::class,
+             * 'community' => Community::class,
+             */
         ]);
     }
 }
