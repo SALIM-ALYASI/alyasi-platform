@@ -332,5 +332,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('admin/js/copy-link.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/copy-link.js') }}"></script>
 @endpush
