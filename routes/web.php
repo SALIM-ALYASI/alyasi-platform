@@ -10,6 +10,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\CommunityPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,12 +82,13 @@ Route::prefix('community')
     ->controller(CommunityController::class)
     ->group(function () {
 
-        Route::get(
-            '/',
-            'index'
-        )->name('index');
-    });
+        Route::get('/', 'index')
+            ->name('index');
 
+        Route::get('/{communityPost:slug}', 'show')
+            ->name('show');
+
+    });
 /*
 |--------------------------------------------------------------------------
 | Contact
@@ -125,6 +127,7 @@ Route::view(
     'legal.terms'
 )->name('terms');
 
+ 
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -185,6 +188,17 @@ Route::prefix('admin')
                     'services',
                     AdminServiceController::class
                 );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Community Management
+                |--------------------------------------------------------------------------
+                */
+
+                Route::resource(
+                    'community',
+                    CommunityPostController::class
+                )->except('show');
 
                 /*
                 |--------------------------------------------------------------------------

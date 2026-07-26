@@ -5,10 +5,12 @@
 @section('page-description', 'إدارة جميع خدمات منصة ALYASI')
 
  @push('styles')
-    <link
-        rel="stylesheet"
-        href="{{ asset('admin/css/services-index.css') }}"
-    >
+@push('styles')
+<link
+    rel="stylesheet"
+    href="{{ asset('assets/admin/css/services-index.css') }}"
+>
+@endpush
 @endpush
 
 @section('content')

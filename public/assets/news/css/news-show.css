@@ -1090,27 +1090,19 @@ html[dir="rtl"] .news-article-content blockquote {
 }
 
 .news-related-content h3 {
-  display: -webkit-box;
   margin: 0 0 12px;
-  overflow: hidden;
   color: var(--news-white);
   font-size: 1.08rem;
   font-weight: 600;
   line-height: 1.62;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .news-related-content p {
-  display: -webkit-box;
   margin: 0 0 20px;
-  overflow: hidden;
   color: var(--news-gold-light);
   font-size: 0.82rem;
   font-weight: 300;
   line-height: 1.8;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 
 .news-related-meta {

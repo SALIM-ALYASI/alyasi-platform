@@ -1,4 +1,4 @@
-<aside
+ <aside
     class="admin-sidebar"
     id="admin-sidebar"
 >
@@ -46,6 +46,7 @@
             </span>
 
             <nav class="sidebar-nav">
+                
 
                 <a
                     href="{{ route('admin.dashboard') }}"
@@ -61,7 +62,7 @@
                 </a>
 
                 <a
-                href="{{ route('admin.services.index') }}"
+                    href="{{ route('admin.services.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.services.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
@@ -91,7 +92,7 @@
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ route('admin.community.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.community.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">

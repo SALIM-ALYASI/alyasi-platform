@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\CommunityCategory;
+use App\Models\CommunityPost;
 use App\Models\NewsArticle;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -23,15 +25,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Relation::enforceMorphMap([
-            'service' => Service::class,
-            'news_article' => NewsArticle::class,
+            'service'            => Service::class,
+            'news_article'       => NewsArticle::class,
+            'community_category' => CommunityCategory::class,
+            'community_post'     => CommunityPost::class,
 
             /*
              * نضيف الموديلات لاحقًا بعد إنشائها فعليًا.
              *
-             * 'project'   => Project::class,
-             * 'page'      => Page::class,
-             * 'community' => Community::class,
+             * 'project' => Project::class,
+             * 'page'    => Page::class,
              */
         ]);
     }

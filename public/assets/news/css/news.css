@@ -678,16 +678,12 @@ body:has(.news-page) .toggle-bar {
 }
 
 .news-card-content h3 {
-  display: -webkit-box;
   margin: 0 0 13px;
-  overflow: hidden;
   color: var(--news-white);
   font-size: 1.18rem;
   font-weight: 600;
   line-height: 1.6;
   text-wrap: balance;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .news-card-content .news-category {
@@ -697,15 +693,11 @@ body:has(.news-page) .toggle-bar {
 }
 
 .news-card-content > p {
-  display: -webkit-box;
   margin: 0 0 22px;
-  overflow: hidden;
   color: var(--news-gold-light);
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.85;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 
 .featured-news:focus-within,
