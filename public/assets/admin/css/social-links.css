@@ -1,0 +1,645 @@
+.social-links-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.social-links-page .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-links-page .page-header h1 {
+    margin: 0 0 6px;
+    color: #241819;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.social-links-page .page-header p {
+    margin: 0;
+    color: #7b6b6c;
+    font-size: 14px;
+}
+
+.social-links-page .content-card {
+    background: #ffffff;
+    border: 1px solid #eee6e6;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(94, 35, 36, 0.06);
+}
+
+.social-links-page .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.social-links-page .social-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.social-links-page .social-table th,
+.social-links-page .social-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid #f1ebeb;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.social-links-page .social-table th {
+    background: #faf7f7;
+    color: #5e2324;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.social-links-page .social-table td {
+    color: #413738;
+    font-size: 14px;
+}
+
+.social-links-page .platform-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.social-links-page .platform-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f2f2;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.social-links-page .platform-name {
+    display: block;
+    color: #2f2223;
+    font-weight: 800;
+}
+
+.social-links-page .platform-key {
+    display: block;
+    margin-top: 3px;
+    color: #968788;
+    font-size: 12px;
+}
+
+.social-links-page .account-link {
+    color: #5e2324;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.social-links-page .account-link:hover {
+    text-decoration: underline;
+}
+
+.social-links-page .status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.social-links-page .status-active {
+    color: #147a43;
+    background: #e9f8ef;
+}
+
+.social-links-page .status-inactive {
+    color: #b23030;
+    background: #fdecec;
+}
+
+.social-links-page .table-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.social-links-page .btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.social-links-page .btn:hover {
+    transform: translateY(-1px);
+}
+
+.social-links-page .btn-primary {
+    color: #ffffff;
+    background: #5e2324;
+}
+
+.social-links-page .btn-primary:hover {
+    background: #48191a;
+}
+
+.social-links-page .btn-edit {
+    color: #755b0b;
+    background: #fff6d8;
+}
+
+.social-links-page .btn-delete {
+    color: #a12828;
+    background: #fdecec;
+}
+
+.social-links-page .btn-small {
+    padding: 8px 11px;
+}
+
+.social-links-page .alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.social-links-page .alert-success {
+    color: #17683d;
+    background: #e9f8ef;
+    border: 1px solid #ccebd8;
+}
+
+.social-links-page .empty-state {
+    padding: 45px 20px !important;
+    text-align: center !important;
+    color: #8f8182 !important;
+}
+
+.social-links-page .empty-state i {
+    display: block;
+    margin-bottom: 12px;
+    color: #cabbbc;
+    font-size: 36px;
+}
+
+.social-links-page .pagination-wrapper {
+    margin-top: 22px;
+}
+
+.social-form-card {
+    background: #ffffff;
+    border: 1px solid #eee6e6;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(94, 35, 36, 0.06);
+}
+
+.social-form-card .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.social-form-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.social-form-card .form-group-full {
+    grid-column: 1 / -1;
+}
+
+.social-form-card label {
+    color: #392c2d;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.social-form-card input[type="text"],
+.social-form-card input[type="url"],
+.social-form-card input[type="number"],
+.social-form-card select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 13px;
+    border: 1px solid #ddd2d2;
+    border-radius: 11px;
+    outline: none;
+    background: #ffffff;
+    color: #302526;
+    font-family: inherit;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+}
+
+.social-form-card input:focus,
+.social-form-card select:focus {
+    border-color: #5e2324;
+    box-shadow: 0 0 0 3px rgba(94, 35, 36, 0.1);
+}
+
+.social-form-card .color-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-form-card .color-field input[type="color"] {
+    width: 52px;
+    height: 46px;
+    padding: 3px;
+    border: 1px solid #ddd2d2;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.social-form-card .color-field input[type="text"] {
+    flex: 1;
+}
+
+.social-form-card .form-checks {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background: #faf7f7;
+    border-radius: 12px;
+}
+
+.social-form-card .check-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+}
+
+.social-form-card .check-option input {
+    width: 18px;
+    height: 18px;
+    accent-color: #5e2324;
+}
+
+.social-form-card .form-error {
+    color: #b52c2c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.social-form-card .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #f0e9e9;
+}
+
+.social-form-card .btn-secondary {
+    color: #4d4142;
+    background: #eee8e8;
+}
+
+@media (max-width: 768px) {
+    .social-form-card .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .social-form-card .form-group-full {
+        grid-column: auto;
+    }
+
+    .social-links-page .page-header {
+        align-items: stretch;
+    }
+
+    .social-links-page .page-header .btn {
+        width: 100%;
+    }
+}
+
+.social-form-card .form-hint {
+    color: #8c7e7f;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.social-detect-status {
+    display: none;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.social-detect-status:not(:empty) {
+    display: block;
+}
+
+.social-detect-status.is-success {
+    color: #17683d;
+    background: #e9f8ef;
+    border: 1px solid #ccebd8;
+}
+
+.social-detect-status.is-warning {
+    color: #806000;
+    background: #fff8dc;
+    border: 1px solid #f0df9c;
+}
+
+.social-detect-status.is-error {
+    color: #a12828;
+    background: #fdecec;
+    border: 1px solid #f3cccc;
+}
+
+.social-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.social-admin-card {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eee5e5;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(94, 35, 36, 0.07);
+}
+
+.social-admin-card::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--platform-color);
+}
+
+.social-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px;
+    border-bottom: 1px solid #f1ebeb;
+}
+
+.social-admin-card .platform-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+.social-admin-card .platform-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    color: var(--platform-color);
+    background: color-mix(
+        in srgb,
+        var(--platform-color) 10%,
+        white
+    );
+    font-size: 24px;
+}
+
+.social-admin-card .platform-name {
+    margin: 0 0 4px;
+    color: #2f2223;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.social-admin-card .platform-key {
+    color: #958687;
+    font-size: 12px;
+}
+
+.social-card-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 20px;
+}
+
+.social-detail {
+    padding: 13px;
+    background: #faf7f7;
+    border-radius: 12px;
+}
+
+.social-detail-full {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+    color: #8e7e7f;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.detail-value {
+    color: #392c2d;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.account-url {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: #5e2324;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-url:hover {
+    text-decoration: underline;
+}
+
+.social-card-actions {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    padding: 16px 20px 20px;
+    border-top: 1px solid #f1ebeb;
+}
+
+.social-card-actions .btn {
+    min-height: 42px;
+}
+
+.social-card-actions .delete-form {
+    display: flex;
+}
+
+.social-card-actions .delete-form .btn {
+    width: 100%;
+}
+
+.btn-visit {
+    color: #ffffff;
+    background: var(--platform-color);
+}
+
+.btn-edit {
+    color: #755b0b;
+    background: #fff3c8;
+}
+
+.btn-delete {
+    color: #a52c2c;
+    background: #fdeaea;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.status-active {
+    color: #157242;
+    background: #e7f8ee;
+}
+
+.status-inactive {
+    color: #a22f2f;
+    background: #fdeaea;
+}
+
+.empty-state {
+    padding: 60px 25px;
+    text-align: center;
+}
+
+.empty-state > i {
+    margin-bottom: 16px;
+    color: #c4b5b6;
+    font-size: 44px;
+}
+
+.empty-state h2 {
+    margin: 0 0 8px;
+    color: #36292a;
+}
+
+.empty-state p {
+    margin: 0 0 22px;
+    color: #897a7b;
+}
+
+@media (max-width: 900px) {
+    .social-admin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .social-links-page {
+        gap: 16px;
+    }
+
+    .social-links-page .page-header {
+        align-items: stretch;
+    }
+
+    .social-links-page .page-header .btn-primary {
+        width: 100%;
+    }
+
+    .social-admin-card {
+        border-radius: 16px;
+    }
+
+    .social-card-header {
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .social-admin-card .platform-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+        font-size: 21px;
+    }
+
+    .social-admin-card .platform-name {
+        font-size: 16px;
+    }
+
+    .social-card-body {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .social-detail-full {
+        grid-column: auto;
+    }
+
+    .social-card-actions {
+        grid-template-columns: 1fr 1fr;
+        padding: 14px 16px 16px;
+    }
+
+    .social-card-actions .btn-visit {
+        grid-column: 1 / -1;
+    }
+
+    .social-card-actions .delete-form {
+        width: 100%;
+    }
+
+    .social-card-actions .btn {
+        width: 100%;
+    }
+
+    .status-badge {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+}

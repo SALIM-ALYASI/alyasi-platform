@@ -6,11 +6,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\SocialLinkController;
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\CommunityPostController;
+use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +129,11 @@ Route::view(
     'legal.terms'
 )->name('terms');
 
+
+Route::get('/social-links', [SocialLinkController::class, 'index'])
+    ->name('social-links.index');
+
+
  
 /*
 |--------------------------------------------------------------------------
@@ -188,6 +195,10 @@ Route::prefix('admin')
                     'services',
                     AdminServiceController::class
                 );
+
+
+               Route::resource('social-links', AdminSocialLinkController::class)
+                 ->except('show');
 
                 /*
                 |--------------------------------------------------------------------------

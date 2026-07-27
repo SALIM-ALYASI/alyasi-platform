@@ -1,6 +1,7 @@
  <aside
     class="admin-sidebar"
     id="admin-sidebar"
+    aria-label="{{ __('admin-sidebar.sidebar_label') }}"
 >
 
     <div class="sidebar-header">
@@ -8,21 +9,24 @@
         <a
             href="{{ route('admin.dashboard') }}"
             class="sidebar-brand"
+            aria-label="{{ __('admin-sidebar.go_to_dashboard') }}"
         >
             <img
                 src="{{ asset('images/logo/logo-icon.png') }}"
-                alt="شعار ALYASI"
+                alt="{{ __('admin-sidebar.logo_alt') }}"
                 class="sidebar-brand-logo"
             >
 
             <div class="sidebar-brand-text">
+
                 <strong>
                     ALYASI
                 </strong>
 
                 <span>
-                    لوحة الإدارة
+                    {{ __('admin-sidebar.admin_panel') }}
                 </span>
+
             </div>
         </a>
 
@@ -30,51 +34,63 @@
             type="button"
             class="sidebar-close"
             id="sidebar-close"
-            aria-label="إغلاق القائمة"
+            aria-label="{{ __('admin-sidebar.close_sidebar') }}"
         >
-            <i class="fa-solid fa-xmark"></i>
+            <i
+                class="fa-solid fa-xmark"
+                aria-hidden="true"
+            ></i>
         </button>
 
     </div>
 
     <div class="sidebar-body">
 
+        {{-- القائمة الرئيسية --}}
         <div class="sidebar-section">
 
             <span class="sidebar-section-title">
-                القائمة الرئيسية
+                {{ __('admin-sidebar.main_menu') }}
             </span>
 
-            <nav class="sidebar-nav">
-                
+            <nav
+                class="sidebar-nav"
+                aria-label="{{ __('admin-sidebar.main_menu') }}"
+            >
 
-                <a
-                    href="{{ route('admin.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}"
-                >
-                    <span class="sidebar-link-icon">
-                        <i class="fa-solid fa-grid-2"></i>
-                    </span>
+           <a
+    href="{{ route('admin.dashboard') }}"
+    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}"
+>
+    <span class="sidebar-link-icon">
+        <i
+            class="fa-solid fa-gauge-high"
+            aria-hidden="true"
+        ></i>
+    </span>
 
-                    <span class="sidebar-link-text">
-                        لوحة التحكم
-                    </span>
-                </a>
+    <span class="sidebar-link-text">
+        {{ __('admin-sidebar.dashboard') }}
+    </span>
+</a>
 
                 <a
                     href="{{ route('admin.services.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.services.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-solid fa-layer-group"></i>
+                        <i
+                            class="fa-solid fa-layer-group"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        الخدمات
+                        {{ __('admin-sidebar.services') }}
                     </span>
 
                     <span class="sidebar-link-badge">
-                        جديد
+                        {{ __('admin-sidebar.new') }}
                     </span>
                 </a>
 
@@ -83,11 +99,14 @@
                     class="sidebar-link {{ request()->routeIs('admin.news.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-regular fa-newspaper"></i>
+                        <i
+                            class="fa-regular fa-newspaper"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        الأخبار
+                        {{ __('admin-sidebar.news') }}
                     </span>
                 </a>
 
@@ -96,11 +115,30 @@
                     class="sidebar-link {{ request()->routeIs('admin.community.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-solid fa-users"></i>
+                        <i
+                            class="fa-solid fa-users"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        المجتمع
+                        {{ __('admin-sidebar.community') }}
+                    </span>
+                </a>
+
+                <a
+                    href="{{ route('admin.social-links.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.social-links.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-share-nodes"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.social_links') }}
                     </span>
                 </a>
 
@@ -108,24 +146,31 @@
 
         </div>
 
+        {{-- إدارة المنصة --}}
         <div class="sidebar-section">
 
             <span class="sidebar-section-title">
-                إدارة المنصة
+                {{ __('admin-sidebar.platform_management') }}
             </span>
 
-            <nav class="sidebar-nav">
+            <nav
+                class="sidebar-nav"
+                aria-label="{{ __('admin-sidebar.platform_management') }}"
+            >
 
                 <a
                     href="#"
                     class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-solid fa-user-group"></i>
+                        <i
+                            class="fa-solid fa-user-group"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        المستخدمون
+                        {{ __('admin-sidebar.users') }}
                     </span>
                 </a>
 
@@ -134,11 +179,14 @@
                     class="sidebar-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-regular fa-images"></i>
+                        <i
+                            class="fa-regular fa-images"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        مكتبة الوسائط
+                        {{ __('admin-sidebar.media_library') }}
                     </span>
                 </a>
 
@@ -147,14 +195,20 @@
                     class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-regular fa-envelope"></i>
+                        <i
+                            class="fa-regular fa-envelope"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        الرسائل
+                        {{ __('admin-sidebar.messages') }}
                     </span>
 
-                    <span class="sidebar-link-count">
+                    <span
+                        class="sidebar-link-count"
+                        aria-label="{{ __('admin-sidebar.messages_count', ['count' => 0]) }}"
+                    >
                         0
                     </span>
                 </a>
@@ -164,11 +218,14 @@
                     class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
-                        <i class="fa-solid fa-gear"></i>
+                        <i
+                            class="fa-solid fa-gear"
+                            aria-hidden="true"
+                        ></i>
                     </span>
 
                     <span class="sidebar-link-text">
-                        الإعدادات
+                        {{ __('admin-sidebar.settings') }}
                     </span>
                 </a>
 
@@ -184,15 +241,24 @@
 
             <div class="sidebar-admin-avatar">
 
-                @if (auth('admin')->user()?->avatar)
+                @if(auth('admin')->user()?->avatar)
+
                     <img
                         src="{{ asset(auth('admin')->user()->avatar) }}"
-                        alt="{{ auth('admin')->user()->name }}"
+                        alt="{{ auth('admin')->user()->name ?? __('admin-sidebar.platform_admin') }}"
                     >
+
                 @else
-                    <span>
-                        {{ mb_substr(auth('admin')->user()?->name ?? 'A', 0, 1) }}
+
+                    <span aria-hidden="true">
+                        {{ mb_substr(
+                            auth('admin')->user()?->name
+                                ?? __('admin-sidebar.default_admin_letter'),
+                            0,
+                            1
+                        ) }}
                     </span>
+
                 @endif
 
             </div>
@@ -200,12 +266,15 @@
             <div class="sidebar-admin-info">
 
                 <strong>
-                    {{ auth('admin')->user()?->name ?? 'مدير المنصة' }}
+                    {{ auth('admin')->user()?->name
+                        ?? __('admin-sidebar.platform_admin') }}
                 </strong>
 
-                <span>
-                    {{ auth('admin')->user()?->email }}
-                </span>
+                @if(auth('admin')->user()?->email)
+                    <span>
+                        {{ auth('admin')->user()->email }}
+                    </span>
+                @endif
 
             </div>
 
@@ -221,13 +290,18 @@
             <button
                 type="submit"
                 class="sidebar-logout"
+                aria-label="{{ __('admin-sidebar.logout') }}"
             >
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <i
+                    class="fa-solid fa-arrow-right-from-bracket"
+                    aria-hidden="true"
+                ></i>
 
                 <span>
-                    تسجيل الخروج
+                    {{ __('admin-sidebar.logout') }}
                 </span>
             </button>
+
         </form>
 
     </div>
