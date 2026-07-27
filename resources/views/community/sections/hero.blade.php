@@ -25,7 +25,7 @@
                 </a>
 
                 <a
-                    href="{{ route('contact') }}"
+                    href="{{ route('social-links.index') }}"
                     class="community-action-button community-action-button--outline"
                 >
                     {{ __('home.contact') }}

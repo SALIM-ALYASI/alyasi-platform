@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'خدماتنا | ' . __('home.brand'))
+@section('title', __('services.meta_title', [
+    'brand' => __('home.brand'),
+]))
 
-@section(
-    'description',
-    'استكشف خدمات منصة ALYASI الرقمية والتقنية.'
-)
+@section('description', __('services.meta_description'))
 
 @section('content')
 
@@ -19,36 +18,39 @@
         <div class="hero-badge-dot"></div>
 
         <span>
-            خدمات ALYASI
+            {{ __('services.hero_badge') }}
         </span>
     </div>
 
     <h1>
-        حلول رقمية
-        <em>باحترافية</em>
+        {{ __('services.hero_title') }}
+        <em>{{ __('services.hero_title_highlight') }}</em>
     </h1>
 
     <p class="hero-sub">
-        نقدم مجموعة متكاملة من الخدمات التقنية لمساعدة الأفراد والشركات
-        على بناء مشاريع رقمية حديثة وقابلة للنمو.
+        {{ __('services.hero_description') }}
     </p>
 </section>
 
 <section class="section">
 
     <div class="section-heading reveal">
+
         <p class="section-tag">
-            خدماتنا
+            {{ __('services.section_badge') }}
         </p>
 
         <h2 class="section-title">
-            ماذا يمكننا أن
-            <strong>نقدم لك؟</strong>
+            {{ __('services.section_title') }}
+            <strong>
+                {{ __('services.section_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            اختر الخدمة المناسبة واطّلع على تفاصيلها والحلول التي نقدمها.
+            {{ __('services.section_description') }}
         </p>
+
     </div>
 
     @if ($services->count())
@@ -68,6 +70,7 @@
                     class="feature reveal {{ $isReverse ? 'feature-reverse' : '' }}"
                 >
                     <div class="feature-visual">
+
                         <img
                             src="{{ $service->image
                                 ? asset($service->image)
@@ -75,9 +78,11 @@
                             alt="{{ $title }}"
                             loading="lazy"
                         >
+
                     </div>
 
                     <div class="feature-content">
+
                         <div class="feature-number">
                             {{ str_pad(
                                 $loop->iteration,
@@ -88,7 +93,7 @@
                         </div>
 
                         <p class="section-tag">
-                            خدمة رقمية
+                            {{ __('services.digital_service') }}
                         </p>
 
                         <h2 class="section-title">
@@ -103,23 +108,27 @@
                         </p>
 
                         <div class="hero-ctas">
+
                             @if ($slug)
                                 <a
                                     href="{{ route('services.show', $slug) }}"
                                     class="btn-primary"
                                 >
-                                    عرض تفاصيل الخدمة
+                                    {{ __('services.view_details') }}
                                 </a>
                             @endif
 
                             <a
-                                href="{{ route('contact') }}"
+                                href="{{ route('social-links.index') }}"
                                 class="btn-secondary"
                             >
-                                اطلب الخدمة
+                                {{ __('services.request_service') }}
                             </a>
+
                         </div>
+
                     </div>
+
                 </article>
 
             @endforeach
@@ -135,24 +144,29 @@
     @else
 
         <div class="services-empty reveal">
+
             <span class="services-empty-icon">
-                <i class="fa-solid fa-layer-group"></i>
+                <i
+                    class="fa-solid fa-layer-group"
+                    aria-hidden="true"
+                ></i>
             </span>
 
             <h3>
-                لا توجد خدمات متاحة حالياً
+                {{ __('services.empty_title') }}
             </h3>
 
             <p>
-                سيتم إضافة الخدمات الجديدة قريباً.
+                {{ __('services.empty_description') }}
             </p>
 
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('social-links.index') }}"
                 class="btn-primary"
             >
-                تواصل معنا
+                {{ __('services.contact_us') }}
             </a>
+
         </div>
 
     @endif
@@ -160,36 +174,44 @@
 </section>
 
 <section class="cta-section">
+
     <div class="cta-card reveal">
+
         <span class="section-tag">
-            ابدأ الآن
+            {{ __('services.cta_badge') }}
         </span>
 
         <h2>
-            هل لديك فكرة؟
-            <strong>لنحوّلها إلى واقع.</strong>
+            {{ __('services.cta_title') }}
+            <strong>
+                {{ __('services.cta_title_highlight') }}
+            </strong>
         </h2>
 
         <p>
-            يسعدنا مناقشة مشروعك واقتراح أفضل الحلول التقنية المناسبة له.
+            {{ __('services.cta_description') }}
         </p>
 
         <div class="hero-ctas">
+
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('social-links.index') }}"
                 class="btn-primary"
             >
-                تواصل معنا
+                {{ __('services.contact_us') }}
             </a>
 
             <a
                 href="{{ route('home') }}"
                 class="btn-secondary"
             >
-                العودة للرئيسية
+                {{ __('services.back_home') }}
             </a>
+
         </div>
+
     </div>
+
 </section>
 
 @endsection

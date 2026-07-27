@@ -78,7 +78,7 @@
 
                 <div class="service-show-actions">
                     <a
-                        href="{{ route('contact') }}"
+                        href="{{ route('social-links.index') }}"
                         class="service-primary-button"
                     >
                         <i class="fa-solid fa-paper-plane"></i>
@@ -186,7 +186,7 @@
             </div>
 
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('social-links.index') }}"
                 class="service-contact-button"
             >
                 <i class="fa-solid fa-comments"></i>

@@ -22,7 +22,7 @@
             <div class="community-cta__actions">
 
                 <a
-                    href="{{ route('contact') }}"
+                    href="{{ route('social-links.index') }}"
                     class="community-action-button community-action-button--primary"
                 >
                     <i class="fa-solid fa-paper-plane"></i>

@@ -58,21 +58,21 @@
                 aria-label="{{ __('admin-sidebar.main_menu') }}"
             >
 
-           <a
-    href="{{ route('admin.dashboard') }}"
-    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}"
->
-    <span class="sidebar-link-icon">
-        <i
-            class="fa-solid fa-gauge-high"
-            aria-hidden="true"
-        ></i>
-    </span>
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-grid-2"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
 
-    <span class="sidebar-link-text">
-        {{ __('admin-sidebar.dashboard') }}
-    </span>
-</a>
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.dashboard') }}
+                    </span>
+                </a>
 
                 <a
                     href="{{ route('admin.services.index') }}"

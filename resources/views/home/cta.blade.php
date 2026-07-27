@@ -30,7 +30,7 @@
             </a>
 
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('social-links.index')}}"
                 class="btn-secondary"
             >
                 تواصل معنا

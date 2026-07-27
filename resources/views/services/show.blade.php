@@ -24,14 +24,17 @@
     class="hero hero-small"
     id="service"
 >
+
     <div class="hero-grid"></div>
 
     <div class="hero-badge">
+
         <div class="hero-badge-dot"></div>
 
         <span>
-            تفاصيل الخدمة
+            {{ __('services.show.hero_badge') }}
         </span>
+
     </div>
 
     <h1>
@@ -43,130 +46,166 @@
     </p>
 
     <div class="hero-ctas">
+
         <a
-            href="{{ route('contact') }}"
+            href="{{ route('social-links.index') }}"
             class="btn-primary"
         >
-            اطلب الخدمة
+            {{ __('services.show.request_service') }}
         </a>
 
         <a
             href="{{ route('services.index') }}"
             class="btn-secondary"
         >
-            جميع الخدمات
+            {{ __('services.show.all_services') }}
         </a>
+
     </div>
+
 </section>
 
 @if ($service->image)
-    <section class="section">
-        <div class="service-show-image reveal">
-            <img
-                src="{{ asset($service->image) }}"
-                alt="{{ $title }}"
-                loading="eager"
-            >
-        </div>
-    </section>
+
+<section class="section">
+
+    <div class="service-show-image reveal">
+
+        <img
+            src="{{ asset($service->image) }}"
+            alt="{{ $title }}"
+            loading="eager"
+        >
+
+    </div>
+
+</section>
+
 @endif
 
 <section
     class="section"
     id="service-details"
 >
+
     <div class="section-heading reveal">
+
         <p class="section-tag">
-            الخدمة
+            {{ __('services.show.service_badge') }}
         </p>
 
         <h2 class="section-title">
-            لماذا تختار
-            <strong>{{ $title }}</strong>
+
+            {{ __('services.show.why_choose') }}
+
+            <strong>
+                {{ $title }}
+            </strong>
+
         </h2>
 
         <p class="section-body">
-            نقدم حلولاً احترافية تعتمد على أحدث التقنيات لضمان
-            الجودة والأداء وسهولة التطوير والتوسع مستقبلاً.
+            {{ __('services.show.description') }}
         </p>
+
     </div>
 
     <div class="pricing-grid">
+
         <article class="pricing-card reveal">
+
             <span class="pricing-label">
-                الجودة
+                {{ __('services.show.quality_label') }}
             </span>
 
             <h3>
-                تنفيذ احترافي
+                {{ __('services.show.quality_title') }}
             </h3>
 
             <p>
-                تطوير وفق أفضل الممارسات ومعايير الجودة الحديثة.
+                {{ __('services.show.quality_description') }}
             </p>
+
         </article>
 
         <article class="pricing-card featured reveal">
+
             <span class="pricing-label">
-                الأداء
+                {{ __('services.show.performance_label') }}
             </span>
 
             <h3>
-                سرعة وكفاءة
+                {{ __('services.show.performance_title') }}
             </h3>
 
             <p>
-                حلول سريعة وآمنة وقابلة للتوسع مع نمو مشروعك.
+                {{ __('services.show.performance_description') }}
             </p>
+
         </article>
 
         <article class="pricing-card reveal">
+
             <span class="pricing-label">
-                الدعم
+                {{ __('services.show.support_label') }}
             </span>
 
             <h3>
-                دعم مستمر
+                {{ __('services.show.support_title') }}
             </h3>
 
             <p>
-                متابعة وتطوير وصيانة لضمان استمرار نجاح المشروع.
+                {{ __('services.show.support_description') }}
             </p>
+
         </article>
+
     </div>
+
 </section>
 
 <section class="cta-section">
+
     <div class="cta-card reveal">
+
         <span class="section-tag">
-            جاهز للبدء؟
+            {{ __('services.show.cta_badge') }}
         </span>
 
         <h2>
-            لنحوّل فكرتك إلى
-            <strong>مشروع ناجح</strong>
+
+            {{ __('services.show.cta_title') }}
+
+            <strong>
+                {{ __('services.show.cta_title_highlight') }}
+            </strong>
+
         </h2>
 
         <p>
-            تواصل معنا الآن للحصول على استشارة والبدء بتنفيذ مشروعك.
+            {{ __('services.show.cta_description') }}
         </p>
 
         <div class="hero-ctas">
+
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('social-links.index') }}"
                 class="btn-primary"
             >
-                تواصل معنا
+                {{ __('services.contact_us') }}
             </a>
 
             <a
                 href="{{ route('home') }}"
                 class="btn-secondary"
             >
-                العودة للرئيسية
+                {{ __('services.back_home') }}
             </a>
+
         </div>
+
     </div>
+
 </section>
 
 @endsection
