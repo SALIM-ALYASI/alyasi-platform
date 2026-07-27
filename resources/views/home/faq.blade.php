@@ -6,64 +6,73 @@
     <div class="section-heading reveal">
 
         <p class="section-tag">
-            الأسئلة الشائعة
+            {{ __('home.faq_badge') }}
         </p>
 
         <h2 class="section-title">
-            كل ما تحتاج إلى معرفته
-            <strong>عن ALYASI</strong>
+            {{ __('home.faq_title') }}
+            <strong>
+                {{ __('home.faq_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            إجابات مختصرة وواضحة عن المنصة وخدماتها وطريقة الاستفادة منها.
+            {{ __('home.faq_description') }}
         </p>
 
     </div>
 
     <div class="faq-list">
 
-        <details class="faq-item" open>
+        <details
+            class="faq-item"
+            open
+        >
+
             <summary>
-                ما هي منصة ALYASI؟
+                {{ __('home.faq_1_question') }}
             </summary>
 
             <p>
-                ALYASI منصة رقمية تجمع الخدمات التقنية، والأخبار، والمجتمع
-                في تجربة واحدة سهلة ومتكاملة.
+                {{ __('home.faq_1_answer') }}
             </p>
+
         </details>
 
         <details class="faq-item">
+
             <summary>
-                لمن تقدم ALYASI خدماتها؟
+                {{ __('home.faq_2_question') }}
             </summary>
 
             <p>
-                نقدم حلولًا مناسبة للأفراد، ورواد الأعمال، والمؤسسات،
-                والشركات بمختلف أحجامها واحتياجاتها.
+                {{ __('home.faq_2_answer') }}
             </p>
+
         </details>
 
         <details class="faq-item">
+
             <summary>
-                هل متابعة الأخبار التقنية مجانية؟
+                {{ __('home.faq_3_question') }}
             </summary>
 
             <p>
-                نعم، يمكن للجميع متابعة الأخبار والمستجدات التقنية المنشورة
-                على المنصة دون رسوم.
+                {{ __('home.faq_3_answer') }}
             </p>
+
         </details>
 
         <details class="faq-item">
+
             <summary>
-                كيف أطلب خدمة أو أتواصل معكم؟
+                {{ __('home.faq_4_question') }}
             </summary>
 
             <p>
-                يمكنك التواصل معنا من خلال صفحة التواصل أو عبر القنوات الرسمية
-                الخاصة بمنصة ALYASI.
+                {{ __('home.faq_4_answer') }}
             </p>
+
         </details>
 
     </div>

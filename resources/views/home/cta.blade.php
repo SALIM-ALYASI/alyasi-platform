@@ -6,18 +6,19 @@
     <div class="cta-card reveal">
 
         <p class="section-tag">
-            ابدأ رحلتك معنا
+            {{ __('home.cta_badge') }}
         </p>
 
         <h2 class="section-title">
-            حوّل فكرتك إلى
-            <strong>مشروع ناجح</strong>
+            {{ __('home.cta_title') }}
+
+            <strong>
+                {{ __('home.cta_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            سواء كنت تبحث عن موقع إلكتروني، أو تطبيق، أو هوية بصرية،
-            أو ترغب بمتابعة أحدث الأخبار التقنية، فإن ALYASI توفر لك
-            كل ذلك في منصة واحدة.
+            {{ __('home.cta_description') }}
         </p>
 
         <div class="hero-ctas">
@@ -26,14 +27,14 @@
                 href="{{ route('services.index') }}"
                 class="btn-primary"
             >
-                استكشف الخدمات
+                {{ __('home.cta_services') }}
             </a>
 
             <a
-                href="{{ route('social-links.index')}}"
+                href="{{ route('social-links.index') }}"
                 class="btn-secondary"
             >
-                تواصل معنا
+                {{ __('home.cta_contact') }}
             </a>
 
         </div>

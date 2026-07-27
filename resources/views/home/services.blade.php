@@ -2,6 +2,7 @@
     class="section"
     id="services"
 >
+
     @php
         $featuredService = $services->first();
     @endphp
@@ -17,6 +18,7 @@
         <div class="feature reveal">
 
             <div class="feature-visual">
+
                 <img
                     src="{{ $featuredService->image
                         ? asset($featuredService->image)
@@ -24,6 +26,7 @@
                     alt="{{ $featuredTitle }}"
                     loading="lazy"
                 >
+
             </div>
 
             <div class="feature-content">
@@ -33,7 +36,7 @@
                 </div>
 
                 <p class="section-tag">
-                    خدمة مميزة
+                    {{ __('home.featured_service') }}
                 </p>
 
                 <h2 class="section-title">
@@ -48,7 +51,9 @@
                 </p>
 
                 @if ($featuredSlug)
+
                     <div class="hero-ctas">
+
                         <a
                             href="{{ route(
                                 'services.show',
@@ -56,16 +61,18 @@
                             ) }}"
                             class="btn-primary"
                         >
-                            عرض تفاصيل الخدمة
+                            {{ __('home.view_service_details') }}
                         </a>
 
                         <a
                             href="{{ route('services.index') }}"
                             class="btn-secondary"
                         >
-                            جميع الخدمات
+                            {{ __('home.all_services') }}
                         </a>
+
                     </div>
+
                 @endif
 
             </div>
@@ -77,13 +84,15 @@
         <div class="feature reveal">
 
             <div class="feature-visual">
+
                 <img
                     src="{{ asset(
                         'luminary/images/tm-luminary-01.jpg'
                     ) }}"
-                    alt="منصة ALYASI"
+                    alt="{{ __('home.brand') }}"
                     loading="lazy"
                 >
+
             </div>
 
             <div class="feature-content">
@@ -93,27 +102,29 @@
                 </div>
 
                 <p class="section-tag">
-                    منصة ALYASI
+                    {{ __('home.platform_name') }}
                 </p>
 
                 <h2 class="section-title">
-                    كل ما تحتاجه
-                    <strong>في منصة تقنية واحدة</strong>
+                    {{ __('home.platform_title') }}
+                    <strong>
+                        {{ __('home.platform_title_highlight') }}
+                    </strong>
                 </h2>
 
                 <p class="section-body">
-                    تجمع ALYASI بين تطوير المواقع والتطبيقات،
-                    والحلول الذكية، والأخبار التقنية، والمجتمع
-                    الرقمي في منصة واحدة.
+                    {{ __('home.platform_description') }}
                 </p>
 
                 <div class="hero-ctas">
+
                     <a
                         href="{{ route('services.index') }}"
                         class="btn-primary"
                     >
-                        استكشف خدماتنا
+                        {{ __('home.explore_services') }}
                     </a>
+
                 </div>
 
             </div>

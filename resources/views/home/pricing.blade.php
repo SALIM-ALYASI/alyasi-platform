@@ -6,17 +6,18 @@
     <div class="section-heading reveal">
 
         <p class="section-tag">
-            منصة ALYASI
+            {{ __('home.platform_badge') }}
         </p>
 
         <h2 class="section-title">
-            كل ما تحتاجه في
-            <strong>منصة واحدة</strong>
+            {{ __('home.platform_section_title') }}
+            <strong>
+                {{ __('home.platform_section_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            صُممت ALYASI لتجمع الخدمات الرقمية، والأخبار التقنية،
-            والمجتمع في تجربة واحدة سهلة وسريعة.
+            {{ __('home.platform_section_description') }}
         </p>
 
     </div>
@@ -26,15 +27,15 @@
         <article class="pricing-card">
 
             <span class="pricing-label">
-                الخدمات
+                {{ __('home.platform_services_label') }}
             </span>
 
             <h3>
-                خدمات رقمية
+                {{ __('home.platform_services_title') }}
             </h3>
 
             <p>
-                تطوير مواقع، تطبيقات، تصميم، هوية بصرية، واستشارات تقنية.
+                {{ __('home.platform_services_description') }}
             </p>
 
         </article>
@@ -42,15 +43,15 @@
         <article class="pricing-card featured">
 
             <span class="pricing-label">
-                الأخبار
+                {{ __('home.platform_news_label') }}
             </span>
 
             <h3>
-                أخبار تقنية
+                {{ __('home.platform_news_title') }}
             </h3>
 
             <p>
-                متابعة أحدث أخبار التقنية والذكاء الاصطناعي والبرمجة أولاً بأول.
+                {{ __('home.platform_news_description') }}
             </p>
 
         </article>
@@ -58,15 +59,15 @@
         <article class="pricing-card">
 
             <span class="pricing-label">
-                المجتمع
+                {{ __('home.platform_community_label') }}
             </span>
 
             <h3>
-                مجتمع ALYASI
+                {{ __('home.platform_community_title') }}
             </h3>
 
             <p>
-                تواصل، شارك أفكارك، وابنِ علاقات مع المبدعين والمطورين.
+                {{ __('home.platform_community_description') }}
             </p>
 
         </article>

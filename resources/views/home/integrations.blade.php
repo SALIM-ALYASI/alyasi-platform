@@ -3,109 +3,139 @@
     id="technology"
 >
 
+    @php
+        $technologies = [
+
+            [
+                'icon' => 'fa-brands fa-laravel',
+                'name' => 'Laravel',
+            ],
+
+            [
+                'icon' => 'fa-brands fa-php',
+                'name' => 'PHP 8',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-database',
+                'name' => 'MySQL',
+            ],
+
+            [
+                'icon' => 'fa-brands fa-js',
+                'name' => 'JavaScript',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-network-wired',
+                'name' => 'REST API',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-memory',
+                'name' => 'Redis',
+            ],
+
+            [
+                'icon' => 'fa-brands fa-github',
+                'name' => 'GitHub',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-bolt',
+                'name' => 'Vite',
+            ],
+
+            [
+                'icon' => 'fa-brands fa-docker',
+                'name' => 'Docker',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-server',
+                'name' => 'Nginx',
+            ],
+
+            [
+                'icon' => 'fa-brands fa-linux',
+                'name' => 'Linux',
+            ],
+
+            [
+                'icon' => 'fa-solid fa-brain',
+                'name' => __('home.technology_ai'),
+            ],
+
+            [
+                'icon' => 'fa-solid fa-image',
+                'name' => __('home.technology_ai_images'),
+            ],
+
+            [
+                'icon' => 'fa-solid fa-video',
+                'name' => __('home.technology_ai_videos'),
+            ],
+
+            [
+                'icon' => 'fa-solid fa-wand-magic-sparkles',
+                'name' => __('home.technology_ai_design'),
+            ],
+
+            [
+                'icon' => 'fa-solid fa-comments',
+                'name' => __('home.technology_ai_chatbots'),
+            ],
+
+            [
+                'icon' => 'fa-solid fa-robot',
+                'name' => __('home.technology_automation'),
+            ],
+
+        ];
+    @endphp
+
     <div class="section-heading reveal section-center">
 
         <p class="section-tag">
-            التقنيات
+            {{ __('home.technology_badge') }}
         </p>
 
         <h2 class="section-title">
-            نبني باستخدام
-            <strong>أفضل التقنيات</strong>
+            {{ __('home.technology_title') }}
+
+            <strong>
+                {{ __('home.technology_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            تعتمد منصة ALYASI على أحدث تقنيات تطوير الويب لضمان الأداء،
-            والأمان، وسهولة التوسع مستقبلًا.
+            {{ __('home.technology_description') }}
         </p>
 
     </div>
 
     <div class="integrations-grid">
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-laravel"></i>
-            </div>
-            <div class="integration-name">Laravel</div>
-        </article>
+        @foreach ($technologies as $technology)
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-php"></i>
-            </div>
-            <div class="integration-name">PHP 8</div>
-        </article>
+            <article class="integration-item reveal">
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-database"></i>
-            </div>
-            <div class="integration-name">MySQL</div>
-        </article>
+                <div class="integration-icon">
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-js"></i>
-            </div>
-            <div class="integration-name">JavaScript</div>
-        </article>
+                    <i
+                        class="{{ $technology['icon'] }}"
+                        aria-hidden="true"
+                    ></i>
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-network-wired"></i>
-            </div>
-            <div class="integration-name">REST API</div>
-        </article>
+                </div>
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-memory"></i>
-            </div>
-            <div class="integration-name">Redis</div>
-        </article>
+                <div class="integration-name">
+                    {{ $technology['name'] }}
+                </div>
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-github"></i>
-            </div>
-            <div class="integration-name">GitHub</div>
-        </article>
+            </article>
 
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            <div class="integration-name">Vite</div>
-        </article>
-
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-docker"></i>
-            </div>
-            <div class="integration-name">Docker</div>
-        </article>
-
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-server"></i>
-            </div>
-            <div class="integration-name">Nginx</div>
-        </article>
-
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-brands fa-linux"></i>
-            </div>
-            <div class="integration-name">Linux</div>
-        </article>
-
-        <article class="integration-item">
-            <div class="integration-icon">
-                <i class="fa-solid fa-microchip"></i>
-            </div>
-            <div class="integration-name">AI</div>
-        </article>
+        @endforeach
 
     </div>
 

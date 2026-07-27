@@ -111,5 +111,108 @@ return [
     'technology_title' => 'نبني باستخدام أفضل التقنيات',
 
     'technology_description' => 'نعتمد على أحدث تقنيات تطوير الويب لضمان الأداء، والأمان، وسهولة التوسع.',
+    'about_badge' => 'لماذا ALYASI؟',
+
+'about_title' => 'نبني منصة',
+
+'about_title_highlight' => 'تواكب المستقبل',
+
+'about_description' => 'نعمل على تطوير منصة حديثة تجمع بين الخدمات الرقمية، والأخبار التقنية، والمجتمع التقني في مكان واحد.',
+
+'about_feature_1_title' => 'تصميم احترافي',
+'about_feature_1_description' => 'واجهة عصرية سريعة ومتوافقة مع جميع الأجهزة.',
+
+'about_feature_2_title' => 'بنية تقنية حديثة',
+'about_feature_2_description' => 'مبنية باستخدام Laravel وأحدث تقنيات الويب.',
+
+'about_feature_3_title' => 'تطوير مستمر',
+'about_feature_3_description' => 'نطوّر المنصة باستمرار لإضافة خدمات ومزايا وتجارب رقمية جديدة.',
+'featured_service' => 'خدمة مميزة',
+
+'view_service_details' => 'عرض تفاصيل الخدمة',
+
+'all_services' => 'جميع الخدمات',
+
+'platform_name' => 'منصة ALYASI',
+
+'platform_title' => 'كل ما تحتاجه',
+
+'platform_title_highlight' => 'في منصة تقنية واحدة',
+
+'platform_description' => 'تجمع ALYASI بين تطوير المواقع والتطبيقات، والحلول الذكية، والأخبار التقنية، والمجتمع الرقمي في منصة واحدة.',
+'platform_badge' => 'منصة ALYASI',
+
+'platform_section_title' => 'كل ما تحتاجه في',
+
+'platform_section_title_highlight' => 'منصة واحدة',
+
+'platform_section_description' => 'صُممت ALYASI لتجمع الخدمات الرقمية، والأخبار التقنية، والمجتمع في تجربة واحدة سهلة وسريعة.',
+
+'platform_services_label' => 'الخدمات',
+'platform_services_title' => 'خدمات رقمية',
+'platform_services_description' => 'تطوير مواقع، تطبيقات، تصميم، هوية بصرية، واستشارات تقنية.',
+
+'platform_news_label' => 'الأخبار',
+'platform_news_title' => 'أخبار تقنية',
+'platform_news_description' => 'متابعة أحدث أخبار التقنية والذكاء الاصطناعي والبرمجة أولاً بأول.',
+
+'platform_community_label' => 'المجتمع',
+'platform_community_title' => 'مجتمع ALYASI',
+'platform_community_description' => 'تواصل، شارك أفكارك، وابنِ علاقات مع المبدعين والمطورين.',
+
+'explore_services' => 'استكشف خدماتنا',
+'technology_badge' => 'التقنيات',
+
+'technology_title' => 'نبني باستخدام',
+
+'technology_title_highlight' => 'أفضل التقنيات',
+
+'technology_description' => 'تعتمد منصة ALYASI على أحدث تقنيات تطوير الويب والذكاء الاصطناعي لضمان الأداء، والأمان، وتقديم حلول رقمية قابلة للتوسع مستقبلًا.',
+
+'technology_ai' => 'الذكاء الاصطناعي',
+
+'technology_ai_images' => 'تصميم الصور بالذكاء الاصطناعي',
+
+'technology_ai_videos' => 'إنشاء الفيديوهات بالذكاء الاصطناعي',
+
+'technology_ai_design' => 'التصميم بالذكاء الاصطناعي',
+
+'technology_ai_chatbots' => 'المساعدات الذكية',
+
+'technology_automation' => 'الأتمتة الذكية',
+'faq_badge' => 'الأسئلة الشائعة',
+
+'faq_title' => 'كل ما تحتاج إلى معرفته',
+
+'faq_title_highlight' => 'عن ALYASI',
+
+'faq_description' => 'إجابات مختصرة وواضحة عن المنصة وخدماتها وطريقة الاستفادة منها.',
+
+'faq_1_question' => 'ما هي منصة ALYASI؟',
+
+'faq_1_answer' => 'ALYASI منصة رقمية متكاملة تقدم خدمات تطوير المواقع والتطبيقات، والذكاء الاصطناعي، والتصميم الرقمي، بالإضافة إلى الأخبار التقنية والمجتمع التقني في مكان واحد.',
+
+'faq_2_question' => 'لمن تقدم ALYASI خدماتها؟',
+
+'faq_2_answer' => 'نقدم خدماتنا للأفراد، ورواد الأعمال، والشركات، والجهات الحكومية، والمؤسسات التي تبحث عن حلول تقنية حديثة.',
+
+'faq_3_question' => 'هل توفر ALYASI خدمات الذكاء الاصطناعي؟',
+
+'faq_3_answer' => 'نعم، نقدم حلول الذكاء الاصطناعي، وتصميم الصور، وإنشاء الفيديوهات، والمساعدات الذكية، وأتمتة الأعمال باستخدام أحدث التقنيات.',
+
+'faq_4_question' => 'كيف أطلب خدمة أو أتواصل معكم؟',
+
+'faq_4_answer' => 'يمكنك طلب أي خدمة أو التواصل معنا مباشرة عبر صفحة روابط التواصل الرسمية الخاصة بمنصة ALYASI.',
+'cta_badge' => 'ابدأ رحلتك معنا',
+
+'cta_title' => 'حوّل فكرتك إلى',
+
+'cta_title_highlight' => 'مشروع ناجح',
+
+'cta_description' => 'سواء كنت تبحث عن موقع إلكتروني، أو تطبيق، أو متجر إلكتروني، أو نظام مخصص، أو حلول الذكاء الاصطناعي، أو تصميم الصور والفيديوهات، فإن ALYASI توفر لك جميع هذه الخدمات في منصة رقمية واحدة.',
+
+'cta_services' => 'استكشف الخدمات',
+
+'cta_contact' => 'تواصل معنا',
 
 ];

@@ -6,17 +6,18 @@
     <div class="section-heading reveal">
 
         <p class="section-tag">
-            لماذا ALYASI؟
+            {{ __('home.about_badge') }}
         </p>
 
         <h2 class="section-title">
-            نبني منصة
-            <strong>تواكب المستقبل</strong>
+            {{ __('home.about_title') }}
+            <strong>
+                {{ __('home.about_title_highlight') }}
+            </strong>
         </h2>
 
         <p class="section-body">
-            نعمل على تطوير منصة حديثة تجمع بين الخدمات الرقمية،
-            والأخبار التقنية، والمجتمع التقني في مكان واحد.
+            {{ __('home.about_description') }}
         </p>
 
     </div>
@@ -30,11 +31,11 @@
             </span>
 
             <h3>
-                تصميم احترافي
+                {{ __('home.about_feature_1_title') }}
             </h3>
 
             <p>
-                واجهة عصرية سريعة ومتوافقة مع جميع الأجهزة.
+                {{ __('home.about_feature_1_description') }}
             </p>
 
         </article>
@@ -46,11 +47,11 @@
             </span>
 
             <h3>
-                بنية تقنية حديثة
+                {{ __('home.about_feature_2_title') }}
             </h3>
 
             <p>
-                مبنية باستخدام Laravel وأحدث تقنيات الويب.
+                {{ __('home.about_feature_2_description') }}
             </p>
 
         </article>
@@ -62,11 +63,11 @@
             </span>
 
             <h3>
-                تطوير مستمر
+                {{ __('home.about_feature_3_title') }}
             </h3>
 
             <p>
-                نطوّر المنصة باستمرار لإضافة خدمات ومزايا وتجارب رقمية جديدة.
+                {{ __('home.about_feature_3_description') }}
             </p>
 
         </article>

@@ -1427,3 +1427,19 @@ html[dir="ltr"] .faq-item > p {
         font-size: 12px;
     }
 }
+
+.integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+}
+
+/* الأربع بطاقات الأخيرة في المنتصف */
+
+.integrations-grid .integration-item:nth-last-child(-n + 4) {
+    grid-column: span 1;
+}
+
+.integrations-grid .integration-item:nth-last-child(4) {
+    grid-column-start: 2;
+}
