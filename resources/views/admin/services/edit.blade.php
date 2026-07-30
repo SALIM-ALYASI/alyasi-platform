@@ -28,28 +28,6 @@
     </a>
 </section>
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <div class="alert-content">
-            <i class="fa-solid fa-circle-exclamation"></i>
-
-            <div>
-                <strong>تعذر تحديث الخدمة</strong>
-
-                <p>
-                    يرجى مراجعة الحقول التالية وتصحيح الأخطاء.
-                </p>
-            </div>
-        </div>
-
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <section class="dashboard-panel">
     <form
         action="{{ route('admin.services.update', $service) }}"

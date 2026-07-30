@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Service extends Model
@@ -137,4 +138,10 @@ class Service extends Model
 
         return $this->description_ar;
     }
+     public function works(): HasMany
+{
+    return $this->hasMany(Work::class)
+        ->orderBy('sort_order')
+        ->latest('id');
+}
 }

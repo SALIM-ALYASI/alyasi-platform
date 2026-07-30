@@ -28,24 +28,6 @@
     );
 @endphp
 
-@if ($errors->any())
-    <div class="alert alert-danger community-form-errors">
-        <div class="community-form-errors-title">
-            <i class="fa-solid fa-circle-exclamation"></i>
-
-            <strong>
-                تعذر حفظ منشور المجتمع.
-            </strong>
-        </div>
-
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <div class="form-grid">
 
     {{-- عنوان المنشور --}}

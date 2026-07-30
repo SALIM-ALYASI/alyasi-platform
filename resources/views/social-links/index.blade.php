@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'تواصل معنا | ALYASI')
+@section('title', __('social-links.title') . ' | ' . __('home.brand'))
 
 @push('styles')
     <link

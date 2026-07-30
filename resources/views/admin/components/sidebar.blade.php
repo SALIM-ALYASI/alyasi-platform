@@ -1,9 +1,10 @@
- <aside
+<aside
     class="admin-sidebar"
     id="admin-sidebar"
     aria-label="{{ __('admin-sidebar.sidebar_label') }}"
 >
 
+    {{-- رأس القائمة --}}
     <div class="sidebar-header">
 
         <a
@@ -44,6 +45,7 @@
 
     </div>
 
+    {{-- محتوى القائمة --}}
     <div class="sidebar-body">
 
         {{-- القائمة الرئيسية --}}
@@ -58,13 +60,14 @@
                 aria-label="{{ __('admin-sidebar.main_menu') }}"
             >
 
+                {{-- لوحة التحكم --}}
                 <a
                     href="{{ route('admin.dashboard') }}"
                     class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
                         <i
-                            class="fa-solid fa-grid-2"
+                            class="fa-solid fa-gauge-high"
                             aria-hidden="true"
                         ></i>
                     </span>
@@ -74,6 +77,7 @@
                     </span>
                 </a>
 
+                {{-- الخدمات --}}
                 <a
                     href="{{ route('admin.services.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.services.*') ? 'is-active' : '' }}"
@@ -88,14 +92,49 @@
                     <span class="sidebar-link-text">
                         {{ __('admin-sidebar.services') }}
                     </span>
+                </a>
+
+                {{-- الأعمال --}}
+                <a
+                    href="{{ route('admin.works.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.works.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-briefcase"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.works') }}
+                    </span>
 
                     <span class="sidebar-link-badge">
                         {{ __('admin-sidebar.new') }}
                     </span>
                 </a>
 
+                {{-- التقنيات --}}
                 <a
-                    href="#"
+                    href="{{ route('admin.technologies.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.technologies.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-microchip"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.technologies') }}
+                    </span>
+                </a>
+
+                {{-- الأخبار --}}
+                <a
+                    href="{{ route('admin.news.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.news.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
@@ -110,6 +149,7 @@
                     </span>
                 </a>
 
+                {{-- المجتمع --}}
                 <a
                     href="{{ route('admin.community.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.community.*') ? 'is-active' : '' }}"
@@ -126,6 +166,7 @@
                     </span>
                 </a>
 
+                {{-- روابط التواصل --}}
                 <a
                     href="{{ route('admin.social-links.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.social-links.*') ? 'is-active' : '' }}"
@@ -139,6 +180,40 @@
 
                     <span class="sidebar-link-text">
                         {{ __('admin-sidebar.social_links') }}
+                    </span>
+                </a>
+
+                {{-- الأسئلة الشائعة --}}
+                <a
+                    href="{{ route('admin.faqs.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-circle-question"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.faqs') }}
+                    </span>
+                </a>
+
+                {{-- استوديو الصوت --}}
+                <a
+                    href="{{ route('admin.voice-studio.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.voice-studio.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-microphone-lines"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.voice_studio') }}
                     </span>
                 </a>
 
@@ -158,6 +233,7 @@
                 aria-label="{{ __('admin-sidebar.platform_management') }}"
             >
 
+                {{-- المستخدمون --}}
                 <a
                     href="#"
                     class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}"
@@ -174,6 +250,7 @@
                     </span>
                 </a>
 
+                {{-- مكتبة الوسائط --}}
                 <a
                     href="#"
                     class="sidebar-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}"
@@ -190,6 +267,7 @@
                     </span>
                 </a>
 
+                {{-- الرسائل --}}
                 <a
                     href="#"
                     class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"
@@ -213,6 +291,7 @@
                     </span>
                 </a>
 
+                {{-- الإعدادات --}}
                 <a
                     href="#"
                     class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}"
@@ -235,13 +314,14 @@
 
     </div>
 
+    {{-- تذييل القائمة --}}
     <div class="sidebar-footer">
 
         <div class="sidebar-admin">
 
             <div class="sidebar-admin-avatar">
 
-                @if(auth('admin')->user()?->avatar)
+                @if (auth('admin')->user()?->avatar)
 
                     <img
                         src="{{ asset(auth('admin')->user()->avatar) }}"
@@ -270,10 +350,12 @@
                         ?? __('admin-sidebar.platform_admin') }}
                 </strong>
 
-                @if(auth('admin')->user()?->email)
+                @if (auth('admin')->user()?->email)
+
                     <span>
                         {{ auth('admin')->user()->email }}
                     </span>
+
                 @endif
 
             </div>

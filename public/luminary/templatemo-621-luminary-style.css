@@ -109,6 +109,19 @@ body {
 }
 .nav-cta:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(200,164,106,0.20); }
 
+/* ── Language Switch ── */
+.nav-lang-switch {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.nav-lang-switch a {
+  color: var(--slate-warm); text-decoration: none;
+  transition: color 0.8s var(--silk-ease);
+}
+.nav-lang-switch a:hover,
+.nav-lang-switch a.active { color: var(--ivory); }
+.nav-lang-switch span { color: var(--slate-warm); opacity: 0.5; }
+
 /* ── Hamburger ── */
 .nav-toggle {
   display: none; background: none; border: none; cursor: pointer;

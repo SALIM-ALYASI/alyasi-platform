@@ -5,18 +5,6 @@
     $englishPermalink = $service?->permalinks?->firstWhere('locale', 'en');
 @endphp
 
-@if($errors->any())
-    <div class="alert alert-danger" style="margin-bottom:20px;">
-        <strong>تعذر حفظ الخدمة.</strong>
-
-        <ul style="margin:10px 0 0;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <div class="form-grid">
     <div class="form-group">
         <label for="title_ar">

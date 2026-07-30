@@ -1,323 +1,311 @@
 @extends('admin.layouts.app')
 
 @section('title', 'إدارة الخدمات')
-@section('page-title', 'إدارة الخدمات')
-@section('page-description', 'إدارة جميع خدمات منصة ALYASI')
-
- @push('styles')
-@push('styles')
-<link
-    rel="stylesheet"
-    href="{{ asset('assets/admin/css/services-index.css') }}"
->
-@endpush
-@endpush
 
 @section('content')
 
-<section class="page-header">
-    <div class="page-header-content">
-        <h2>الخدمات</h2>
+<div class="admin-data-page">
 
-        <p>
-            إدارة محتوى الخدمات وروابطها الدائمة
-            وحالة ظهورها في المنصة.
-        </p>
+    <div class="admin-page-header">
+
+        <div class="admin-page-header__content">
+
+            <span class="admin-page-header__badge">
+                <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                إدارة المحتوى
+            </span>
+
+            <h1 class="admin-page-header__title">
+                إدارة الخدمات
+            </h1>
+
+            <p class="admin-page-header__description">
+                إدارة محتوى الخدمات وروابطها الدائمة وحالة ظهورها بالمنصة.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ route('admin.services.create') }}"
+            class="admin-primary-button"
+        >
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            إضافة خدمة
+        </a>
+
     </div>
 
-    <a
-        href="{{ route('admin.services.create') }}"
-        class="dashboard-button dashboard-button-primary"
-    >
-        <i class="fa-solid fa-plus"></i>
-        <span>إضافة خدمة</span>
-    </a>
-</section>
+    <section class="admin-stats-row">
 
-@if (session('success'))
-    <div class="alert alert-success">
-        <i class="fa-solid fa-circle-check"></i>
-        <span>{{ session('success') }}</span>
-    </div>
-@endif
+        <article class="admin-stat-card">
+            <div class="admin-stat-card__icon">
+                <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            </div>
 
-<section class="dashboard-panel">
+            <div class="admin-stat-card__content">
+                <span>إجمالي الخدمات</span>
+                <strong>{{ number_format($services->total()) }}</strong>
+            </div>
+        </article>
 
-    <div class="services-toolbar">
+        <article class="admin-stat-card">
+            <div class="admin-stat-card__icon">
+                <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            </div>
+
+            <div class="admin-stat-card__content">
+                <span>المعروض بالصفحة</span>
+                <strong>{{ number_format($services->count()) }}</strong>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="admin-filter-panel">
+
         <form
             action="{{ route('admin.services.index') }}"
             method="GET"
-            class="services-search"
+            class="admin-filter-form"
         >
-            <div class="services-search-field">
-                <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input
-                    type="search"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="ابحث باسم الخدمة..."
-                    aria-label="البحث في الخدمات"
-                >
+            <div class="admin-filter-form__search">
+
+                <label for="service-search">البحث</label>
+
+                <div class="admin-input-with-icon">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+
+                    <input
+                        type="search"
+                        id="service-search"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="ابحث باسم الخدمة..."
+                    >
+                </div>
+
             </div>
 
-            <button
-                type="submit"
-                class="dashboard-button dashboard-button-primary"
-            >
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>بحث</span>
-            </button>
+            <div class="admin-filter-form__actions">
 
-            @if (request()->filled('search'))
-                <a
-                    href="{{ route('admin.services.index') }}"
-                    class="dashboard-button"
-                >
-                    <i class="fa-solid fa-xmark"></i>
-                    <span>مسح</span>
-                </a>
-            @endif
+                <button type="submit" class="admin-filter-button">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    بحث
+                </button>
+
+                @if (request()->filled('search'))
+                    <a
+                        href="{{ route('admin.services.index') }}"
+                        class="admin-reset-button"
+                    >
+                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                        إعادة تعيين
+                    </a>
+                @endif
+
+            </div>
+
         </form>
 
-        <div class="services-summary">
-            <div class="services-summary-item">
-                <i class="fa-solid fa-layer-group"></i>
+    </section>
 
-                <span>
-                    الإجمالي:
-                    <strong>{{ $services->total() }}</strong>
-                </span>
+    <section class="admin-list-panel">
+
+        <div class="admin-list-panel__header">
+
+            <div>
+                <h2>قائمة الخدمات</h2>
+                <p>عرض وإدارة جميع الخدمات المسجلة بالمنصة.</p>
             </div>
 
-            <div class="services-summary-item">
-                <i class="fa-solid fa-list"></i>
+            <span class="admin-results-count">
+                {{ number_format($services->total()) }}
+                خدمة
+            </span>
 
-                <span>
-                    المعروض:
-                    <strong>{{ $services->count() }}</strong>
-                </span>
-            </div>
         </div>
-    </div>
 
-    @if ($services->count())
-        <div class="services-grid">
-            @foreach ($services as $service)
-                @php
-                    $arabicPermalink = $service
-                        ->permalinks
-                        ->firstWhere('locale', 'ar');
+        @if ($services->count())
 
-                    $englishPermalink = $service
-                        ->permalinks
-                        ->firstWhere('locale', 'en');
+            <div class="admin-card-grid">
 
-                    $publicUrl = $arabicPermalink
-                        ? route(
-                            'services.show',
-                            ['slug' => $arabicPermalink->slug]
-                        )
-                        : null;
-                @endphp
+                @foreach ($services as $service)
 
-                <article class="service-card">
-                    <div class="service-card-image">
-                        @if ($service->image)
-                            <img
-                                src="{{ asset($service->image) }}"
-                                alt="{{ $service->title_ar }}"
-                                loading="lazy"
-                            >
-                        @else
-                            <div class="service-card-placeholder">
-                                <i class="fa-regular fa-image"></i>
+                    @php
+                        $arabicPermalink = $service->permalinks->firstWhere('locale', 'ar');
+                        $englishPermalink = $service->permalinks->firstWhere('locale', 'en');
+
+                        $publicUrl = $arabicPermalink
+                            ? route('services.show', ['slug' => $arabicPermalink->slug])
+                            : null;
+                    @endphp
+
+                    <article class="admin-data-card">
+
+                        <div class="admin-data-card__media">
+
+                            @if ($service->image)
+                                <img
+                                    src="{{ asset($service->image) }}"
+                                    alt="{{ $service->title_ar }}"
+                                    loading="lazy"
+                                >
+                            @else
+                                <i class="fa-regular fa-image" aria-hidden="true"></i>
+                            @endif
+
+                            <div class="admin-data-card__badges">
+                                <span
+                                    class="admin-status {{ $service->is_active
+                                        ? 'admin-status--active'
+                                        : 'admin-status--inactive' }}"
+                                >
+                                    <i
+                                        class="{{ $service->is_active
+                                            ? 'fa-solid fa-circle-check'
+                                            : 'fa-solid fa-circle-minus' }}"
+                                        aria-hidden="true"
+                                    ></i>
+                                    {{ $service->is_active ? 'مفعلة' : 'معطلة' }}
+                                </span>
                             </div>
-                        @endif
 
-                        @if ($service->is_active)
-                            <span
-                                class="service-status
-                                       service-status-active"
-                            >
-                                مفعلة
-                            </span>
-                        @else
-                            <span
-                                class="service-status
-                                       service-status-inactive"
-                            >
-                                معطلة
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="service-card-body">
-                        <div class="service-card-number">
-                            الخدمة رقم #{{ $service->id }}
                         </div>
 
-                        <h3 class="service-card-title">
-                            {{ $service->title_ar }}
-                        </h3>
+                        <div class="admin-data-card__body">
 
-                        @if ($service->title_en)
-                            <div class="service-card-title-en">
-                                {{ $service->title_en }}
-                            </div>
-                        @endif
+                            <div class="admin-data-card__heading">
+                                <div>
+                                    <h3>{{ $service->title_ar }}</h3>
 
-                        <p class="service-card-description">
-                            {{ $service->description_ar }}
-                        </p>
-
-                        <div class="service-links">
-                            <div class="service-link-row">
-                                <span class="service-link-label">
-                                    العربي
-                                </span>
-
-                                @if ($arabicPermalink)
-                                    <code class="service-link-value">
-                                        {{ $arabicPermalink->slug }}
-                                    </code>
-                                @else
-                                    <span
-                                        class="service-link-missing"
-                                    >
-                                        الرابط غير موجود
-                                    </span>
-                                @endif
+                                    @if ($service->title_en)
+                                        <span dir="ltr">{{ $service->title_en }}</span>
+                                    @endif
+                                </div>
                             </div>
 
-                            <div class="service-link-row">
-                                <span class="service-link-label">
-                                    الإنجليزي
-                                </span>
+                            <p class="admin-data-card__description">
+                                {{ $service->description_ar }}
+                            </p>
 
-                                @if ($englishPermalink)
-                                    <code class="service-link-value">
-                                        {{ $englishPermalink->slug }}
-                                    </code>
-                                @else
-                                    <span
-                                        class="service-link-missing"
-                                    >
-                                        غير مضاف
-                                    </span>
-                                @endif
+                            <div class="admin-data-card__meta">
+
+                                <div>
+                                    <span>الرابط العربي</span>
+
+                                    @if ($arabicPermalink)
+                                        <code>{{ $arabicPermalink->slug }}</code>
+                                    @else
+                                        <strong>غير موجود</strong>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <span>الرابط الإنجليزي</span>
+
+                                    @if ($englishPermalink)
+                                        <code>{{ $englishPermalink->slug }}</code>
+                                    @else
+                                        <strong>غير مضاف</strong>
+                                    @endif
+                                </div>
+
                             </div>
+
                         </div>
 
-                        <div class="service-card-actions">
+                        <div class="admin-data-card__actions">
+
                             @if ($publicUrl)
                                 <a
                                     href="{{ $publicUrl }}"
                                     target="_blank"
                                     rel="noopener"
-                                    class="service-action
-                                           service-action-view"
+                                    class="admin-action-button"
                                     title="عرض الخدمة"
+                                    aria-label="عرض الخدمة"
                                 >
-                                    <i class="fa-solid fa-eye"></i>
-                                    <span>عرض</span>
+                                    <i class="fa-solid fa-eye" aria-hidden="true"></i>
                                 </a>
-                            @else
-                                <span
-                                    class="service-action
-                                           service-action-disabled"
-                                    title="لا يوجد رابط للخدمة"
-                                >
-                                    <i class="fa-solid fa-eye-slash"></i>
-                                    <span>عرض</span>
-                                </span>
                             @endif
 
                             <a
-                                href="{{ route(
-                                    'admin.services.edit',
-                                    $service
-                                ) }}"
-                                class="service-action
-                                       service-action-edit"
-                                title="تعديل الخدمة"
+                                href="{{ route('admin.services.edit', $service) }}"
+                                class="admin-action-button admin-action-button--edit"
+                                title="تعديل"
+                                aria-label="تعديل الخدمة"
                             >
-                                <i class="fa-solid fa-pen"></i>
-                                <span>تعديل</span>
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                             </a>
 
                             <button
                                 type="button"
-                                class="service-action
-                                       service-action-copy
-                                       js-copy-service-link"
+                                class="admin-action-button js-copy-service-link"
                                 data-copy-url="{{ $publicUrl }}"
-                                title="نسخ رابط الخدمة"
+                                title="نسخ الرابط"
+                                aria-label="نسخ رابط الخدمة"
                                 @disabled(!$publicUrl)
                             >
-                                <i class="fa-regular fa-copy"></i>
-                                <span>نسخ</span>
+                                <i class="fa-regular fa-copy" aria-hidden="true"></i>
                             </button>
 
                             <form
-                                action="{{ route(
-                                    'admin.services.destroy',
-                                    $service
-                                ) }}"
+                                action="{{ route('admin.services.destroy', $service) }}"
                                 method="POST"
-                                onsubmit="
-                                    return confirm(
-                                        'هل تريد حذف هذه الخدمة وروابطها الدائمة؟'
-                                    );
-                                "
+                                onsubmit="return confirm('هل تريد حذف هذه الخدمة وروابطها الدائمة؟');"
                             >
                                 @csrf
                                 @method('DELETE')
 
                                 <button
                                     type="submit"
-                                    class="service-action
-                                           service-action-delete"
-                                    title="حذف الخدمة"
+                                    class="admin-action-button admin-action-button--delete"
+                                    title="حذف"
+                                    aria-label="حذف الخدمة"
                                 >
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>حذف</span>
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                                 </button>
                             </form>
+
                         </div>
-                    </div>
-                </article>
-            @endforeach
-        </div>
-    @else
-        <div class="services-empty">
-            <div class="services-empty-icon">
-                <i class="fa-solid fa-layer-group"></i>
+
+                    </article>
+
+                @endforeach
+
             </div>
 
-            <h3>لا توجد خدمات حالياً</h3>
+            @if ($services->hasPages())
+                <div class="admin-pagination">
+                    {{ $services->links() }}
+                </div>
+            @endif
 
-            <p>
-                أضف أول خدمة لعرضها وإدارتها من هذه الصفحة.
-            </p>
+        @else
 
-            <a
-                href="{{ route('admin.services.create') }}"
-                class="dashboard-button dashboard-button-primary"
-            >
-                <i class="fa-solid fa-plus"></i>
-                <span>إضافة أول خدمة</span>
-            </a>
-        </div>
-    @endif
+            <div class="admin-empty-state">
 
-    @if ($services->hasPages())
-        <div class="pagination-wrapper">
-            {{ $services->links() }}
-        </div>
-    @endif
+                <div class="admin-empty-state__icon">
+                    <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                </div>
 
-</section>
+                <h3>لا توجد خدمات حاليًا</h3>
+
+                <p>أضف أول خدمة لعرضها وإدارتها من هذه الصفحة.</p>
+
+                <a href="{{ route('admin.services.create') }}" class="admin-primary-button">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    إضافة أول خدمة
+                </a>
+
+            </div>
+
+        @endif
+
+    </section>
+
+</div>
 
 <div
     id="copyMessage"

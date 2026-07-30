@@ -224,14 +224,14 @@ class NewsDemoSeeder extends Seeder
         string $slug,
     ): void {
         $permalink = Permalink::query()
-            ->where('linkable_type', 'news')
+            ->where('linkable_type', 'news_article')
             ->where('linkable_id', $article->id)
             ->where('locale', $locale)
             ->first();
 
         $permalink ??= new Permalink();
 
-        $permalink->linkable_type = 'news';
+        $permalink->linkable_type = 'news_article';
         $permalink->linkable_id = $article->id;
         $permalink->locale = $locale;
         $permalink->slug = $slug;

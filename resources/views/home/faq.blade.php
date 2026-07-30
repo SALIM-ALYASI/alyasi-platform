@@ -24,56 +24,24 @@
 
     <div class="faq-list">
 
-        <details
-            class="faq-item"
-            open
-        >
+        @foreach ($faqs as $index => $faq)
 
-            <summary>
-                {{ __('home.faq_1_question') }}
-            </summary>
+            <details
+                class="faq-item"
+                @if ($index === 0) open @endif
+            >
 
-            <p>
-                {{ __('home.faq_1_answer') }}
-            </p>
+                <summary>
+                    {{ $faq->localizedQuestion() }}
+                </summary>
 
-        </details>
+                <p>
+                    {{ $faq->localizedAnswer() }}
+                </p>
 
-        <details class="faq-item">
+            </details>
 
-            <summary>
-                {{ __('home.faq_2_question') }}
-            </summary>
-
-            <p>
-                {{ __('home.faq_2_answer') }}
-            </p>
-
-        </details>
-
-        <details class="faq-item">
-
-            <summary>
-                {{ __('home.faq_3_question') }}
-            </summary>
-
-            <p>
-                {{ __('home.faq_3_answer') }}
-            </p>
-
-        </details>
-
-        <details class="faq-item">
-
-            <summary>
-                {{ __('home.faq_4_question') }}
-            </summary>
-
-            <p>
-                {{ __('home.faq_4_answer') }}
-            </p>
-
-        </details>
+        @endforeach
 
     </div>
 

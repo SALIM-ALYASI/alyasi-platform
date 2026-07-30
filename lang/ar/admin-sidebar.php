@@ -29,5 +29,9 @@ return [
     'default_admin_letter' => 'م',
 
     'logout' => 'تسجيل الخروج',
+    'works' => 'الأعمال',
+    'technologies' => 'التقنيات',
+    'faqs' => 'الأسئلة الشائعة',
+    'voice_studio' => 'استوديو الصوت',
 
 ];

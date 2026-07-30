@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CommunityPost;
+use App\Models\NewsArticle;
 use App\Models\Service;
 use Illuminate\View\View;
 
@@ -21,12 +23,22 @@ class DashboardController extends Controller
             ->where('is_active', false)
             ->count();
 
+        $newsCount = NewsArticle::query()
+            ->published()
+            ->count();
+
+        $communityCount = CommunityPost::query()
+            ->active()
+            ->count();
+
         return view(
             'admin.dashboard.index',
             compact(
                 'servicesCount',
                 'activeServicesCount',
-                'inactiveServicesCount'
+                'inactiveServicesCount',
+                'newsCount',
+                'communityCount'
             )
         );
     }

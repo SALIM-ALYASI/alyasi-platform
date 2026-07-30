@@ -259,7 +259,7 @@
 
                 {{-- إضافة خبر --}}
                 <a
-                    href="#"
+                    href="{{ route('admin.news.create') }}"
                     class="quick-action-card"
                 >
 
@@ -448,7 +448,11 @@
 
                     <div class="platform-status-info">
 
-                        <span class="platform-status-dot is-warning"></span>
+                        @if (($newsCount ?? 0) > 0)
+                            <span class="platform-status-dot is-success"></span>
+                        @else
+                            <span class="platform-status-dot is-warning"></span>
+                        @endif
 
                         <div>
 
@@ -457,16 +461,26 @@
                             </strong>
 
                             <span>
-                                لم تتم إضافة أخبار بعد
+                                @if (($newsCount ?? 0) > 0)
+                                    يوجد {{ number_format($newsCount) }} خبر منشور
+                                @else
+                                    لم تتم إضافة أخبار بعد
+                                @endif
                             </span>
 
                         </div>
 
                     </div>
 
-                    <span class="platform-status-badge is-warning">
-                        بانتظار المحتوى
-                    </span>
+                    <a
+                        href="{{ route('news.index') }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="platform-status-badge {{ ($newsCount ?? 0) > 0 ? 'is-success' : 'is-warning' }}"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        عرض الأخبار
+                    </a>
 
                 </div>
 
@@ -475,7 +489,11 @@
 
                     <div class="platform-status-info">
 
-                        <span class="platform-status-dot is-warning"></span>
+                        @if (($communityCount ?? 0) > 0)
+                            <span class="platform-status-dot is-success"></span>
+                        @else
+                            <span class="platform-status-dot is-warning"></span>
+                        @endif
 
                         <div>
 
@@ -484,16 +502,26 @@
                             </strong>
 
                             <span>
-                                القسم قيد التجهيز
+                                @if (($communityCount ?? 0) > 0)
+                                    يوجد {{ number_format($communityCount) }} منشور نشط
+                                @else
+                                    لم تتم إضافة منشورات بعد
+                                @endif
                             </span>
 
                         </div>
 
                     </div>
 
-                    <span class="platform-status-badge is-warning">
-                        قيد التطوير
-                    </span>
+                    <a
+                        href="{{ route('community.index') }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="platform-status-badge {{ ($communityCount ?? 0) > 0 ? 'is-success' : 'is-warning' }}"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        عرض المجتمع
+                    </a>
 
                 </div>
 

@@ -718,6 +718,11 @@ img {
     background: var(--admin-danger-soft);
 }
 
+.admin-alert ul {
+    margin: 6px 0 0;
+    padding-inline-start: 18px;
+}
+
 /* =========================================================
    Welcome
 ========================================================= */
@@ -1106,12 +1111,19 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
     min-height: 25px;
     padding: 5px 9px;
     white-space: nowrap;
     border-radius: 999px;
     font-size: 8px;
     font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+a.platform-status-badge:hover {
+    transform: scale(1.04);
 }
 
 .platform-status-badge.is-success {

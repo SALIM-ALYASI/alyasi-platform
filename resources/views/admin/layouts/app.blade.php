@@ -41,6 +41,11 @@
         href="{{ asset('assets/admin/css/dashboard.css') }}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{{ asset('assets/admin/css/admin-cards.css') }}"
+    >
+
     @stack('styles')
 </head>
 
@@ -73,6 +78,22 @@
                         <span>
                             {{ session('error') }}
                         </span>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="admin-alert admin-alert-danger">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                        <div>
+                            <strong>يرجى مراجعة البيانات المدخلة.</strong>
+
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 @endif
 
