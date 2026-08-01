@@ -7,7 +7,7 @@
     <title>منزل محمد بن سالم الحجري (راعي سويط)</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#180B0F">
-    <link rel="icon" type="image/png" href="{{ asset('images/ra3i-swait/home.webp') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/ra3i-swait/home2.webp') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -325,7 +325,7 @@
                 aria-label="فتح موقع منزل محمد بن سالم الحجري على خرائط جوجل"
             >
                 <img
-                    src="{{ asset('images/ra3i-swait/home.webp') }}"
+                    src="{{ asset('images/ra3i-swait/home2.webp') }}"
                     alt="منزل محمد بن سالم الحجري (راعي صويط)"
                 >
 
