@@ -87,7 +87,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" referrerpolicy="no-referrer">
 
     {{-- Luminary / ALYASI Style --}}
-    <link rel="stylesheet" href="{{ asset('luminary/templatemo-621-luminary-style.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('luminary/templatemo-621-luminary-style.css') }}">
 
     <style>
         /* تصحيح شبكة الخدمات لهذه الصفحة فقط — قواعد الصفحة الرئيسية

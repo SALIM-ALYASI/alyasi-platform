@@ -13,7 +13,7 @@
 @push('styles')
     <link
         rel="stylesheet"
-        href="{{ asset('css/pages/service-show.css') }}"
+        href="{{ versioned_asset('css/pages/service-show.css') }}"
     >
 @endpush
 

@@ -7,7 +7,7 @@
 @push('styles')
     <link
         rel="stylesheet"
-        href="{{ asset('assets/admin/css/community.css') }}"
+        href="{{ versioned_asset('assets/admin/css/community.css') }}"
     >
 @endpush
 
@@ -90,5 +90,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/admin/js/community.js') }}"></script>
+    <script src="{{ versioned_asset('assets/admin/js/community.js') }}"></script>
 @endpush

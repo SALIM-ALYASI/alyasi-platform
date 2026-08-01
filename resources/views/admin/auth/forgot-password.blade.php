@@ -41,7 +41,7 @@
 
     <link
         rel="stylesheet"
-        href="{{ asset('assets/admin/css/login.css') }}"
+        href="{{ versioned_asset('assets/admin/css/login.css') }}"
     >
 
     <style>

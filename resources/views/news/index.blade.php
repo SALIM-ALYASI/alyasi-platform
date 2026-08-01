@@ -73,7 +73,7 @@
 @push('styles')
     <link
         rel="stylesheet"
-        href="{{ asset('assets/news/css/news.css') }}"
+        href="{{ versioned_asset('assets/news/css/news.css') }}"
     >
 @endpush
 

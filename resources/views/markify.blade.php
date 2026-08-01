@@ -57,9 +57,9 @@ http://www.tooplate.com/view/2110-character
 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
     <!-- https://fonts.google.com/specimen/Open+Sans -->
-    <link rel="stylesheet" href="{{ asset('markify-assets/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('markify-assets/css/all.min.css') }}">
     <!-- https://fontawesome.com/ -->
-    <link rel="stylesheet" href="{{ asset('markify-assets/css/tooplate-style.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('markify-assets/css/tooplate-style.css') }}">
 
     <style>
         .tm-lang-switch {
@@ -164,7 +164,7 @@ http://www.tooplate.com/view/2110-character
         </div>
 
     </main>
-    <script src="{{ asset('markify-assets/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ versioned_asset('markify-assets/js/jquery-3.3.1.min.js') }}"></script>
     <!-- https://jquery.com/download/ -->
     <script>
 

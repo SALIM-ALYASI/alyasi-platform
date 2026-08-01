@@ -5,7 +5,7 @@
 @push('styles')
 <link
     rel="stylesheet"
-    href="{{ asset('assets/admin/css/works.css') }}"
+    href="{{ versioned_asset('assets/admin/css/works.css') }}"
 >
 @endpush
 
@@ -100,5 +100,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/admin/js/works.js') }}"></script>
+<script src="{{ versioned_asset('assets/admin/js/works.js') }}"></script>
 @endpush

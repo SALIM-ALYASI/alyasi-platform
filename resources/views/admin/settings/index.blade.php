@@ -5,7 +5,7 @@
 @push('styles')
 <link
     rel="stylesheet"
-    href="{{ asset('assets/admin/css/settings.css') }}"
+    href="{{ versioned_asset('assets/admin/css/settings.css') }}"
 >
 @endpush
 

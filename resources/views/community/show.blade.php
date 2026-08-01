@@ -11,7 +11,7 @@
 @push('styles')
     <link
         rel="stylesheet"
-        href="{{ asset('assets/community/css/community-show.css') }}"
+        href="{{ versioned_asset('assets/community/css/community-show.css') }}"
     >
 @endpush
 
@@ -389,5 +389,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/community/js/community-show.js') }}"></script>
+    <script src="{{ versioned_asset('assets/community/js/community-show.js') }}"></script>
 @endpush

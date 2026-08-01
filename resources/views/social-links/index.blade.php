@@ -5,7 +5,7 @@
 @push('styles')
     <link
         rel="stylesheet"
-        href="{{ asset('assets/social-links/css/social-links.css') }}"
+        href="{{ versioned_asset('assets/social-links/css/social-links.css') }}"
     >
 @endpush
 
@@ -20,5 +20,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/social-links/js/social-links.js') }}"></script>
+    <script src="{{ versioned_asset('assets/social-links/js/social-links.js') }}"></script>
 @endpush

@@ -38,12 +38,12 @@
 
     <link
         rel="stylesheet"
-        href="{{ asset('assets/admin/css/dashboard.css') }}"
+        href="{{ versioned_asset('assets/admin/css/dashboard.css') }}"
     >
 
     <link
         rel="stylesheet"
-        href="{{ asset('assets/admin/css/admin-cards.css') }}"
+        href="{{ versioned_asset('assets/admin/css/admin-cards.css') }}"
     >
 
     @stack('styles')
@@ -110,7 +110,7 @@
         id="sidebar-overlay"
     ></div>
 
-    <script src="{{ asset('assets/admin/js/dashboard.js') }}"></script>
+    <script src="{{ versioned_asset('assets/admin/js/dashboard.js') }}"></script>
 
     @stack('scripts')
 

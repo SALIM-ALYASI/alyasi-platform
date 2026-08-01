@@ -180,13 +180,13 @@
     {{-- التصميم العام المشترك للأخبار --}}
     <link
         rel="stylesheet"
-        href="{{ asset('assets/news/css/news.css') }}"
+        href="{{ versioned_asset('assets/news/css/news.css') }}"
     >
 
     {{-- التصميم الخاص بصفحة عرض الخبر --}}
     <link
         rel="stylesheet"
-        href="{{ asset('assets/news/css/news-show.css') }}"
+        href="{{ versioned_asset('assets/news/css/news-show.css') }}"
     >
 @endpush
 
@@ -894,5 +894,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/news/js/news-show.js') }}"></script>
+    <script src="{{ versioned_asset('assets/news/js/news-show.js') }}"></script>
 @endpush

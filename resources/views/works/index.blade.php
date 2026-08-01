@@ -10,7 +10,7 @@
 @push('styles')
 <link
     rel="stylesheet"
-    href="{{ asset('assets/works/css/works.css') }}"
+    href="{{ versioned_asset('assets/works/css/works.css') }}"
 >
 @endpush
 
@@ -36,7 +36,7 @@
 
 @push('scripts')
 <script
-    src="{{ asset('assets/works/js/works.js') }}"
+    src="{{ versioned_asset('assets/works/js/works.js') }}"
     defer
 ></script>
 @endpush

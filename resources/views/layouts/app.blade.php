@@ -45,7 +45,7 @@
     {{-- Luminary / ALYASI Style --}}
     <link
         rel="stylesheet"
-        href="{{ asset('luminary/templatemo-621-luminary-style.css') }}"
+        href="{{ versioned_asset('luminary/templatemo-621-luminary-style.css') }}"
     >
 
     @stack('styles')
