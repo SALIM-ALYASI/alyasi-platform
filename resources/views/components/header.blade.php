@@ -354,6 +354,24 @@
 
         </div>
 
+        <div class="mobile-menu-lang">
+
+            <a
+                href="{{ route('locale.switch', 'ar') }}"
+                class="{{ $isArabic ? 'active' : '' }}"
+            >
+                العربية
+            </a>
+
+            <a
+                href="{{ route('locale.switch', 'en') }}"
+                class="{{ ! $isArabic ? 'active' : '' }}"
+            >
+                English
+            </a>
+
+        </div>
+
         <div class="mobile-menu-footer">
 
             <a href="{{ route('privacy') }}">
