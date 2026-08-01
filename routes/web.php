@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\MarketerController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\ServerInfoController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\TechnologyController;
@@ -456,6 +457,17 @@ Route::prefix('admin')
                     'settings/password',
                     [SettingController::class, 'updatePassword']
                 )->name('settings.update-password');
+
+                /*
+                |----------------------------------------------------------
+                | Server Info
+                |----------------------------------------------------------
+                */
+
+                Route::get(
+                    'server-info',
+                    [ServerInfoController::class, 'index']
+                )->name('server-info.index');
 
                 /*
                 |----------------------------------------------------------

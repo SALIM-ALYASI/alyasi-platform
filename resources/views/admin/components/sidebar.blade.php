@@ -308,6 +308,23 @@
                     </span>
                 </a>
 
+                {{-- بيانات سيرفر --}}
+                <a
+                    href="{{ route('admin.server-info.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.server-info.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-server"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.server_info') }}
+                    </span>
+                </a>
+
                 {{-- الإعدادات --}}
                 <a
                     href="{{ route('admin.settings.index') }}"

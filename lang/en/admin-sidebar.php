@@ -34,5 +34,6 @@ return [
     'faqs' => 'FAQs',
     'marketers' => 'Marketers',
     'voice_studio' => 'Voice Studio',
+    'server_info' => 'Server Info',
 
 ];
