@@ -155,11 +155,11 @@ Route::get('/markify', [PageController::class, 'markify'])
 
 /*
 |--------------------------------------------------------------------------
-| مغسلة الياسي (صفحة مستقلة بألوان ALYASI)
+| مغسلة الياسي
 |--------------------------------------------------------------------------
 */
 
-Route::get('/car-wash', [PageController::class, 'carWash'])
+Route::get('/alyasicarwash', [PageController::class, 'carWash'])
     ->name('car-wash');
 
 /*
