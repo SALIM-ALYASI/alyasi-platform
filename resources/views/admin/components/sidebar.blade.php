@@ -293,7 +293,7 @@
 
                 {{-- الإعدادات --}}
                 <a
-                    href="#"
+                    href="{{ route('admin.settings.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">

@@ -208,26 +208,26 @@ class WorkController extends Controller
     }
 
     /**
- * عرض تفاصيل العمل.
- */
-public function show(Work $work): View
-{
-    $work->load([
-        'service:id,title_ar,title_en',
-        'technologies:id,name,icon',
-        'images',
-    ]);
+     * عرض تفاصيل العمل.
+     */
+    public function show(Work $work): View
+    {
+        $work->load([
+            'service:id,title_ar,title_en',
+            'technologies:id,name,icon',
+            'images',
+        ]);
 
-    $types = $this->workTypes();
+        $types = $this->workTypes();
 
-    return view(
-        'admin.works.show',
-        compact(
-            'work',
-            'types'
-        )
-    );
-}
+        return view(
+            'admin.works.show',
+            compact(
+                'work',
+                'types'
+            )
+        );
+    }
 
     /**
      * عرض صفحة تعديل العمل.

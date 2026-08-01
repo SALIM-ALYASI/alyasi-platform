@@ -157,7 +157,7 @@ class CommunityPostSeeder extends Seeder
                     'initiative',
                     'announcement',
                     'community_post',
-                    'success_story'
+                    'success_story',
                 ])->random(),
 
                 'status' => 'published',

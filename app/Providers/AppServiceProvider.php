@@ -25,10 +25,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Relation::enforceMorphMap([
-            'service'            => Service::class,
-            'news_article'       => NewsArticle::class,
+            'service' => Service::class,
+            'news_article' => NewsArticle::class,
             'community_category' => CommunityCategory::class,
-            'community_post'     => CommunityPost::class,
+            'community_post' => CommunityPost::class,
 
             /*
              * نضيف الموديلات لاحقًا بعد إنشائها فعليًا.

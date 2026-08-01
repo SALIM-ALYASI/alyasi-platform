@@ -25,7 +25,7 @@ class CommunityCategory extends Model
      */
     protected $casts = [
         'sort_order' => 'integer',
-        'is_active'  => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**

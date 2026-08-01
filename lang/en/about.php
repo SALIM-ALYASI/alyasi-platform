@@ -14,13 +14,13 @@ return [
 
     'story_title' => 'How We Started',
 
-    'story_body' => "ALYASI started from a simple idea: technology should be a real growth tool for individuals and businesses, not just an isolated technical service. We combined web and app development expertise with a focus on the latest AI technologies to build a platform that delivers real value to our clients and tech community.",
+    'story_body' => 'ALYASI started from a simple idea: technology should be a real growth tool for individuals and businesses, not just an isolated technical service. We combined web and app development expertise with a focus on the latest AI technologies to build a platform that delivers real value to our clients and tech community.',
 
     'mission_badge' => 'Our Mission',
 
     'mission_title' => 'Helping You Go Digital With Confidence',
 
-    'mission_body' => "We strive to deliver high-quality digital solutions, built on solid technical foundations and user-focused design, while continuously keeping up with the latest technologies to keep our clients ahead.",
+    'mission_body' => 'We strive to deliver high-quality digital solutions, built on solid technical foundations and user-focused design, while continuously keeping up with the latest technologies to keep our clients ahead.',
 
     'values_badge' => 'Our Values',
 

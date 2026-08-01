@@ -1,0 +1,12 @@
+/* ==========================================================================
+   ALYASI Admin - Settings Page
+   ========================================================================== */
+
+.settings-toggle-button {
+    margin-top: 4px;
+}
+
+.settings-toggle-button--danger {
+    background: linear-gradient(135deg, var(--admin-danger), #7a2323);
+    color: #fff;
+}

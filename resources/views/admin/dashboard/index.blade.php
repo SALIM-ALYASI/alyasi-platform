@@ -180,6 +180,35 @@
 
         </article>
 
+        {{-- الزيارات --}}
+        <article class="stat-card">
+
+            <div class="stat-card-header">
+
+                <span class="stat-card-icon stat-card-icon-primary">
+                    <i class="fa-solid fa-eye"></i>
+                </span>
+
+                <span class="stat-card-label">
+                    الزيارات
+                </span>
+
+            </div>
+
+            <div class="stat-card-content">
+
+                <strong>
+                    {{ number_format($visitsCount ?? 0) }}
+                </strong>
+
+                <span>
+                    {{ number_format($visitsTodayCount ?? 0) }} زيارة اليوم
+                </span>
+
+            </div>
+
+        </article>
+
     </section>
 
     <section class="dashboard-grid">
@@ -285,7 +314,7 @@
 
                 {{-- إعدادات المنصة --}}
                 <a
-                    href="#"
+                    href="{{ route('admin.settings.index') }}"
                     class="quick-action-card"
                 >
 
@@ -528,6 +557,78 @@
             </div>
 
         </article>
+
+    </section>
+
+    {{-- أهم الدول --}}
+    <section class="dashboard-panel" style="margin-top: 24px;">
+
+        <header class="dashboard-panel-header">
+
+            <div>
+
+                <h3>
+                    أهم الدول زيارة
+                </h3>
+
+                <p>
+                    توزيع الزيارات حسب بلد الزائر (يُحدَّد تلقائيًا).
+                </p>
+
+            </div>
+
+        </header>
+
+        @if ($topCountries->isEmpty())
+
+            <p style="color: var(--admin-muted); font-size: 13px; margin: 0;">
+                لا توجد بيانات كافية بعد.
+            </p>
+
+        @else
+
+            <div class="platform-status-list">
+
+                @foreach ($topCountries as $country)
+
+                    @php
+                        $flag = '';
+
+                        if ($country->country_code) {
+                            $flag = mb_convert_encoding(
+                                '&#' . (127397 + ord($country->country_code[0])) . ';'
+                                . '&#' . (127397 + ord($country->country_code[1])) . ';',
+                                'UTF-8',
+                                'HTML-ENTITIES'
+                            );
+                        }
+                    @endphp
+
+                    <div class="platform-status-item">
+
+                        <div class="platform-status-info">
+
+                            <span class="platform-status-dot is-success"></span>
+
+                            <div>
+                                <strong>
+                                    {{ $flag }} {{ $country->country_name }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <span class="platform-status-badge is-success">
+                            {{ number_format($country->visits_count) }} زيارة
+                        </span>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        @endif
 
     </section>
 

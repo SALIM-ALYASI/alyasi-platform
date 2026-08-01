@@ -337,6 +337,15 @@
 
                         </div>
 
+                        <div style="text-align: left; margin-bottom: 4px;">
+                            <a
+                                href="{{ route('admin.password.request') }}"
+                                style="color: var(--primary); font-weight: 700; font-size: 13px; text-decoration: none;"
+                            >
+                                نسيت كلمة المرور؟
+                            </a>
+                        </div>
+
                         <button
                             type="submit"
                             class="submit-button"

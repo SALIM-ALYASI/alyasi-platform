@@ -43,4 +43,31 @@ class PageController extends Controller
     {
         return view('legal.terms');
     }
+
+    /**
+     * صفحة Markify المستقلة (تصميم وهوية بصرية خاصة بالحساب).
+     *
+     * توزَّع صور المعرض المحلية عشوائيًا في كل زيارة على أماكن الصفحة
+     * الأربعة، من بين 10 صور حقيقية من حساب @markifyprints. الصور محفوظة
+     * محليًا (لا تعتمد على تحميل سكربتات خارجية) لضمان ظهورها دائمًا لكل
+     * الزوار بلا استثناء.
+     */
+    public function markify(): View
+    {
+        $featureImages = collect(range(1, 10))
+            ->map(fn (int $index): string => sprintf('post-%02d.jpg', $index))
+            ->shuffle()
+            ->take(4)
+            ->values();
+
+        return view('markify', compact('featureImages'));
+    }
+
+    /**
+     * صفحة مغسلة الياسي المستقلة (بألوان وخطوط ALYASI الفعلية).
+     */
+    public function carWash(): View
+    {
+        return view('car-wash');
+    }
 }

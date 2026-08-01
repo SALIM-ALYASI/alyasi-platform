@@ -369,68 +369,47 @@ class CommunityPostController extends Controller
                 ],
             ],
             [
-                'community_category_id.exists' =>
-                    'التصنيف المحدد غير موجود.',
+                'community_category_id.exists' => 'التصنيف المحدد غير موجود.',
 
-                'title.required' =>
-                    'عنوان المنشور مطلوب.',
+                'title.required' => 'عنوان المنشور مطلوب.',
 
-                'title.max' =>
-                    'عنوان المنشور يجب ألا يتجاوز 255 حرفًا.',
+                'title.max' => 'عنوان المنشور يجب ألا يتجاوز 255 حرفًا.',
 
-                'slug.unique' =>
-                    'الرابط المختصر مستخدم في منشور آخر.',
+                'slug.unique' => 'الرابط المختصر مستخدم في منشور آخر.',
 
-                'slug.max' =>
-                    'الرابط المختصر يجب ألا يتجاوز 255 حرفًا.',
+                'slug.max' => 'الرابط المختصر يجب ألا يتجاوز 255 حرفًا.',
 
-                'short_description.max' =>
-                    'الوصف المختصر يجب ألا يتجاوز 500 حرف.',
+                'short_description.max' => 'الوصف المختصر يجب ألا يتجاوز 500 حرف.',
 
-                'content.required' =>
-                    'محتوى المنشور مطلوب.',
+                'content.required' => 'محتوى المنشور مطلوب.',
 
-                'content.min' =>
-                    'محتوى المنشور يجب ألا يقل عن 10 أحرف.',
+                'content.min' => 'محتوى المنشور يجب ألا يقل عن 10 أحرف.',
 
-                'type.required' =>
-                    'نوع المنشور مطلوب.',
+                'type.required' => 'نوع المنشور مطلوب.',
 
-                'type.in' =>
-                    'نوع المنشور المحدد غير صحيح.',
+                'type.in' => 'نوع المنشور المحدد غير صحيح.',
 
-                'image.image' =>
-                    'الملف المحدد يجب أن يكون صورة.',
+                'image.image' => 'الملف المحدد يجب أن يكون صورة.',
 
-                'image.mimes' =>
-                    'صيغة الصورة يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
+                'image.mimes' => 'صيغة الصورة يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
 
-                'image.max' =>
-                    'حجم الصورة يجب ألا يتجاوز 4 ميجابايت.',
+                'image.max' => 'حجم الصورة يجب ألا يتجاوز 4 ميجابايت.',
 
-                'published_at.date' =>
-                    'تاريخ النشر غير صحيح.',
+                'published_at.date' => 'تاريخ النشر غير صحيح.',
 
-                'event_start_at.required_if' =>
-                    'تاريخ بداية الفعالية مطلوب عند اختيار نوع فعالية.',
+                'event_start_at.required_if' => 'تاريخ بداية الفعالية مطلوب عند اختيار نوع فعالية.',
 
-                'event_start_at.date' =>
-                    'تاريخ بداية الفعالية غير صحيح.',
+                'event_start_at.date' => 'تاريخ بداية الفعالية غير صحيح.',
 
-                'event_end_at.date' =>
-                    'تاريخ نهاية الفعالية غير صحيح.',
+                'event_end_at.date' => 'تاريخ نهاية الفعالية غير صحيح.',
 
-                'event_end_at.after_or_equal' =>
-                    'تاريخ نهاية الفعالية يجب أن يكون بعد تاريخ البداية أو مساويًا له.',
+                'event_end_at.after_or_equal' => 'تاريخ نهاية الفعالية يجب أن يكون بعد تاريخ البداية أو مساويًا له.',
 
-                'location.max' =>
-                    'اسم الموقع يجب ألا يتجاوز 255 حرفًا.',
+                'location.max' => 'اسم الموقع يجب ألا يتجاوز 255 حرفًا.',
 
-                'registration_url.url' =>
-                    'رابط التسجيل غير صحيح.',
+                'registration_url.url' => 'رابط التسجيل غير صحيح.',
 
-                'registration_url.max' =>
-                    'رابط التسجيل طويل جدًا.',
+                'registration_url.max' => 'رابط التسجيل طويل جدًا.',
             ]
         );
     }
@@ -446,8 +425,7 @@ class CommunityPostController extends Controller
         $title = trim($validated['title']);
 
         $data = [
-            'community_category_id' =>
-                $validated['community_category_id'] ?? null,
+            'community_category_id' => $validated['community_category_id'] ?? null,
 
             'title' => $title,
 
@@ -471,14 +449,11 @@ class CommunityPostController extends Controller
 
             'type' => $validated['type'],
 
-            'published_at' =>
-                $validated['published_at'] ?? null,
+            'published_at' => $validated['published_at'] ?? null,
 
-            'is_featured' =>
-                $request->boolean('is_featured'),
+            'is_featured' => $request->boolean('is_featured'),
 
-            'is_active' =>
-                $request->boolean('is_active'),
+            'is_active' => $request->boolean('is_active'),
         ];
 
         /*
@@ -527,7 +502,7 @@ class CommunityPostController extends Controller
         $baseSlug = $this->formatSlug($value);
 
         if ($baseSlug === '') {
-            $baseSlug = 'community-' . Str::lower(
+            $baseSlug = 'community-'.Str::lower(
                 Str::random(8)
             );
         }

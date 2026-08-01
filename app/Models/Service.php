@@ -138,10 +138,11 @@ class Service extends Model
 
         return $this->description_ar;
     }
-     public function works(): HasMany
-{
-    return $this->hasMany(Work::class)
-        ->orderBy('sort_order')
-        ->latest('id');
-}
+
+    public function works(): HasMany
+    {
+        return $this->hasMany(Work::class)
+            ->orderBy('sort_order')
+            ->latest('id');
+    }
 }

@@ -8,7 +8,7 @@ return [
 
     'hero_title' => "Let's Talk About Your Next Project",
 
-    'hero_description' => "Whether you have a question, a project idea, or need technical advice, the ALYASI team is ready to connect with you through the channel that suits you best.",
+    'hero_description' => 'Whether you have a question, a project idea, or need technical advice, the ALYASI team is ready to connect with you through the channel that suits you best.',
 
     'channels_badge' => 'Contact Channels',
 

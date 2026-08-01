@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\AdminResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,16 +45,24 @@ class Admin extends Authenticatable
     }
 
     /**
+     * إرسال إشعار إعادة تعيين كلمة المرور بالرابط الخاص بلوحة تحكم المدير.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new AdminResetPassword($token));
+    }
+
+    /**
      * Return the admin avatar URL.
      */
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         return 'https://ui-avatars.com/api/?name='
-            . urlencode($this->name)
-            . '&background=5E2324&color=F5DEB3';
+            .urlencode($this->name)
+            .'&background=5E2324&color=F5DEB3';
     }
 }

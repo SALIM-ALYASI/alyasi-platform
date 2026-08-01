@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class VoiceStudioController extends Controller
 {
@@ -78,15 +79,29 @@ class VoiceStudioController extends Controller
         if (! $response->successful()) {
             return back()
                 ->withInput()
-                ->with('error', 'فشل توليد الصوت: ' . $response->status());
+                ->with('error', 'فشل توليد الصوت: '.$response->status());
         }
 
-        $filename = 'voice-studio/' . now()->format('Ymd_His') . '_' . Str::random(6) . '.wav';
+        $filename = 'voice-studio/'.now()->format('Ymd_His').'_'.Str::random(6).'.wav';
         Storage::disk('public')->put($filename, $response->body());
 
         return redirect()
             ->route('admin.voice-studio.index')
             ->with('success', 'تم توليد الصوت بنجاح.');
+    }
+
+    /**
+     * تنزيل مقطع صوتي بإجبار المتصفح على الحفظ (بعض المتصفحات مثل Safari
+     * تتجاهل خاصية download في وسم <a> وتفتح ملفات الصوت مباشرة بدلًا من تنزيلها).
+     */
+    public function download(string $filename): StreamedResponse
+    {
+        $safeName = basename($filename);
+        $path = "voice-studio/{$safeName}";
+
+        abort_unless(Storage::disk('public')->exists($path), 404);
+
+        return Storage::disk('public')->download($path);
     }
 
     /**

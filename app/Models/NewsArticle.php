@@ -15,8 +15,11 @@ class NewsArticle extends Model
     use SoftDeletes;
 
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_SCHEDULED = 'scheduled';
+
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_ARCHIVED = 'archived';
 
     protected $fillable = [
@@ -187,4 +190,3 @@ class NewsArticle extends Model
             : null;
     }
 }
-

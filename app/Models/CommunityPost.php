@@ -35,13 +35,13 @@ class CommunityPost extends Model
      */
     protected $casts = [
         'event_start_at' => 'datetime',
-        'event_end_at'   => 'datetime',
-        'published_at'   => 'datetime',
+        'event_end_at' => 'datetime',
+        'published_at' => 'datetime',
 
-        'sort_order'  => 'integer',
+        'sort_order' => 'integer',
 
         'is_featured' => 'boolean',
-        'is_active'   => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**

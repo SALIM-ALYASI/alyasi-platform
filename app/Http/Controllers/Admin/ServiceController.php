@@ -174,14 +174,14 @@ class ServiceController extends Controller
 
         $extension = strtolower($image->getClientOriginalExtension());
         $fileName = now()->format('YmdHis')
-            . '-'
-            . Str::lower(Str::random(16))
-            . '.'
-            . $extension;
+            .'-'
+            .Str::lower(Str::random(16))
+            .'.'
+            .$extension;
 
         $image->move($directory, $fileName);
 
-        return 'uploads/services/' . $fileName;
+        return 'uploads/services/'.$fileName;
     }
 
     private function ensureServicePermalinksExist(Service $service): void
@@ -226,7 +226,7 @@ class ServiceController extends Controller
         $baseSlug = $this->formatSlug($title, $locale);
 
         if ($baseSlug === '') {
-            $baseSlug = 'service-' . Str::lower(Str::random(8));
+            $baseSlug = 'service-'.Str::lower(Str::random(8));
         }
 
         $slug = $baseSlug;

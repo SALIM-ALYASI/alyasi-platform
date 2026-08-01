@@ -126,7 +126,7 @@
 
                 <div class="account-dropdown-links">
 
-                    <a href="#">
+                    <a href="{{ route('admin.settings.index') }}#profile">
                         <i class="fa-regular fa-user"></i>
 
                         <span>
@@ -134,7 +134,7 @@
                         </span>
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('admin.settings.index') }}#password">
                         <i class="fa-solid fa-gear"></i>
 
                         <span>

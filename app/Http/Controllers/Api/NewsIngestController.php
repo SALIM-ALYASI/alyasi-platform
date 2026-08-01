@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 
 class NewsIngestController extends Controller
 {
@@ -43,8 +44,8 @@ class NewsIngestController extends Controller
                 'title_en' => $validated['title_en'],
                 'excerpt_ar' => $this->makeExcerpt($validated['content_ar'] ?? null),
                 'excerpt_en' => $this->makeExcerpt($validated['content_en'] ?? null),
-                'content_ar' => $validated['content_ar'] ?? null,
-                'content_en' => $validated['content_en'] ?? null,
+                'content_ar' => $this->sanitizeContent($validated['content_ar'] ?? null),
+                'content_en' => $this->sanitizeContent($validated['content_en'] ?? null),
                 'image' => $validated['image'] ?? null,
                 'source_name' => $validated['source'] ?? 'TechCrunch',
                 'source_url' => $validated['link'],
@@ -81,6 +82,19 @@ class NewsIngestController extends Controller
         }
 
         return Str::limit(strip_tags($content), 200);
+    }
+
+    /**
+     * تعقيم محتوى الخبر القادم من مصدر خارجي (بوت الأخبار) لمنع
+     * حقن سكربتات أو HTML خطر قبل تخزينه وعرضه لاحقًا بدون escaping.
+     */
+    private function sanitizeContent(?string $content): ?string
+    {
+        if (blank($content)) {
+            return null;
+        }
+
+        return Purifier::clean($content);
     }
 
     /**

@@ -229,7 +229,7 @@ class NewsDemoSeeder extends Seeder
             ->where('locale', $locale)
             ->first();
 
-        $permalink ??= new Permalink();
+        $permalink ??= new Permalink;
 
         $permalink->linkable_type = 'news_article';
         $permalink->linkable_id = $article->id;

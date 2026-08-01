@@ -138,8 +138,7 @@
                     <audio controls src="{{ $item['url'] }}" style="flex:1; min-width:240px;"></audio>
 
                     <a
-                        href="{{ $item['url'] }}"
-                        download
+                        href="{{ route('admin.voice-studio.download', $item['name']) }}"
                         class="admin-action-button"
                         title="تنزيل"
                         aria-label="تنزيل المقطع"

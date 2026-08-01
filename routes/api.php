@@ -10,5 +10,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('news', [NewsIngestController::class, 'store'])
-    ->middleware('news-bot.auth')
+    ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.store');
