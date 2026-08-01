@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منزل محمد بن سالم الحجري (راعي صويط)</title>
+    <title>منزل محمد بن سالم الحجري (راعي سويط)</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#180B0F">
     <link rel="icon" type="image/png" href="{{ asset('images/ra3i-swait/home.webp') }}">
@@ -343,7 +343,7 @@
             منزل محمد بن سالم الحجري
             <span class="sub">
                 <span class="line"></span>
-                (راعي صويط)
+                (راعي سويط)
                 <span class="line reverse"></span>
             </span>
         </p>
