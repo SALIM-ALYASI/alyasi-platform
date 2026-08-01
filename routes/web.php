@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CommunityPostController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
+use App\Http\Controllers\Admin\MarketerController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -372,6 +373,32 @@ Route::prefix('admin')
                 Route::resource(
                     'faqs',
                     FaqController::class
+                )->except('show');
+
+                /*
+                |----------------------------------------------------------
+                | Marketers (Referral Program)
+                |----------------------------------------------------------
+                */
+
+                Route::patch(
+                    'marketers/{marketer}/toggle-status',
+                    [MarketerController::class, 'toggleStatus']
+                )->name('marketers.toggle-status');
+
+                Route::post(
+                    'marketers/{marketer}/customers',
+                    [MarketerController::class, 'storeCustomer']
+                )->name('marketers.customers.store');
+
+                Route::delete(
+                    'marketers/{marketer}/customers/{customer}',
+                    [MarketerController::class, 'destroyCustomer']
+                )->name('marketers.customers.destroy');
+
+                Route::resource(
+                    'marketers',
+                    MarketerController::class
                 )->except('show');
 
                 /*

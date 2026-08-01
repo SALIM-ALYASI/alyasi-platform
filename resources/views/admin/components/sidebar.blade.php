@@ -200,6 +200,23 @@
                     </span>
                 </a>
 
+                {{-- المسوّقون --}}
+                <a
+                    href="{{ route('admin.marketers.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.marketers.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-bullhorn"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.marketers') }}
+                    </span>
+                </a>
+
                 {{-- استوديو الصوت --}}
                 <a
                     href="{{ route('admin.voice-studio.index') }}"

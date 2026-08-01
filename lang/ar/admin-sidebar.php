@@ -32,6 +32,7 @@ return [
     'works' => 'الأعمال',
     'technologies' => 'التقنيات',
     'faqs' => 'الأسئلة الشائعة',
+    'marketers' => 'المسوّقون',
     'voice_studio' => 'استوديو الصوت',
 
 ];

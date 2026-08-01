@@ -32,6 +32,7 @@ return [
     'works' => 'Works',
     'technologies' => 'Technologies',
     'faqs' => 'FAQs',
+    'marketers' => 'Marketers',
     'voice_studio' => 'Voice Studio',
 
 ];
