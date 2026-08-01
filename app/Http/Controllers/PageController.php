@@ -70,4 +70,12 @@ class PageController extends Controller
     {
         return view('car-wash');
     }
+
+    /**
+     * صفحة منزل محمد بن سالم الحجري (راعي صويط) المستقلة.
+     */
+    public function ra3iSwait(): View
+    {
+        return view('ra3i-swait');
+    }
 }

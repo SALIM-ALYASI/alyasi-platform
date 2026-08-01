@@ -164,7 +164,7 @@
                     value="{{ $service->id }}"
                     @selected((string) old('service_id', $work?->service_id) === (string) $service->id)
                 >
-                    {{ $service->title }}
+                    {{ $service->title_ar }}
                 </option>
 
             @endforeach
