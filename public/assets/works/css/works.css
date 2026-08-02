@@ -1131,39 +1131,21 @@ html[dir="ltr"] .public-work-card:hover .public-work-card__link {
 
 .works-cta-card {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 42px;
-    padding: clamp(42px, 6vw, 66px);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 48px;
     overflow: hidden;
+    text-align: center;
     border: 1px solid var(--works-gold-border-strong);
-    border-radius: 30px;
+    border-radius: 36px;
     background:
         radial-gradient(
-            circle at 90% 20%,
-            rgba(241, 213, 154, 0.13),
-            transparent 36%
-        ),
-        radial-gradient(
-            circle at 15% 0%,
-            rgba(147, 75, 83, 0.2),
-            transparent 35%
+            circle at 50% 0%,
+            rgba(241, 213, 154, 0.10),
+            transparent 48%
         ),
         var(--works-panel);
     box-shadow: var(--works-shadow);
-}
-
-.works-cta-card::before {
-    position: absolute;
-    top: -140px;
-    inset-inline-start: -90px;
-    width: 280px;
-    height: 280px;
-    border: 1px solid rgba(241, 213, 154, 0.15);
-    border-radius: 50%;
-    content: "";
-    pointer-events: none;
 }
 
 .works-cta-card__content,
@@ -1173,13 +1155,14 @@ html[dir="ltr"] .public-work-card:hover .public-work-card__link {
 }
 
 .works-cta-card__content {
-    max-width: 700px;
+    max-width: 640px;
+    margin: 0 auto;
 }
 
 .works-cta-card h2 {
     margin: 0;
     color: var(--works-white);
-    font-size: clamp(2rem, 4.4vw, 3.5rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 500;
     line-height: 1.3;
     text-wrap: balance;
@@ -1190,17 +1173,18 @@ html[dir="ltr"] .public-work-card:hover .public-work-card__link {
 }
 
 .works-cta-card p {
-    margin: 18px 0 0;
+    margin: 18px auto 0;
     color: var(--works-gold-light);
     font-weight: 300;
     line-height: 1.95;
 }
 
 .works-cta-card__actions {
-    min-width: 195px;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 36px;
 }
 
 /* ==========================================================================
@@ -1262,10 +1246,13 @@ html[dir="rtl"] .works-section-tag {
         padding-inline: 18px;
     }
 
-    .works-section-heading,
-    .works-cta-card {
+    .works-section-heading {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .works-cta-card {
+        padding: clamp(42px, 6vw, 66px) 32px;
     }
 
     .works-cta-card__actions {
@@ -1364,6 +1351,7 @@ html[dir="rtl"] .works-section-tag {
     }
 
     .works-cta-card__actions .works-button {
+        flex: none;
         width: 100%;
     }
 }

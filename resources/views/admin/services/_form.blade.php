@@ -137,7 +137,7 @@
         @if(!empty($service?->image))
             <div style="margin-top:15px;">
                 <img
-                    src="{{ asset('storage/' . $service->image) }}"
+                    src="{{ asset($service->image) }}"
                     alt="{{ $service->title_ar }}"
                     style="max-width:220px;max-height:180px;object-fit:cover;border-radius:12px;"
                 >

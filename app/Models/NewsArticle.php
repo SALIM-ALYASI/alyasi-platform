@@ -150,6 +150,43 @@ class NewsArticle extends Model
             ?: $this->excerpt;
     }
 
+    /**
+     * اسم المؤلف بعد تنظيفه من التصاق الأسماء ببعضها.
+     *
+     * بعض مصادر الأخبار الخارجية ترسل أسماء عدة مؤلفين ملتصقة بلا فواصل
+     * (مثال: "Anthony HaJagmeet SinghLauren Forristal"). نكتشف هذا الالتصاق
+     * (حرف صغير يتبعه مباشرة حرف كبير) ونفصل الأسماء عند كل حدين متتاليين
+     * (اسم أول + اسم أخير)، ثم نحذف التكرار ونربطها بفاصلة عربية.
+     */
+    public function getFormattedAuthorNameAttribute(): ?string
+    {
+        $raw = trim((string) $this->author_name);
+
+        if ($raw === '') {
+            return null;
+        }
+
+        if (! preg_match('/\p{Ll}\p{Lu}/u', $raw)) {
+            return $raw;
+        }
+
+        $words = preg_split('/(?<=\p{Ll})(?=\p{Lu})|\s+/u', $raw, -1, PREG_SPLIT_NO_EMPTY);
+
+        if (! $words) {
+            return $raw;
+        }
+
+        $names = [];
+
+        for ($i = 0; $i < count($words); $i += 2) {
+            $names[] = isset($words[$i + 1])
+                ? $words[$i].' '.$words[$i + 1]
+                : $words[$i];
+        }
+
+        return implode('، ', array_values(array_unique($names)));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Helpers

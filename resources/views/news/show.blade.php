@@ -314,11 +314,11 @@
                             </span>
                         @endif
 
-                        @if (filled($article->author_name))
+                        @if (filled($article->formatted_author_name))
                             <span class="news-article-meta-item">
                                 <i class="fa-regular fa-user"></i>
 
-                                {{ $article->author_name }}
+                                {{ $article->formatted_author_name }}
                             </span>
                         @endif
 
@@ -584,7 +584,7 @@
 
                     {{-- معلومات الكاتب --}}
 
-                    @if (filled($article->author_name))
+                    @if (filled($article->formatted_author_name))
                         <div class="news-article-sidebar-card">
 
                             <span class="news-article-sidebar-eyebrow">
@@ -599,7 +599,7 @@
 
                                 <div>
                                     <strong>
-                                        {{ $article->author_name }}
+                                        {{ $article->formatted_author_name }}
                                     </strong>
 
                                     <span>

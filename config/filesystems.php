@@ -40,7 +40,13 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            /*
+             * يكتب مباشرة داخل public/storage كمجلد حقيقي بدل الاعتماد على
+             * رابط رمزي (symlink) عبر أمر storage:link — الاستضافات
+             * المشتركة العادية غالبًا لا تدعم إنشاء الروابط الرمزية أو
+             * تفقدها بعد كل نشر، فتختفي الصور المرفوعة رغم نجاح الحفظ.
+             */
+            'root' => public_path('storage'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,

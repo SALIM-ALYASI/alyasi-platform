@@ -1230,7 +1230,7 @@ html[dir="ltr"] .faq-item summary {
   top: 50%;
   transform: translateY(-50%);
   color: var(--gold);
-  font-size: 1.45rem;
+  font-size: 1.1rem;
   font-weight: 300;
   line-height: 1;
 }
