@@ -44,4 +44,10 @@ return [
         'key' => env('SOUNDINK_API_KEY'),
     ],
 
+    'publish' => [
+        'url' => env('PUBLISH_API_URL', 'http://167.233.163.230:6062'),
+        'key' => env('PUBLISH_API_KEY'),
+        'webhook_token' => env('PUBLISH_WEBHOOK_TOKEN'),
+    ],
+
 ];

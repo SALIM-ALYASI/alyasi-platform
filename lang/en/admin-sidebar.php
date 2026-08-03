@@ -34,6 +34,7 @@ return [
     'faqs' => 'FAQs',
     'marketers' => 'Marketers',
     'voice_studio' => 'Voice Studio',
+    'publish' => 'Smart Publish',
     'server_info' => 'Server Info',
 
 ];

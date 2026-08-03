@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\TechnologyController;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Admin\PublishController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\CommunityController;
@@ -431,6 +432,22 @@ Route::prefix('admin')
                     'voice-studio/download/{filename}',
                     [VoiceStudioController::class, 'download']
                 )->name('voice-studio.download');
+
+                /*
+                |----------------------------------------------------------
+                | النشر الذكي (Publish API)
+                |----------------------------------------------------------
+                */
+
+                Route::get(
+                    'publish',
+                    [PublishController::class, 'index']
+                )->name('publish.index');
+
+                Route::post(
+                    'publish',
+                    [PublishController::class, 'store']
+                )->name('publish.store');
 
                 /*
                 |----------------------------------------------------------

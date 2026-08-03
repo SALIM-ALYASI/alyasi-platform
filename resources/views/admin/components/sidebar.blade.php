@@ -234,6 +234,23 @@
                     </span>
                 </a>
 
+                {{-- النشر الذكي --}}
+                <a
+                    href="{{ route('admin.publish.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.publish.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-paper-plane"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.publish') }}
+                    </span>
+                </a>
+
             </nav>
 
         </div>

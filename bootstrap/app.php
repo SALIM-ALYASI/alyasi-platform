@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AuthenticateNewsBot;
+use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.auth' => AdminAuthenticate::class,
             'news-bot.auth' => AuthenticateNewsBot::class,
+            'publish-webhook.auth' => AuthenticatePublishWebhook::class,
         ]);
 
         $middleware->web(append: [
