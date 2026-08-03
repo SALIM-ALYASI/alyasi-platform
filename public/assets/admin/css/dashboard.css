@@ -1461,3 +1461,22 @@ input[type="checkbox"] {
     }
 
 }
+
+/**
+ * Loading spinner shown on submit buttons across all save/edit forms
+ * (driven by dashboard.js) so admins get clear feedback while a request
+ * is in flight, regardless of the page/label.
+ */
+@keyframes admin-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.admin-spinner {
+    animation: admin-spin 0.8s linear infinite;
+}
+
+button[type="submit"].is-submitting {
+    opacity: 0.75;
+    cursor: not-allowed;
+}

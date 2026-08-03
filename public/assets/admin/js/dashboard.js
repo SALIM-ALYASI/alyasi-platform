@@ -207,4 +207,29 @@ document.addEventListener('DOMContentLoaded', () => {
             closeSidebar();
         }
     });
+
+    /**
+     * Loading spinner on form submit (save/edit/create pages), site-wide.
+     * Disables the submit button and swaps its icon for a spinning circle
+     * so the admin gets clear feedback while the request is in flight.
+     * Opt out per-form with data-no-spinner on the <form> element.
+     */
+    document.querySelectorAll('form:not([data-no-spinner])').forEach((form) => {
+        form.addEventListener('submit', () => {
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            if (! submitButton || submitButton.disabled) {
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.classList.add('is-submitting');
+
+            const icon = submitButton.querySelector('i');
+
+            if (icon) {
+                icon.className = 'fa-solid fa-circle-notch admin-spinner';
+            }
+        });
+    });
 });

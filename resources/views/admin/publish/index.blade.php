@@ -18,6 +18,7 @@
 <section class="dashboard-panel">
 
     <form
+        id="publish-form"
         action="{{ route('admin.publish.store') }}"
         method="POST"
         enctype="multipart/form-data"
@@ -94,10 +95,11 @@
         <div class="form-actions">
             <button
                 type="submit"
+                id="publish-submit-btn"
                 class="dashboard-button dashboard-button-primary"
             >
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>انشر الآن</span>
+                <i class="fa-solid fa-paper-plane" id="publish-submit-icon"></i>
+                <span id="publish-submit-text">انشر الآن</span>
             </button>
         </div>
 
