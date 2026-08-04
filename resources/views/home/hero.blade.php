@@ -60,10 +60,10 @@
             <div class="metric-value">
                 <span
                     class="counter"
-                    data-target="3"
+                    data-target="4"
                     data-decimals="0"
                 >
-                    3
+                    4
                 </span>
             </div>
 

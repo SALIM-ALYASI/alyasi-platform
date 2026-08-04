@@ -149,6 +149,7 @@
 
                             @foreach ([
                                 'instagram' => ['label' => 'إنستغرام', 'icon' => 'fa-brands fa-instagram'],
+                                'telegram' => ['label' => 'تلجرام', 'icon' => 'fa-brands fa-telegram'],
                                 'linkedin' => ['label' => 'لينكدإن', 'icon' => 'fa-brands fa-linkedin'],
                                 'youtube' => ['label' => 'يوتيوب', 'icon' => 'fa-brands fa-youtube'],
                                 'tiktok' => ['label' => 'تيك توك', 'icon' => 'fa-brands fa-tiktok'],

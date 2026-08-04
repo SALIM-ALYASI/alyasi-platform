@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\NewsIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,19 @@ Route::post('news', [NewsIngestController::class, 'store'])
 Route::post('publish-webhook', [PublishWebhookController::class, 'update'])
     ->middleware(['publish-webhook.auth', 'throttle:60,1'])
     ->name('api.publish-webhook.update');
+
+/*
+|--------------------------------------------------------------------------
+| WhatsApp Cloud API Webhook
+|--------------------------------------------------------------------------
+*/
+
+Route::get('whatsapp-webhook', [WhatsAppWebhookController::class, 'verify'])
+    ->name('api.whatsapp-webhook.verify');
+
+Route::post('whatsapp-webhook', [WhatsAppWebhookController::class, 'receive'])
+    ->middleware('throttle:60,1')
+    ->name('api.whatsapp-webhook.receive');
 
 /*
 |--------------------------------------------------------------------------

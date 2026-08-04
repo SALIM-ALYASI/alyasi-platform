@@ -16,7 +16,7 @@ class PublishWebhookController extends Controller
     {
         $validated = $request->validate([
             'job_id' => ['required', 'string'],
-            'platform' => ['required', 'string', 'in:instagram,linkedin,youtube,tiktok'],
+            'platform' => ['required', 'string', 'in:instagram,linkedin,youtube,tiktok,telegram'],
             'status' => ['required', 'string', 'in:publishing,done,failed'],
             'result' => ['nullable', 'array'],
             'error' => ['nullable', 'string'],

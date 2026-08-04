@@ -50,4 +50,10 @@ return [
         'webhook_token' => env('PUBLISH_WEBHOOK_TOKEN'),
     ],
 
+    'whatsapp_cloud' => [
+        'token' => env('WHATSAPP_CLOUD_TOKEN'),
+        'phone_number_id' => env('WHATSAPP_CLOUD_PHONE_NUMBER_ID'),
+        'webhook_verify_token' => env('WHATSAPP_CLOUD_WEBHOOK_VERIFY_TOKEN'),
+    ],
+
 ];
