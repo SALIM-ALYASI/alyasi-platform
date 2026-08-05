@@ -28,9 +28,13 @@ class EventIngestController extends Controller
             })
             ->orderBy('event_start_at')
             ->limit(min($request->integer('limit', 100), 200))
-            ->get(['title', 'registration_url', 'event_start_at'])
+            ->get(['id', 'title', 'short_description', 'location', 'image', 'registration_url', 'event_start_at'])
             ->map(fn (CommunityPost $post) => [
+                'id' => $post->id,
                 'title' => $post->title,
+                'description' => $post->short_description,
+                'location' => $post->location,
+                'image_url' => $post->image ? asset('storage/'.$post->image) : null,
                 'source_url' => $post->registration_url,
                 'event_start_at' => $post->event_start_at?->toIso8601String(),
             ]);
@@ -79,6 +83,7 @@ class EventIngestController extends Controller
             'event_end_at' => $validated['event_end_at'] ?? null,
             'registration_url' => $validated['registration_url'] ?? $validated['source_url'] ?? null,
             'is_active' => true,
+            'status' => 'published',
             'published_at' => $post->published_at ?? now(),
         ]);
 
