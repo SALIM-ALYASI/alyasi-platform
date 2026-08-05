@@ -644,9 +644,7 @@
     list-style: none;
 }
 
-.community-pagination__link,
-.community-pagination__current,
-.community-pagination__disabled {
+.community-pagination__item {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -668,20 +666,20 @@
         border-color 0.25s ease;
 }
 
-.community-pagination__link:hover {
+a.community-pagination__item:hover {
     transform: translateY(-2px);
     border-color: rgba(205, 163, 92, 0.45);
     background: rgba(205, 163, 92, 0.12);
     color: #fff;
 }
 
-.community-pagination__current {
+.community-pagination__item.active {
     border-color: var(--gold, #cda35c);
     background: var(--gold, #cda35c);
     color: #241011;
 }
 
-.community-pagination__disabled {
+.community-pagination__item.disabled {
     cursor: not-allowed;
     opacity: 0.38;
 }
