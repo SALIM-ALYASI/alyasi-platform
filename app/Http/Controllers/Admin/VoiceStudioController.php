@@ -40,40 +40,41 @@ class VoiceStudioController extends Controller
     }
 
     /**
-     * توليد مقطع صوتي من النص عبر SoundInk API.
+     * توليد مقطع صوتي من النص - عبر طابور narrate بالسيرفر، اللي يمرّره
+     * لجهاز محلي أقوى بدل تحميل SoundInk الضعيف على السيرفر (نفس آلية بوت
+     * الفيديو). أبطأ شوي بسبب طابور الانتظار، لكن أسرع بكثير من التوليد
+     * المباشر على معالج السيرفر (كان يوصل 3-6 أضعاف الوقت الحقيقي).
      */
     public function generate(Request $request): RedirectResponse
     {
-        // توليد الصوت (خصوصًا أول طلب يحمّل نموذج XTTS) قد يأخذ أكثر من
-        // الحد الافتراضي لتنفيذ PHP (30 ثانية)، فنرفعه لهذا الطلب تحديدًا.
+        // انتظار الطابور + التوليد الفعلي قد يأخذ دقيقة أو أكثر، فنرفع حد
+        // تنفيذ PHP الافتراضي (30 ثانية) لهذا الطلب تحديدًا.
         set_time_limit(200);
 
         $validated = $request->validate([
-            'text' => ['required', 'string', 'max:2000'],
+            'text' => ['required', 'string', 'max:1000'],
             'voice_id' => ['nullable', 'string'],
-            'speed' => ['nullable', 'numeric', 'min:0.8', 'max:1.3'],
         ], [
             'text.required' => 'يرجى كتابة النص المراد تحويله لصوت.',
-            'text.max' => 'النص يجب ألا يتجاوز 2000 حرف.',
+            'text.max' => 'النص يجب ألا يتجاوز 1000 حرف.',
         ]);
 
-        $baseUrl = rtrim((string) config('services.soundink.url'), '/');
-        $apiKey = config('services.soundink.key');
+        $baseUrl = rtrim((string) config('services.publish.url'), '/');
+        $apiKey = config('services.publish.key');
 
         try {
             $response = Http::withHeaders($this->authHeaders($apiKey))
                 ->timeout(180)
-                ->post("{$baseUrl}/api/v1/speak", [
+                ->post("{$baseUrl}/narrate", [
                     'text' => $validated['text'],
                     'voice_id' => $validated['voice_id'] ?? null,
-                    'speed' => $validated['speed'] ?? 1.0,
                 ]);
         } catch (\Throwable $e) {
-            Log::warning('SoundInk API unreachable', ['error' => $e->getMessage()]);
+            Log::warning('Narration bridge unreachable', ['error' => $e->getMessage()]);
 
             return back()
                 ->withInput()
-                ->with('error', 'تعذر الاتصال بخدمة توليد الصوت (SoundInk). تأكد من أنها شغّالة.');
+                ->with('error', 'تعذر الاتصال بخدمة توليد الصوت. تأكد من أن الجسر والجهاز المحلي شغّالين.');
         }
 
         if (! $response->successful()) {
