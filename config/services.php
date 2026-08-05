@@ -39,6 +39,10 @@ return [
         'token' => env('NEWS_BOT_TOKEN'),
     ],
 
+    'event_bot' => [
+        'token' => env('EVENT_BOT_TOKEN'),
+    ],
+
     'soundink' => [
         'url' => env('SOUNDINK_API_URL', 'http://127.0.0.1:5050'),
         'key' => env('SOUNDINK_API_KEY'),

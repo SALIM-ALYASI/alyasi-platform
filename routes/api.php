@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
@@ -15,6 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::post('news', [NewsIngestController::class, 'store'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.store');
+
+/*
+|--------------------------------------------------------------------------
+| Event Bot Ingest
+|--------------------------------------------------------------------------
+*/
+
+Route::post('community/events', [EventIngestController::class, 'store'])
+    ->middleware(['event-bot.auth', 'throttle:30,1'])
+    ->name('api.community.events.store');
+
+Route::get('community/events', [EventIngestController::class, 'index'])
+    ->middleware(['event-bot.auth', 'throttle:60,1'])
+    ->name('api.community.events.index');
 
 /*
 |--------------------------------------------------------------------------

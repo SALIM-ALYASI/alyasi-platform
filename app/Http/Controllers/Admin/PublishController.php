@@ -35,10 +35,14 @@ class PublishController extends Controller
             'text' => ['required', 'string', 'max:3000'],
             'image' => ['nullable', 'image', 'max:10240'],
             'video' => ['nullable', 'mimes:mp4,mov,quicktime', 'max:51200'],
+            'platforms' => ['required', 'array', 'min:1'],
+            'platforms.*' => ['in:instagram,linkedin,telegram'],
         ], [
             'text.required' => 'يرجى كتابة نص المنشور.',
             'image.image' => 'الملف المرفوع لازم يكون صورة.',
             'video.mimes' => 'الفيديو لازم يكون بصيغة mp4 أو mov.',
+            'platforms.required' => 'يرجى اختيار منصة واحدة على الأقل.',
+            'platforms.min' => 'يرجى اختيار منصة واحدة على الأقل.',
         ]);
 
         if (! $request->hasFile('image') && ! $request->hasFile('video')) {
@@ -50,6 +54,7 @@ class PublishController extends Controller
         $payload = [
             'text' => $validated['text'],
             'title' => $validated['title'] ?? null,
+            'platforms' => $validated['platforms'],
         ];
 
         if ($request->hasFile('image')) {

@@ -9,8 +9,8 @@
         <h2>النشر الذكي</h2>
 
         <p>
-            ارفع صورة أو فيديو مع نص، وينشر تلقائياً على إنستغرام ولينكدإن ويوتيوب وتيك توك،
-            كل منصة بتوقيت وأسلوب يناسب خوارزميتها.
+            ارفع صورة أو فيديو مع نص، واختر المنصات اللي تبي تنشر عليها -
+            كل منصة بتوقيت يناسب خوارزميتها.
         </p>
     </div>
 </section>
@@ -72,6 +72,36 @@
                 <p style="margin-top:6px; font-size:12px; color:var(--admin-muted);">
                     تُستخدم مباشرة لإنستغرام ولينكدإن، وتتحول تلقائياً لفيديو ليوتيوب وتيك توك.
                 </p>
+            </div>
+
+            <div class="form-group full">
+                <label>
+                    المنصات
+                    <span class="text-danger">*</span>
+                </label>
+
+                @php
+                    $platformOptions = [
+                        'instagram' => 'إنستغرام',
+                        'linkedin' => 'لينكدإن',
+                        'telegram' => 'تلجرام',
+                    ];
+                    $selectedPlatforms = old('platforms', array_keys($platformOptions));
+                @endphp
+
+                <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:6px;">
+                    @foreach ($platformOptions as $value => $label)
+                        <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
+                            <input
+                                type="checkbox"
+                                name="platforms[]"
+                                value="{{ $value }}"
+                                @checked(in_array($value, $selectedPlatforms))
+                            >
+                            {{ $label }}
+                        </label>
+                    @endforeach
+                </div>
             </div>
 
             <div class="form-group">

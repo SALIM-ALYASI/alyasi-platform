@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\AuthenticateEventBot;
 use App\Http\Middleware\AuthenticateNewsBot;
 use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.auth' => AdminAuthenticate::class,
             'news-bot.auth' => AuthenticateNewsBot::class,
+            'event-bot.auth' => AuthenticateEventBot::class,
             'publish-webhook.auth' => AuthenticatePublishWebhook::class,
         ]);
 
