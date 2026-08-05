@@ -206,7 +206,10 @@
 
                             </div>
 
-                            @if($communityPost->registration_url)
+                            {{-- مخفي مؤقتاً: بعض روابط التسجيل المُستخرجة تلقائياً (Gemini) طلعت غلط
+                                 (مثال: LEAP 2026 حطت رابط شركة غير مرتبطة). نعيد إظهاره بعد ما نلقى
+                                 حل للتحقق من صحة الرابط قبل النشر. --}}
+                            @if(false && $communityPost->registration_url)
                                 <a
                                     href="{{ $communityPost->registration_url }}"
                                     class="community-event-box__button"
