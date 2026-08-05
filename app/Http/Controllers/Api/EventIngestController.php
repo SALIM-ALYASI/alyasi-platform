@@ -63,14 +63,22 @@ class EventIngestController extends Controller
 
         $title = trim($validated['title']);
 
+        // نبحث عن فعالية موجودة أصلاً برابط مصدرها فقط أولاً. لو ولّدنا
+        // slug فريد جديد ومريناه بنفس شرط البحث (زي ما كان بالكود القديم)،
+        // فريدة الـslug نفسها تضمن عدم تطابقه مع أي سجل موجود، فتصير كل
+        // محاولة "تحديث" تنشئ نسخة مكررة بدل ما تحدّث الأصلية.
         $post = CommunityPost::query()
             ->when(
                 filled($validated['source_url'] ?? null),
                 fn ($query) => $query->where('registration_url', $validated['source_url'])
             )
-            ->firstOrNew([
+            ->first();
+
+        if (! $post) {
+            $post = new CommunityPost([
                 'slug' => $this->generateUniqueSlug($title),
             ]);
+        }
 
         $post->fill([
             'community_category_id' => $this->eventsCategoryId(),
