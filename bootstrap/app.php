@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AuthenticateEventBot;
+use App\Http\Middleware\AuthenticateManagerBot;
 use App\Http\Middleware\AuthenticateNewsBot;
 use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.auth' => AdminAuthenticate::class,
             'news-bot.auth' => AuthenticateNewsBot::class,
             'event-bot.auth' => AuthenticateEventBot::class,
+            'manager-bot.auth' => AuthenticateManagerBot::class,
             'publish-webhook.auth' => AuthenticatePublishWebhook::class,
         ]);
 

@@ -100,6 +100,40 @@ class EventIngestController extends Controller
     }
 
     /**
+     * تحديث صورة فعالية موجودة - يستخدمها بوت إدارة المنصة (تلجرام) لما
+     * يستقبل صورة مصمَّمة يدوياً بالرد على تنبيه فعالية معيّنة.
+     */
+    public function updateImage(Request $request, int $id): JsonResponse
+    {
+        $event = CommunityPost::query()
+            ->where('type', 'event')
+            ->findOrFail($id);
+
+        $validated = $request->validate([
+            'image_base64' => ['required', 'string'],
+        ]);
+
+        $newPath = $this->storeBase64Image($validated['image_base64']);
+
+        if (! $newPath) {
+            return response()->json([
+                'success' => false,
+                'message' => 'تعذّر حفظ الصورة.',
+            ], 422);
+        }
+
+        $oldImage = $event->image;
+
+        $event->update(['image' => $newPath]);
+
+        if (filled($oldImage) && Storage::disk('public')->exists($oldImage)) {
+            Storage::disk('public')->delete($oldImage);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * جلب معرّف تصنيف "الفعاليات" (يُنشئه لو ما كان موجوداً).
      */
     private function eventsCategoryId(): int

@@ -33,6 +33,17 @@ Route::get('community/events', [EventIngestController::class, 'index'])
 
 /*
 |--------------------------------------------------------------------------
+| Manager Bot (Telegram admin control)
+|--------------------------------------------------------------------------
+*/
+
+Route::post('community/events/{id}/image', [EventIngestController::class, 'updateImage'])
+    ->whereNumber('id')
+    ->middleware(['manager-bot.auth', 'throttle:30,1'])
+    ->name('api.community.events.update-image');
+
+/*
+|--------------------------------------------------------------------------
 | Publish Webhook (Smart Publish status updates)
 |--------------------------------------------------------------------------
 */
