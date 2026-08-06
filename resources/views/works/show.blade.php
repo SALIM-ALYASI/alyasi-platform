@@ -7,6 +7,10 @@
     rel="stylesheet"
     href="{{ versioned_asset('assets/works/css/work-show.css') }}"
 >
+<link
+    rel="stylesheet"
+    href="{{ versioned_asset('assets/reviews/css/reviews.css') }}"
+>
 @endpush
 
 @section('content')
@@ -287,6 +291,11 @@
         </div>
 
     </section>
+
+    @include('partials.reviews', [
+        'reviews' => $work->approvedReviews,
+        'reviewFormAction' => route('works.reviews.store', $work),
+    ])
 
 </main>
 

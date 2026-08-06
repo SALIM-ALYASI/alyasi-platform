@@ -166,6 +166,69 @@
                     </span>
                 </a>
 
+                {{-- تعليقات المجتمع --}}
+                <a
+                    href="{{ route('admin.community-comments.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.community-comments.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-comments"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.community_comments') }}
+                    </span>
+
+                    @if(($pendingCommunityCommentsCount ?? 0) > 0)
+                        <span class="sidebar-link-badge">
+                            {{ $pendingCommunityCommentsCount }}
+                        </span>
+                    @endif
+                </a>
+
+                {{-- التقييمات --}}
+                <a
+                    href="{{ route('admin.reviews.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-star"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.reviews') }}
+                    </span>
+
+                    @if(($pendingReviewsCount ?? 0) > 0)
+                        <span class="sidebar-link-badge">
+                            {{ $pendingReviewsCount }}
+                        </span>
+                    @endif
+                </a>
+
+                {{-- الزوار المحظورون --}}
+                <a
+                    href="{{ route('admin.blocked-visitors.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.blocked-visitors.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-user-slash"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.blocked_visitors') }}
+                    </span>
+                </a>
+
                 {{-- روابط التواصل --}}
                 <a
                     href="{{ route('admin.social-links.index') }}"

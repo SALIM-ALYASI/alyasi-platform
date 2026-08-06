@@ -148,4 +148,34 @@ return [
 
     'related_posts' => 'Related Posts',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Comments
+    |--------------------------------------------------------------------------
+    */
+
+    'comments_badge' => 'Community Voices',
+
+    'comments_title' => 'Comments (:count)',
+
+    'comments_empty' => 'No comments yet. Be the first to share your thoughts.',
+
+    'comment_name' => 'Name',
+
+    'comment_email' => 'Email (optional)',
+
+    'comment_body' => 'Your Comment',
+
+    'comment_follow_confirmation' => 'I confirm I follow one of ALYASI\'s social media accounts —',
+
+    'comment_follow_link' => 'View Accounts',
+
+    'comment_submit' => 'Submit Comment',
+
+    'comment_moderation_note' => 'Your comment will appear after review by the ALYASI team.',
+
+    'comment_submitted' => 'Your comment has been received and will appear after review. Thanks for sharing.',
+
+    'comment_blocked' => 'Your comment could not be submitted right now. Please try again later.',
+
 ];

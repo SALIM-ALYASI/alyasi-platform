@@ -145,4 +145,22 @@ class Service extends Model
             ->orderBy('sort_order')
             ->latest('id');
     }
+
+    /**
+     * جميع التقييمات (Reviews) لهذه الخدمة.
+     */
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    /**
+     * التقييمات المعتمدة فقط، من الأحدث للأقدم.
+     */
+    public function approvedReviews(): MorphMany
+    {
+        return $this->reviews()
+            ->approved()
+            ->latest();
+    }
 }

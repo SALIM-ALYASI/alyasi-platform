@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Work extends Model
 {
@@ -60,6 +61,24 @@ class Work extends Model
         return $this->hasMany(WorkImage::class)
             ->orderBy('sort_order')
             ->orderBy('id');
+    }
+
+    /**
+     * جميع التقييمات (Reviews) لهذا العمل.
+     */
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    /**
+     * التقييمات المعتمدة فقط، من الأحدث للأقدم.
+     */
+    public function approvedReviews(): MorphMany
+    {
+        return $this->reviews()
+            ->approved()
+            ->latest();
     }
 
     public function scopeActive(Builder $query): Builder

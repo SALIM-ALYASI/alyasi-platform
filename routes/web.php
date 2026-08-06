@@ -7,7 +7,10 @@ use App\Http\Controllers\Admin\AuthController;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Admin\BlockedVisitorController;
+use App\Http\Controllers\Admin\CommunityCommentController as AdminCommunityCommentController;
 use App\Http\Controllers\Admin\CommunityPostController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
@@ -27,10 +30,12 @@ use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\PublishController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
+use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\WorkController;
@@ -78,6 +83,13 @@ Route::prefix('services')
             ->name('show');
     });
 
+Route::post(
+    'services/{service}/reviews',
+    [ReviewController::class, 'storeForService']
+)
+    ->middleware('throttle:5,1')
+    ->name('services.reviews.store');
+
 /*
 |--------------------------------------------------------------------------
 | Public News
@@ -112,6 +124,13 @@ Route::prefix('community')
         Route::get('/{communityPost:slug}', 'show')
             ->name('show');
     });
+
+Route::post(
+    'community/{communityPost:slug}/comments',
+    [CommunityCommentController::class, 'store']
+)
+    ->middleware('throttle:5,1')
+    ->name('community.comments.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -191,6 +210,14 @@ Route::prefix('works')
             ->name('show');
 
     });
+
+Route::post(
+    'works/{work:slug}/reviews',
+    [ReviewController::class, 'storeForWork']
+)
+    ->middleware('throttle:5,1')
+    ->name('works.reviews.store');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -358,6 +385,75 @@ Route::prefix('admin')
                     'community',
                     CommunityPostController::class
                 )->except('show');
+
+                /*
+                |----------------------------------------------------------
+                | Community Comments Moderation
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('community-comments')
+                    ->name('community-comments.')
+                    ->controller(AdminCommunityCommentController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::patch('/{communityComment}/approve', 'approve')
+                            ->name('approve');
+
+                        Route::patch('/{communityComment}/reject', 'reject')
+                            ->name('reject');
+
+                        Route::patch('/{communityComment}/block', 'block')
+                            ->name('block');
+
+                        Route::delete('/{communityComment}', 'destroy')
+                            ->name('destroy');
+                    });
+
+                /*
+                |----------------------------------------------------------
+                | Blocked Visitors
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('blocked-visitors')
+                    ->name('blocked-visitors.')
+                    ->controller(BlockedVisitorController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::delete('/{blockedVisitor}', 'destroy')
+                            ->name('destroy');
+                    });
+
+                /*
+                |----------------------------------------------------------
+                | Reviews Moderation
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('reviews')
+                    ->name('reviews.')
+                    ->controller(AdminReviewController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::patch('/{review}/approve', 'approve')
+                            ->name('approve');
+
+                        Route::patch('/{review}/reject', 'reject')
+                            ->name('reject');
+
+                        Route::patch('/{review}/block', 'block')
+                            ->name('block');
+
+                        Route::delete('/{review}', 'destroy')
+                            ->name('destroy');
+                    });
 
                 /*
                 |----------------------------------------------------------

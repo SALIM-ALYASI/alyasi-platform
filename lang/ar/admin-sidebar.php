@@ -15,6 +15,9 @@ return [
     'services' => 'الخدمات',
     'news' => 'الأخبار',
     'community' => 'المجتمع',
+    'community_comments' => 'تعليقات المجتمع',
+    'blocked_visitors' => 'الزوار المحظورون',
+    'reviews' => 'التقييمات',
     'social_links' => 'روابط التواصل',
 
     'users' => 'المستخدمون',

@@ -310,6 +310,132 @@
         </div>
     </section>
 
+    {{-- Comments --}}
+    <section class="community-comments" id="comments">
+        <div class="container">
+
+            <div class="section-heading reveal">
+                <p class="section-tag">{{ __('community.comments_badge') }}</p>
+                <h2 class="section-title">
+                    {{ __('community.comments_title', ['count' => $communityPost->approvedComments->count()]) }}
+                </h2>
+            </div>
+
+            @if(session('success'))
+                <div class="community-comments__alert community-comments__alert--success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($communityPost->approvedComments->isNotEmpty())
+                <ul class="community-comments__list">
+                    @foreach($communityPost->approvedComments as $comment)
+                        <li class="community-comments__item">
+                            <div class="community-comments__item-header">
+                                <strong>{{ $comment->name }}</strong>
+                                <time datetime="{{ $comment->created_at->toIso8601String() }}">
+                                    {{ $comment->created_at->translatedFormat('d F Y') }}
+                                </time>
+                            </div>
+                            <p>{{ $comment->body }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="community-comments__empty">
+                    {{ __('community.comments_empty') }}
+                </p>
+            @endif
+
+            <form
+                method="POST"
+                action="{{ route('community.comments.store', $communityPost) }}"
+                class="community-comments__form"
+            >
+                @csrf
+
+                <div class="community-comments__form-row">
+
+                    <div class="community-comments__field">
+                        <label for="comment-name">{{ __('community.comment_name') }}</label>
+                        <input
+                            type="text"
+                            id="comment-name"
+                            name="name"
+                            value="{{ old('name') }}"
+                            required
+                            maxlength="255"
+                        >
+                        @error('name')
+                            <span class="community-comments__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="community-comments__field">
+                        <label for="comment-email">{{ __('community.comment_email') }}</label>
+                        <input
+                            type="email"
+                            id="comment-email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            maxlength="255"
+                        >
+                        @error('email')
+                            <span class="community-comments__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <div class="community-comments__field">
+                    <label for="comment-body">{{ __('community.comment_body') }}</label>
+                    <textarea
+                        id="comment-body"
+                        name="body"
+                        rows="4"
+                        required
+                        maxlength="2000"
+                    >{{ old('body') }}</textarea>
+                    @error('body')
+                        <span class="community-comments__error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="community-comments__field community-comments__field--checkbox">
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="followed_confirmation"
+                            value="1"
+                            required
+                        >
+                        {{ __('community.comment_follow_confirmation') }}
+                        <a
+                            href="{{ route('social-links.index') }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {{ __('community.comment_follow_link') }}
+                        </a>
+                    </label>
+                    @error('followed_confirmation')
+                        <span class="community-comments__error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="community-comments__submit">
+                    {{ __('community.comment_submit') }}
+                </button>
+
+                <p class="community-comments__moderation-note">
+                    {{ __('community.comment_moderation_note') }}
+                </p>
+
+            </form>
+
+        </div>
+    </section>
+
     {{-- Related Posts --}}
     @if($relatedPosts->isNotEmpty())
         <section class="community-related">

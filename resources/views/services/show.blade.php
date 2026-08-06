@@ -13,6 +13,13 @@
     )
 )
 
+@push('styles')
+<link
+    rel="stylesheet"
+    href="{{ versioned_asset('assets/reviews/css/reviews.css') }}"
+>
+@endpush
+
 @section('content')
 
 @php
@@ -163,6 +170,11 @@
     </div>
 
 </section>
+
+@include('partials.reviews', [
+    'reviews' => $service->approvedReviews,
+    'reviewFormAction' => route('services.reviews.store', $service),
+])
 
 <section class="cta-section">
 

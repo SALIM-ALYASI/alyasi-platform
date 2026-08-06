@@ -75,7 +75,10 @@ class CommunityController extends Controller
             abort(404);
         }
 
-        $communityPost->load('category');
+        $communityPost->load([
+            'category',
+            'approvedComments',
+        ]);
 
         $relatedPosts = CommunityPost::query()
             ->with('category')

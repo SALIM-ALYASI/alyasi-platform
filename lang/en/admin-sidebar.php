@@ -15,6 +15,9 @@ return [
     'services' => 'Services',
     'news' => 'News',
     'community' => 'Community',
+    'community_comments' => 'Community Comments',
+    'blocked_visitors' => 'Blocked Visitors',
+    'reviews' => 'Reviews',
     'social_links' => 'Social Links',
 
     'users' => 'Users',

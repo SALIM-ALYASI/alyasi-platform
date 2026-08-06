@@ -50,7 +50,7 @@ class ServiceController extends Controller
             404
         );
 
-        $service->loadMissing('permalinks');
+        $service->loadMissing(['permalinks', 'approvedReviews']);
 
         return view(
             'services.show',

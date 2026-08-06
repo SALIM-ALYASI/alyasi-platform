@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CommunityPost extends Model
 {
@@ -58,6 +59,24 @@ class CommunityPost extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(CommunityCategory::class);
+    }
+
+    /**
+     * تعليقات المنشور.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(CommunityComment::class);
+    }
+
+    /**
+     * التعليقات المعتمدة فقط، مرتّبة من الأحدث للأقدم.
+     */
+    public function approvedComments(): HasMany
+    {
+        return $this->comments()
+            ->approved()
+            ->latest();
     }
 
     /**

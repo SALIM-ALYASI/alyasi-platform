@@ -102,6 +102,7 @@ class WorkController extends Controller
             'service:id,title_ar,title_en',
             'technologies:id,name,icon',
             'images',
+            'approvedReviews',
         ]);
 
         $relatedWorks = Work::query()
