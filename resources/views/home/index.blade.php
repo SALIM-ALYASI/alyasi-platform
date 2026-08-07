@@ -4,15 +4,24 @@
 
 @section('description', __('home.hero_description'))
 
+@push('styles')
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/home-sections.css') }}"
+    >
+@endpush
+
 @section('content')
 
     @include('home.hero')
 
     @include('home.services')
 
-    @include('home.pricing')
+    @include('home.portfolio')
 
-    @include('home.testimonials')
+    @include('home.news')
+
+    @include('home.community')
 
     @include('home.integrations')
 

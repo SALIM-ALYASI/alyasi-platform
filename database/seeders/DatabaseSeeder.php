@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CommunityCategorySeeder::class,
             CommunityPostSeeder::class,
+            TechnologySeeder::class,
         ]);
     }
 }

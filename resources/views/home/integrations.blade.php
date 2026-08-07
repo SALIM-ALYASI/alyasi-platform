@@ -3,97 +3,6 @@
     id="technology"
 >
 
-    @php
-        $technologies = [
-
-            [
-                'icon' => 'fa-brands fa-laravel',
-                'name' => 'Laravel',
-            ],
-
-            [
-                'icon' => 'fa-brands fa-php',
-                'name' => 'PHP 8',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-database',
-                'name' => 'MySQL',
-            ],
-
-            [
-                'icon' => 'fa-brands fa-js',
-                'name' => 'JavaScript',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-network-wired',
-                'name' => 'REST API',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-memory',
-                'name' => 'Redis',
-            ],
-
-            [
-                'icon' => 'fa-brands fa-github',
-                'name' => 'GitHub',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-bolt',
-                'name' => 'Vite',
-            ],
-
-            [
-                'icon' => 'fa-brands fa-docker',
-                'name' => 'Docker',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-server',
-                'name' => 'Nginx',
-            ],
-
-            [
-                'icon' => 'fa-brands fa-linux',
-                'name' => 'Linux',
-            ],
-
-            [
-                'icon' => 'fa-solid fa-brain',
-                'name' => __('home.technology_ai'),
-            ],
-
-            [
-                'icon' => 'fa-solid fa-image',
-                'name' => __('home.technology_ai_images'),
-            ],
-
-            [
-                'icon' => 'fa-solid fa-video',
-                'name' => __('home.technology_ai_videos'),
-            ],
-
-            [
-                'icon' => 'fa-solid fa-wand-magic-sparkles',
-                'name' => __('home.technology_ai_design'),
-            ],
-
-            [
-                'icon' => 'fa-solid fa-comments',
-                'name' => __('home.technology_ai_chatbots'),
-            ],
-
-            [
-                'icon' => 'fa-solid fa-robot',
-                'name' => __('home.technology_automation'),
-            ],
-
-        ];
-    @endphp
-
     <div class="section-heading reveal section-center">
 
         <p class="section-tag">
@@ -114,29 +23,39 @@
 
     </div>
 
-    <div class="integrations-grid">
+    @if ($technologies->isNotEmpty())
 
-        @foreach ($technologies as $technology)
+        <div class="integrations-grid">
 
-            <article class="integration-item reveal">
+            @foreach ($technologies as $technology)
 
-                <div class="integration-icon">
+                <article class="integration-item reveal">
 
-                    <i
-                        class="{{ $technology['icon'] }}"
-                        aria-hidden="true"
-                    ></i>
+                    <div class="integration-icon">
 
-                </div>
+                        <i
+                            class="{{ $technology->icon }}"
+                            aria-hidden="true"
+                        ></i>
 
-                <div class="integration-name">
-                    {{ $technology['name'] }}
-                </div>
+                    </div>
 
-            </article>
+                    <div class="integration-name">
+                        {{ $technology->name }}
+                    </div>
 
-        @endforeach
+                </article>
 
-    </div>
+            @endforeach
+
+        </div>
+
+    @else
+
+        <p class="section-empty reveal">
+            {{ __('home.technology_empty') }}
+        </p>
+
+    @endif
 
 </section>

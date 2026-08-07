@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\NewsArticle;
 use App\Models\PageVisit;
 use App\Models\Service;
 use App\Models\Technology;
+use App\Models\Work;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -20,6 +22,19 @@ class HomeController extends Controller
             ->active()
             ->ordered()
             ->take(6)
+            ->get();
+
+        $works = Work::query()
+            ->active()
+            ->ordered()
+            ->take(3)
+            ->get();
+
+        $latestNews = NewsArticle::query()
+            ->with('permalinks')
+            ->published()
+            ->latestPublished()
+            ->take(3)
             ->get();
 
         $technologies = Technology::query()
@@ -42,6 +57,8 @@ class HomeController extends Controller
             'home.index',
             compact(
                 'services',
+                'works',
+                'latestNews',
                 'technologies',
                 'faqs',
                 'visitorsCount',

@@ -205,4 +205,60 @@ return [
 
     'cta_contact' => 'Contact Us',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Portfolio Section
+    |--------------------------------------------------------------------------
+    */
+
+    'portfolio_badge' => 'My Works',
+
+    'portfolio_title' => 'Latest',
+
+    'portfolio_title_highlight' => 'Projects',
+
+    'portfolio_description' => 'A selection of projects we delivered for our clients, built with care and attention to detail.',
+
+    'portfolio_empty' => 'No projects published yet.',
+
+    'view_project' => 'View Project',
+
+    'all_projects' => 'All Projects',
+
+    /*
+    |--------------------------------------------------------------------------
+    | News Teaser Section
+    |--------------------------------------------------------------------------
+    */
+
+    'news_badge' => 'News',
+
+    'news_title' => 'Tech News,',
+
+    'news_title_highlight' => 'First Hand',
+
+    'news_description' => 'We track the latest in tech and AI and translate it into Arabic for you.',
+
+    'news_empty' => 'No news published yet.',
+
+    'read_article' => 'Read Article',
+
+    'all_news' => 'All News',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Community Teaser Section
+    |--------------------------------------------------------------------------
+    */
+
+    'community_badge' => 'Community',
+
+    'community_title' => 'Connect with the',
+
+    'community_title_highlight' => 'ALYASI Community',
+
+    'community_description' => 'Share your ideas and connect with creators and developers at our digital community events.',
+
+    'join_community' => 'Join Now',
+
 ];
