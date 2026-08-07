@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\SocialLink;
 use Illuminate\View\View;
 
@@ -25,7 +26,14 @@ class PageController extends Controller
             ->ordered()
             ->get();
 
-        return view('contact.index', compact('socialLinks'));
+        $contactEmail = Setting::get('contact_email');
+        $contactPhone = Setting::get('contact_phone');
+
+        return view('contact.index', compact(
+            'socialLinks',
+            'contactEmail',
+            'contactPhone'
+        ));
     }
 
     /**

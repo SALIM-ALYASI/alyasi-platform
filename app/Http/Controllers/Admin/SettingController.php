@@ -20,8 +20,35 @@ class SettingController extends Controller
     public function index(): View
     {
         $maintenanceMode = Setting::get('maintenance_mode', '0') === '1';
+        $contactEmail = Setting::get('contact_email');
+        $contactPhone = Setting::get('contact_phone');
 
-        return view('admin.settings.index', compact('maintenanceMode'));
+        return view('admin.settings.index', compact(
+            'maintenanceMode',
+            'contactEmail',
+            'contactPhone'
+        ));
+    }
+
+    /**
+     * تحديث بريد وهاتف التواصل الظاهرين في صفحة "تواصل معنا".
+     */
+    public function updateContactInfo(Request $request): RedirectResponse
+    {
+        $validated = $request->validate(
+            [
+                'contact_email' => ['nullable', 'email', 'max:255'],
+                'contact_phone' => ['nullable', 'string', 'max:30'],
+            ],
+            [
+                'contact_email.email' => 'صيغة البريد الإلكتروني غير صحيحة.',
+            ]
+        );
+
+        Setting::set('contact_email', $validated['contact_email'] ?? null);
+        Setting::set('contact_phone', $validated['contact_phone'] ?? null);
+
+        return back()->with('success', 'تم تحديث بيانات التواصل بنجاح.');
     }
 
     /**

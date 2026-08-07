@@ -30,4 +30,26 @@ return [
 
     'response_description' => 'We respond to most messages within 24 business hours.',
 
+    'form_badge' => 'Message Us Directly',
+
+    'form_title' => 'Send Us a Message',
+
+    'form_description' => "Fill out the form and we'll get back to you by email.",
+
+    'form_name' => 'Name',
+
+    'form_email' => 'Email',
+
+    'form_phone' => 'Phone Number (optional)',
+
+    'form_subject' => 'Subject (optional)',
+
+    'form_message' => 'Your Message',
+
+    'form_submit' => 'Send Message',
+
+    'form_submitted' => "Your message has been received, we'll reply within 24 business hours. Thanks for reaching out.",
+
+    'form_blocked' => 'Your message could not be sent right now. Please try again later.',
+
 ];

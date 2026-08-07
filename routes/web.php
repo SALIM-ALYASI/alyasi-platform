@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CommunityPostController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\MarketerController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\Admin\PublishController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\CommunityCommentController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -149,6 +151,10 @@ Route::get('/social-links', [SocialLinkController::class, 'index'])
 
 Route::get('/contact', [PageController::class, 'contact'])
     ->name('contact');
+
+Route::post('/contact', [ContactMessageController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contact.store');
 
 Route::get('/about', [PageController::class, 'about'])
     ->name('about');
@@ -484,6 +490,29 @@ Route::prefix('admin')
 
                 /*
                 |----------------------------------------------------------
+                | Contact Messages
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('messages')
+                    ->name('messages.')
+                    ->controller(AdminMessageController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::get('/{message}', 'show')
+                            ->name('show');
+
+                        Route::patch('/{message}/mark-replied', 'markReplied')
+                            ->name('mark-replied');
+
+                        Route::delete('/{message}', 'destroy')
+                            ->name('destroy');
+                    });
+
+                /*
+                |----------------------------------------------------------
                 | Marketers (Referral Program)
                 |----------------------------------------------------------
                 */
@@ -570,6 +599,11 @@ Route::prefix('admin')
                     'settings/password',
                     [SettingController::class, 'updatePassword']
                 )->name('settings.update-password');
+
+                Route::patch(
+                    'settings/contact-info',
+                    [SettingController::class, 'updateContactInfo']
+                )->name('settings.update-contact-info');
 
                 /*
                 |----------------------------------------------------------

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\CommunityCategory;
 use App\Models\CommunityComment;
 use App\Models\CommunityPost;
+use App\Models\ContactMessage;
 use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
@@ -47,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'pendingCommunityCommentsCount' => CommunityComment::query()->pending()->count(),
                 'pendingReviewsCount' => Review::query()->pending()->count(),
+                'newMessagesCount' => ContactMessage::query()->new()->count(),
             ]);
         });
     }

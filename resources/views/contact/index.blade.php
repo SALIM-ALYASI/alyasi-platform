@@ -9,6 +9,10 @@
         rel="stylesheet"
         href="{{ versioned_asset('assets/pages/css/pages.css') }}"
     >
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('assets/pages/css/contact-form.css') }}"
+    >
 @endpush
 
 @section('content')
@@ -29,6 +33,143 @@
             <p class="page-hero-description">
                 {{ __('contact.hero_description') }}
             </p>
+
+        </div>
+
+    </section>
+
+    <section class="section" id="contact-form">
+
+        <div class="container">
+
+            <div class="section-heading section-center reveal">
+
+                <p class="section-tag">{{ __('contact.form_badge') }}</p>
+
+                <h2 class="section-title">{{ __('contact.form_title') }}</h2>
+
+                <p class="section-body">{{ __('contact.form_description') }}</p>
+
+            </div>
+
+            @if($contactEmail || $contactPhone)
+                <div class="contact-direct-info">
+
+                    @if($contactEmail)
+                        <a href="mailto:{{ $contactEmail }}" class="contact-direct-info__item">
+                            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                            <span dir="ltr">{{ $contactEmail }}</span>
+                        </a>
+                    @endif
+
+                    @if($contactPhone)
+                        <a href="tel:{{ $contactPhone }}" class="contact-direct-info__item">
+                            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                            <span dir="ltr">{{ $contactPhone }}</span>
+                        </a>
+                    @endif
+
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="contact-form__alert contact-form__alert--success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form
+                method="POST"
+                action="{{ route('contact.store') }}"
+                class="contact-form"
+            >
+                @csrf
+
+                <div class="contact-form__row">
+
+                    <div class="contact-form__field">
+                        <label for="contact-name">{{ __('contact.form_name') }}</label>
+                        <input
+                            type="text"
+                            id="contact-name"
+                            name="name"
+                            value="{{ old('name') }}"
+                            required
+                            maxlength="255"
+                        >
+                        @error('name')
+                            <span class="contact-form__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="contact-form__field">
+                        <label for="contact-email">{{ __('contact.form_email') }}</label>
+                        <input
+                            type="email"
+                            id="contact-email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            required
+                            maxlength="255"
+                        >
+                        @error('email')
+                            <span class="contact-form__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <div class="contact-form__row">
+
+                    <div class="contact-form__field">
+                        <label for="contact-phone">{{ __('contact.form_phone') }}</label>
+                        <input
+                            type="tel"
+                            id="contact-phone"
+                            name="phone"
+                            value="{{ old('phone') }}"
+                            maxlength="30"
+                        >
+                        @error('phone')
+                            <span class="contact-form__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="contact-form__field">
+                        <label for="contact-subject">{{ __('contact.form_subject') }}</label>
+                        <input
+                            type="text"
+                            id="contact-subject"
+                            name="subject"
+                            value="{{ old('subject') }}"
+                            maxlength="255"
+                        >
+                        @error('subject')
+                            <span class="contact-form__error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <div class="contact-form__field">
+                    <label for="contact-message">{{ __('contact.form_message') }}</label>
+                    <textarea
+                        id="contact-message"
+                        name="message"
+                        rows="5"
+                        required
+                        maxlength="3000"
+                    >{{ old('message') }}</textarea>
+                    @error('message')
+                        <span class="contact-form__error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="contact-form__submit">
+                    {{ __('contact.form_submit') }}
+                </button>
+
+            </form>
 
         </div>
 

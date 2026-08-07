@@ -366,7 +366,7 @@
 
                 {{-- الرسائل --}}
                 <a
-                    href="#"
+                    href="{{ route('admin.messages.index') }}"
                     class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"
                 >
                     <span class="sidebar-link-icon">
@@ -380,12 +380,14 @@
                         {{ __('admin-sidebar.messages') }}
                     </span>
 
-                    <span
-                        class="sidebar-link-count"
-                        aria-label="{{ __('admin-sidebar.messages_count', ['count' => 0]) }}"
-                    >
-                        0
-                    </span>
+                    @if(($newMessagesCount ?? 0) > 0)
+                        <span
+                            class="sidebar-link-count"
+                            aria-label="{{ __('admin-sidebar.messages_count', ['count' => $newMessagesCount]) }}"
+                        >
+                            {{ $newMessagesCount }}
+                        </span>
+                    @endif
                 </a>
 
                 {{-- بيانات سيرفر --}}

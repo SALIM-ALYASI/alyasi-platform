@@ -170,6 +170,67 @@
 
     </div>
 
+    <div class="dashboard-panel" id="contact-info" style="margin-top: 24px;">
+
+        <div class="dashboard-panel-header">
+            <div>
+                <h3>بيانات التواصل العامة</h3>
+                <p>البريد ورقم الجوال اللي يظهرون للزوار بصفحة "تواصل معنا". اتركهم فاضيين لإخفائهم.</p>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.settings.update-contact-info') }}" method="POST">
+            @csrf
+            @method('PATCH')
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="contact_email">البريد الإلكتروني</label>
+
+                    <input
+                        type="email"
+                        id="contact_email"
+                        name="contact_email"
+                        class="form-control"
+                        value="{{ old('contact_email', $contactEmail) }}"
+                        dir="ltr"
+                    >
+
+                    @error('contact_email')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_phone">رقم الجوال / واتساب</label>
+
+                    <input
+                        type="text"
+                        id="contact_phone"
+                        name="contact_phone"
+                        class="form-control"
+                        value="{{ old('contact_phone', $contactPhone) }}"
+                        dir="ltr"
+                    >
+
+                    @error('contact_phone')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="admin-primary-button">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+                    حفظ التعديلات
+                </button>
+            </div>
+        </form>
+
+    </div>
+
     <div class="dashboard-panel" style="margin-top: 24px;">
 
         <div class="dashboard-panel-header">
