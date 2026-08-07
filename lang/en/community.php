@@ -8,11 +8,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'title' => 'ALYASI Community',
+    'title' => 'Digital Community Events',
 
-    'description' => 'A digital community that brings together creators, entrepreneurs, developers, and tech enthusiasts to exchange knowledge, experience, and initiatives.',
+    'description' => 'A calendar of global and regional tech events and conferences, with a space for the ALYASI community to engage and share their thoughts through comments.',
 
-    'badge' => 'Digital Community',
+    'badge' => 'Tech Events',
 
     'home' => 'Home',
 

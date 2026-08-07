@@ -14,7 +14,7 @@ return [
     'dashboard' => 'لوحة التحكم',
     'services' => 'الخدمات',
     'news' => 'الأخبار',
-    'community' => 'المجتمع',
+    'community' => 'فعاليات المجتمع الرقمي',
     'community_comments' => 'تعليقات المجتمع',
     'blocked_visitors' => 'الزوار المحظورون',
     'reviews' => 'التقييمات',

@@ -40,8 +40,8 @@ return [
 
     'metrics' => [
         'sections' => 'Main Sections',
-        'availability' => 'Ongoing Support',
-        'ambition' => 'Boundless Ambition',
+        'experience' => 'Years of Experience',
+        'visitors' => 'Site Visitors',
     ],
 
     /*

@@ -67,6 +67,45 @@
 
         <div class="container">
 
+            <div class="hero-metrics" style="justify-content: center;">
+
+                <div class="metric">
+                    <div class="metric-value">
+                        <span class="counter" data-target="{{ $yearsOfExperience }}" data-decimals="0">
+                            {{ $yearsOfExperience }}
+                        </span>
+                    </div>
+                    <div class="metric-label">{{ __('about.stats_years') }}</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-value">
+                        <span class="counter" data-target="{{ $projectsCount }}" data-decimals="0">
+                            {{ $projectsCount }}
+                        </span>
+                    </div>
+                    <div class="metric-label">{{ __('about.stats_projects') }}</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-value">
+                        <span class="counter" data-target="{{ $servicesCount }}" data-decimals="0">
+                            {{ $servicesCount }}
+                        </span>
+                    </div>
+                    <div class="metric-label">{{ __('about.stats_services') }}</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <div class="container">
+
             <div class="section-heading section-center reveal">
 
                 <p class="section-tag">{{ __('about.values_badge') }}</p>

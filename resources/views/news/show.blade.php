@@ -602,12 +602,14 @@
                                         {{ $article->formatted_author_name }}
                                     </strong>
 
-                                    <span>
-                                        {{ $isArabic
-                                            ? 'فريق تحرير منصة ALYASI'
-                                            : 'ALYASI editorial team'
-                                        }}
-                                    </span>
+                                    @if (filled($article->source_name))
+                                        <span>
+                                            {{ $isArabic
+                                                ? 'كاتب أصلي بموقع ' . $article->source_name
+                                                : 'Original author at ' . $article->source_name
+                                            }}
+                                        </span>
+                                    @endif
                                 </div>
 
                             </div>

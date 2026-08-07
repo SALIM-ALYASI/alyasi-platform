@@ -40,8 +40,8 @@ return [
 
     'metrics' => [
         'sections' => 'أقسام رئيسية',
-        'availability' => 'دعم مستمر',
-        'ambition' => 'طموح بلا حدود',
+        'experience' => 'سنوات خبرة',
+        'visitors' => 'زوار الموقع',
     ],
 
     /*

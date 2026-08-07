@@ -14,7 +14,7 @@ return [
     'dashboard' => 'Dashboard',
     'services' => 'Services',
     'news' => 'News',
-    'community' => 'Community',
+    'community' => 'Digital Community Events',
     'community_comments' => 'Community Comments',
     'blocked_visitors' => 'Blocked Visitors',
     'reviews' => 'Reviews',

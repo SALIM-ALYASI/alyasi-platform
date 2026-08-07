@@ -23,8 +23,8 @@
             : 'News',
 
         'community' => $isArabic
-            ? 'المجتمع'
-            : 'Community',
+            ? 'فعاليات المجتمع الرقمي'
+            : 'Digital Community Events',
 
         'technology' => $isArabic
             ? 'التقنيات'

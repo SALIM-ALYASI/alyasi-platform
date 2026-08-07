@@ -78,17 +78,15 @@
             <div class="metric-value">
                 <span
                     class="counter"
-                    data-target="24"
+                    data-target="{{ $yearsOfExperience ?? 0 }}"
                     data-decimals="0"
                 >
-                    24
+                    {{ $yearsOfExperience ?? 0 }}
                 </span>
-
-                <span>/7</span>
             </div>
 
             <div class="metric-label">
-                {{ __('home.metrics.availability') }}
+                {{ __('home.metrics.experience') }}
             </div>
 
         </div>
@@ -98,17 +96,15 @@
             <div class="metric-value">
                 <span
                     class="counter"
-                    data-target="100"
+                    data-target="{{ $visitorsCount ?? 0 }}"
                     data-decimals="0"
                 >
-                    100
+                    {{ number_format($visitorsCount ?? 0) }}
                 </span>
-
-                <span>%</span>
             </div>
 
             <div class="metric-label">
-                {{ __('home.metrics.ambition') }}
+                {{ __('home.metrics.visitors') }}
             </div>
 
         </div>

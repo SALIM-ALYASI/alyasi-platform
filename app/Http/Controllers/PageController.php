@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Service;
 use App\Models\Setting;
 use App\Models\SocialLink;
+use App\Models\Work;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -13,7 +15,21 @@ class PageController extends Controller
      */
     public function about(): View
     {
-        return view('about.index');
+        $yearsOfExperience = now()->year - 2019;
+
+        $projectsCount = Work::query()
+            ->where('is_active', true)
+            ->count();
+
+        $servicesCount = Service::query()
+            ->where('is_active', true)
+            ->count();
+
+        return view('about.index', compact(
+            'yearsOfExperience',
+            'projectsCount',
+            'servicesCount'
+        ));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\PageVisit;
 use App\Models\Service;
 use App\Models\Technology;
 use Illuminate\View\View;
@@ -31,12 +32,20 @@ class HomeController extends Controller
             ->inRandomOrder()
             ->get();
 
+        $visitorsCount = PageVisit::query()
+            ->distinct('ip_address')
+            ->count('ip_address');
+
+        $yearsOfExperience = now()->year - 2019;
+
         return view(
             'home.index',
             compact(
                 'services',
                 'technologies',
-                'faqs'
+                'faqs',
+                'visitorsCount',
+                'yearsOfExperience'
             )
         );
     }
