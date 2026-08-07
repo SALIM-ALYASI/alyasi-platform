@@ -40,6 +40,7 @@ class NewsArticle extends Model
         'is_breaking',
         'is_featured',
         'published_at',
+        'social_sent_at',
         'views_count',
         'seo_title_ar',
         'seo_title_en',
@@ -53,6 +54,7 @@ class NewsArticle extends Model
             'is_breaking' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
+            'social_sent_at' => 'datetime',
             'views_count' => 'integer',
         ];
     }
@@ -109,6 +111,14 @@ class NewsArticle extends Model
     public function scopeLatestPublished(Builder $query): Builder
     {
         return $query->orderByDesc('published_at');
+    }
+
+    public function scopePendingSocial(Builder $query): Builder
+    {
+        return $query
+            ->published()
+            ->whereNull('social_sent_at')
+            ->orderBy('published_at');
     }
 
     /*

@@ -73,6 +73,54 @@ class NewsIngestController extends Controller
     }
 
     /**
+     * الأخبار المنشورة اللي ما انرسلت لبرامج التواصل بعد (لاستهلاك n8n).
+     */
+    public function pendingSocial(Request $request): JsonResponse
+    {
+        $limit = min($request->integer('limit', 5), 20);
+
+        $articles = NewsArticle::query()
+            ->with('permalinks')
+            ->pendingSocial()
+            ->limit($limit)
+            ->get()
+            ->map(function (NewsArticle $article) {
+                $slug = $article->permalinks
+                    ->firstWhere('locale', 'ar')
+                    ?->slug;
+
+                return [
+                    'id' => $article->id,
+                    'title' => $article->title_ar,
+                    'excerpt' => Str::limit(
+                        strip_tags($article->content_ar ?: $article->excerpt_ar ?: ''),
+                        500
+                    ),
+                    'source_name' => $article->source_name,
+                    'published_at' => $article->published_at?->toIso8601String(),
+                    'url' => $slug ? url("/news/{$slug}") : null,
+                ];
+            })
+            ->filter(fn (array $article) => $article['url'] !== null)
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => $articles,
+        ]);
+    }
+
+    /**
+     * تحديد الخبر كمُرسَل لبرامج التواصل (بعد نشره فعليًا عبر n8n).
+     */
+    public function markSocialSent(NewsArticle $newsArticle): JsonResponse
+    {
+        $newsArticle->update(['social_sent_at' => now()]);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * إنشاء مقتطف مختصر من المحتوى الكامل.
      */
     private function makeExcerpt(?string $content): ?string

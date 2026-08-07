@@ -17,6 +17,14 @@ Route::post('news', [NewsIngestController::class, 'store'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.store');
 
+Route::get('news/pending-social', [NewsIngestController::class, 'pendingSocial'])
+    ->middleware(['news-bot.auth', 'throttle:60,1'])
+    ->name('api.news.pending-social');
+
+Route::patch('news/{newsArticle}/mark-social-sent', [NewsIngestController::class, 'markSocialSent'])
+    ->middleware(['news-bot.auth', 'throttle:60,1'])
+    ->name('api.news.mark-social-sent');
+
 /*
 |--------------------------------------------------------------------------
 | Event Bot Ingest
