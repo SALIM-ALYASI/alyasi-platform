@@ -50,7 +50,13 @@ class ServiceController extends Controller
             404
         );
 
-        $service->loadMissing(['permalinks', 'approvedReviews']);
+        $service->loadMissing([
+            'permalinks',
+            'approvedReviews',
+            'works' => fn ($query) => $query
+                ->where('is_active', true)
+                ->limit(3),
+        ]);
 
         return view(
             'services.show',

@@ -8,6 +8,8 @@ use App\Models\Permalink;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 
@@ -65,11 +67,34 @@ class NewsIngestController extends Controller
             return $article;
         });
 
+        if ($isPublished) {
+            $this->notifyN8nOfNewArticle();
+        }
+
         return response()->json([
             'success' => true,
             'id' => $article->id,
             'created' => $article->wasRecentlyCreated,
         ]);
+    }
+
+    /**
+     * تنبيه n8n فورًا بوجود خبر منشور جديد لنشره على برامج التواصل،
+     * بدل الانتظار لدورة الجدولة القادمة. فشل التنبيه لا يوقف حفظ الخبر.
+     */
+    private function notifyN8nOfNewArticle(): void
+    {
+        $webhookUrl = config('services.n8n.news_webhook_url');
+
+        if (blank($webhookUrl)) {
+            return;
+        }
+
+        try {
+            Http::timeout(5)->post($webhookUrl);
+        } catch (\Throwable $e) {
+            Log::warning('تعذّر تنبيه n8n بخبر جديد.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**

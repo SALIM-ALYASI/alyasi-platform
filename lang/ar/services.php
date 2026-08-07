@@ -96,6 +96,14 @@ return [
 
         'cta_description' => 'تواصل معنا الآن للحصول على استشارة والبدء بتنفيذ مشروعك.',
 
+        'related_works_badge' => 'أعمال فعلية',
+
+        'related_works_title' => 'أمثلة من تنفيذنا لهذه الخدمة',
+
+        'related_works_featured' => 'مميز',
+
+        'related_works_view' => 'عرض التفاصيل',
+
     ],
 
 ];

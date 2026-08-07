@@ -30,4 +30,9 @@ return [
     'contact_us' => 'Contact Us',
     'back_home' => 'Back to Home',
 
+    'related_works_badge' => 'Real Work',
+    'related_works_title' => 'Examples of This Service in Action',
+    'related_works_featured' => 'Featured',
+    'related_works_view' => 'View Details',
+
 ];

@@ -16,6 +16,10 @@
 @push('styles')
 <link
     rel="stylesheet"
+    href="{{ versioned_asset('assets/works/css/works.css') }}"
+>
+<link
+    rel="stylesheet"
     href="{{ versioned_asset('assets/reviews/css/reviews.css') }}"
 >
 @endpush
@@ -170,6 +174,80 @@
     </div>
 
 </section>
+
+@if($service->works->isNotEmpty())
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-heading section-center reveal">
+                <p class="section-tag">{{ __('services.show.related_works_badge') }}</p>
+                <h2 class="section-title">{{ __('services.show.related_works_title') }}</h2>
+            </div>
+
+            <div class="works-grid">
+
+                @foreach($service->works as $work)
+
+                    <a href="{{ route('works.show', $work) }}" class="public-work-card">
+
+                        <div class="public-work-card__media">
+
+                            @if($work->cover_image)
+                                <img
+                                    src="{{ asset('storage/'.$work->cover_image) }}"
+                                    alt="{{ $work->title }}"
+                                    class="public-work-card__image"
+                                    loading="lazy"
+                                >
+                            @else
+                                <div class="public-work-card__placeholder">
+                                    <img src="{{ asset('images/logo/logo-dark.png') }}" alt="{{ $work->title }}">
+                                </div>
+                            @endif
+
+                            <span class="public-work-card__type">{{ $work->type_label }}</span>
+
+                            @if($work->is_featured)
+                                <span class="public-work-card__featured">
+                                    {{ __('services.show.related_works_featured') }}
+                                </span>
+                            @endif
+
+                            <div class="public-work-card__overlay">
+                                <span>{{ __('services.show.related_works_view') }}</span>
+                            </div>
+
+                        </div>
+
+                        <div class="public-work-card__body">
+
+                            <h3 class="public-work-card__title">{{ $work->title }}</h3>
+
+                            @if($work->short_description)
+                                <p class="public-work-card__description">{{ $work->short_description }}</p>
+                            @endif
+
+                        </div>
+
+                        @if($work->client_name)
+                            <div class="public-work-card__footer">
+                                <div class="public-work-card__info">
+                                    <span><i class="fa-regular fa-user"></i> {{ $work->client_name }}</span>
+                                </div>
+                            </div>
+                        @endif
+
+                    </a>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </section>
+@endif
 
 @include('partials.reviews', [
     'reviews' => $service->approvedReviews,

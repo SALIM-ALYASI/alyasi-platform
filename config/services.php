@@ -39,6 +39,10 @@ return [
         'token' => env('NEWS_BOT_TOKEN'),
     ],
 
+    'n8n' => [
+        'news_webhook_url' => env('N8N_NEWS_WEBHOOK_URL'),
+    ],
+
     'event_bot' => [
         'token' => env('EVENT_BOT_TOKEN'),
     ],
