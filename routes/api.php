@@ -25,6 +25,10 @@ Route::patch('news/{newsArticle}/mark-social-sent', [NewsIngestController::class
     ->middleware(['news-bot.auth', 'throttle:60,1'])
     ->name('api.news.mark-social-sent');
 
+Route::get('news/daily-digest', [NewsIngestController::class, 'dailyDigest'])
+    ->middleware(['news-bot.auth', 'throttle:60,1'])
+    ->name('api.news.daily-digest');
+
 /*
 |--------------------------------------------------------------------------
 | Event Bot Ingest

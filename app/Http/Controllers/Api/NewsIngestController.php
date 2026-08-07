@@ -146,6 +146,42 @@ class NewsIngestController extends Controller
     }
 
     /**
+     * كل الأخبار المنشورة بتاريخ معيّن (اليوم افتراضيًا)، بمحتوى كافٍ
+     * لتوليد فكرة مقال أصلي لاحقًا — يستهلكها n8n بجدولة يومية مستقلة.
+     */
+    public function dailyDigest(Request $request): JsonResponse
+    {
+        $date = $request->date('date') ?? now();
+
+        $articles = NewsArticle::query()
+            ->published()
+            ->whereBetween('published_at', [
+                $date->copy()->startOfDay(),
+                $date->copy()->endOfDay(),
+            ])
+            ->orderBy('published_at')
+            ->get()
+            ->map(fn (NewsArticle $article) => [
+                'id' => $article->id,
+                'title_ar' => $article->title_ar,
+                'title_en' => $article->title_en,
+                'excerpt_ar' => $article->excerpt_ar,
+                'content_ar' => strip_tags((string) $article->content_ar),
+                'source_name' => $article->source_name,
+                'source_url' => $article->source_url,
+                'published_at' => $article->published_at?->toIso8601String(),
+            ])
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'date' => $date->toDateString(),
+            'count' => $articles->count(),
+            'data' => $articles,
+        ]);
+    }
+
+    /**
      * إنشاء مقتطف مختصر من المحتوى الكامل.
      */
     private function makeExcerpt(?string $content): ?string
