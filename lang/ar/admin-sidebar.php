@@ -16,6 +16,7 @@ return [
     'news' => 'الأخبار',
     'community' => 'فعاليات المجتمع الرقمي',
     'community_comments' => 'تعليقات المجتمع',
+    'pronunciation_queue' => 'تصحيحات النطق',
     'blocked_visitors' => 'الزوار المحظورون',
     'reviews' => 'التقييمات',
     'social_links' => 'روابط التواصل',

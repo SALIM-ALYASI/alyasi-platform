@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\TechnologyController;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Admin\PronunciationQueueController;
 use App\Http\Controllers\Admin\PublishController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
@@ -416,6 +417,26 @@ Route::prefix('admin')
 
                         Route::delete('/{communityComment}', 'destroy')
                             ->name('destroy');
+                    });
+
+                /*
+                |----------------------------------------------------------
+                | Pronunciation Suggestions Queue
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('pronunciation-queue')
+                    ->name('pronunciation-queue.')
+                    ->controller(PronunciationQueueController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::post('/{id}/accept', 'accept')
+                            ->name('accept');
+
+                        Route::post('/{id}/reject', 'reject')
+                            ->name('reject');
                     });
 
                 /*

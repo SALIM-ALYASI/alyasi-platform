@@ -16,6 +16,7 @@ return [
     'news' => 'News',
     'community' => 'Digital Community Events',
     'community_comments' => 'Community Comments',
+    'pronunciation_queue' => 'Pronunciation Fixes',
     'blocked_visitors' => 'Blocked Visitors',
     'reviews' => 'Reviews',
     'social_links' => 'Social Links',

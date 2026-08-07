@@ -189,6 +189,23 @@
                     @endif
                 </a>
 
+                {{-- تصحيحات النطق --}}
+                <a
+                    href="{{ route('admin.pronunciation-queue.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.pronunciation-queue.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-spell-check"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.pronunciation_queue') }}
+                    </span>
+                </a>
+
                 {{-- التقييمات --}}
                 <a
                     href="{{ route('admin.reviews.index') }}"
