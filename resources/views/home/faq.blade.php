@@ -1,48 +1,32 @@
-<section
-    class="section"
-    id="faq"
->
+<section class="section section--narrow" id="faq" data-reveal>
+    <div class="section__inner">
 
-    <div class="section-heading reveal">
+        <div class="section-head">
+            <span class="eyebrow">{{ __('home.faq_badge') }}</span>
+            <h2 class="section-title">
+                {{ __('home.faq_title') }}
+                <em>{{ __('home.faq_title_highlight') }}</em>
+            </h2>
+            <p class="section-body">{{ __('home.faq_description') }}</p>
+        </div>
 
-        <p class="section-tag">
-            {{ __('home.faq_badge') }}
-        </p>
+        <div class="faq-list">
 
-        <h2 class="section-title">
-            {{ __('home.faq_title') }}
-            <strong>
-                {{ __('home.faq_title_highlight') }}
-            </strong>
-        </h2>
+            @foreach ($faqs as $index => $faq)
 
-        <p class="section-body">
-            {{ __('home.faq_description') }}
-        </p>
+                <div class="faq-item {{ $index === 0 ? 'is-open' : '' }}">
+                    <button type="button" class="faq-item__question">
+                        <span>{{ $faq->localizedQuestion() }}</span>
+                        <span class="faq-item__mark">{{ $index === 0 ? '−' : '+' }}</span>
+                    </button>
+                    <div class="faq-item__answer">
+                        <p>{{ $faq->localizedAnswer() }}</p>
+                    </div>
+                </div>
 
-    </div>
+            @endforeach
 
-    <div class="faq-list">
-
-        @foreach ($faqs as $index => $faq)
-
-            <details
-                class="faq-item"
-                @if ($index === 0) open @endif
-            >
-
-                <summary>
-                    {{ $faq->localizedQuestion() }}
-                </summary>
-
-                <p>
-                    {{ $faq->localizedAnswer() }}
-                </p>
-
-            </details>
-
-        @endforeach
+        </div>
 
     </div>
-
 </section>

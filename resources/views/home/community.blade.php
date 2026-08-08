@@ -1,37 +1,16 @@
-<section
-    class="section"
-    id="community"
->
+<section class="section section--tight" id="community" data-reveal>
+    <div class="section__inner">
+        <div class="cta-band cta-band--card">
+            <span class="eyebrow">{{ __('home.community_badge') }}</span>
 
-    <div class="cta-card cta-card--secondary reveal">
+            <h2 class="cta-band__title">
+                {{ __('home.community_title') }}
+                <em>{{ __('home.community_title_highlight') }}</em>
+            </h2>
 
-        <p class="section-tag">
-            {{ __('home.community_badge') }}
-        </p>
+            <p class="cta-band__desc">{{ __('home.community_description') }}</p>
 
-        <h2 class="section-title">
-            {{ __('home.community_title') }}
-
-            <strong>
-                {{ __('home.community_title_highlight') }}
-            </strong>
-        </h2>
-
-        <p class="section-body">
-            {{ __('home.community_description') }}
-        </p>
-
-        <div class="hero-ctas">
-
-            <a
-                href="{{ route('community.index') }}"
-                class="btn-primary"
-            >
-                {{ __('home.join_community') }}
-            </a>
-
+            <a href="{{ route('community.index') }}" class="btn btn--primary">{{ __('home.join_community') }}</a>
         </div>
-
     </div>
-
 </section>

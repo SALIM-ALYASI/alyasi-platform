@@ -31,7 +31,7 @@
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Kufi+Arabic:wght@700;800&display=swap"
         rel="stylesheet"
     >
 
@@ -42,10 +42,10 @@
         referrerpolicy="no-referrer"
     >
 
-    {{-- Luminary / ALYASI Style --}}
+    {{-- ALYASI design system (2026-08 redesign) --}}
     <link
         rel="stylesheet"
-        href="{{ versioned_asset('luminary/templatemo-621-luminary-style.css') }}"
+        href="{{ versioned_asset('css/alyasi.css') }}"
     >
 
     @stack('styles')
@@ -61,7 +61,7 @@
 
     <x-footer />
 
-    <x-scripts />
+    <script src="{{ versioned_asset('js/alyasi.js') }}"></script>
 
     @stack('scripts')
 
