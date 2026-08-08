@@ -6,30 +6,32 @@ https://templatemo.com/tm-621-luminary
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --base-deep: #180B0F;
-  --base-mid: #241116;
-  --base-soft: #32171E;
+  /* ALYASI redesign palette — replaces the original Luminary rose/burgundy
+     scheme with the maroon/gold/cream palette from the 2026-08 redesign. */
+  --base-deep: #1C1614;
+  --base-mid: #241A17;
+  --base-soft: #2F211D;
 
-  --burgundy-deep: #4C1E24;
-  --burgundy: #6A2D35;
-  --burgundy-soft: #934B53;
+  --burgundy-deep: #451A1B;
+  --burgundy: #5E2324;
+  --burgundy-soft: #7A2E2F;
 
-  --gold: #D0AA6A;
-  --gold-light: #F1D59A;
-  --gold-muted: #B78D55;
+  --gold: #E7B65C;
+  --gold-light: #F2CE94;
+  --gold-muted: #C99A4E;
 
   --slate-warm: #A98B74;
   --slate-light: #D2BFA8;
 
-  --graphite: #2C1A20;
-  --graphite-soft: #3A232A;
+  --graphite: #2C211D;
+  --graphite-soft: #3A2C26;
 
-  --ivory: #FAF6F0;
-  --ivory-muted: #E9DCCF;
-  --silver: #D0AA6A;
+  --ivory: #FBF0DD;
+  --ivory-muted: #F4E4C8;
+  --silver: #E7B65C;
 
-  --panel-bg: rgba(42, 19, 25, 0.58);
-  --panel-border: rgba(208, 170, 106, 0.16);
+  --panel-bg: rgba(28, 22, 20, 0.58);
+  --panel-border: rgba(231, 182, 92, 0.16);
 
   --silk-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -38,7 +40,7 @@ html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 80px; }
 
 body {
   font-family: 'IBM Plex Sans Arabic', 'Montserrat', sans-serif;
-  background: #180B0F;
+  background: #1C1614;
   color: var(--ivory);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -56,15 +58,15 @@ body {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 12%, rgba(106, 45, 53, 0.34) 0%, transparent 34%),
-    radial-gradient(circle at 18% 78%, rgba(76, 30, 36, 0.18) 0%, transparent 42%),
-    radial-gradient(circle at 82% 82%, rgba(208, 170, 106, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 50% 12%, rgba(94, 35, 36, 0.34) 0%, transparent 34%),
+    radial-gradient(circle at 18% 78%, rgba(69, 26, 27, 0.18) 0%, transparent 42%),
+    radial-gradient(circle at 82% 82%, rgba(231, 182, 92, 0.07) 0%, transparent 40%),
     linear-gradient(
       180deg,
-      #2A1118 0%,
-      #231016 28%,
-      #1C0D12 62%,
-      #14090D 100%
+      #2A1C1A 0%,
+      #241A17 28%,
+      #1C1412 62%,
+      #14100D 100%
     );
 }
 

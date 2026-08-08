@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             CommunityCategorySeeder::class,
             CommunityPostSeeder::class,
             TechnologySeeder::class,
+            WorkDemoSeeder::class,
         ]);
     }
 }

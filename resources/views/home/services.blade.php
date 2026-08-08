@@ -22,7 +22,7 @@
                 <img
                     src="{{ $featuredService->image
                         ? asset($featuredService->image)
-                        : asset('luminary/images/tm-luminary-01.jpg') }}"
+                        : asset('images/home/service-featured.webp') }}"
                     alt="{{ $featuredTitle }}"
                     loading="lazy"
                 >
@@ -87,7 +87,7 @@
 
                 <img
                     src="{{ asset(
-                        'luminary/images/tm-luminary-01.jpg'
+                        'images/home/service-featured.webp'
                     ) }}"
                     alt="{{ __('home.brand') }}"
                     loading="lazy"
