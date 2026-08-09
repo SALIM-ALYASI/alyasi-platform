@@ -1,0 +1,43 @@
+/* صفحة اتصل بنا — لا يوجد مرجع تصميم مباشر، مبنية بنفس مكوّنات النظام */
+
+.contact-section { padding-top: 80px; padding-bottom: 90px; }
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.contact-form-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    box-shadow: var(--shadow-sm);
+}
+.contact-form-card__title { margin-bottom: 10px; }
+.contact-form-card__desc { color: rgba(20, 32, 46, .62); font-size: 14.5px; margin-bottom: 26px; }
+
+.contact-side { display: flex; flex-direction: column; gap: 20px; }
+.contact-side__card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+}
+.contact-side__card p { color: rgba(20, 32, 46, .65); font-size: 14px; line-height: 1.8; margin: 8px 0 16px; }
+.contact-side__link { display: block; color: var(--color-accent-600); font-weight: 700; font-size: 14px; margin-top: 6px; }
+.contact-side__channels-title { font-size: 17px; margin-bottom: 14px; }
+
+.contact-side__socials { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.contact-side__social { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--color-text); }
+.contact-side__social i { width: 20px; text-align: center; color: var(--color-accent-500); }
+.contact-side__social:hover { color: var(--color-accent-600); }
+
+@media (max-width: 1023px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+    .contact-section { padding-top: 48px; padding-bottom: 56px; }
+    .contact-form-card { padding: 24px; }
+}

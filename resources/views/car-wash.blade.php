@@ -77,40 +77,123 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $t['title'] }}</title>
     <meta name="description" content="{{ $t['description'] }}">
-    <meta name="theme-color" content="#180B0F">
+    <meta name="theme-color" content="#0B1F3A">
     <link rel="icon" type="image/png" href="{{ asset('images/car-wash/logo.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Kufi+Arabic:wght@700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" referrerpolicy="no-referrer">
 
-    {{-- Luminary / ALYASI Style --}}
-    <link rel="stylesheet" href="{{ versioned_asset('luminary/templatemo-621-luminary-style.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/tokens.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/base.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/car-wash.css') }}">
 
     <style>
-        /* تصحيح شبكة الخدمات لهذه الصفحة فقط — قواعد الصفحة الرئيسية
-           مضبوطة على عدد بطاقات التقنية (17) وتكسر شكل شبكة الـ 6 بطاقات هنا. */
-        #services .integrations-grid {
-            grid-template-columns: repeat(3, 1fr);
+        /* هوية مغسلة الياسي — تعديلات محلية (ألوان مطابقة لهوية ALYASI الكحلية الجديدة) */
+
+        .cw-hero__logo {
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        #services .integration-item:nth-last-child(4) {
-            grid-column-start: auto;
+        .cw-hero__logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        @media (max-width: 768px) {
-            #services .integrations-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* توحيد حجم النصوص غير الرقمية في شريط المقاييس (الساعات والموقع)
-           بدل نمط "رقم كبير + وحدة صغيرة" المصمم لأرقام قصيرة فقط. */
-        .metric-value.metric-value-text {
+        .metric__value--text {
             font-size: clamp(1.25rem, 1.8vw, 1.6rem);
-            font-weight: 400;
+            font-weight: 500;
+        }
+
+        .cw-services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .cw-service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 32px 20px;
+            border-radius: 18px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel-bg);
+            text-align: center;
+            transition: transform .3s var(--ease), border-color .3s var(--ease);
+        }
+
+        .cw-service-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(159, 176, 206, .4);
+        }
+
+        .cw-service-card__icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(159, 176, 206, .1);
+            color: var(--gold-light);
+            font-size: 20px;
+        }
+
+        .cw-service-card__name {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--cream);
+        }
+
+        .cw-map-card {
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel-bg);
+        }
+
+        .cw-map-card iframe {
+            display: block;
+            width: 100%;
+            height: 360px;
+            border: 0;
+            border-radius: 16px;
+        }
+
+        .cw-footer {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 32px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 12.5px;
+            color: var(--slate-warm);
+        }
+
+        .cw-footer a {
+            color: var(--slate-light);
+            text-decoration: none;
+        }
+
+        .cw-footer a:hover {
+            color: var(--gold-light);
+        }
+
+        @media (max-width: 640px) {
+            .cw-services-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* مبدّل اللغة */
@@ -124,8 +207,8 @@
             gap: 6px;
             padding: 8px 14px;
             border-radius: 100px;
-            background: rgba(24, 11, 15, 0.72);
-            border: 1px solid rgba(208, 170, 106, 0.16);
+            background: rgba(11, 31, 58, 0.72);
+            border: 1px solid rgba(159, 176, 206, 0.16);
             backdrop-filter: blur(20px);
             font-size: 11px;
             font-weight: 600;
@@ -162,59 +245,59 @@
         {{-- ══════════════ Hero ══════════════ --}}
         <section class="hero" id="hero">
 
-            <div class="hero-grid"></div>
+            <div class="hero__grid"></div>
 
-            <a href="{{ route('home') }}" class="hero-logo" aria-label="{{ $t['brand_alt'] }}">
+            <a href="{{ route('home') }}" class="cw-hero__logo" aria-label="{{ $t['brand_alt'] }}">
                 <img src="{{ asset('images/car-wash/logo.png') }}" alt="{{ $t['brand_alt'] }}">
             </a>
 
-            <div class="hero-badge">
-                <div class="hero-badge-dot"></div>
-                <span>{{ $t['badge'] }}</span>
-            </div>
+            <span class="pill">
+                <span class="pill__dot"></span>
+                {{ $t['badge'] }}
+            </span>
 
-            <h1>
+            <h1 class="hero__title">
                 {{ $t['title_line_1'] }}
                 <br>
                 <em>{{ $t['title_line_2'] }}</em>
             </h1>
 
-            <p class="hero-sub">
+            <p class="hero__desc">
                 {{ $t['hero_sub'] }}
             </p>
 
-            <div class="hero-ctas">
+            <div class="hero__ctas">
                 <a
                     href="https://www.google.com/maps/dir/?api=1&destination=22.4498281,58.8103445"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn-primary"
+                    class="btn btn--primary"
                 >
                     {{ $t['get_directions'] }}
                 </a>
 
-                <a href="#services" class="btn-secondary">
+                <a href="#services" class="btn btn--secondary">
                     {{ $t['our_services'] }}
                 </a>
             </div>
 
-            <div class="hero-metrics">
+            <div class="hero__metrics">
 
                 <div class="metric">
-                    <div class="metric-value">
+                    <div class="metric__value">
                         4.3<span>★</span>
                     </div>
-                    <div class="metric-label">{{ $t['metric_rating_label'] }}</div>
+                    <div class="metric__label">{{ $t['metric_rating_label'] }}</div>
                 </div>
 
                 <div class="metric">
-                    <div class="metric-value metric-value-text" dir="ltr">7:00 – 10:00</div>
-                    <div class="metric-label">{{ $t['metric_hours_label'] }}</div>
+                    <div class="metric__value metric__value--text" dir="ltr">7:00 – 10:00</div>
+                    <div class="metric__label">{{ $t['metric_hours_label'] }}</div>
                 </div>
 
                 <div class="metric">
-                    <div class="metric-value metric-value-text">{{ $t['metric_location_value'] }}</div>
-                    <div class="metric-label">{{ $t['metric_location_label'] }}</div>
+                    <div class="metric__value metric__value--text">{{ $t['metric_location_value'] }}</div>
+                    <div class="metric__label">{{ $t['metric_location_label'] }}</div>
                 </div>
 
             </div>
@@ -223,125 +306,126 @@
 
         {{-- ══════════════ Services ══════════════ --}}
         <section class="section" id="services">
+            <div class="section__inner">
 
-            @php
-                $services = [
-                    ['icon' => 'fa-solid fa-car-side', 'name' => $t['service_exterior']],
-                    ['icon' => 'fa-solid fa-broom', 'name' => $t['service_interior']],
-                    ['icon' => 'fa-solid fa-soap', 'name' => $t['service_polish']],
-                    ['icon' => 'fa-solid fa-gears', 'name' => $t['service_engine']],
-                    ['icon' => 'fa-solid fa-spray-can-sparkles', 'name' => $t['service_sanitize']],
-                    ['icon' => 'fa-solid fa-circle-dot', 'name' => $t['service_tires']],
-                ];
-            @endphp
+                @php
+                    $services = [
+                        ['icon' => 'fa-solid fa-car-side', 'name' => $t['service_exterior']],
+                        ['icon' => 'fa-solid fa-broom', 'name' => $t['service_interior']],
+                        ['icon' => 'fa-solid fa-soap', 'name' => $t['service_polish']],
+                        ['icon' => 'fa-solid fa-gears', 'name' => $t['service_engine']],
+                        ['icon' => 'fa-solid fa-spray-can-sparkles', 'name' => $t['service_sanitize']],
+                        ['icon' => 'fa-solid fa-circle-dot', 'name' => $t['service_tires']],
+                    ];
+                @endphp
 
-            <div class="section-heading section-center">
-                <p class="section-tag">{{ $t['services_tag'] }}</p>
+                <div class="section-head">
+                    <span class="eyebrow">{{ $t['services_tag'] }}</span>
 
-                <h2 class="section-title">
-                    {{ $t['services_title_1'] }}
-                    <strong>{{ $t['services_title_2'] }}</strong>
-                </h2>
+                    <h2 class="section-title">
+                        {{ $t['services_title_1'] }}
+                        <em>{{ $t['services_title_2'] }}</em>
+                    </h2>
 
-                <p class="section-body">
-                    {{ $t['services_body'] }}
-                </p>
+                    <p class="section-body">
+                        {{ $t['services_body'] }}
+                    </p>
+                </div>
+
+                <div class="cw-services-grid">
+                    @foreach ($services as $service)
+                        <article class="cw-service-card">
+                            <div class="cw-service-card__icon">
+                                <i class="{{ $service['icon'] }}" aria-hidden="true"></i>
+                            </div>
+
+                            <div class="cw-service-card__name">
+                                {{ $service['name'] }}
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
             </div>
-
-            <div class="integrations-grid">
-                @foreach ($services as $service)
-                    <article class="integration-item">
-                        <div class="integration-icon">
-                            <i class="{{ $service['icon'] }}" aria-hidden="true"></i>
-                        </div>
-
-                        <div class="integration-name">
-                            {{ $service['name'] }}
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-
         </section>
 
         {{-- ══════════════ Hours & Map ══════════════ --}}
         <section class="section" id="visit">
+            <div class="section__inner">
 
-            <div class="section-heading section-center">
-                <p class="section-tag">{{ $t['visit_tag'] }}</p>
+                <div class="section-head">
+                    <span class="eyebrow">{{ $t['visit_tag'] }}</span>
 
-                <h2 class="section-title">
-                    {{ $t['visit_title_1'] }} <strong>{{ $t['visit_title_2'] }}</strong>
-                </h2>
+                    <h2 class="section-title">
+                        {{ $t['visit_title_1'] }} <em>{{ $t['visit_title_2'] }}</em>
+                    </h2>
 
-                <p class="section-body">
-                    {{ $t['visit_body'] }}
-                </p>
-            </div>
-
-            <div class="cta-card" style="padding-top: 0; overflow: hidden;">
-                <iframe
-                    src="https://www.google.com/maps?q=22.4498281,58.8103445&hl={{ $isArabic ? 'ar' : 'en' }}&z=16&output=embed"
-                    width="100%"
-                    height="360"
-                    style="border:0; border-radius: 24px; display: block;"
-                    allowfullscreen
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="{{ $t['map_title'] }}"
-                ></iframe>
-
-                <div class="hero-ctas" style="margin-top: 32px; justify-content: center;">
-                    <a
-                        href="https://maps.app.goo.gl/tunEtY2GrQZiyzsn6"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-primary"
-                    >
-                        {{ $t['get_directions'] }}
-                    </a>
+                    <p class="section-body">
+                        {{ $t['visit_body'] }}
+                    </p>
                 </div>
-            </div>
 
+                <div class="cw-map-card">
+                    <iframe
+                        src="https://www.google.com/maps?q=22.4498281,58.8103445&hl={{ $isArabic ? 'ar' : 'en' }}&z=16&output=embed"
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="{{ $t['map_title'] }}"
+                    ></iframe>
+
+                    <div class="hero__ctas" style="margin-top: 28px; justify-content: center;">
+                        <a
+                            href="https://maps.app.goo.gl/tunEtY2GrQZiyzsn6"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn--primary"
+                        >
+                            {{ $t['get_directions'] }}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
         {{-- ══════════════ CTA ══════════════ --}}
-        <section class="section cta-section" id="contact">
+        <section class="section section--tight" id="contact">
+            <div class="section__inner">
+                <div class="cta-band cta-band--card">
+                    <span class="eyebrow">{{ $t['cta_tag'] }}</span>
 
-            <div class="cta-card">
-                <p class="section-tag">{{ $t['cta_tag'] }}</p>
+                    <h2 class="cta-band__title">
+                        {{ $t['cta_title_1'] }}
+                        <em>{{ $t['cta_title_2'] }}</em>
+                    </h2>
 
-                <h2 class="section-title">
-                    {{ $t['cta_title_1'] }}
-                    <strong>{{ $t['cta_title_2'] }}</strong>
-                </h2>
+                    <p class="cta-band__desc">
+                        {{ $t['cta_body'] }}
+                    </p>
 
-                <p class="section-body">
-                    {{ $t['cta_body'] }}
-                </p>
+                    <div class="hero__ctas">
+                        <a
+                            href="https://www.google.com/maps/dir/?api=1&destination=22.4498281,58.8103445"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn--primary"
+                        >
+                            {{ $t['get_directions'] }}
+                        </a>
 
-                <div class="hero-ctas">
-                    <a
-                        href="https://www.google.com/maps/dir/?api=1&destination=22.4498281,58.8103445"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-primary"
-                    >
-                        {{ $t['get_directions'] }}
-                    </a>
-
-                    <a href="{{ route('home') }}" class="btn-secondary">
-                        {{ $t['visit_alyasi'] }}
-                    </a>
+                        <a href="{{ route('home') }}" class="btn btn--secondary">
+                            {{ $t['visit_alyasi'] }}
+                        </a>
+                    </div>
                 </div>
             </div>
-
         </section>
 
-        <footer class="footer-bar" style="max-width: 1120px; margin: 0 auto; padding: 0 40px 60px;">
-            <span class="footer-credit">{{ $t['footer_credit'] }}</span>
+        <footer class="cw-footer">
+            <span>{{ $t['footer_credit'] }}</span>
 
-            <div class="footer-links">
+            <div>
                 <a href="{{ route('home') }}">ALYASI Platform</a>
             </div>
         </footer>

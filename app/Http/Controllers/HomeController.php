@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommunityPost;
 use App\Models\Faq;
 use App\Models\NewsArticle;
 use App\Models\PageVisit;
@@ -47,6 +48,14 @@ class HomeController extends Controller
             ->inRandomOrder()
             ->get();
 
+        $communityHighlights = CommunityPost::query()
+            ->with('category')
+            ->active()
+            ->published()
+            ->ordered()
+            ->take(3)
+            ->get();
+
         $visitorsCount = PageVisit::query()
             ->distinct('ip_address')
             ->count('ip_address');
@@ -61,6 +70,7 @@ class HomeController extends Controller
                 'latestNews',
                 'technologies',
                 'faqs',
+                'communityHighlights',
                 'visitorsCount',
                 'yearsOfExperience'
             )

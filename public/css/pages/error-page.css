@@ -1,0 +1,59 @@
+/* صفحات الأخطاء (403/404/419/500/503) — مكوّن مشترك، هوية كحلي */
+
+body {
+    background: var(--color-accent-900);
+    background-image: radial-gradient(circle at 80% 0%, rgba(159, 176, 206, .16), transparent 55%);
+}
+
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+}
+
+.error-page-icon {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    margin-bottom: 32px;
+    border-radius: 28px;
+    border: 1px solid rgba(159, 176, 206, .2);
+    background: rgba(255, 255, 255, .06);
+    backdrop-filter: blur(18px);
+    font-size: 34px;
+    color: var(--color-accent-300);
+}
+
+.error-page-code {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff, var(--color-accent-300), var(--color-accent-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+}
+
+.error-page h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.error-page p {
+    max-width: 480px;
+    color: rgba(255, 255, 255, .72);
+    line-height: 1.9;
+    font-size: 1rem;
+    margin-bottom: 36px;
+}

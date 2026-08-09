@@ -1,0 +1,24 @@
+/* صفحة من نحن — لا يوجد مرجع تصميم مباشر، مبنية بنفس مكوّنات النظام */
+
+.about-stats { padding-top: 70px; padding-bottom: 40px; }
+.about-stats__item { text-align: center; }
+.about-stats__value { font-family: var(--font-heading); font-size: 40px; font-weight: 800; color: var(--color-accent-600); }
+.about-stats__label { font-size: 14px; color: rgba(20, 32, 46, .6); margin-top: 8px; }
+
+.about-section { padding-top: 60px; padding-bottom: 60px; }
+
+.about-mission { background: var(--color-surface); padding: 90px 0; }
+
+.about-value {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 30px 26px;
+    box-shadow: var(--shadow-sm);
+}
+.about-value h3 { font-size: 18px; margin-bottom: 10px; }
+.about-value p { color: rgba(20, 32, 46, .62); font-size: 14px; line-height: 1.8; margin: 0; }
+
+@media (max-width: 767px) {
+    .about-stats__value { font-size: 32px; }
+    .about-section, .about-mission { padding-top: 48px; padding-bottom: 48px; }
+}

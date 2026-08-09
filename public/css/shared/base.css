@@ -1,0 +1,309 @@
+/*
+ * ALYASI Shared Base — reset + عناصر مشتركة تتكرر عبر أكثر من صفحة
+ * (أزرار، حاوية، عنوان قسم، شارة/pill، بطاقة CTA، حالة الظهور بالسكرول).
+ * كل صفحة تبني فوق هذا الملف بملفها الخاص بـ public/css/pages/*.css
+ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: clip;
+}
+
+body[dir="rtl"] { direction: rtl; }
+body[dir="ltr"] { direction: ltr; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.3;
+    margin: 0;
+}
+
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+::selection { background: rgba(110, 110, 115, .35); }
+
+:focus-visible {
+    outline: 2px solid var(--color-accent-400);
+    outline-offset: 2px;
+}
+
+/* — حاوية عامة — */
+.container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+@media (max-width: 767px) {
+    .container { padding: 0 20px; }
+}
+
+/* — أزرار Pill — */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14.5px;
+    line-height: 1.2;
+    padding: 13px 26px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+    white-space: nowrap;
+}
+
+.btn--primary {
+    background: var(--color-accent-500);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover { background: var(--color-accent-600); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.btn--light {
+    background: var(--color-accent-300);
+    color: var(--color-accent-900);
+    font-weight: 800;
+    box-shadow: var(--shadow-md);
+}
+.btn--light:hover { background: #fff; transform: translateY(-2px); }
+
+.btn--outline {
+    background: transparent;
+    border-color: var(--color-accent-500);
+    color: var(--color-accent-600);
+}
+.btn--outline:hover { background: var(--color-accent-500); color: #fff; }
+
+.btn--ghost-light {
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .3);
+    color: #fff;
+}
+.btn--ghost-light:hover { background: rgba(255, 255, 255, .2); }
+
+.btn--block { width: 100%; }
+
+@media (max-width: 480px) {
+    .btn { width: 100%; }
+    .btn-row .btn { width: 100%; }
+}
+
+/* — شارة/Pill صغيرة (فوق العناوين، فلاتر، تصنيفات) — */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+}
+
+.pill__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent-300);
+    animation: alyasiPulse 2s ease-in-out infinite;
+}
+
+@keyframes alyasiPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+}
+
+/* شارة تصنيف/رقم فوق الصور والبطاقات */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+}
+
+.badge--status-upcoming { background: var(--color-accent-300); color: var(--color-accent-900); }
+.badge--status-ongoing { background: var(--color-status-ongoing-bg); color: var(--color-status-ongoing-fg); }
+.badge--status-ended { background: var(--color-accent-2-300); color: var(--color-accent-2-900); }
+
+/* — عنوان قسم مكرر بكل الصفحات — */
+.section-head {
+    max-width: 640px;
+    margin: 0 auto 44px;
+    text-align: center;
+}
+.section-head--start { margin-inline: 0; text-align: start; }
+.section-head__eyebrow {
+    color: var(--color-accent-600);
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+.section-head__title { font-size: 30px; }
+.section-head__title em { font-style: normal; color: var(--color-accent-600); }
+.section-head__desc {
+    color: rgba(20, 32, 46, .65);
+    font-size: 15px;
+    margin-top: 12px;
+}
+
+@media (max-width: 767px) {
+    .section-head__title { font-size: 24px; }
+}
+
+/* — بطاقة عامة بيضاء بظل — */
+.card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .4s ease, transform .4s ease;
+}
+.card--hover:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+
+/*
+ * شريط CTA كحلي — قسم رئيسي واسع بعرض المحتوى الرئيسي للصفحة (نفس عرض
+ * .container الذي تُبنى عليه شبكات البطاقات وعناوين الأقسام بكل صفحة)،
+ * مو بطاقة ضيقة بفراغات جانبية ضخمة. موحّد المقاس بكل صفحات الموقع —
+ * الاختلاف بين الصفحات فقط بالعنوان/الوصف/الأزرار داخل نفس القالب.
+ */
+.cta-band {
+    position: relative;
+    margin: 72px auto 88px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--color-accent-900);
+    background-image: radial-gradient(circle at 85% 20%, rgba(159, 176, 206, .2), transparent 60%);
+    padding: 64px 48px;
+    text-align: center;
+    color: #fff;
+}
+.cta-band__eyebrow { color: var(--color-accent-300); font-weight: 700; font-size: 13px; margin-bottom: 14px; }
+.cta-band__title { font-size: 34px; color: #fff; max-width: 760px; margin: 0 auto 18px; }
+.cta-band__title em { font-style: normal; color: var(--color-accent-300); }
+.cta-band__desc { color: rgba(255, 255, 255, .78); max-width: 700px; margin: 0 auto 32px; font-size: 16px; line-height: 1.85; }
+.cta-band__actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 767px) {
+    .cta-band { margin: 48px auto 56px; padding: 44px 24px; border-radius: 20px; }
+    .cta-band__title { font-size: 26px; }
+}
+
+/* — فلاتر Pill (خدمات/أعمال/أخبار) — */
+.filters {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+}
+.filters__btn {
+    border: 1.5px solid var(--color-accent-500);
+    background: transparent;
+    color: var(--color-accent-600);
+    border-radius: var(--radius-pill);
+    padding: 11px 22px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    transition: background .25s ease, color .25s ease;
+}
+.filters__btn:hover { background: rgba(44, 74, 124, .08); }
+.filters__btn.is-active { background: var(--color-accent-500); color: #fff; }
+
+@media (max-width: 767px) {
+    .filters { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; margin-inline: -20px; padding-inline: 20px; padding-bottom: 4px; }
+    .filters__btn { flex-shrink: 0; }
+}
+
+/* — Grid أعمدة قابلة لإعادة الاستخدام — */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+@media (max-width: 1023px) {
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+    .grid-3, .grid-2 { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* — حالة فارغة — */
+.empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.empty-state__title { font-size: 18px; margin-bottom: 8px; }
+.empty-state__desc { color: rgba(20, 32, 46, .6); font-size: 14px; }
+
+/* — تنبيهات نجاح/خطأ (فورمات التواصل/التعليقات/التقييمات) — */
+.form-alert {
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+.form-alert--success { background: rgba(63, 166, 107, .12); color: #1f7a45; border: 1px solid rgba(63, 166, 107, .3); }
+.form-alert--error { background: rgba(184, 60, 60, .1); color: #9c2b2b; border: 1px solid rgba(184, 60, 60, .3); }
+
+/* — عناصر النموذج المشتركة — */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.field__label { font-size: 13px; font-weight: 700; color: var(--color-text); }
+.field__control {
+    width: 100%;
+    font: inherit;
+    font-size: 14.5px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    transition: border-color .2s ease;
+}
+.field__control:focus-visible { border-color: var(--color-accent-500); }
+textarea.field__control { min-height: 130px; resize: vertical; }
+.field__error { color: #9c2b2b; font-size: 12.5px; }
+.field__checkbox { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: rgba(20, 32, 46, .75); line-height: 1.7; }
+.field__checkbox input { margin-top: 4px; }
+
+/* — تقييم بالنجوم (عرض) — */
+.stars { display: inline-flex; gap: 2px; color: var(--color-accent-500); font-size: 14px; }
+
+/* — reveal on scroll: تُفعَّل عبر shared/reveal.js بإضافة is-visible — */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1; transform: none; transition: none; }
+    .pill__dot { animation: none; }
+}

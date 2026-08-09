@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
@@ -110,6 +111,15 @@ Route::prefix('news')
             ->where('slug', '[^/]+')
             ->name('show');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Public Events
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/events', [EventController::class, 'index'])
+    ->name('events.index');
 
 /*
 |--------------------------------------------------------------------------

@@ -1,62 +1,30 @@
 @extends('layouts.app')
 
-@section('title', __('legal.terms_title') . ' | ' . __('home.brand'))
+@section('title', __('legal.terms_title').' — ALYASI')
+@section('meta_description', __('legal.terms_intro'))
 
 @push('styles')
-    <link
-        rel="stylesheet"
-        href="{{ versioned_asset('assets/pages/css/pages.css') }}"
-    >
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/legal.css') }}">
 @endpush
 
 @section('content')
 
-    <section class="page-hero">
+    <x-page-hero :title="__('legal.terms_title')" />
 
-        <div class="container">
+    <section class="container legal-section">
+        <p class="legal-updated">{{ __('legal.terms_updated_at', ['date' => now()->translatedFormat('d.m.Y')]) }}</p>
+        <p class="legal-intro">{{ __('legal.terms_intro') }}</p>
+        <p class="legal-notice">{{ __('legal.legal_notice') }}</p>
 
-            <span class="page-hero-badge">
-                <i class="fa-solid fa-file-contract" aria-hidden="true"></i>
-                {{ __('legal.terms_title') }}
-            </span>
-
-            <h1 class="page-hero-title">
-                {{ __('legal.terms_title') }}
-            </h1>
-
+        <div class="legal-body">
+            @foreach (__('legal.terms_sections') as $section)
+                <div class="legal-item">
+                    <h2>{{ $section['title'] }}</h2>
+                    <p>{{ $section['body'] }}</p>
+                </div>
+            @endforeach
         </div>
-
-    </section>
-
-    <section class="section">
-
-        <div class="container">
-
-            <div style="text-align:center;">
-                <span class="legal-updated">
-                    {{ __('legal.terms_updated_at', ['date' => now()->translatedFormat('Y/m/d')]) }}
-                </span>
-            </div>
-
-            <p class="legal-intro">
-                {{ __('legal.terms_intro') }}
-            </p>
-
-            <div class="legal-sections">
-
-                @foreach (__('legal.terms_sections') as $section)
-
-                    <div class="legal-section">
-                        <h2>{{ $section['title'] }}</h2>
-                        <p>{{ $section['body'] }}</p>
-                    </div>
-
-                @endforeach
-
-            </div>
-
-        </div>
-
     </section>
 
 @endsection

@@ -81,6 +81,25 @@ class NewsArticle extends Model
         );
     }
 
+    /**
+     * جلب الرابط الدائم حسب اللغة (يفضّل اللغة الحالية، ثم أي لغة أخرى).
+     */
+    public function permalink(?string $locale = null): ?Permalink
+    {
+        $locale ??= app()->getLocale();
+
+        return $this->permalinks->firstWhere('locale', $locale)
+            ?? $this->permalinks->first();
+    }
+
+    /**
+     * جلب نص الرابط الدائم حسب اللغة.
+     */
+    public function slug(?string $locale = null): ?string
+    {
+        return $this->permalink($locale)?->slug;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

@@ -1,0 +1,234 @@
+/* ALYASI-Home.dc.html */
+
+/* — HERO — */
+.home-hero {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.home-hero__bg { position: absolute; inset: 0; z-index: 0; }
+.home-hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+.home-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(11, 31, 58, .55) 0%, rgba(11, 31, 58, .30) 45%, var(--color-bg) 97%);
+}
+.home-hero__content { position: relative; z-index: 2; padding-top: 110px; padding-bottom: 56px; width: 100%; }
+.home-hero__inner { max-width: 740px; }
+
+.home-hero__badge { background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .25); color: #fff; margin-bottom: 20px; }
+
+.home-hero__title { font-size: clamp(30px, 5vw, 58px); color: #fff; margin: 0 0 18px; line-height: 1.2; }
+.home-hero__title span { color: var(--color-accent-300); }
+
+.home-hero__desc { font-size: 17px; color: rgba(255, 255, 255, .9); max-width: 520px; margin: 0 0 30px; line-height: 1.8; }
+
+.home-hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+
+.home-hero__metrics { display: flex; gap: 40px; flex-wrap: wrap; }
+.home-hero__metric-value { font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #fff; line-height: 1.2; }
+.home-hero__metric-label { font-size: 13px; color: rgba(255, 255, 255, .75); margin-top: 6px; }
+.home-hero__metric-divider { width: 1px; background: rgba(255, 255, 255, .25); }
+
+@media (max-width: 767px) {
+    .home-hero { min-height: 0; }
+    .home-hero__content { padding-top: 128px; padding-bottom: 48px; }
+    .home-hero__metrics { gap: 24px; }
+}
+
+/* — SPOTLIGHT — */
+.home-spotlight {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 56px;
+    align-items: center;
+    padding-top: 90px;
+    padding-bottom: 90px;
+}
+.home-spotlight__media {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 6 / 5;
+}
+.home-spotlight__media img { width: 100%; height: 100%; object-fit: cover; }
+.home-spotlight__number {
+    position: absolute;
+    top: 18px;
+    inset-inline-end: 18px;
+    background: #fff;
+    color: var(--color-accent-600);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 14px;
+    padding: 9px 15px;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-md);
+}
+.home-spotlight__eyebrow { display: inline-flex; align-items: center; gap: 8px; }
+.home-spotlight__eyebrow-line { width: 22px; height: 1px; background: var(--color-accent-300); }
+.home-spotlight__desc { color: rgba(20, 32, 46, .7); line-height: 1.85; font-size: 15px; margin: 16px 0 26px; }
+.home-spotlight__actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.home-spotlight__link { color: var(--color-accent-600); font-weight: 700; font-size: 14.5px; padding: 12px 8px; }
+
+@media (max-width: 1023px) {
+    .home-spotlight { grid-template-columns: 1fr; padding-top: 64px; padding-bottom: 64px; }
+}
+
+/* — PILLARS — */
+.home-pillars { background: var(--color-surface); padding: 90px 0; }
+.home-pillar {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 34px 28px;
+    box-shadow: var(--shadow-sm);
+}
+.home-pillar__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--color-accent-100);
+    color: var(--color-accent-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.home-pillar__icon--alt { background: var(--color-accent-2-100); color: var(--color-accent-2-700); }
+.home-pillar h3 { font-size: 18px; margin-bottom: 8px; }
+.home-pillar p { color: rgba(20, 32, 46, .62); font-size: 14px; line-height: 1.8; margin: 0; }
+
+/* — عنوان قسم عام مع رابط (خدمات/أعمال/أخبار/مجتمع) — */
+.home-section { padding-top: 90px; padding-bottom: 90px; }
+.home-section__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+}
+
+@media (max-width: 767px) {
+    .home-section { padding-top: 56px; padding-bottom: 56px; }
+    .home-pillars, .home-why, .home-community, .home-faq { padding-top: 56px; padding-bottom: 56px; }
+    .home-section__head { align-items: flex-start; }
+}
+
+/* — SERVICES GRID CARDS — */
+.home-service-card {
+    position: relative;
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    box-shadow: var(--shadow-sm);
+}
+.home-service-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.home-service-card:hover img { transform: scale(1.05); }
+.home-service-card__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(11, 31, 58, .92) 100%);
+}
+.home-service-card__text {
+    position: absolute;
+    inset-inline: 18px;
+    bottom: 18px;
+    color: #fff;
+}
+.home-service-card__text span { display: block; font-size: 12px; opacity: .8; margin-bottom: 6px; font-weight: 700; }
+.home-service-card__text strong { font-family: var(--font-heading); font-weight: 700; font-size: 16px; line-height: 1.4; }
+
+/* — WHY ALYASI — */
+.home-why { background: var(--color-accent-900); padding: 90px 0; color: #fff; }
+.home-why__head { max-width: 600px; margin-bottom: 48px; }
+.home-why__eyebrow { color: var(--color-accent-300); font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+.home-why__title { font-size: 30px; color: #fff; margin: 0 0 12px; }
+.home-why__title em { font-style: normal; color: var(--color-accent-300); }
+.home-why__desc { color: rgba(255, 255, 255, .7); font-size: 15px; margin: 0; }
+.home-why__item { border-top: 2px solid rgba(255, 255, 255, .2); padding-top: 22px; }
+.home-why__num { font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-300); font-weight: 800; margin-bottom: 14px; }
+.home-why__item h3 { font-size: 19px; color: #fff; margin: 0 0 8px; }
+.home-why__item p { color: rgba(255, 255, 255, .68); font-size: 14px; line-height: 1.8; margin: 0; }
+
+/* — WORK / NEWS / COMMUNITY CARDS (تشترك ببنية card) — */
+.home-work-card__media { aspect-ratio: 5 / 4; overflow: hidden; }
+.home-work-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.home-work-card__body { padding: 18px; }
+.home-work-card__tag { color: var(--color-accent-600); font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.home-work-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 15px; line-height: 1.5; color: var(--color-text); }
+
+.home-news-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.home-news-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.home-news-card__body { padding: 22px; }
+.home-news-card__date { font-size: 12px; color: rgba(20, 32, 46, .55); margin-bottom: 10px; }
+.home-news-card__body h3 { font-size: 16px; line-height: 1.6; margin: 0 0 12px; color: var(--color-text); }
+.home-news-card__link { color: var(--color-accent-600); font-weight: 700; font-size: 13px; }
+
+.home-community { background: var(--color-surface); padding: 90px 0; }
+.home-community-card__media { aspect-ratio: 16 / 10; position: relative; overflow: hidden; }
+.home-community-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.home-community-card__badge { position: absolute; top: 12px; inset-inline-end: 12px; }
+.home-community-card__body { padding: 20px; }
+.home-community-card__meta { font-size: 12px; color: rgba(20, 32, 46, .55); margin-bottom: 8px; }
+.home-community-card__body h3 { font-size: 15px; line-height: 1.6; margin: 0; color: var(--color-text); }
+
+/* — TECH MARQUEE — */
+.home-tech { background: var(--color-surface); padding: 80px 0; overflow: hidden; }
+.home-tech__row { display: flex; gap: 14px; margin-bottom: 14px; width: max-content; }
+.home-tech__row--left { animation: alyasiMarqueeL 32s linear infinite; }
+.home-tech__row--right { animation: alyasiMarqueeR 32s linear infinite; margin-bottom: 0; }
+.home-tech:hover .home-tech__row { animation-play-state: paused; }
+.home-tech__pill {
+    background: #fff;
+    border-radius: var(--radius-pill);
+    padding: 13px 24px;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+.home-tech__pill--accent { background: var(--color-accent-500); color: #fff; }
+
+@keyframes alyasiMarqueeL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes alyasiMarqueeR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .home-tech__row { animation: none; }
+}
+
+/* — FAQ — */
+.home-faq { padding: 90px 0; }
+.home-faq__container { max-width: 880px; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+.faq-item { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+.faq-item__question {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-text);
+}
+.faq-item__chevron { flex-shrink: 0; color: var(--color-accent-500); transition: transform .35s ease; }
+.faq-item.is-open .faq-item__chevron { transform: rotate(180deg); }
+.faq-item__answer-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+.faq-item.is-open .faq-item__answer-wrap { grid-template-rows: 1fr; }
+.faq-item__answer-inner { overflow: hidden; }
+.faq-item__answer { margin: 0; padding: 0 24px 22px; color: rgba(20, 32, 46, .65); font-size: 14px; line-height: 1.85; }
+
+@media (max-width: 767px) {
+    .home-spotlight__media { aspect-ratio: 4 / 3; }
+}

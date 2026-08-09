@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsArticle;
+use App\Models\NewsCategory;
 use App\Models\Permalink;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class NewsController extends Controller
@@ -12,18 +14,36 @@ class NewsController extends Controller
     /**
      * عرض الأخبار المنشورة.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $articles = NewsArticle::query()
+        $categories = NewsCategory::query()
+            ->active()
+            ->ordered()
+            ->get();
+
+        $articlesQuery = NewsArticle::query()
             ->with([
                 'category',
                 'permalinks',
             ])
-            ->published()
-            ->latestPublished()
-            ->paginate(12);
+            ->published();
 
-        return view('news.index', compact('articles'));
+        if ($request->filled('category')) {
+            $articlesQuery->whereHas(
+                'category',
+                fn ($query) => $query->where(
+                    'slug',
+                    $request->string('category')->toString()
+                )
+            );
+        }
+
+        $articles = $articlesQuery
+            ->latestPublished()
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('news.index', compact('articles', 'categories'));
     }
 
     /**

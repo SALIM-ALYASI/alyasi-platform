@@ -62,6 +62,29 @@ class CommunityPost extends Model
     }
 
     /**
+     * حالة الفعالية (قادمة / جارية / منتهية) بناءً على تاريخ البداية والنهاية.
+     */
+    public function getEventStatusAttribute(): ?string
+    {
+        if (! $this->event_start_at) {
+            return null;
+        }
+
+        $now = now();
+        $end = $this->event_end_at ?? $this->event_start_at;
+
+        if ($now->lessThan($this->event_start_at)) {
+            return 'upcoming';
+        }
+
+        if ($now->greaterThan($end)) {
+            return 'ended';
+        }
+
+        return 'ongoing';
+    }
+
+    /**
      * تعليقات المنشور.
      */
     public function comments(): HasMany

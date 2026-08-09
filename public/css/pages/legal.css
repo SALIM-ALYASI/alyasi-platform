@@ -1,0 +1,23 @@
+/* صفحات الخصوصية والشروط — لا يوجد مرجع تصميم مباشر، مبنية بنفس مكوّنات النظام */
+
+.legal-section { max-width: 820px; padding-top: 60px; padding-bottom: 90px; }
+
+.legal-updated { font-size: 13px; color: rgba(20, 32, 46, .5); margin-bottom: 18px; }
+.legal-intro { font-size: 15.5px; line-height: 1.9; color: rgba(20, 32, 46, .78); margin-bottom: 18px; }
+.legal-notice {
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    font-size: 13px;
+    color: rgba(20, 32, 46, .65);
+    line-height: 1.8;
+    margin-bottom: 44px;
+}
+
+.legal-body { display: flex; flex-direction: column; gap: 28px; }
+.legal-item h2 { font-size: 17px; margin-bottom: 8px; }
+.legal-item p { font-size: 14.5px; line-height: 1.9; color: rgba(20, 32, 46, .72); margin: 0; }
+
+@media (max-width: 767px) {
+    .legal-section { padding-top: 40px; padding-bottom: 56px; }
+}

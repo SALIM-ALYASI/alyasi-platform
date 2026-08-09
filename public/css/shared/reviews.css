@@ -1,0 +1,28 @@
+/* قسم التقييمات — مشترك بين تفاصيل الخدمة وتفاصيل العمل (غير موجود بالتصميم، امتداد ضروري وظيفيًا) */
+
+.reviews-block { max-width: 720px; margin: 0 auto; padding: 40px 0 90px; }
+.reviews-block__title { margin-bottom: 28px; }
+
+.reviews-block__list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+.reviews-block__item { background: #fff; border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); }
+.reviews-block__item-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.reviews-block__item-body { font-size: 14px; color: rgba(20, 32, 46, .75); line-height: 1.8; margin: 0 0 10px; }
+.reviews-block__item-date { font-size: 12px; color: rgba(20, 32, 46, .5); }
+.reviews-block__empty { color: rgba(20, 32, 46, .55); font-size: 14px; margin-bottom: 36px; }
+
+.reviews-block__form { background: var(--color-surface); border-radius: var(--radius-lg); padding: 28px; }
+.reviews-block__rating-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+.reviews-block__rating-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+.reviews-block__rating-option span { font-size: 26px; color: var(--color-accent-200); cursor: pointer; }
+.reviews-block__rating-option input:checked ~ span,
+.reviews-block__rating-option:has(input:checked) span,
+.reviews-block__rating-option:has(~ .reviews-block__rating-option input:checked) span { color: var(--color-accent-500); }
+.reviews-block__rating-input:hover .reviews-block__rating-option span { color: var(--color-accent-200); }
+.reviews-block__rating-option:hover ~ .reviews-block__rating-option span,
+.reviews-block__rating-option:hover span { color: var(--color-accent-500); }
+
+.reviews-block__note { font-size: 12.5px; color: rgba(20, 32, 46, .55); margin-top: 12px; margin-bottom: 0; }
+
+@media (max-width: 767px) {
+    .reviews-block__form { padding: 20px; }
+}

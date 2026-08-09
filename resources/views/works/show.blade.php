@@ -1,302 +1,91 @@
 @extends('layouts.app')
 
-@section('title', $work->title . ' | ALYASI')
+@section('title', $work->title.' — ALYASI')
+@section('meta_description', \Illuminate\Support\Str::limit($work->short_description, 160))
 
 @push('styles')
-<link
-    rel="stylesheet"
-    href="{{ versioned_asset('assets/works/css/work-show.css') }}"
->
-<link
-    rel="stylesheet"
-    href="{{ versioned_asset('assets/reviews/css/reviews.css') }}"
->
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/works-show.css') }}">
 @endpush
 
 @section('content')
 
-<main class="work-show-page">
-
-    <section class="work-show-hero">
-
-        <div class="works-container">
-
-            <a
-                href="{{ route('works.index') }}"
-                class="work-show-back"
-            >
-                <i
-                    class="fa-solid {{ app()->isLocale('ar')
-                        ? 'fa-arrow-right'
-                        : 'fa-arrow-left' }}"
-                    aria-hidden="true"
-                ></i>
-
-                {{ __('works.show.back_to_works') }}
-            </a>
-
-            <div class="work-show-hero__content">
-
-                <span class="works-section-tag">
-                    {{ __('works.types.' . $work->type) }}
-                </span>
-
-                <h1>
-                    {{ $work->title }}
-                </h1>
-
-                @if($work->short_description)
-
-                    <p>
-                        {{ $work->short_description }}
-                    </p>
-
-                @endif
-
-                <div class="work-show-hero__meta">
-
-                    @if($work->service)
-
-                        <span>
-
-                            <i class="fa-solid fa-briefcase"></i>
-
-                            {{ $work->service->localizedTitle() }}
-
-                        </span>
-
-                    @endif
-
-                    @if($work->client_name)
-
-                        <span>
-
-                            <i class="fa-regular fa-user"></i>
-
-                            {{ $work->client_name }}
-
-                        </span>
-
-                    @endif
-
-                    @if($work->completed_at)
-
-                        <span>
-
-                            <i class="fa-regular fa-calendar"></i>
-
-                            {{ $work->completed_at->format('Y/m/d') }}
-
-                        </span>
-
-                    @endif
-
-                </div>
-
-                <div class="work-show-hero__actions">
-
-                    @if($work->work_url)
-
-                        <a
-                            href="{{ $work->work_url }}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="work-show-button work-show-button--primary"
-                        >
-                            <i class="fa-solid fa-up-right-from-square"></i>
-
-                            {{ __('works.show.visit_project') }}
-                        </a>
-
-                    @endif
-
-                    <a
-                        href="{{ route('contact') }}"
-                        class="work-show-button work-show-button--outline"
-                    >
-                        <i class="fa-regular fa-paper-plane"></i>
-
-                        {{ __('works.cta.contact') }}
-                    </a>
-
-                </div>
-
-            </div>
-
-            @if($work->cover_image)
-
-                <div class="work-show-hero__media">
-
-                    <img
-                        src="{{ asset('storage/'.$work->cover_image) }}"
-                        alt="{{ $work->title }}"
-                    >
-
-                </div>
-
-            @endif
-
+    <section class="container work-detail__hero-wrap">
+        <div class="work-detail__hero-media">
+            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}">
         </div>
-
     </section>
 
-    <section class="work-show-content">
+    <section class="container work-detail__body">
+        <span class="badge">{{ $work->type_label }}</span>
+        <h1 class="work-detail__title">{{ $work->title }}</h1>
 
-        <div class="works-container">
+        <div class="grid-3 work-detail__info-grid">
+            <div class="work-detail__info-card">
+                <div class="work-detail__info-label">{{ __('works.show.client') }}</div>
+                <div class="work-detail__info-value">{{ $work->client_name ?: '—' }}</div>
+            </div>
+            <div class="work-detail__info-card">
+                <div class="work-detail__info-label">{{ __('works.show.completion_date') }}</div>
+                <div class="work-detail__info-value">{{ optional($work->completed_at)->translatedFormat('d.m.Y') ?: '—' }}</div>
+            </div>
+            <div class="work-detail__info-card">
+                <div class="work-detail__info-label">{{ __('works.show.work_type') }}</div>
+                <div class="work-detail__info-value">{{ $work->type_label }}</div>
+            </div>
+        </div>
 
-            <div class="work-show-content__grid">
+        <p class="work-detail__desc">{{ $work->description ?: __('works.show.no_description') }}</p>
 
-                <div class="work-show-panel">
+        @if ($work->technologies->isNotEmpty())
+            <h3 class="work-detail__section-title">{{ __('works.show.technologies') }}</h3>
+            <div class="work-detail__tags">
+                @foreach ($work->technologies as $tech)
+                    <span class="work-detail__tag">{{ $tech->name }}</span>
+                @endforeach
+            </div>
+        @endif
 
-                    <div class="work-show-panel__header">
-
-                        <span>
-                            {{ __('works.show.about_work') }}
-                        </span>
-
-                        <h2>
-                            {{ __('works.show.project_details') }}
-                        </h2>
-
+        @if ($work->images->isNotEmpty())
+            <h3 class="work-detail__section-title">{{ __('works.show.gallery') }}</h3>
+            <div class="grid-3 work-detail__gallery">
+                @foreach ($work->images as $image)
+                    <div class="work-detail__gallery-item">
+                        <img src="{{ media_url($image->image) }}" alt="{{ $image->alt_text ?: $work->title }}" loading="lazy">
                     </div>
+                @endforeach
+            </div>
+        @endif
 
-                    <div class="work-show-panel__body">
+        @if ($work->work_url)
+            <a href="{{ $work->work_url }}" target="_blank" rel="noopener" class="btn btn--primary work-detail__visit">{{ __('works.show.visit_project') }}</a>
+        @endif
+    </section>
 
-                        <div class="work-show-description">
+    @if ($relatedWorks->isNotEmpty())
+        <section class="work-detail__related">
+            <div class="container">
+                <div class="section-head__eyebrow">{{ __('works.show.related_tag') }}</div>
+                <h2 class="section-head__title work-detail__related-title">{{ __('works.show.related_title') }}</h2>
 
-                            {!! nl2br(e($work->description ?: __('works.show.no_description'))) !!}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <aside class="work-show-panel">
-
-                    <div class="work-show-panel__header">
-
-                        <span>
-                            {{ __('works.show.project_details') }}
-                        </span>
-
-                        <h2>
-                            {{ __('works.show.project_details') }}
-                        </h2>
-
-                    </div>
-
-                    <div class="work-show-panel__body">
-
-                        <div class="work-show-details">
-
-                            @if($work->service)
-
-                                <div class="work-show-detail">
-
-                                    <div class="work-show-detail__icon">
-                                        <i class="fa-solid fa-briefcase"></i>
-                                    </div>
-
-                                    <div class="work-show-detail__content">
-
-                                        <small>
-                                            {{ __('works.show.service') }}
-                                        </small>
-
-                                        <strong>
-                                            {{ $work->service->localizedTitle() }}
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-                            @endif
-
-                            @if($work->client_name)
-
-                                <div class="work-show-detail">
-
-                                    <div class="work-show-detail__icon">
-                                        <i class="fa-regular fa-user"></i>
-                                    </div>
-
-                                    <div class="work-show-detail__content">
-
-                                        <small>
-                                            {{ __('works.show.client') }}
-                                        </small>
-
-                                        <strong>
-                                            {{ $work->client_name }}
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-                            @endif
-
-                            @if($work->completed_at)
-
-                                <div class="work-show-detail">
-
-                                    <div class="work-show-detail__icon">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </div>
-
-                                    <div class="work-show-detail__content">
-
-                                        <small>
-                                            {{ __('works.show.completion_date') }}
-                                        </small>
-
-                                        <strong>
-                                            {{ $work->completed_at->format('Y/m/d') }}
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-                            @endif
-
-                        </div>
-
-                        @if($work->technologies->isNotEmpty())
-
-                            <div class="work-show-technologies">
-
-                                @foreach($work->technologies as $technology)
-
-                                    <span>
-
-                                        {{ $technology->name }}
-
-                                    </span>
-
-                                @endforeach
-
+                <div class="grid-3">
+                    @foreach ($relatedWorks as $related)
+                        <a href="{{ route('works.show', $related) }}" class="card card--hover work-detail__related-card">
+                            <div class="work-detail__related-media">
+                                <img src="{{ media_url($related->cover_image) }}" alt="{{ $related->title }}" loading="lazy">
                             </div>
-
-                        @endif
-
-                    </div>
-
-                </aside>
-
+                            <div class="work-detail__related-body">
+                                <div class="work-detail__related-tag">{{ $related->type_label }}</div>
+                                <div class="work-detail__related-title-text">{{ $related->title }}</div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
             </div>
+        </section>
+    @endif
 
-        </div>
-
+    <section id="reviews" class="container work-detail__reviews">
+        <x-reviews :reviews="$work->approvedReviews" action="{{ route('works.reviews.store', $work) }}" />
     </section>
-
-    @include('partials.reviews', [
-        'reviews' => $work->approvedReviews,
-        'reviewFormAction' => route('works.reviews.store', $work),
-    ])
-
-</main>
 
 @endsection

@@ -1,0 +1,65 @@
+/* Hero مشترك لصفحات: الخدمات / الأعمال / الأخبار / المجتمع (نمط متطابق بالتصميم) */
+
+.page-hero {
+    position: relative;
+    padding: 170px 0 90px;
+    overflow: hidden;
+}
+
+.page-hero--solid {
+    background: var(--color-accent-900);
+    background-image: radial-gradient(circle at 85% 20%, rgba(159, 176, 206, .18), transparent 60%);
+}
+
+.page-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.page-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.page-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(11, 31, 58, .88), rgba(11, 31, 58, .72));
+}
+
+.page-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    text-align: center;
+    margin-inline: auto;
+}
+
+.page-hero__badge {
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    margin-bottom: 22px;
+}
+
+.page-hero__title {
+    font-size: clamp(30px, 5vw, 52px);
+    color: #fff;
+    margin: 0 0 20px;
+    line-height: 1.2;
+}
+.page-hero__title em { font-style: normal; color: var(--color-accent-300); }
+
+.page-hero__desc {
+    font-size: 17px;
+    color: rgba(255, 255, 255, .82);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.85;
+}
+
+@media (max-width: 767px) {
+    .page-hero { padding: 130px 0 60px; }
+    .page-hero__desc { font-size: 15px; }
+}

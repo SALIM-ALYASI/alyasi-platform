@@ -9,8 +9,10 @@ use App\Models\ContactMessage;
 use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
+use App\Models\SocialLink;
 use App\Models\Work;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::defaultView('components.pagination');
+        Paginator::defaultSimpleView('components.pagination');
+
         Relation::enforceMorphMap([
             'service' => Service::class,
             'work' => Work::class,
@@ -49,6 +54,12 @@ class AppServiceProvider extends ServiceProvider
                 'pendingCommunityCommentsCount' => CommunityComment::query()->pending()->count(),
                 'pendingReviewsCount' => Review::query()->pending()->count(),
                 'newMessagesCount' => ContactMessage::query()->new()->count(),
+            ]);
+        });
+
+        View::composer('components.footer', function ($view) {
+            $view->with([
+                'footerSocialLinks' => SocialLink::query()->active()->ordered()->get(),
             ]);
         });
     }

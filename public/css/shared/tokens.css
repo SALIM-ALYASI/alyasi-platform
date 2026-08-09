@@ -1,0 +1,62 @@
+/*
+ * ALYASI Design Tokens
+ * المرجع: design_handoff_alyasi_redesign/*.dc.html (متغيرات :root في كل ملف)
+ * هوية الشركة المعتمدة: #0B1F3A (كحلي) / #FFFFFF / #6E6E73 (رمادي)
+ */
+
+:root {
+    --color-bg: #F7F8FA;
+    --color-surface: #ECEFF3;
+    --color-text: #14202E;
+    --color-divider: rgba(20, 32, 46, .12);
+
+    /* رمادي Navy — التدرّج الأساسي (accent) */
+    --color-accent-100: #EAEEF5;
+    --color-accent-200: #CBD5E6;
+    --color-accent-300: #9FB0CE;
+    --color-accent-400: #5E76A8;
+    --color-accent-500: #2C4A7C;
+    --color-accent-600: #1B3560;
+    --color-accent-700: #122745;
+    --color-accent-800: #0F1F38;
+    --color-accent-900: #0B1F3A;
+
+    /* رمادي غرافيت — التدرّج الثانوي (accent-2) */
+    --color-accent-2-100: #F2F2F3;
+    --color-accent-2-200: #E3E3E5;
+    --color-accent-2-300: #C7C7CB;
+    --color-accent-2-400: #A8A8AD;
+    --color-accent-2-500: #8A8A90;
+    --color-accent-2-600: #6E6E73;
+    --color-accent-2-700: #565659;
+    --color-accent-2-800: #3E3E41;
+    --color-accent-2-900: #29292B;
+
+    /* حالات الفعاليات/الشارات */
+    --color-status-ongoing-bg: #3FA66B;
+    --color-status-ongoing-fg: #ffffff;
+
+    --font-heading: "Noto Kufi Arabic", system-ui, sans-serif;
+    --font-heading-weight: 700;
+    --font-body: "Tajawal", system-ui, sans-serif;
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 1px 3px rgba(11, 31, 58, .10);
+    --shadow-md: 0 8px 24px rgba(11, 31, 58, .12);
+    --shadow-lg: 0 20px 48px rgba(11, 31, 58, .18);
+
+    --container-max: 1280px;
+    --header-height: 72px;
+
+    /*
+     * نقاط توقف الاستجابة المعتمدة بكل ملفات public/css/pages/*.css:
+     * ديسكتوب كامل  ≥ 1280px  (تطابق المرجع)
+     * تابلت         768–1279px
+     * جوال          < 768px
+     * جوال صغير     < 480px (تحسينات إضافية عند الحاجة)
+     */
+}

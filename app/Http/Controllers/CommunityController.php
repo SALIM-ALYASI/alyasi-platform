@@ -22,7 +22,8 @@ class CommunityController extends Controller
         $postsQuery = CommunityPost::query()
             ->with('category')
             ->active()
-            ->published();
+            ->published()
+            ->where('type', '!=', 'event');
 
         if ($request->filled('category')) {
             $postsQuery->whereHas('category', function ($query) use ($request) {
@@ -38,6 +39,7 @@ class CommunityController extends Controller
             ->with('category')
             ->active()
             ->published()
+            ->where('type', '!=', 'event')
             ->featured()
             ->ordered()
             ->limit(3)

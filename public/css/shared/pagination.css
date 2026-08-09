@@ -1,0 +1,29 @@
+/* ترقيم الصفحات المشترك (خدمات/أعمال/أخبار/مجتمع) */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+}
+
+.pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: var(--shadow-sm);
+}
+.pagination__link:hover { background: var(--color-accent-100); color: var(--color-accent-700); }
+.pagination__link--active { background: var(--color-accent-500); color: #fff; }
+.pagination__link--disabled { opacity: .4; }
+.pagination__link--dots { box-shadow: none; background: transparent; }

@@ -1,0 +1,61 @@
+/* SiteFooter.dc.html — الفوتر المشترك */
+
+.site-footer {
+    background: var(--color-accent-900);
+    color: #fff;
+    padding: 70px 0 30px;
+}
+
+.site-footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+}
+
+.site-footer__brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.site-footer__logo { height: 34px; filter: brightness(0) invert(1); }
+.site-footer__brand-name { font-family: var(--font-heading); font-weight: 800; font-size: 19px; color: #fff; }
+.site-footer__desc { color: rgba(255, 255, 255, .65); font-size: 14px; line-height: 1.9; max-width: 280px; margin: 0; }
+
+.site-footer__heading { color: #fff; font-size: 15px; margin-bottom: 18px; }
+.site-footer__links { display: flex; flex-direction: column; gap: 12px; }
+.site-footer__links a { color: rgba(255, 255, 255, .68); font-size: 14px; }
+.site-footer__links a:hover { color: var(--color-accent-300); }
+
+.site-footer__socials { display: flex; gap: 10px; flex-wrap: wrap; }
+.site-footer__social {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+}
+.site-footer__social:hover { background: var(--color-accent-300); color: var(--color-accent-900); }
+
+.site-footer__bottom {
+    padding-top: 26px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, .55);
+}
+.site-footer__legal { display: flex; gap: 20px; }
+.site-footer__legal a:hover { color: #fff; }
+
+@media (max-width: 1023px) {
+    .site-footer__top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 767px) {
+    .site-footer { padding: 48px 0 24px; }
+    .site-footer__top { grid-template-columns: 1fr; gap: 32px; padding-bottom: 32px; }
+    .site-footer__bottom { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

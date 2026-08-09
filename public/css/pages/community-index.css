@@ -1,0 +1,18 @@
+/* ALYASI-Community.dc.html */
+
+.community-section { padding-top: 90px; padding-bottom: 90px; }
+
+.community-card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.community-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.community-card__badge { position: absolute; top: 14px; inset-inline-end: 14px; }
+.community-card__body { padding: 22px; }
+.community-card__meta { font-size: 12px; color: rgba(20, 32, 46, .55); margin-bottom: 10px; }
+.community-card__title { font-size: 17px; line-height: 1.6; margin-bottom: 12px; color: var(--color-text); }
+.community-card__excerpt { color: rgba(20, 32, 46, .62); font-size: 14px; line-height: 1.8; margin-bottom: 16px; }
+.community-card__link { color: var(--color-accent-600); font-weight: 700; font-size: 13.5px; }
+
+.community-pagination { display: flex; justify-content: center; }
+
+@media (max-width: 767px) {
+    .community-section { padding-top: 56px; padding-bottom: 56px; }
+}

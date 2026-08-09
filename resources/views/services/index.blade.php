@@ -1,217 +1,74 @@
 @extends('layouts.app')
 
-@section('title', __('services.meta_title', [
-    'brand' => __('home.brand'),
-]))
+@section('title', __('services.meta_title', ['brand' => 'ALYASI']))
+@section('meta_description', __('services.meta_description'))
 
-@section('description', __('services.meta_description'))
+@push('styles')
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/services-index.css') }}">
+@endpush
 
 @section('content')
 
-<section
-    class="hero hero-small"
-    id="services"
->
-    <div class="hero-grid"></div>
+    <x-page-hero
+        :badge="__('services.hero_badge')"
+        :title="__('services.hero_title')"
+        :highlight="__('services.hero_title_highlight')"
+        :description="__('services.hero_description')"
+        :image="asset('images/services/hero.png')"
+    />
 
-    <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-
-        <span>
-            {{ __('services.hero_badge') }}
-        </span>
-    </div>
-
-    <h1>
-        {{ __('services.hero_title') }}
-        <em>{{ __('services.hero_title_highlight') }}</em>
-    </h1>
-
-    <p class="hero-sub">
-        {{ __('services.hero_description') }}
-    </p>
-</section>
-
-<section class="section">
-
-    <div class="section-heading reveal">
-
-        <p class="section-tag">
-            {{ __('services.section_badge') }}
-        </p>
-
-        <h2 class="section-title">
-            {{ __('services.section_title') }}
-            <strong>
-                {{ __('services.section_title_highlight') }}
-            </strong>
-        </h2>
-
-        <p class="section-body">
-            {{ __('services.section_description') }}
-        </p>
-
-    </div>
-
-    @if ($services->count())
-
-        <div class="services-list">
-
-            @foreach ($services as $service)
-
-                @php
-                    $title = $service->localizedTitle();
-                    $description = $service->localizedDescription();
-                    $slug = $service->slug();
-                    $isReverse = $loop->even;
-                @endphp
-
-                <article
-                    class="feature reveal {{ $isReverse ? 'feature-reverse' : '' }}"
-                >
-                    <div class="feature-visual">
-
-                        <img
-                            src="{{ $service->image
-                                ? asset($service->image)
-                                : asset('luminary/images/tm-luminary-01.jpg') }}"
-                            alt="{{ $title }}"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-                    <div class="feature-content">
-
-                        <div class="feature-number">
-                            {{ str_pad(
-                                $loop->iteration,
-                                2,
-                                '0',
-                                STR_PAD_LEFT
-                            ) }}
-                        </div>
-
-                        <p class="section-tag">
-                            {{ __('services.digital_service') }}
-                        </p>
-
-                        <h2 class="section-title">
-                            {{ $title }}
-                        </h2>
-
-                        <p class="section-body">
-                            {{ \Illuminate\Support\Str::limit(
-                                strip_tags($description),
-                                260
-                            ) }}
-                        </p>
-
-                        <div class="hero-ctas">
-
-                            @if ($slug)
-                                <a
-                                    href="{{ route('services.show', $slug) }}"
-                                    class="btn-primary"
-                                >
-                                    {{ __('services.view_details') }}
-                                </a>
-                            @endif
-
-                            <a
-                                href="{{ route('social-links.index') }}"
-                                class="btn-secondary"
-                            >
-                                {{ __('services.request_service') }}
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-            @endforeach
-
+    <section class="container services-section">
+        <div class="section-head" data-reveal>
+            <div class="section-head__eyebrow">{{ __('services.section_badge') }}</div>
+            <h2 class="section-head__title">{{ __('services.section_title') }} <em>{{ __('services.section_title_highlight') }}</em></h2>
+            <p class="section-head__desc">{{ __('services.section_description') }}</p>
         </div>
 
-        @if ($services->hasPages())
+        @if ($services->isNotEmpty())
+            <div class="grid-3">
+                @foreach ($services as $service)
+                    @php $slug = $service->slug(); @endphp
+                    <div class="card services-card" data-reveal>
+                        <div class="services-card__media">
+                            <img src="{{ media_url($service->image) }}" alt="{{ $service->localizedTitle() }}" loading="lazy">
+                            <span class="services-card__number">{{ sprintf('%02d', $loop->iteration) }}</span>
+                        </div>
+                        <div class="services-card__body">
+                            <div class="services-card__eyebrow">{{ __('services.digital_service') }}</div>
+                            <h3 class="services-card__title">{{ $service->localizedTitle() }}</h3>
+                            <p class="services-card__desc">{{ \Illuminate\Support\Str::limit($service->localizedDescription(), 130) }}</p>
+                            <div class="services-card__actions">
+                                <a href="{{ route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
+                                <span class="services-card__sep"></span>
+                                <a href="{{ $slug ? route('services.show', $slug) : route('services.index') }}" class="services-card__link services-card__link--muted">{{ __('services.view_details') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
             <div class="services-pagination">
                 {{ $services->links() }}
             </div>
+        @else
+            <div class="empty-state">
+                <div class="empty-state__title">{{ __('services.empty_title') }}</div>
+                <p class="empty-state__desc">{{ __('services.empty_description') }}</p>
+            </div>
         @endif
+    </section>
 
-    @else
-
-        <div class="services-empty reveal">
-
-            <span class="services-empty-icon">
-                <i
-                    class="fa-solid fa-layer-group"
-                    aria-hidden="true"
-                ></i>
-            </span>
-
-            <h3>
-                {{ __('services.empty_title') }}
-            </h3>
-
-            <p>
-                {{ __('services.empty_description') }}
-            </p>
-
-            <a
-                href="{{ route('social-links.index') }}"
-                class="btn-primary"
-            >
-                {{ __('services.contact_us') }}
-            </a>
-
+    <section class="container">
+        <div class="cta-band" data-reveal>
+            <div class="cta-band__eyebrow">{{ __('services.cta_badge') }}</div>
+            <h2 class="cta-band__title">{{ __('services.cta_title') }} <em>{{ __('services.cta_title_highlight') }}</em></h2>
+            <p class="cta-band__desc">{{ __('services.cta_description') }}</p>
+            <div class="cta-band__actions">
+                <a href="{{ route('contact') }}" class="btn btn--light">{{ __('services.contact_us') }}</a>
+                <a href="{{ route('home') }}" class="btn btn--ghost-light">{{ __('services.back_home') }}</a>
+            </div>
         </div>
-
-    @endif
-
-</section>
-
-<section class="cta-section">
-
-    <div class="cta-card reveal">
-
-        <span class="section-tag">
-            {{ __('services.cta_badge') }}
-        </span>
-
-        <h2>
-            {{ __('services.cta_title') }}
-            <strong>
-                {{ __('services.cta_title_highlight') }}
-            </strong>
-        </h2>
-
-        <p>
-            {{ __('services.cta_description') }}
-        </p>
-
-        <div class="hero-ctas">
-
-            <a
-                href="{{ route('social-links.index') }}"
-                class="btn-primary"
-            >
-                {{ __('services.contact_us') }}
-            </a>
-
-            <a
-                href="{{ route('home') }}"
-                class="btn-secondary"
-            >
-                {{ __('services.back_home') }}
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
+    </section>
 
 @endsection
