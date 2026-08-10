@@ -9,7 +9,6 @@ use App\Models\ContactMessage;
 use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
-use App\Models\SocialLink;
 use App\Models\Work;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -54,12 +53,6 @@ class AppServiceProvider extends ServiceProvider
                 'pendingCommunityCommentsCount' => CommunityComment::query()->pending()->count(),
                 'pendingReviewsCount' => Review::query()->pending()->count(),
                 'newMessagesCount' => ContactMessage::query()->new()->count(),
-            ]);
-        });
-
-        View::composer('components.footer', function ($view) {
-            $view->with([
-                'footerSocialLinks' => SocialLink::query()->active()->ordered()->get(),
             ]);
         });
     }

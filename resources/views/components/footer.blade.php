@@ -1,5 +1,9 @@
 @php
-    $footerSocialLinks ??= [];
+    $footerSocialLinks = [
+        ['name' => 'واتساب', 'icon' => 'fa-brands fa-whatsapp', 'url' => 'https://wa.me/message/WJELG5R5UVIBO1?src=qr'],
+        ['name' => 'X (تويتر)', 'icon' => 'fa-brands fa-x-twitter', 'url' => 'https://x.com/alyasi_mbrmj?s=11'],
+        ['name' => 'إنستغرام', 'icon' => 'fa-brands fa-instagram', 'url' => 'https://www.instagram.com/alyasi_mbrmj?igsh=MW4xc2huYWFjbnZmZA=='],
+    ];
     $showArticlesFooter = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
     $showCommunityFooter = \App\Models\Setting::get('show_community_events', '1') === '1';
 @endphp
@@ -41,15 +45,11 @@
         <div class="site-footer__col">
             <h4 class="site-footer__heading">{{ __('layout.footer.connect_title') }}</h4>
             <div class="site-footer__socials">
-                @forelse ($footerSocialLinks as $link)
-                    <a href="{{ $link->url }}" class="site-footer__social" @if($link->open_new_tab) target="_blank" rel="noopener" @endif aria-label="{{ $link->name }}">
-                        <i class="{{ $link->icon }}" aria-hidden="true"></i>
+                @foreach ($footerSocialLinks as $link)
+                    <a href="{{ $link['url'] }}" class="site-footer__social" target="_blank" rel="noopener" aria-label="{{ $link['name'] }}">
+                        <i class="{{ $link['icon'] }}" aria-hidden="true"></i>
                     </a>
-                @empty
-                    <a href="{{ route('social-links.index') }}" class="site-footer__social" aria-label="{{ __('layout.nav.community') }}">
-                        <i class="fa-solid fa-link" aria-hidden="true"></i>
-                    </a>
-                @endforelse
+                @endforeach
             </div>
         </div>
     </div>
