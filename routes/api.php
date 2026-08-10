@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ArticleIngestController;
 use App\Http\Controllers\Api\EventIngestController;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
@@ -42,6 +44,20 @@ Route::post('community/events', [EventIngestController::class, 'store'])
 Route::get('community/events', [EventIngestController::class, 'index'])
     ->middleware(['event-bot.auth', 'throttle:60,1'])
     ->name('api.community.events.index');
+
+/*
+|--------------------------------------------------------------------------
+| Article Bot Ingest (n8n — مقالاتي)
+|--------------------------------------------------------------------------
+*/
+
+Route::post('articles', [ArticleIngestController::class, 'store'])
+    ->middleware(['article-bot.auth', 'throttle:30,1'])
+    ->name('api.articles.store');
+
+Route::get('articles', [ArticleIngestController::class, 'index'])
+    ->middleware(['article-bot.auth', 'throttle:60,1'])
+    ->name('api.articles.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -91,5 +107,22 @@ Route::prefix('services')
             ->name('index');
 
         Route::get('/{slug}', [ServiceController::class, 'show'])
+            ->name('show');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| News (Public Read API) — قائمة وتفاصيل الأخبار المنشورة فقط للقراءة
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('news-articles')
+    ->name('api.news-articles.')
+    ->middleware('throttle:60,1')
+    ->group(function () {
+        Route::get('/', [NewsController::class, 'index'])
+            ->name('index');
+
+        Route::get('/{slug}', [NewsController::class, 'show'])
             ->name('show');
     });

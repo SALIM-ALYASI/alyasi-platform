@@ -266,6 +266,64 @@
 
     </div>
 
+    <div class="dashboard-panel" style="margin-top: 24px;">
+
+        <div class="dashboard-panel-header">
+            <div>
+                <h3>قسم فعاليات المجتمع</h3>
+                <p>عند الإخفاء، يختفي رابط "فعاليات المجتمع" من الهيدر والفوتر وقسمه بالصفحة الرئيسية فقط — الصفحة والبيانات ولوحة التحكم الخاصة به تبقى كما هي، ويمكن إظهاره مجددًا بأي وقت.</p>
+            </div>
+
+            <span class="admin-status {{ $showCommunityEvents ? 'admin-status--active' : 'admin-status--inactive' }}">
+                <i class="fa-solid {{ $showCommunityEvents ? 'fa-circle-check' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+                {{ $showCommunityEvents ? 'ظاهر بالموقع العام' : 'مخفي عن الموقع العام' }}
+            </span>
+        </div>
+
+        <form action="{{ route('admin.settings.toggle-community-events') }}" method="POST">
+            @csrf
+            @method('PATCH')
+
+            <button
+                type="submit"
+                class="admin-primary-button settings-toggle-button {{ $showCommunityEvents ? 'settings-toggle-button--danger' : '' }}"
+            >
+                <i class="fa-solid {{ $showCommunityEvents ? 'fa-eye-slash' : 'fa-eye' }}" aria-hidden="true"></i>
+                {{ $showCommunityEvents ? 'إخفاء قسم فعاليات المجتمع' : 'إظهار قسم فعاليات المجتمع' }}
+            </button>
+        </form>
+
+    </div>
+
+    <div class="dashboard-panel" style="margin-top: 24px;">
+
+        <div class="dashboard-panel-header">
+            <div>
+                <h3>قسم مقالاتي</h3>
+                <p>عند الإخفاء، يختفي رابط "مقالاتي" من الهيدر والفوتر وقسمه بالصفحة الرئيسية فقط — المقالات ولوحة التحكم الخاصة بها تبقى كما هي، ويمكن إظهاره مجددًا بأي وقت.</p>
+            </div>
+
+            <span class="admin-status {{ $showArticles ? 'admin-status--active' : 'admin-status--inactive' }}">
+                <i class="fa-solid {{ $showArticles ? 'fa-circle-check' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+                {{ $showArticles ? 'ظاهر بالموقع العام' : 'مخفي عن الموقع العام' }}
+            </span>
+        </div>
+
+        <form action="{{ route('admin.settings.toggle-articles') }}" method="POST">
+            @csrf
+            @method('PATCH')
+
+            <button
+                type="submit"
+                class="admin-primary-button settings-toggle-button {{ $showArticles ? 'settings-toggle-button--danger' : '' }}"
+            >
+                <i class="fa-solid {{ $showArticles ? 'fa-eye-slash' : 'fa-eye' }}" aria-hidden="true"></i>
+                {{ $showArticles ? 'إخفاء قسم مقالاتي' : 'إظهار قسم مقالاتي' }}
+            </button>
+        </form>
+
+    </div>
+
 </div>
 
 @endsection

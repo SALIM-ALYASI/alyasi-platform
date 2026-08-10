@@ -1,11 +1,22 @@
 @php
+    $showArticlesNav = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
+    $showCommunityNav = \App\Models\Setting::get('show_community_events', '1') === '1';
+
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
         'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*')],
-        'community' => ['route' => 'community.index', 'active' => request()->routeIs('community.*')],
     ];
+
+    if ($showArticlesNav) {
+        $navItems['articles'] = ['route' => 'articles.index', 'active' => request()->routeIs('articles.*')];
+    }
+
+    if ($showCommunityNav) {
+        $navItems['community'] = ['route' => 'community.index', 'active' => request()->routeIs('community.*')];
+    }
+
     $currentLocale = app()->getLocale();
 @endphp
 

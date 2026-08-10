@@ -10,7 +10,9 @@
 @section('content')
 
 @php
-    $paragraphs = collect(preg_split('/\r?\n+/', trim((string) $article->content)))->filter();
+    $allowedTags = '<p><br><strong><em><b><i><a><ul><ol><li><h2><h3><h4><blockquote>';
+    $articleContent = trim((string) $article->content);
+    $hasHtmlMarkup = $articleContent !== strip_tags($articleContent);
 @endphp
 
     <section class="container news-detail__top">
@@ -39,9 +41,13 @@
     </section>
 
     <section class="container news-detail__content-wrap">
-        @foreach ($paragraphs as $paragraph)
-            <p class="news-detail__paragraph">{{ $paragraph }}</p>
-        @endforeach
+        @if ($hasHtmlMarkup)
+            <div class="news-detail__content">{!! strip_tags($articleContent, $allowedTags) !!}</div>
+        @else
+            @foreach (collect(preg_split('/\r?\n+/', $articleContent))->filter() as $paragraph)
+                <p class="news-detail__paragraph">{{ $paragraph }}</p>
+            @endforeach
+        @endif
 
         <div class="news-detail__share">
             <span class="news-detail__share-label">{{ __('news.share') }}:</span>

@@ -1,5 +1,7 @@
 @php
     $footerSocialLinks ??= [];
+    $showArticlesFooter = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
+    $showCommunityFooter = \App\Models\Setting::get('show_community_events', '1') === '1';
 @endphp
 
 <footer class="site-footer">
@@ -19,13 +21,18 @@
                 <a href="{{ route('services.index') }}">{{ __('layout.nav.services') }}</a>
                 <a href="{{ route('works.index') }}">{{ __('layout.nav.works') }}</a>
                 <a href="{{ route('news.index') }}">{{ __('layout.nav.news') }}</a>
+                @if ($showArticlesFooter)
+                    <a href="{{ route('articles.index') }}">{{ __('layout.nav.articles') }}</a>
+                @endif
             </div>
         </div>
 
         <div class="site-footer__col">
             <h4 class="site-footer__heading">{{ __('layout.footer.community_title') }}</h4>
             <div class="site-footer__links">
-                <a href="{{ route('community.index') }}">{{ __('layout.nav.community') }}</a>
+                @if ($showCommunityFooter)
+                    <a href="{{ route('community.index') }}">{{ __('layout.nav.community') }}</a>
+                @endif
                 <a href="{{ route('home') }}#faq">{{ __('layout.footer.faq') }}</a>
                 <a href="{{ route('contact') }}">{{ __('layout.footer.contact_us') }}</a>
             </div>

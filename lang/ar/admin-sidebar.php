@@ -14,6 +14,7 @@ return [
     'dashboard' => 'لوحة التحكم',
     'services' => 'الخدمات',
     'news' => 'الأخبار',
+    'articles' => 'مقالاتي',
     'community' => 'فعاليات المجتمع الرقمي',
     'community_comments' => 'تعليقات المجتمع',
     'pronunciation_queue' => 'تصحيحات النطق',

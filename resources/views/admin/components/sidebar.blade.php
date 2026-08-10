@@ -149,6 +149,23 @@
                     </span>
                 </a>
 
+                {{-- مقالاتي --}}
+                <a
+                    href="{{ route('admin.articles.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.articles.*') || request()->routeIs('admin.article-categories.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-file-lines"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.articles') }}
+                    </span>
+                </a>
+
                 {{-- المجتمع --}}
                 <a
                     href="{{ route('admin.community.index') }}"

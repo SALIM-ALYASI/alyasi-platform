@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\MarketerController;
+use App\Http\Controllers\Admin\ArticleCategoryController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServerInfoController;
@@ -34,6 +36,7 @@ use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -109,6 +112,23 @@ Route::prefix('news')
 
         Route::get('/{slug}', 'show')
             ->where('slug', '[^/]+')
+            ->name('show');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Public Articles
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('articles')
+    ->name('articles.')
+    ->controller(ArticleController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+
+        Route::get('/{article:slug}', 'show')
             ->name('show');
     });
 
@@ -378,6 +398,37 @@ Route::prefix('admin')
 
                 /*
                 |----------------------------------------------------------
+                | Articles Management (مقالاتي)
+                |----------------------------------------------------------
+                */
+
+                Route::patch(
+                    'articles/{article}/toggle-status',
+                    [AdminArticleController::class, 'toggleStatus']
+                )->name('articles.toggle-status');
+
+                Route::patch(
+                    'articles/{article}/toggle-featured',
+                    [AdminArticleController::class, 'toggleFeatured']
+                )->name('articles.toggle-featured');
+
+                Route::resource(
+                    'articles',
+                    AdminArticleController::class
+                )->except('show');
+
+                Route::patch(
+                    'article-categories/{articleCategory}/toggle-status',
+                    [ArticleCategoryController::class, 'toggleStatus']
+                )->name('article-categories.toggle-status');
+
+                Route::resource(
+                    'article-categories',
+                    ArticleCategoryController::class
+                )->except('show');
+
+                /*
+                |----------------------------------------------------------
                 | Technologies Management
                 |----------------------------------------------------------
                 */
@@ -620,6 +671,16 @@ Route::prefix('admin')
                     'settings/toggle-maintenance',
                     [SettingController::class, 'toggleMaintenance']
                 )->name('settings.toggle-maintenance');
+
+                Route::patch(
+                    'settings/toggle-community-events',
+                    [SettingController::class, 'toggleCommunityEvents']
+                )->name('settings.toggle-community-events');
+
+                Route::patch(
+                    'settings/toggle-articles',
+                    [SettingController::class, 'toggleArticles']
+                )->name('settings.toggle-articles');
 
                 Route::patch(
                     'settings/profile',

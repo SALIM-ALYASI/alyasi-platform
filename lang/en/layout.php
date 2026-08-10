@@ -7,6 +7,7 @@ return [
         'services' => 'Services',
         'works' => 'Our Work',
         'news' => 'News',
+        'articles' => 'My Articles',
         'community' => 'Community Events',
     ],
 

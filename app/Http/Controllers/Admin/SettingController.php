@@ -22,11 +22,15 @@ class SettingController extends Controller
         $maintenanceMode = Setting::get('maintenance_mode', '0') === '1';
         $contactEmail = Setting::get('contact_email');
         $contactPhone = Setting::get('contact_phone');
+        $showCommunityEvents = Setting::get('show_community_events', '1') === '1';
+        $showArticles = Setting::get('show_articles', '1') === '1';
 
         return view('admin.settings.index', compact(
             'maintenanceMode',
             'contactEmail',
-            'contactPhone'
+            'contactPhone',
+            'showCommunityEvents',
+            'showArticles'
         ));
     }
 
@@ -63,6 +67,40 @@ class SettingController extends Controller
         $message = $current
             ? 'تم إيقاف وضع الصيانة، الموقع متاح للزوار الآن.'
             : 'تم تفعيل وضع الصيانة، الصفحات العامة مغلقة الآن أمام الزوار.';
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * إظهار/إخفاء قسم "فعاليات المجتمع" من الموقع العام (الهيدر والفوتر
+     * والصفحة الرئيسية)، بدون حذف أي بيانات أو تعطيل لوحة التحكم الخاصة به.
+     */
+    public function toggleCommunityEvents(): RedirectResponse
+    {
+        $current = Setting::get('show_community_events', '1') === '1';
+
+        Setting::set('show_community_events', $current ? '0' : '1');
+
+        $message = $current
+            ? 'تم إخفاء قسم فعاليات المجتمع من الموقع العام.'
+            : 'تم إظهار قسم فعاليات المجتمع بالموقع العام مجددًا.';
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * إظهار/إخفاء قسم "مقالاتي" من الموقع العام، بدون حذف أي بيانات أو
+     * تعطيل لوحة التحكم الخاصة به.
+     */
+    public function toggleArticles(): RedirectResponse
+    {
+        $current = Setting::get('show_articles', '1') === '1';
+
+        Setting::set('show_articles', $current ? '0' : '1');
+
+        $message = $current
+            ? 'تم إخفاء قسم مقالاتي من الموقع العام.'
+            : 'تم إظهار قسم مقالاتي بالموقع العام مجددًا.';
 
         return back()->with('success', $message);
     }

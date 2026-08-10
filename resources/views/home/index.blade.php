@@ -268,46 +268,82 @@
         @endif
     </section>
 
-    {{-- COMMUNITY --}}
-    <section id="community" class="home-community">
-        <div class="container">
+    {{-- ARTICLES --}}
+    @if ($showArticles)
+        <section id="articles" class="container home-section">
             <div class="home-section__head">
                 <div>
-                    <div class="section-head__eyebrow">{{ __('home.community_badge') }}</div>
-                    <h2 class="section-head__title">{{ __('home.community_title') }} <em>{{ __('home.community_title_highlight') }}</em></h2>
+                    <div class="section-head__eyebrow">{{ __('home.articles_badge') }}</div>
+                    <h2 class="section-head__title">{{ __('home.articles_title') }} <em>{{ __('home.articles_title_highlight') }}</em></h2>
                 </div>
-                <a href="{{ route('community.index') }}" class="btn btn--outline">{{ __('community.show_all') }}</a>
+                <a href="{{ route('articles.index') }}" class="btn btn--outline">{{ __('home.all_articles') }}</a>
             </div>
 
-            @if ($communityHighlights->isNotEmpty())
+            @if ($latestArticles->isNotEmpty())
                 <div class="grid-3">
-                    @foreach ($communityHighlights as $post)
-                        <a href="{{ route('community.show', $post) }}" class="card card--hover home-community-card" data-reveal>
-                            <div class="home-community-card__media">
-                                <img src="{{ media_url($post->image) }}" alt="{{ $post->title }}" loading="lazy">
-                                @if ($post->event_status)
-                                    <span class="badge badge--status-{{ $post->event_status }} home-community-card__badge">{{ __('events.status.'.$post->event_status) }}</span>
-                                @endif
+                    @foreach ($latestArticles as $article)
+                        <a href="{{ route('articles.show', $article) }}" class="card card--hover home-news-card" data-reveal>
+                            <div class="home-news-card__media">
+                                <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
                             </div>
-                            <div class="home-community-card__body">
-                                <div class="home-community-card__meta">
-                                    {{ optional($post->event_start_at ?? $post->published_at)->translatedFormat('d.m.Y') }}
-                                    @if ($post->location || $post->category)
-                                        · {{ $post->location ?: $post->category->name }}
-                                    @endif
-                                </div>
-                                <h3>{{ $post->title }}</h3>
+                            <div class="home-news-card__body">
+                                <div class="home-news-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
+                                <h3>{{ $article->title }}</h3>
+                                <span class="home-news-card__link">{{ __('articles.read_more') }} ←</span>
                             </div>
                         </a>
                     @endforeach
                 </div>
             @else
                 <div class="empty-state">
-                    <div class="empty-state__title">{{ __('community.empty_title') }}</div>
+                    <div class="empty-state__title">{{ __('home.articles_empty') }}</div>
                 </div>
             @endif
-        </div>
-    </section>
+        </section>
+    @endif
+
+    {{-- COMMUNITY --}}
+    @if ($showCommunityEvents)
+        <section id="community" class="home-community">
+            <div class="container">
+                <div class="home-section__head">
+                    <div>
+                        <div class="section-head__eyebrow">{{ __('home.community_badge') }}</div>
+                        <h2 class="section-head__title">{{ __('home.community_title') }} <em>{{ __('home.community_title_highlight') }}</em></h2>
+                    </div>
+                    <a href="{{ route('community.index') }}" class="btn btn--outline">{{ __('community.show_all') }}</a>
+                </div>
+
+                @if ($communityHighlights->isNotEmpty())
+                    <div class="grid-3">
+                        @foreach ($communityHighlights as $post)
+                            <a href="{{ route('community.show', $post) }}" class="card card--hover home-community-card" data-reveal>
+                                <div class="home-community-card__media">
+                                    <img src="{{ media_url($post->image) }}" alt="{{ $post->title }}" loading="lazy">
+                                    @if ($post->event_status)
+                                        <span class="badge badge--status-{{ $post->event_status }} home-community-card__badge">{{ __('events.status.'.$post->event_status) }}</span>
+                                    @endif
+                                </div>
+                                <div class="home-community-card__body">
+                                    <div class="home-community-card__meta">
+                                        {{ optional($post->event_start_at ?? $post->published_at)->translatedFormat('d.m.Y') }}
+                                        @if ($post->location || $post->category)
+                                            · {{ $post->location ?: $post->category->name }}
+                                        @endif
+                                    </div>
+                                    <h3>{{ $post->title }}</h3>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="empty-state">
+                        <div class="empty-state__title">{{ __('community.empty_title') }}</div>
+                    </div>
+                @endif
+            </div>
+        </section>
+    @endif
 
     {{-- FAQ --}}
     @if ($faqs->isNotEmpty())

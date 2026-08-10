@@ -14,6 +14,7 @@ return [
     'dashboard' => 'Dashboard',
     'services' => 'Services',
     'news' => 'News',
+    'articles' => 'My Articles',
     'community' => 'Digital Community Events',
     'community_comments' => 'Community Comments',
     'pronunciation_queue' => 'Pronunciation Fixes',

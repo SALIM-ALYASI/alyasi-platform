@@ -47,6 +47,10 @@ return [
         'token' => env('EVENT_BOT_TOKEN'),
     ],
 
+    'article_bot' => [
+        'token' => env('ARTICLE_BOT_TOKEN'),
+    ],
+
     'manager_bot' => [
         'token' => env('MANAGER_BOT_TOKEN'),
     ],

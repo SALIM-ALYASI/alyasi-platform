@@ -261,4 +261,20 @@ return [
 
     'join_community' => 'Join Now',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Articles Teaser Section
+    |--------------------------------------------------------------------------
+    */
+
+    'articles_badge' => 'My Articles',
+
+    'articles_title' => 'Latest',
+
+    'articles_title_highlight' => 'Articles',
+
+    'articles_empty' => 'No articles published yet.',
+
+    'all_articles' => 'All Articles',
+
 ];
