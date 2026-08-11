@@ -6,6 +6,12 @@
             "runtimeExecutable": "composer",
             "runtimeArgs": ["run", "dev"],
             "port": 8000
+        },
+        {
+            "name": "alyasi-educational-agent",
+            "runtimeExecutable": "bash",
+            "runtimeArgs": ["-c", "cd /Volumes/Projects/Laravel/alyasi-educational-agent && PHPRC=/Volumes/Projects/Laravel/alyasi-educational-agent/.claude/php-dev php artisan serve --port=8123"],
+            "port": 8123
         }
     ]
 }

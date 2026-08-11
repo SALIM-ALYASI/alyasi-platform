@@ -211,6 +211,10 @@ Route::get('/terms', [PageController::class, 'terms'])
 Route::get('/markify', [PageController::class, 'markify'])
     ->name('markify');
 
+
+    Route::get('/sitemap.xml', [PageController::class, 'sitemap'])
+    ->name('sitemap');
+
 /*
 |--------------------------------------------------------------------------
 | مغسلة الياسي

@@ -102,4 +102,13 @@ class PageController extends Controller
     {
         return view('ra3i-swait');
     }
+
+
+    public function sitemap()
+{
+    return response()
+        ->file(public_path('sitemap.xml'), [
+            'Content-Type' => 'application/xml',
+        ]);
+}
 }
