@@ -60,7 +60,7 @@ http://www.tooplate.com/view/2110-character
     <link rel="stylesheet" href="{{ versioned_asset('markify-assets/css/all.min.css') }}">
     <!-- https://fontawesome.com/ -->
     <link rel="stylesheet" href="{{ versioned_asset('markify-assets/css/tooplate-style.css') }}">
-
+<meta name="msvalidate.01" content="6AB900B487D367C05F065BE5B2B1A6D1" />
     <style>
         .tm-lang-switch {
             position: fixed;

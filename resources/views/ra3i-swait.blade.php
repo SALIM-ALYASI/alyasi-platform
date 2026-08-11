@@ -15,6 +15,7 @@
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
+    <meta name="msvalidate.01" content="6AB900B487D367C05F065BE5B2B1A6D1" />
 
     <style>
         * {

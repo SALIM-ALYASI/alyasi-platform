@@ -89,7 +89,7 @@
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/tokens.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/base.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/car-wash.css') }}">
-
+<meta name="msvalidate.01" content="6AB900B487D367C05F065BE5B2B1A6D1" />
     <style>
         /* هوية مغسلة الياسي — تعديلات محلية (ألوان مطابقة لهوية ALYASI الكحلية الجديدة) */
 
