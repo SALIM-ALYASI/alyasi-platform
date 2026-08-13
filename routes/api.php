@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FacebookWebhookController;
+use App\Http\Controllers\Api\InstagramWebhookController;
 /*
 |--------------------------------------------------------------------------
 | News Bot Ingest
@@ -131,3 +132,12 @@ Route::prefix('news-articles')
 
 Route::get('/webhooks/facebook', [FacebookWebhookController::class, 'verify']);
 Route::post('/webhooks/facebook', [FacebookWebhookController::class, 'handle']);
+
+
+
+
+Route::get('webhooks/instagram', [InstagramWebhookController::class, 'verify'])
+    ->name('api.webhooks.instagram.verify');
+
+Route::post('webhooks/instagram', [InstagramWebhookController::class, 'handle'])
+    ->name('api.webhooks.instagram.handle');

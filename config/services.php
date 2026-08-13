@@ -79,4 +79,8 @@ return [
         'page_access_token' => env('FACEBOOK_PAGE_ACCESS_TOKEN'),
     ],
 
+    'instagram' => [
+    'webhook_verify_token' => env('INSTAGRAM_WEBHOOK_VERIFY_TOKEN'),
+    ],
+
 ];
