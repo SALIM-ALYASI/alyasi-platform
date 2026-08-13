@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/header.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/footer.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/pagination.css') }}">
-
+<meta name="msvalidate.01" content="6AB900B487D367C05F065BE5B2B1A6D1" />
     @stack('styles')
 </head>
 

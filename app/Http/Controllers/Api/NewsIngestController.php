@@ -71,10 +71,14 @@ class NewsIngestController extends Controller
             $this->notifyN8nOfNewArticle();
         }
 
+        $slug = $article->permalinks()->where('locale', 'ar')->value('slug')
+            ?? $article->permalinks()->value('slug');
+
         return response()->json([
             'success' => true,
             'id' => $article->id,
             'created' => $article->wasRecentlyCreated,
+            'url' => $slug ? url("/news/{$slug}") : null,
         ]);
     }
 

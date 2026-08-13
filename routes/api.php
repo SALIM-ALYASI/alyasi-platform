@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\FacebookWebhookController;
 /*
 |--------------------------------------------------------------------------
 | News Bot Ingest
@@ -126,3 +126,8 @@ Route::prefix('news-articles')
         Route::get('/{slug}', [NewsController::class, 'show'])
             ->name('show');
     });
+
+
+
+Route::get('/webhooks/facebook', [FacebookWebhookController::class, 'verify']);
+Route::post('/webhooks/facebook', [FacebookWebhookController::class, 'handle']);
