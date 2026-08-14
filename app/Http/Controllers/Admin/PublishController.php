@@ -121,6 +121,8 @@ class PublishController extends Controller
         $validated = $request->validate([
             'platforms' => ['required', 'array', 'min:1'],
             'platforms.*' => ['in:instagram,linkedin,youtube,telegram'],
+            'formats' => ['nullable', 'array'],
+            'formats.*' => ['in:video,image'],
         ], [
             'platforms.required' => 'يرجى اختيار منصة واحدة على الأقل.',
             'platforms.min' => 'يرجى اختيار منصة واحدة على الأقل.',
@@ -141,6 +143,7 @@ class PublishController extends Controller
                 ->post("{$baseUrl}/publish", [
                     'job_id' => $job,
                     'platforms' => $validated['platforms'],
+                    'formats' => $validated['formats'] ?? [],
                 ]);
         } catch (\Throwable $e) {
             Log::warning('Smart Content publish unreachable', ['error' => $e->getMessage()]);
@@ -159,6 +162,7 @@ class PublishController extends Controller
             $mapped[$platform] = [
                 'status' => $result['status'] === 'success' ? 'done' : 'failed',
                 'result' => ['url' => $result['url'] ?? null],
+                'format' => $result['format'] ?? null,
                 'error' => $result['error'] ?? ($result['status'] === 'skipped' ? 'غير مُفعّل لهذه المنصة' : null),
             ];
         }

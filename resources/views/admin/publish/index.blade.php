@@ -169,12 +169,28 @@
                                     <form action="{{ route('admin.publish.approve', $job->job_id) }}" method="POST" style="margin-top:12px;">
                                         @csrf
 
-                                        <div style="display:flex; flex-wrap:wrap; gap:12px;">
-                                            @foreach (['instagram' => 'إنستغرام', 'linkedin' => 'لينكدإن', 'youtube' => 'يوتيوب', 'telegram' => 'تلجرام'] as $value => $label)
-                                                <label style="display:flex; align-items:center; gap:6px; font-weight:normal; font-size:13px; cursor:pointer;">
-                                                    <input type="checkbox" name="platforms[]" value="{{ $value }}" checked>
-                                                    {{ $label }}
-                                                </label>
+                                        <div style="display:flex; flex-direction:column; gap:8px;">
+                                            @foreach ([
+                                                'instagram' => ['label' => 'إنستغرام', 'image' => true],
+                                                'linkedin' => ['label' => 'لينكدإن', 'image' => true],
+                                                'youtube' => ['label' => 'يوتيوب', 'image' => false],
+                                                'telegram' => ['label' => 'تلجرام', 'image' => true],
+                                            ] as $value => $meta)
+                                                <div style="display:flex; align-items:center; gap:10px; font-size:13px;">
+                                                    <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
+                                                        <input type="checkbox" name="platforms[]" value="{{ $value }}" checked>
+                                                        {{ $meta['label'] }}
+                                                    </label>
+
+                                                    @if ($meta['image'])
+                                                        <select name="formats[{{ $value }}]" class="form-control" style="width:auto; padding:2px 8px; font-size:12px;">
+                                                            <option value="video">فيديو</option>
+                                                            <option value="image">صورة</option>
+                                                        </select>
+                                                    @else
+                                                        <span style="color:var(--admin-muted); font-size:12px;">فيديو فقط</span>
+                                                    @endif
+                                                </div>
                                             @endforeach
                                         </div>
 
@@ -216,6 +232,9 @@
                                             <span style="color:#22c55e;">
                                                 <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
                                                 تم
+                                                @if (! empty($info['format']))
+                                                    ({{ $info['format'] === 'image' ? 'صورة' : 'فيديو' }})
+                                                @endif
                                             </span>
                                             @if (! empty($info['result']['url']))
                                                 <br>
