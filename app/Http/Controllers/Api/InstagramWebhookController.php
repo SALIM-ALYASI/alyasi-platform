@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class InstagramWebhookController extends Controller
 {
@@ -59,7 +60,7 @@ class InstagramWebhookController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | حفظ نسخة من آخر Webhook
+        | حفظ آخر Webhook للتشخيص
         |--------------------------------------------------------------------------
         */
 
@@ -73,61 +74,111 @@ class InstagramWebhookController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | معالجة Events
+        | معالجة الأحداث
         |--------------------------------------------------------------------------
         */
 
         foreach ($payload['entry'] ?? [] as $entry) {
             foreach ($entry['changes'] ?? [] as $change) {
 
-                $field = $change['field'] ?? null;
+                if (($change['field'] ?? null) !== 'comments') {
+                    continue;
+                }
+
                 $value = $change['value'] ?? [];
+
+                $commentId = $value['id'] ?? null;
+                $text = trim((string) ($value['text'] ?? ''));
 
                 /*
                 |--------------------------------------------------------------------------
-                | Comments
+                | تجاهل Event ناقص
                 |--------------------------------------------------------------------------
                 */
 
-                if ($field === 'comments') {
-                    $comment = [
-                        'received_at' => now()->toIso8601String(),
-
-                        'instagram_account_id' => $entry['id'] ?? null,
-
-                        'comment_id' => $value['id'] ?? null,
-
-                        'parent_id' => $value['parent_id'] ?? null,
-
-                        'username' => $value['from']['username'] ?? null,
-
-                        'user_id' => $value['from']['id'] ?? null,
-
-                        'self_ig_scoped_id' =>
-                            $value['from']['self_ig_scoped_id'] ?? null,
-
-                        'text' => $value['text'] ?? null,
-
-                        'media_id' => $value['media']['id'] ?? null,
-
-                        'media_product_type' =>
-                            $value['media']['media_product_type'] ?? null,
-                    ];
-
-                    Storage::disk('local')->put(
-                        'instagram/last_comment.json',
-                        json_encode(
-                            $comment,
-                            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
-                        )
-                    );
-
-                    Log::info('Instagram comment received.', [
-                        'comment_id' => $comment['comment_id'],
-                        'username' => $comment['username'],
-                        'media_id' => $comment['media_id'],
+                if (!$commentId || $text === '') {
+                    Log::warning('Instagram comment ignored: incomplete event.', [
+                        'has_comment_id' => !empty($commentId),
+                        'has_text' => $text !== '',
                     ]);
+
+                    continue;
                 }
+
+                $comment = [
+                    'received_at' => now()->toIso8601String(),
+
+                    'instagram_account_id' => $entry['id'] ?? null,
+
+                    'comment_id' => $commentId,
+
+                    'parent_id' => $value['parent_id'] ?? null,
+
+                    'username' => $value['from']['username'] ?? null,
+
+                    'user_id' => $value['from']['id'] ?? null,
+
+                    'self_ig_scoped_id' =>
+                        $value['from']['self_ig_scoped_id'] ?? null,
+
+                    'text' => $text,
+
+                    'media_id' => $value['media']['id'] ?? null,
+
+                    'media_product_type' =>
+                        $value['media']['media_product_type'] ?? null,
+
+                    'status' => 'pending',
+                ];
+
+                /*
+                |--------------------------------------------------------------------------
+                | آخر تعليق - للتشخيص فقط
+                |--------------------------------------------------------------------------
+                */
+
+                Storage::disk('local')->put(
+                    'instagram/last_comment.json',
+                    json_encode(
+                        $comment,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+                    )
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Queue للبوت
+                |
+                | كل تعليق له ملف مستقل حتى لا يضيع تعليق إذا وصل تعليقان معًا.
+                |--------------------------------------------------------------------------
+                */
+
+                $safeCommentId = preg_replace(
+                    '/[^A-Za-z0-9_-]/',
+                    '_',
+                    (string) $commentId
+                );
+
+                $queueFile = sprintf(
+                    'instagram/queue/%s_%s.json',
+                    now()->format('Ymd_His_u'),
+                    $safeCommentId ?: Str::uuid()->toString()
+                );
+
+                Storage::disk('local')->put(
+                    $queueFile,
+                    json_encode(
+                        $comment,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+                    )
+                );
+
+                Log::info('Instagram comment queued.', [
+                    'comment_id' => $comment['comment_id'],
+                    'username' => $comment['username'],
+                    'media_id' => $comment['media_id'],
+                    'queue_file' => $queueFile,
+                ]);
             }
         }
 
