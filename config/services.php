@@ -66,6 +66,11 @@ return [
         'webhook_token' => env('PUBLISH_WEBHOOK_TOKEN'),
     ],
 
+    'smart_content' => [
+        'url' => env('SMART_CONTENT_API_URL', 'https://smart-content.alyasi.dev/api'),
+        'key' => env('SMART_CONTENT_API_KEY'),
+    ],
+
     'whatsapp_cloud' => [
         'token' => env('WHATSAPP_CLOUD_TOKEN'),
         'phone_number_id' => env('WHATSAPP_CLOUD_PHONE_NUMBER_ID'),

@@ -8,13 +8,17 @@ class PublishJob extends Model
 {
     protected $fillable = [
         'job_id',
+        'source',
+        'status',
         'title',
         'text',
         'platforms',
+        'smart_content_data',
     ];
 
     protected $casts = [
         'platforms' => 'array',
+        'smart_content_data' => 'array',
     ];
 
     /**

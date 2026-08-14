@@ -660,6 +660,21 @@ Route::prefix('admin')
                     [PublishController::class, 'store']
                 )->name('publish.store');
 
+                Route::post(
+                    'publish/generate',
+                    [PublishController::class, 'generate']
+                )->name('publish.generate');
+
+                Route::get(
+                    'publish/{job}/status',
+                    [PublishController::class, 'status']
+                )->name('publish.status');
+
+                Route::post(
+                    'publish/{job}/approve',
+                    [PublishController::class, 'approve']
+                )->name('publish.approve');
+
                 /*
                 |----------------------------------------------------------
                 | Settings

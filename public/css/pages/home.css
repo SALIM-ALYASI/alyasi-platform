@@ -29,8 +29,8 @@
 .home-hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
 
 .home-hero__metrics { display: flex; gap: 40px; flex-wrap: wrap; }
-.home-hero__metric-value { font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #fff; line-height: 1.2; }
-.home-hero__metric-label { font-size: 13px; color: rgba(255, 255, 255, .75); margin-top: 6px; }
+.home-hero__metric-value { font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #fff; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 1px 16px rgba(0, 0, 0, .2); }
+.home-hero__metric-label { font-size: 13px; color: rgba(255, 255, 255, .92); margin-top: 6px; text-shadow: 0 1px 3px rgba(0, 0, 0, .45); }
 .home-hero__metric-divider { width: 1px; background: rgba(255, 255, 255, .25); }
 
 @media (max-width: 767px) {
