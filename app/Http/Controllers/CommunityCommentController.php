@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\NotifiesManagerBot;
 use App\Http\Controllers\Concerns\ProtectsAgainstAbuse;
 use App\Models\CommunityPost;
 use Illuminate\Http\RedirectResponse;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 
 class CommunityCommentController extends Controller
 {
+    use NotifiesManagerBot;
     use ProtectsAgainstAbuse;
 
     /**
@@ -40,6 +42,13 @@ class CommunityCommentController extends Controller
             'ip_address' => $request->ip(),
             'device_token' => $deviceToken,
         ]);
+
+        $this->notifyManagerBot(
+            "💬 تعليق جديد بانتظار المراجعة\n".
+            "على: {$communityPost->title}\n".
+            "من: {$validated['name']}\n".
+            "النص: {$validated['body']}"
+        );
 
         return back()
             ->with('success', __('community.comment_submitted'))

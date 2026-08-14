@@ -656,11 +656,6 @@ Route::prefix('admin')
                 )->name('publish.index');
 
                 Route::post(
-                    'publish',
-                    [PublishController::class, 'store']
-                )->name('publish.store');
-
-                Route::post(
                     'publish/generate',
                     [PublishController::class, 'generate']
                 )->name('publish.generate');

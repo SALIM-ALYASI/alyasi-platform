@@ -53,6 +53,7 @@ return [
 
     'manager_bot' => [
         'token' => env('MANAGER_BOT_TOKEN'),
+        'chat_id' => env('MANAGER_BOT_CHAT_ID'),
     ],
 
     'soundink' => [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\NotifiesManagerBot;
 use App\Http\Controllers\Concerns\ProtectsAgainstAbuse;
 use App\Models\Service;
 use App\Models\Work;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    use NotifiesManagerBot;
     use ProtectsAgainstAbuse;
 
     /**
@@ -67,8 +69,28 @@ class ReviewController extends Controller
             'device_token' => $deviceToken,
         ]);
 
+        $this->notifyManagerBot(
+            "⭐ تقييم جديد بانتظار المراجعة\n".
+            'على: '.$this->reviewableLabel($reviewable)."\n".
+            "من: {$validated['name']}\n".
+            "التقييم: {$validated['rating']}/5\n".
+            "النص: {$validated['body']}"
+        );
+
         return $redirect
             ->with('success', __('reviews.review_submitted'))
             ->withCookie($this->deviceTokenCookie($deviceToken));
+    }
+
+    /**
+     * عنوان مقروء للعنصر المُقيَّم (خدمة أو عمل) لعرضه بإشعار تلجرام.
+     */
+    private function reviewableLabel(Model $reviewable): string
+    {
+        if (method_exists($reviewable, 'localizedTitle')) {
+            return $reviewable->localizedTitle();
+        }
+
+        return (string) ($reviewable->title ?? $reviewable->getKey());
     }
 }

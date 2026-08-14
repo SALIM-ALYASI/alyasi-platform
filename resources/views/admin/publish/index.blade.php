@@ -9,8 +9,8 @@
         <h2>النشر الذكي</h2>
 
         <p>
-            ارفع صورة أو فيديو مع نص، أو ولّد إعلاناً كاملاً بالذكاء الاصطناعي من نص مختصر،
-            واختر المنصات اللي تبي تنشر عليها - كل منصة بتوقيت يناسب خوارزميتها.
+            اكتب نصاً مختصراً وولّد إعلاناً كاملاً بالذكاء الاصطناعي (عنوان، وصف، صورة مربعة،
+            صورة Story، وفيديو)، راجعه، ثم اختر المنصات اللي تبي تنشر عليها بعد الاعتماد.
         </p>
     </div>
 </section>
@@ -72,137 +72,6 @@
                 <span>ولّد الإعلان</span>
             </button>
         </div>
-
-    </form>
-
-</section>
-
-<section class="dashboard-panel" style="margin-top:24px;">
-
-    <div class="dashboard-panel-header">
-        <h3>رفع مباشر</h3>
-        <p>ارفع صورة أو فيديو جاهز بنفسك بدل التوليد بالذكاء الاصطناعي.</p>
-    </div>
-
-    <form
-        id="publish-form"
-        action="{{ route('admin.publish.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-    >
-        @csrf
-
-        <div class="form-grid">
-
-            <div class="form-group full">
-                <label for="title">العنوان (اختياري)</label>
-
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    class="form-control"
-                    maxlength="90"
-                    value="{{ old('title') }}"
-                    placeholder="لو تركته فاضي، أول سطر من النص يُستخدم كعنوان"
-                >
-            </div>
-
-            <div class="form-group full">
-                <label for="text">
-                    النص
-                    <span class="text-danger">*</span>
-                </label>
-
-                <textarea
-                    id="text"
-                    name="text"
-                    class="form-control"
-                    rows="6"
-                    maxlength="3000"
-                    placeholder="اكتب نص المنشور..."
-                    required
-                >{{ old('text') }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="image">الصورة</label>
-
-                <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    class="form-control"
-                    accept="image/*"
-                >
-
-                <p style="margin-top:6px; font-size:12px; color:var(--admin-muted);">
-                    تُستخدم مباشرة لإنستغرام ولينكدإن، وتتحول تلقائياً لفيديو ليوتيوب وتيك توك.
-                </p>
-            </div>
-
-            <div class="form-group full">
-                <label>
-                    المنصات
-                    <span class="text-danger">*</span>
-                </label>
-
-                @php
-                    $platformOptions = [
-                        'instagram' => 'إنستغرام',
-                        'linkedin' => 'لينكدإن',
-                        'telegram' => 'تلجرام',
-                    ];
-                    $selectedPlatforms = old('platforms', array_keys($platformOptions));
-                @endphp
-
-                <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:6px;">
-                    @foreach ($platformOptions as $value => $label)
-                        <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
-                            <input
-                                type="checkbox"
-                                name="platforms[]"
-                                value="{{ $value }}"
-                                @checked(in_array($value, $selectedPlatforms))
-                            >
-                            {{ $label }}
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="video">الفيديو (اختياري)</label>
-
-                <input
-                    type="file"
-                    id="video"
-                    name="video"
-                    class="form-control"
-                    accept="video/mp4,video/quicktime"
-                >
-
-                <p style="margin-top:6px; font-size:12px; color:var(--admin-muted);">
-                    لو رفعت فيديو جاهز، يُستخدم كما هو ليوتيوب وتيك توك بدل التوليد التلقائي.
-                </p>
-            </div>
-
-        </div>
-
-        <div class="form-actions">
-            <button
-                type="submit"
-                id="publish-submit-btn"
-                class="dashboard-button dashboard-button-primary"
-            >
-                <i class="fa-solid fa-paper-plane" id="publish-submit-icon"></i>
-                <span id="publish-submit-text">انشر الآن</span>
-            </button>
-        </div>
-
-        <p style="margin-top:10px; font-size:12px; color:var(--admin-muted);">
-            لازم ترفع صورة أو فيديو على الأقل. النشر يشمل حساباتكم الحقيقية على المنصات الأربع.
-        </p>
 
     </form>
 
