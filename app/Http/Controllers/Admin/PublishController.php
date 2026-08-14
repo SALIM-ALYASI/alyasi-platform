@@ -23,7 +23,62 @@ class PublishController extends Controller
             ->take(15)
             ->get();
 
+        foreach ($jobs as $job) {
+            if ($job->source === 'smart_content' && $this->needsRefresh($job)) {
+                $this->refreshFromSmartContent($job);
+            }
+        }
+
         return view('admin.publish.index', compact('jobs'));
+    }
+
+    /**
+     * هل هذا الإعلان لسا فيه شيء متحرك يستاهل نجيب له آخر حالة من smart-content؟
+     * (لسا يتولّد، أو فيه منصة مجدولة/قيد النشر/تُعاد محاولتها).
+     */
+    private function needsRefresh(PublishJob $job): bool
+    {
+        if (! in_array($job->status, ['ready', 'failed'], true)) {
+            return true;
+        }
+
+        foreach ($job->platforms ?? [] as $info) {
+            if (in_array($info['status'] ?? null, ['scheduled', 'publishing', 'retrying'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * يجيب أحدث حالة توليد + حالة كل منصة من smart-content ويحفظها محلياً.
+     */
+    private function refreshFromSmartContent(PublishJob $job): void
+    {
+        $baseUrl = rtrim((string) config('services.smart_content.url'), '/');
+        $apiKey = config('services.smart_content.key');
+
+        try {
+            $response = Http::withHeaders($this->authHeaders($apiKey))
+                ->timeout(15)
+                ->get("{$baseUrl}/jobs/{$job->job_id}");
+        } catch (\Throwable $e) {
+            return;
+        }
+
+        if (! $response->successful()) {
+            return;
+        }
+
+        $data = $response->json();
+
+        $job->update([
+            'status' => $data['status'] ?? $job->status,
+            'title' => $data['copy']['title'] ?? $job->title,
+            'smart_content_data' => $data,
+            'platforms' => $data['platforms'] ?? $job->platforms,
+        ]);
     }
 
     /**
@@ -85,32 +140,15 @@ class PublishController extends Controller
     {
         $publishJob = PublishJob::query()->where('job_id', $job)->firstOrFail();
 
-        if ($publishJob->source !== 'smart_content' || in_array($publishJob->status, ['ready', 'failed'], true)) {
-            return response()->json(['status' => $publishJob->status, 'smart_content_data' => $publishJob->smart_content_data]);
+        if ($publishJob->source === 'smart_content' && $this->needsRefresh($publishJob)) {
+            $this->refreshFromSmartContent($publishJob);
         }
 
-        $baseUrl = rtrim((string) config('services.smart_content.url'), '/');
-        $apiKey = config('services.smart_content.key');
-
-        try {
-            $response = Http::withHeaders($this->authHeaders($apiKey))
-                ->timeout(15)
-                ->get("{$baseUrl}/jobs/{$job}");
-        } catch (\Throwable $e) {
-            return response()->json(['status' => $publishJob->status, 'error' => 'تعذر الاتصال بالخدمة']);
-        }
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            $publishJob->update([
-                'status' => $data['status'] ?? $publishJob->status,
-                'title' => $data['copy']['title'] ?? $publishJob->title,
-                'smart_content_data' => $data,
-            ]);
-        }
-
-        return response()->json(['status' => $publishJob->status, 'smart_content_data' => $publishJob->smart_content_data]);
+        return response()->json([
+            'status' => $publishJob->status,
+            'platforms' => $publishJob->platforms,
+            'smart_content_data' => $publishJob->smart_content_data,
+        ]);
     }
 
     /**
@@ -120,7 +158,7 @@ class PublishController extends Controller
     {
         $validated = $request->validate([
             'platforms' => ['required', 'array', 'min:1'],
-            'platforms.*' => ['in:instagram,linkedin,youtube,telegram'],
+            'platforms.*' => ['in:instagram,facebook,linkedin,youtube,telegram'],
             'formats' => ['nullable', 'array'],
             'formats.*' => ['in:video,image'],
         ], [
@@ -155,23 +193,13 @@ class PublishController extends Controller
             return back()->with('error', 'فشل النشر: '.($response->json('error') ?? $response->status()));
         }
 
-        $results = $response->json('platforms', []);
-        $mapped = $publishJob->platforms ?? [];
-
-        foreach ($results as $platform => $result) {
-            $mapped[$platform] = [
-                'status' => $result['status'] === 'success' ? 'done' : 'failed',
-                'result' => ['url' => $result['url'] ?? null],
-                'format' => $result['format'] ?? null,
-                'error' => $result['error'] ?? ($result['status'] === 'skipped' ? 'غير مُفعّل لهذه المنصة' : null),
-            ];
-        }
-
-        $publishJob->update(['platforms' => $mapped]);
+        // النشر ما يصير فورياً — كل منصة تدخل طابور مجدول بتوقيتها المناسب (بوت النشر
+        // نفسه قرر التوقيت ونوع الوسائط المتاح فعلياً لكل منصة).
+        $publishJob->update(['platforms' => $response->json('platforms', $publishJob->platforms ?? [])]);
 
         return redirect()
             ->route('admin.publish.index')
-            ->with('success', 'تم إرسال طلب النشر. راجع حالة كل منصة بالأسفل.');
+            ->with('success', 'تم اعتماد الإعلان — بوت النشر بيوزّعه على كل منصة بالتوقيت الأنسب لها (قد يأخذ حتى 24 ساعة). راجع الحالة بالأسفل.');
     }
 
     /**

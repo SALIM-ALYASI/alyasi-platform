@@ -172,6 +172,7 @@
                                         <div style="display:flex; flex-direction:column; gap:8px;">
                                             @foreach ([
                                                 'instagram' => ['label' => 'إنستغرام', 'image' => true],
+                                                'facebook' => ['label' => 'فيسبوك', 'image' => true],
                                                 'linkedin' => ['label' => 'لينكدإن', 'image' => true],
                                                 'youtube' => ['label' => 'يوتيوب', 'image' => false],
                                                 'telegram' => ['label' => 'تلجرام', 'image' => true],
@@ -210,6 +211,7 @@
 
                             @foreach ([
                                 'instagram' => ['label' => 'إنستغرام', 'icon' => 'fa-brands fa-instagram'],
+                                'facebook' => ['label' => 'فيسبوك', 'icon' => 'fa-brands fa-facebook'],
                                 'telegram' => ['label' => 'تلجرام', 'icon' => 'fa-brands fa-telegram'],
                                 'linkedin' => ['label' => 'لينكدإن', 'icon' => 'fa-brands fa-linkedin'],
                                 'youtube' => ['label' => 'يوتيوب', 'icon' => 'fa-brands fa-youtube'],
@@ -228,7 +230,7 @@
                                     <span style="text-align:left;">
                                         @if (! $info)
                                             <span style="color:var(--admin-muted);">—</span>
-                                        @elseif ($info['status'] === 'done')
+                                        @elseif (in_array($info['status'], ['done', 'published'], true))
                                             <span style="color:#22c55e;">
                                                 <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
                                                 تم
@@ -245,7 +247,15 @@
                                         @elseif ($info['status'] === 'failed')
                                             <span style="color:#ef4444;" title="{{ $info['error'] ?? '' }}">
                                                 <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>
-                                                فشل
+                                                فشل نهائياً
+                                            </span>
+                                        @elseif ($info['status'] === 'retrying')
+                                            <span style="color:#f59e0b;" title="{{ $info['error'] ?? '' }}">
+                                                <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                                                إعادة محاولة
+                                                @if (! empty($info['next_retry_at']))
+                                                    ({{ \Illuminate\Support\Carbon::parse($info['next_retry_at'])->diffForHumans() }})
+                                                @endif
                                             </span>
                                         @elseif ($info['status'] === 'publishing')
                                             <span style="color:#f59e0b;">
@@ -254,7 +264,11 @@
                                             </span>
                                         @else
                                             <span style="color:var(--admin-muted);">
-                                                مجدول ({{ $info['delayMinutes'] ?? 0 }}د)
+                                                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                                                مجدول
+                                                @if (! empty($info['scheduled_at']))
+                                                    ({{ \Illuminate\Support\Carbon::parse($info['scheduled_at'])->diffForHumans() }})
+                                                @endif
                                             </span>
                                         @endif
                                     </span>
