@@ -64,6 +64,51 @@
                 >
             </div>
 
+            <div class="form-group full">
+                <label>نوع المحتوى</label>
+
+                @php $mediaType = old('media_type', 'both'); @endphp
+
+                <div id="generate-media-type" style="display:flex; flex-wrap:wrap; gap:16px; margin-top:6px;">
+                    @foreach (['image' => 'صورة فقط', 'video' => 'فيديو فقط', 'both' => 'الاثنين'] as $value => $label)
+                        <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
+                            <input type="radio" name="media_type" value="{{ $value }}" @checked($mediaType === $value)>
+                            {{ $label }}
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="form-group full">
+                <label>المنصات</label>
+
+                @php
+                    $genPlatforms = [
+                        'instagram' => ['label' => 'إنستغرام', 'image' => true],
+                        'facebook' => ['label' => 'فيسبوك', 'image' => true],
+                        'linkedin' => ['label' => 'لينكدإن', 'image' => true],
+                        'youtube' => ['label' => 'يوتيوب', 'image' => false],
+                        'telegram' => ['label' => 'تلجرام', 'image' => true],
+                    ];
+                    $selectedGenPlatforms = old('platforms', array_keys($genPlatforms));
+                @endphp
+
+                <div id="generate-platforms" style="display:flex; flex-wrap:wrap; gap:16px; margin-top:6px;">
+                    @foreach ($genPlatforms as $value => $meta)
+                        <label
+                            data-platform="{{ $value }}"
+                            data-supports-image="{{ $meta['image'] ? '1' : '0' }}"
+                            style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;"
+                        >
+                            <input type="checkbox" name="platforms[]" value="{{ $value }}" @checked(in_array($value, $selectedGenPlatforms))>
+                            {{ $meta['label'] }}
+                        </label>
+                    @endforeach
+                </div>
+
+                <p id="generate-platforms-hint" style="margin-top:6px; font-size:12px; color:var(--admin-muted);"></p>
+            </div>
+
         </div>
 
         <div class="form-actions">
@@ -166,32 +211,27 @@
 
                                 @unless ($alreadyPublished)
 
+                                    @php
+                                        $platformLabels = [
+                                            'instagram' => 'إنستغرام', 'facebook' => 'فيسبوك', 'linkedin' => 'لينكدإن',
+                                            'youtube' => 'يوتيوب', 'telegram' => 'تلجرام',
+                                        ];
+                                        // نوع الوسائط محسوم خلاص وقت التوليد — هنا فقط نعرضه ونأكد المنصات.
+                                        $requestedPlatforms = $job->smart_content_data['platforms_requested'] ?? [];
+                                    @endphp
+
                                     <form action="{{ route('admin.publish.approve', $job->job_id) }}" method="POST" style="margin-top:12px;">
                                         @csrf
 
                                         <div style="display:flex; flex-direction:column; gap:8px;">
-                                            @foreach ([
-                                                'instagram' => ['label' => 'إنستغرام', 'image' => true],
-                                                'facebook' => ['label' => 'فيسبوك', 'image' => true],
-                                                'linkedin' => ['label' => 'لينكدإن', 'image' => true],
-                                                'youtube' => ['label' => 'يوتيوب', 'image' => false],
-                                                'telegram' => ['label' => 'تلجرام', 'image' => true],
-                                            ] as $value => $meta)
-                                                <div style="display:flex; align-items:center; gap:10px; font-size:13px;">
-                                                    <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
-                                                        <input type="checkbox" name="platforms[]" value="{{ $value }}" checked>
-                                                        {{ $meta['label'] }}
-                                                    </label>
-
-                                                    @if ($meta['image'])
-                                                        <select name="formats[{{ $value }}]" class="form-control" style="width:auto; padding:2px 8px; font-size:12px;">
-                                                            <option value="video">فيديو</option>
-                                                            <option value="image">صورة</option>
-                                                        </select>
-                                                    @else
-                                                        <span style="color:var(--admin-muted); font-size:12px;">فيديو فقط</span>
-                                                    @endif
-                                                </div>
+                                            @foreach ($requestedPlatforms as $value => $format)
+                                                <label style="display:flex; align-items:center; gap:6px; font-weight:normal; font-size:13px; cursor:pointer;">
+                                                    <input type="checkbox" name="platforms[]" value="{{ $value }}" checked>
+                                                    {{ $platformLabels[$value] ?? $value }}
+                                                    <span style="color:var(--admin-muted); font-size:12px;">
+                                                        ({{ $format === 'image' ? 'صورة' : 'فيديو' }})
+                                                    </span>
+                                                </label>
                                             @endforeach
                                         </div>
 
@@ -290,5 +330,43 @@
     @endif
 
 </section>
+
+@push('scripts')
+<script>
+(function () {
+    var IMAGE_ONLY_LABEL = 'يوتيوب غير متاح مع "صورة فقط" — يقبل فيديو بس.';
+    var mediaTypeInputs = document.querySelectorAll('#generate-media-type input[name="media_type"]');
+    var platformLabels = document.querySelectorAll('#generate-platforms label[data-platform]');
+    var hint = document.getElementById('generate-platforms-hint');
+
+    function applyMediaType() {
+        var selected = document.querySelector('#generate-media-type input[name="media_type"]:checked');
+        var mediaType = selected ? selected.value : 'both';
+        var anyDisabled = false;
+
+        platformLabels.forEach(function (label) {
+            var supportsImage = label.dataset.supportsImage === '1';
+            var checkbox = label.querySelector('input[type="checkbox"]');
+            var mustDisable = mediaType === 'image' && !supportsImage;
+
+            checkbox.disabled = mustDisable;
+            label.style.opacity = mustDisable ? '0.45' : '1';
+            if (mustDisable) {
+                checkbox.checked = false;
+                anyDisabled = true;
+            }
+        });
+
+        hint.textContent = anyDisabled ? IMAGE_ONLY_LABEL : '';
+    }
+
+    mediaTypeInputs.forEach(function (input) {
+        input.addEventListener('change', applyMediaType);
+    });
+
+    applyMediaType();
+})();
+</script>
+@endpush
 
 @endsection

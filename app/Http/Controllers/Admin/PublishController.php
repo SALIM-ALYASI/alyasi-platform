@@ -90,9 +90,14 @@ class PublishController extends Controller
         $validated = $request->validate([
             'text' => ['required', 'string', 'min:5', 'max:1000'],
             'contact' => ['nullable', 'string', 'max:100'],
+            'media_type' => ['required', 'in:image,video,both'],
+            'platforms' => ['required', 'array', 'min:1'],
+            'platforms.*' => ['in:instagram,facebook,linkedin,youtube,telegram'],
         ], [
             'text.required' => 'يرجى كتابة نص مختصر عن الإعلان.',
             'text.min' => 'النص قصير جداً.',
+            'platforms.required' => 'يرجى اختيار منصة واحدة على الأقل.',
+            'platforms.min' => 'يرجى اختيار منصة واحدة على الأقل.',
         ]);
 
         $baseUrl = rtrim((string) config('services.smart_content.url'), '/');
@@ -104,7 +109,8 @@ class PublishController extends Controller
                 ->post("{$baseUrl}/create-ad", [
                     'text' => $validated['text'],
                     'contact' => $validated['contact'] ?? 'alyasi.dev',
-                    'publish' => false,
+                    'media_type' => $validated['media_type'],
+                    'platforms' => $validated['platforms'],
                 ]);
         } catch (\Throwable $e) {
             Log::warning('Smart Content API unreachable', ['error' => $e->getMessage()]);
@@ -125,6 +131,7 @@ class PublishController extends Controller
             'title' => null,
             'text' => $validated['text'],
             'platforms' => [],
+            'smart_content_data' => ['platforms_requested' => $data['platforms_requested'] ?? []],
         ]);
 
         return redirect()
@@ -159,8 +166,6 @@ class PublishController extends Controller
         $validated = $request->validate([
             'platforms' => ['required', 'array', 'min:1'],
             'platforms.*' => ['in:instagram,facebook,linkedin,youtube,telegram'],
-            'formats' => ['nullable', 'array'],
-            'formats.*' => ['in:video,image'],
         ], [
             'platforms.required' => 'يرجى اختيار منصة واحدة على الأقل.',
             'platforms.min' => 'يرجى اختيار منصة واحدة على الأقل.',
@@ -176,12 +181,12 @@ class PublishController extends Controller
         $apiKey = config('services.smart_content.key');
 
         try {
+            // نوع الوسائط لكل منصة محسوم خلاص وقت التوليد — هنا فقط نأكد أي منها ينشر الآن.
             $response = Http::withHeaders($this->authHeaders($apiKey))
                 ->timeout(180)
                 ->post("{$baseUrl}/publish", [
                     'job_id' => $job,
                     'platforms' => $validated['platforms'],
-                    'formats' => $validated['formats'] ?? [],
                 ]);
         } catch (\Throwable $e) {
             Log::warning('Smart Content publish unreachable', ['error' => $e->getMessage()]);
