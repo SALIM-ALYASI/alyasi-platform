@@ -85,7 +85,7 @@
 
                         <div class="admin-data-card__body">
                             <div class="admin-data-card__heading">
-                                <div><h3>{{ $category->name }}</h3></div>
+                                <div><h3>{{ $category->name_ar }}</h3></div>
                             </div>
 
                             <div class="admin-data-card__meta">

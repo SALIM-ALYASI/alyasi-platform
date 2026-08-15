@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\Permalink;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -14,14 +15,17 @@ class ArticleController extends Controller
      */
     public function index(Request $request): View
     {
+        $locale = app()->getLocale();
+
         $categories = ArticleCategory::query()
             ->active()
             ->ordered()
             ->get();
 
         $articlesQuery = Article::query()
-            ->with('category')
-            ->published();
+            ->with(['category', 'permalinks'])
+            ->published()
+            ->availableIn($locale);
 
         if ($request->filled('category')) {
             $articlesQuery->whereHas(
@@ -34,8 +38,9 @@ class ArticleController extends Controller
         }
 
         $featuredArticles = Article::query()
-            ->with('category')
+            ->with(['category', 'permalinks'])
             ->published()
+            ->availableIn($locale)
             ->featured()
             ->ordered()
             ->limit(3)
@@ -56,23 +61,39 @@ class ArticleController extends Controller
     /**
      * صفحة تفاصيل المقال.
      */
-    public function show(Article $article): View
+    public function show(string $slug): View
     {
-        if ($article->status !== Article::STATUS_PUBLISHED) {
-            abort(404);
-        }
+        $locale = app()->getLocale();
 
-        if (! $article->published_at || $article->published_at->greaterThan(now())) {
-            abort(404);
-        }
+        $permalink = Permalink::query()
+            ->with('linkable')
+            ->where('linkable_type', 'article')
+            ->where('locale', $locale)
+            ->where('slug', $slug)
+            ->first();
 
-        $article->load('category');
+        abort_if($permalink === null, 404);
+
+        $article = $permalink->linkable;
+
+        abort_unless($article instanceof Article, 404);
+
+        $isPublished = Article::query()
+            ->published()
+            ->whereKey($article->getKey())
+            ->exists();
+
+        abort_unless($isPublished, 404);
+
+        $article->load(['category', 'permalinks']);
         $article->registerView();
         $article->refresh();
+        $article->load(['category', 'permalinks']);
 
         $relatedArticles = Article::query()
-            ->with('category')
+            ->with(['category', 'permalinks'])
             ->published()
+            ->availableIn($locale)
             ->whereKeyNot($article->getKey())
             ->when(
                 $article->article_category_id,

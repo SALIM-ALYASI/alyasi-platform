@@ -3,6 +3,11 @@
 @section('title', __('articles.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('articles.meta_description'))
 
+@section('canonical', article_route('index'))
+@section('og_url', article_route('index'))
+@section('hreflang_ar', article_route('index', [], 'ar'))
+@section('hreflang_en', article_route('index', [], 'en'))
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/articles-index.css') }}">
@@ -21,11 +26,11 @@
     <section class="container articles-section">
         @if ($categories->isNotEmpty())
             <div class="filters">
-                <a href="{{ route('articles.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
+                <a href="{{ article_route('index') }}" class="filters__btn @if(!request('category')) is-active @endif">
                     {{ __('articles.all_categories') }}
                 </a>
                 @foreach ($categories as $category)
-                    <a href="{{ route('articles.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
+                    <a href="{{ article_route('index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
                         {{ $category->name }}
                     </a>
                 @endforeach
@@ -35,7 +40,7 @@
         @if ($articles->isNotEmpty())
             <div class="grid-3">
                 @foreach ($articles as $article)
-                    <a href="{{ route('articles.show', $article) }}" class="card card--hover articles-card" data-reveal>
+                    <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover articles-card" data-reveal>
                         <div class="articles-card__media">
                             <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
                             @if ($article->is_featured)

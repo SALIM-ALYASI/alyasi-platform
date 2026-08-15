@@ -14,7 +14,10 @@
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', route('articles.show', $article))
+@section('canonical', article_route('show', [$article->slug()]))
+
+@section('hreflang_ar', $article->translatedSlug('ar') ? article_route('show', [$article->translatedSlug('ar')], 'ar') : '')
+@section('hreflang_en', $article->translatedSlug('en') ? article_route('show', [$article->translatedSlug('en')], 'en') : '')
 
 {{-- =========================================================
      Open Graph
@@ -35,7 +38,7 @@
         )
 )
 
-@section('og_url', route('articles.show', $article))
+@section('og_url', article_route('show', [$article->slug()]))
 
 @section(
     'og_image',
@@ -50,6 +53,8 @@
 {!! json_encode([
     '@'.'context' => 'https://schema.org',
     '@type' => 'Article',
+
+    'inLanguage' => app()->getLocale(),
 
     'headline' => $article->title,
 
@@ -73,7 +78,7 @@
 
     'mainEntityOfPage' => [
         '@type' => 'WebPage',
-        '@id' => route('articles.show', $article),
+        '@id' => article_route('show', [$article->slug()]),
     ],
 
     'publisher' => [
@@ -307,7 +312,7 @@
 
     <div class="articles-detail__breadcrumb">
 
-        <a href="{{ route('articles.index') }}">
+        <a href="{{ article_route('index') }}">
             {{ __('articles.breadcrumb_articles') }}
         </a>
 
@@ -484,7 +489,7 @@
             @foreach ($relatedArticles as $related)
 
                 <a
-                    href="{{ route('articles.show', $related) }}"
+                    href="{{ article_route('show', [$related->slug()]) }}"
                     class="card card--hover articles-detail__related-card"
                 >
 

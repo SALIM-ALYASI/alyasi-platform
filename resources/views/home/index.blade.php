@@ -276,13 +276,13 @@
                     <div class="section-head__eyebrow">{{ __('home.articles_badge') }}</div>
                     <h2 class="section-head__title">{{ __('home.articles_title') }} <em>{{ __('home.articles_title_highlight') }}</em></h2>
                 </div>
-                <a href="{{ route('articles.index') }}" class="btn btn--outline">{{ __('home.all_articles') }}</a>
+                <a href="{{ article_route('index') }}" class="btn btn--outline">{{ __('home.all_articles') }}</a>
             </div>
 
             @if ($latestArticles->isNotEmpty())
                 <div class="grid-3">
                     @foreach ($latestArticles as $article)
-                        <a href="{{ route('articles.show', $article) }}" class="card card--hover home-news-card" data-reveal>
+                        <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover home-news-card" data-reveal>
                             <div class="home-news-card__media">
                                 <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
                             </div>

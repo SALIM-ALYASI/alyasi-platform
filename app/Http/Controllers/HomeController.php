@@ -65,8 +65,9 @@ class HomeController extends Controller
 
         $latestArticles = $showArticles
             ? Article::query()
-                ->with('category')
+                ->with(['category', 'permalinks'])
                 ->published()
+                ->availableIn(app()->getLocale())
                 ->ordered()
                 ->take(3)
                 ->get()

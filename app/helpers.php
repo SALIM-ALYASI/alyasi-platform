@@ -31,6 +31,22 @@ if (! function_exists('media_url')) {
     }
 }
 
+if (! function_exists('article_route')) {
+    /**
+     * بناء رابط لصفحة مقالات حسب اللغة (عربي بدون prefix، إنجليزي بـ /en).
+     *
+     * $name هو الاسم الأساسي للراوت: 'index' أو 'show'.
+     */
+    function article_route(string $name, array $parameters = [], ?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+
+        $routeName = $locale === 'en' ? "articles.{$name}.en" : "articles.{$name}";
+
+        return route($routeName, $parameters);
+    }
+}
+
 if (! function_exists('versioned_asset')) {
     /**
      * Build an asset URL with a cache-busting query string based on the

@@ -12,9 +12,11 @@ class ArticleCategory extends Model
      * الحقول القابلة للتعبئة.
      */
     protected $fillable = [
-        'name',
+        'name_ar',
+        'name_en',
         'slug',
-        'description',
+        'description_ar',
+        'description_en',
         'sort_order',
         'is_active',
     ];
@@ -59,6 +61,25 @@ class ArticleCategory extends Model
     {
         return $query
             ->orderBy('sort_order')
-            ->orderBy('name');
+            ->orderBy('name_ar');
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->localizedValue('name') ?? '';
+    }
+
+    public function getDescriptionAttribute(): ?string
+    {
+        return $this->localizedValue('description');
+    }
+
+    private function localizedValue(string $field): ?string
+    {
+        $locale = app()->getLocale() === 'ar' ? 'ar' : 'en';
+        $fallbackLocale = $locale === 'ar' ? 'en' : 'ar';
+
+        return $this->getAttribute("{$field}_{$locale}")
+            ?: $this->getAttribute("{$field}_{$fallbackLocale}");
     }
 }

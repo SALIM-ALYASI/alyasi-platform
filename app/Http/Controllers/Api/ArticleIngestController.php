@@ -5,31 +5,50 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\Permalink;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 
 class ArticleIngestController extends Controller
 {
     /**
+     * الوسوم المسموح بها داخل محتوى المقال — مطابقة لِـ Admin\ArticleController
+     * وللقائمة المعروضة فعليًا في articles/show.blade.php.
+     */
+    private const ALLOWED_CONTENT_TAGS = 'p,br,strong,em,b,i,a[href|title|target|rel],ul,ol,li,h2,h3,h4,blockquote,hr';
+
+    /**
      * قائمة مختصرة بالمقالات الموجودة - تفيد أتمتة n8n قبل الإرسال
-     * عشان تتفادى اقتراح مقالات مكرّرة أصلاً منشورة.
+     * عشان تتفادى اقتراح مقالات مكرّرة أصلاً منشورة. المقالات هنا كلها
+     * عربية (اللغة الوحيدة التي يرسلها البوت حاليًا)، لذا الرابط المُعاد
+     * هو الرابط الدائم العربي.
      */
     public function index(Request $request): JsonResponse
     {
         $articles = Article::query()
+            ->with('permalinks')
             ->orderByDesc('id')
             ->limit(min($request->integer('limit', 50), 200))
-            ->get(['id', 'title', 'slug', 'status']);
+            ->get(['id', 'title_ar', 'status'])
+            ->map(fn (Article $article) => [
+                'id' => $article->id,
+                'title' => $article->title_ar,
+                'slug' => $article->translatedSlug('ar'),
+                'status' => $article->status,
+            ]);
 
         return response()->json(['data' => $articles]);
     }
 
     /**
-     * استقبال مقال من أتمتة خارجية (n8n) وحفظه بقسم "مقالاتي". المقال
-     * يُطابَق أولاً بالرابط المختصر (slug) لمنع التكرار - لو موجود يُحدَّث
-     * بدل ما يُنشأ من جديد.
+     * استقبال مقال من أتمتة خارجية (n8n) وحفظه بقسم "مقالاتي" باللغة
+     * العربية (اللغة الوحيدة التي يرسلها البوت حاليًا). المقال يُطابَق
+     * أولاً بالرابط المختصر (عبر جدول permalinks) لمنع التكرار - لو
+     * موجود يُحدَّث بدل ما يُنشأ من جديد.
      */
     public function store(Request $request): JsonResponse
     {
@@ -51,42 +70,62 @@ class ArticleIngestController extends Controller
         $title = trim($validated['title']);
         $slug = $this->resolveSlug($validated['slug'] ?? null, $title);
 
-        $article = Article::query()->firstOrNew(['slug' => $slug]);
+        $article = DB::transaction(function () use ($validated, $title, $slug) {
+            $existingPermalink = Permalink::query()
+                ->where('linkable_type', 'article')
+                ->where('locale', 'ar')
+                ->where('slug', $slug)
+                ->first();
 
-        $status = $validated['status'] ?? 'published';
+            $article = $existingPermalink?->linkable instanceof Article
+                ? $existingPermalink->linkable
+                : new Article;
 
-        $article->fill([
-            'article_category_id' => $this->resolveCategoryId($validated['category'] ?? null),
-            'title' => $title,
-            'slug' => $slug,
-            'excerpt' => $validated['excerpt'] ?? null,
-            'content' => $validated['content'],
-            'status' => $status,
-            'is_featured' => (bool) ($validated['is_featured'] ?? false),
-            'published_at' => $status === 'published'
-                ? ($validated['published_at'] ?? $article->published_at ?? now())
-                : ($validated['published_at'] ?? null),
-            'meta_title' => $validated['meta_title'] ?? null,
-            'meta_description' => $validated['meta_description'] ?? null,
-            'meta_keywords' => $validated['meta_keywords'] ?? null,
-        ]);
+            $status = $validated['status'] ?? 'published';
 
-        if (! $article->exists && filled($validated['featured_image_url'] ?? null)) {
-            $article->featured_image = $this->downloadImage($validated['featured_image_url']);
-        }
+            $article->fill([
+                'article_category_id' => $this->resolveCategoryId($validated['category'] ?? null),
+                'title_ar' => $title,
+                'excerpt_ar' => $validated['excerpt'] ?? null,
+                'content_ar' => Purifier::clean($validated['content'], ['HTML.Allowed' => self::ALLOWED_CONTENT_TAGS]),
+                'status' => $status,
+                'is_featured' => (bool) ($validated['is_featured'] ?? false),
+                'published_at' => $status === 'published'
+                    ? ($validated['published_at'] ?? $article->published_at ?? now())
+                    : ($validated['published_at'] ?? null),
+                'meta_title_ar' => $validated['meta_title'] ?? null,
+                'meta_description_ar' => $validated['meta_description'] ?? null,
+                'meta_keywords_ar' => $validated['meta_keywords'] ?? null,
+            ]);
 
-        $article->save();
+            if (! $article->exists && filled($validated['featured_image_url'] ?? null)) {
+                $article->featured_image = $this->downloadImage($validated['featured_image_url']);
+            }
+
+            $article->save();
+
+            if (! $existingPermalink) {
+                Permalink::query()->create([
+                    'linkable_type' => 'article',
+                    'linkable_id' => $article->id,
+                    'locale' => 'ar',
+                    'slug' => $slug,
+                ]);
+            }
+
+            return $article;
+        });
 
         return response()->json([
             'success' => true,
             'id' => $article->id,
-            'slug' => $article->slug,
+            'slug' => $article->translatedSlug('ar'),
             'created' => $article->wasRecentlyCreated,
         ]);
     }
 
     /**
-     * تحديد الرابط المختصر النهائي، مع ضمان فرادته.
+     * تحديد الرابط المختصر النهائي، مع ضمان فرادته عالميًا عبر جدول permalinks.
      */
     private function resolveSlug(?string $requestedSlug, string $title): string
     {
@@ -98,14 +137,20 @@ class ArticleIngestController extends Controller
 
         // لو الـslug يطابق مقالًا موجودًا فعلاً، نعتبره تحديثًا لنفس المقال
         // (مو تكرارًا)، فنرجّعه كما هو بدل توليد نسخة جديدة.
-        if (Article::query()->where('slug', $baseSlug)->exists()) {
+        $matchesExistingArticle = Permalink::query()
+            ->where('linkable_type', 'article')
+            ->where('locale', 'ar')
+            ->where('slug', $baseSlug)
+            ->exists();
+
+        if ($matchesExistingArticle) {
             return $baseSlug;
         }
 
         $slug = $baseSlug;
         $counter = 2;
 
-        while (Article::query()->where('slug', $slug)->exists()) {
+        while (Permalink::query()->where('slug', $slug)->exists()) {
             $slug = "{$baseSlug}-{$counter}";
             $counter++;
         }
@@ -124,7 +169,7 @@ class ArticleIngestController extends Controller
 
         return ArticleCategory::query()
             ->firstOrCreate(
-                ['name' => trim($categoryName)],
+                ['name_ar' => trim($categoryName)],
                 [
                     'slug' => Str::slug($categoryName),
                     'is_active' => true,

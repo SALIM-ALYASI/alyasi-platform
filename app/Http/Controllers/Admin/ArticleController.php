@@ -6,24 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\Permalink;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Mews\Purifier\Facades\Purifier;
 
 class ArticleController extends Controller
 {
+    /**
+     * الوسوم المسموح بها داخل محتوى المقال — تطابق تمامًا القائمة
+     * المسموحة عند العرض في الواجهة العامة (articles/show.blade.php).
+     */
+    private const ALLOWED_CONTENT_TAGS = 'p,br,strong,em,b,i,a[href|title|target|rel],ul,ol,li,h2,h3,h4,blockquote,hr';
+
     public function index(Request $request): View
     {
         $articles = Article::query()
-            ->with(['category', 'author'])
+            ->with(['category', 'author', 'permalinks'])
             ->when(
                 $request->filled('search'),
-                fn ($query) => $query->where('title', 'like', '%'.trim($request->string('search')->toString()).'%')
+                function ($query) use ($request) {
+                    $search = trim($request->string('search')->toString());
+
+                    $query->where(function ($query) use ($search) {
+                        $query
+                            ->where('title_ar', 'like', "%{$search}%")
+                            ->orWhere('title_en', 'like', "%{$search}%");
+                    });
+                }
             )
             ->when(
                 $request->filled('status'),
@@ -64,12 +80,16 @@ class ArticleController extends Controller
 
         try {
             DB::transaction(function () use ($validated): void {
-                Article::query()->create($validated);
+                $article = Article::query()->create($validated);
+
+                $this->syncPermalinks($article);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($storedImage);
             throw $exception;
         }
+
+        $this->regenerateSitemap();
 
         return redirect()
             ->route('admin.articles.index')
@@ -78,6 +98,8 @@ class ArticleController extends Controller
 
     public function edit(Article $article): View
     {
+        $article->load('permalinks');
+
         $categories = ArticleCategory::query()->active()->ordered()->get();
         $authors = Admin::query()->orderBy('name')->get();
 
@@ -100,6 +122,8 @@ class ArticleController extends Controller
         try {
             DB::transaction(function () use ($article, $validated): void {
                 $article->update($validated);
+
+                $this->syncPermalinks($article);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($newImage);
@@ -110,6 +134,8 @@ class ArticleController extends Controller
             $this->deleteImage($oldImage);
         }
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.articles.index')
             ->with('success', 'تم تحديث المقال بنجاح.');
@@ -119,9 +145,14 @@ class ArticleController extends Controller
     {
         $image = $article->featured_image;
 
-        $article->delete();
+        DB::transaction(function () use ($article): void {
+            $article->permalinks()->delete();
+            $article->delete();
+        });
 
         $this->deleteImage($image);
+
+        $this->regenerateSitemap();
 
         return redirect()
             ->route('admin.articles.index')
@@ -140,6 +171,8 @@ class ArticleController extends Controller
             ]);
             $message = 'تم نشر المقال.';
         }
+
+        $this->regenerateSitemap();
 
         return back()->with('success', $message);
     }
@@ -160,30 +193,29 @@ class ArticleController extends Controller
         return $request->validate([
             'article_category_id' => ['nullable', 'integer', 'exists:article_categories,id'],
             'author_id' => ['nullable', 'integer', 'exists:admins,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:280',
-                Rule::unique('articles', 'slug')->ignore($article?->id),
-            ],
-            'excerpt' => ['nullable', 'string', 'max:500'],
-            'content' => ['required', 'string'],
+            'title_ar' => ['required', 'string', 'max:500'],
+            'title_en' => ['nullable', 'string', 'max:500'],
+            'excerpt_ar' => ['nullable', 'string', 'max:500'],
+            'excerpt_en' => ['nullable', 'string', 'max:500'],
+            'content_ar' => ['required', 'string'],
+            'content_en' => ['nullable', 'string'],
             'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'status' => ['required', Rule::in([
+            'status' => ['required', \Illuminate\Validation\Rule::in([
                 Article::STATUS_DRAFT,
                 Article::STATUS_PUBLISHED,
                 Article::STATUS_ARCHIVED,
             ])],
             'is_featured' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
-            'meta_keywords' => ['nullable', 'string', 'max:255'],
+            'meta_title_ar' => ['nullable', 'string', 'max:255'],
+            'meta_title_en' => ['nullable', 'string', 'max:255'],
+            'meta_description_ar' => ['nullable', 'string', 'max:500'],
+            'meta_description_en' => ['nullable', 'string', 'max:500'],
+            'meta_keywords_ar' => ['nullable', 'string', 'max:255'],
+            'meta_keywords_en' => ['nullable', 'string', 'max:255'],
         ], [
-            'title.required' => 'عنوان المقال مطلوب.',
-            'content.required' => 'محتوى المقال مطلوب.',
-            'slug.unique' => 'الرابط المختصر مستخدم مسبقًا.',
+            'title_ar.required' => 'عنوان المقال بالعربية مطلوب.',
+            'content_ar.required' => 'محتوى المقال بالعربية مطلوب.',
             'featured_image.image' => 'الملف المحدد يجب أن يكون صورة.',
             'featured_image.mimes' => 'صيغة الصورة يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
             'featured_image.max' => 'حجم الصورة يجب ألا يتجاوز 4 ميجابايت.',
@@ -192,12 +224,13 @@ class ArticleController extends Controller
 
     private function prepareArticleData(Request $request, array $validated): array
     {
-        $validated['title'] = trim($validated['title']);
-        $validated['slug'] = $this->generateUniqueSlug(
-            $validated['slug'] ?? null,
-            $validated['title'],
-            $request->route('article')?->id
-        );
+        $validated['title_ar'] = trim($validated['title_ar']);
+        $validated['title_en'] = filled($validated['title_en'] ?? null) ? trim($validated['title_en']) : null;
+
+        $validated['content_ar'] = Purifier::clean($validated['content_ar'], ['HTML.Allowed' => self::ALLOWED_CONTENT_TAGS]);
+        $validated['content_en'] = filled($validated['content_en'] ?? null)
+            ? Purifier::clean($validated['content_en'], ['HTML.Allowed' => self::ALLOWED_CONTENT_TAGS])
+            : null;
 
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['author_id'] = $validated['author_id'] ?? Auth::guard('admin')->id();
@@ -211,9 +244,42 @@ class ArticleController extends Controller
         return $validated;
     }
 
-    private function generateUniqueSlug(?string $requestedSlug, string $title, ?int $ignoreId = null): string
+    /**
+     * إنشاء الروابط الدائمة الناقصة للمقال (عربي إلزامي، إنجليزي عند توفر عنوانه).
+     *
+     * لا نُعدّل رابطًا موجودًا مسبقًا حتى لا نكسر روابط منشورة سابقًا،
+     * لكن خلافًا لـ News نُعيد الفحص عند كل تحديث حتى تُنشأ الترجمة
+     * الإنجليزية تلقائيًا إن أُضيفت لاحقًا بعد إنشاء المقال.
+     */
+    private function syncPermalinks(Article $article): void
     {
-        $baseSlug = Str::slug($requestedSlug ?: $title);
+        foreach (['ar' => $article->title_ar, 'en' => $article->title_en] as $locale => $title) {
+            if (blank($title)) {
+                continue;
+            }
+
+            $exists = Permalink::query()
+                ->where('linkable_type', 'article')
+                ->where('linkable_id', $article->id)
+                ->where('locale', $locale)
+                ->exists();
+
+            if ($exists) {
+                continue;
+            }
+
+            Permalink::query()->create([
+                'linkable_type' => 'article',
+                'linkable_id' => $article->id,
+                'locale' => $locale,
+                'slug' => $this->generateUniqueSlug($title),
+            ]);
+        }
+    }
+
+    private function generateUniqueSlug(string $title): string
+    {
+        $baseSlug = Str::slug($title);
 
         if ($baseSlug === '') {
             $baseSlug = 'article-'.Str::lower(Str::random(8));
@@ -222,17 +288,20 @@ class ArticleController extends Controller
         $slug = $baseSlug;
         $counter = 2;
 
-        while (
-            Article::query()
-                ->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))
-                ->where('slug', $slug)
-                ->exists()
-        ) {
+        while (Permalink::query()->where('slug', $slug)->exists()) {
             $slug = "{$baseSlug}-{$counter}";
             $counter++;
         }
 
         return $slug;
+    }
+
+    /**
+     * إعادة توليد sitemap.xml ليبقى متزامنًا مع حالة نشر المقالات.
+     */
+    private function regenerateSitemap(): void
+    {
+        Artisan::call('sitemap:generate');
     }
 
     /**

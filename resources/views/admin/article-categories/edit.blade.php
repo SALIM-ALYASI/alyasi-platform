@@ -6,7 +6,7 @@
 
 <section class="page-header">
     <div class="page-header-content">
-        <h2>تعديل: {{ $category->name }}</h2>
+        <h2>تعديل: {{ $category->name_ar }}</h2>
         <p>تعديل بيانات تصنيف المقالات.</p>
     </div>
 

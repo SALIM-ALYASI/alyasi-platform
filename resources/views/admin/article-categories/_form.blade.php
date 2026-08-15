@@ -4,28 +4,46 @@
 
 <div class="form-grid">
     <div class="form-group">
-        <label for="name">
-            اسم التصنيف
+        <label for="name_ar">
+            اسم التصنيف (عربي)
             <span class="text-danger">*</span>
         </label>
 
         <input
             type="text"
-            id="name"
-            name="name"
+            id="name_ar"
+            name="name_ar"
             class="form-control"
-            value="{{ old('name', $category?->name) }}"
+            value="{{ old('name_ar', $category?->name_ar) }}"
             maxlength="150"
             required
             autofocus
         >
 
-        @error('name')
+        @error('name_ar')
             <small class="text-danger">{{ $message }}</small>
         @enderror
     </div>
 
     <div class="form-group">
+        <label for="name_en">اسم التصنيف (إنجليزي)</label>
+
+        <input
+            type="text"
+            id="name_en"
+            name="name_en"
+            class="form-control"
+            value="{{ old('name_en', $category?->name_en) }}"
+            maxlength="150"
+            dir="ltr"
+        >
+
+        @error('name_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group full">
         <label for="slug">الرابط المختصر</label>
 
         <input
@@ -38,7 +56,7 @@
             dir="ltr"
         >
 
-        <small style="display:block;margin-top:6px;color:#777;">اتركه فارغًا ليتم إنشاؤه تلقائيًا من الاسم.</small>
+        <small style="display:block;margin-top:6px;color:#777;">اتركه فارغًا ليتم إنشاؤه تلقائيًا من الاسم العربي.</small>
 
         @error('slug')
             <small class="text-danger">{{ $message }}</small>
@@ -46,17 +64,34 @@
     </div>
 
     <div class="form-group full">
-        <label for="description">الوصف</label>
+        <label for="description_ar">الوصف (عربي)</label>
 
         <textarea
-            id="description"
-            name="description"
+            id="description_ar"
+            name="description_ar"
             rows="4"
             class="form-control"
             maxlength="500"
-        >{{ old('description', $category?->description) }}</textarea>
+        >{{ old('description_ar', $category?->description_ar) }}</textarea>
 
-        @error('description')
+        @error('description_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group full">
+        <label for="description_en">الوصف (إنجليزي)</label>
+
+        <textarea
+            id="description_en"
+            name="description_en"
+            rows="4"
+            class="form-control"
+            maxlength="500"
+            dir="ltr"
+        >{{ old('description_en', $category?->description_en) }}</textarea>
+
+        @error('description_en')
             <small class="text-danger">{{ $message }}</small>
         @enderror
     </div>

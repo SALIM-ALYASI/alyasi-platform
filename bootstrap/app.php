@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthenticateManagerBot;
 use App\Http\Middleware\AuthenticateNewsBot;
 use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
+use App\Http\Middleware\ForceLocale;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackVisit;
@@ -31,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'manager-bot.auth' => AuthenticateManagerBot::class,
             'article-bot.auth' => AuthenticateArticleBot::class,
             'publish-webhook.auth' => AuthenticatePublishWebhook::class,
+            'force.locale' => ForceLocale::class,
         ]);
 
         $middleware->web(append: [

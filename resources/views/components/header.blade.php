@@ -37,8 +37,13 @@
 
         <div class="site-header__actions">
             <div class="site-header__lang" role="group">
-                <a href="{{ route('locale.switch', 'ar') }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
-                <a href="{{ route('locale.switch', 'en') }}" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
+                @if (($langLinks['ar'] ?? null))
+                    <a href="{{ $langLinks['ar'] }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
+                @endif
+
+                @if (($langLinks['en'] ?? null))
+                    <a href="{{ $langLinks['en'] }}" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
+                @endif
             </div>
 
             <a href="{{ route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>

@@ -26,7 +26,8 @@ class ArticleCategoryController extends Controller
 
                     $query->where(function ($query) use ($search) {
                         $query
-                            ->where('name', 'like', "%{$search}%")
+                            ->where('name_ar', 'like', "%{$search}%")
+                            ->orWhere('name_en', 'like', "%{$search}%")
                             ->orWhere('slug', 'like', "%{$search}%");
                     });
                 }
@@ -50,7 +51,7 @@ class ArticleCategoryController extends Controller
 
         $validated['slug'] = $this->generateUniqueSlug(
             $validated['slug'] ?? null,
-            $validated['name']
+            $validated['name_ar']
         );
 
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
@@ -76,7 +77,7 @@ class ArticleCategoryController extends Controller
 
         $validated['slug'] = $this->generateUniqueSlug(
             $validated['slug'] ?? null,
-            $validated['name'],
+            $validated['name_ar'],
             $articleCategory->id
         );
 
@@ -115,18 +116,20 @@ class ArticleCategoryController extends Controller
     private function validateCategory(Request $request, ?ArticleCategory $category = null): array
     {
         return $request->validate([
-            'name' => ['required', 'string', 'max:150'],
+            'name_ar' => ['required', 'string', 'max:150'],
+            'name_en' => ['nullable', 'string', 'max:150'],
             'slug' => [
                 'nullable',
                 'string',
                 'max:180',
                 Rule::unique('article_categories', 'slug')->ignore($category?->id),
             ],
-            'description' => ['nullable', 'string', 'max:500'],
+            'description_ar' => ['nullable', 'string', 'max:500'],
+            'description_en' => ['nullable', 'string', 'max:500'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ], [
-            'name.required' => 'اسم التصنيف مطلوب.',
+            'name_ar.required' => 'اسم التصنيف بالعربية مطلوب.',
             'slug.unique' => 'الرابط المختصر مستخدم مسبقًا.',
         ]);
     }

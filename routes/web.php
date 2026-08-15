@@ -121,15 +121,30 @@ Route::prefix('news')
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('articles')
+Route::middleware('force.locale:ar')
+    ->prefix('articles')
     ->name('articles.')
     ->controller(ArticleController::class)
     ->group(function () {
         Route::get('/', 'index')
             ->name('index');
 
-        Route::get('/{article:slug}', 'show')
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
             ->name('show');
+    });
+
+Route::middleware('force.locale:en')
+    ->prefix('en/articles')
+    ->name('articles.')
+    ->controller(ArticleController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index.en');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show.en');
     });
 
 /*

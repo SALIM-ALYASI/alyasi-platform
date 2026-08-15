@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
 use App\Models\CommunityCategory;
 use App\Models\CommunityComment;
 use App\Models\CommunityPost;
@@ -10,6 +11,7 @@ use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\Work;
+use App\View\Composers\ArticleLocaleLinksComposer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             'service' => Service::class,
             'work' => Work::class,
             'news_article' => NewsArticle::class,
+            'article' => Article::class,
             'community_category' => CommunityCategory::class,
             'community_post' => CommunityPost::class,
 
@@ -47,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
              * 'page'    => Page::class,
              */
         ]);
+
+        View::composer('components.header', ArticleLocaleLinksComposer::class);
 
         View::composer('admin.components.sidebar', function ($view) {
             $view->with([

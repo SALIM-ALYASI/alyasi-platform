@@ -123,7 +123,7 @@
 
                         <div class="admin-data-card__media">
                             @if ($article->featured_image)
-                                <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
+                                <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title_ar }}" loading="lazy">
                             @else
                                 <i class="fa-regular fa-image" aria-hidden="true"></i>
                             @endif
@@ -144,15 +144,27 @@
 
                         <div class="admin-data-card__body">
                             <div class="admin-data-card__heading">
-                                <div><h3>{{ $article->title }}</h3></div>
+                                <div>
+                                    <h3>{{ $article->title_ar }}</h3>
+
+                                    <div style="display:flex;gap:6px;margin-top:4px;">
+                                        <span class="admin-status admin-status--active" title="متوفر بالعربية">AR</span>
+
+                                        @if (filled($article->title_en))
+                                            <span class="admin-status admin-status--active" title="متوفر بالإنجليزية">EN</span>
+                                        @else
+                                            <span class="admin-status admin-status--inactive" title="غير متوفر بالإنجليزية">EN</span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
 
-                            <p class="admin-data-card__description">{{ $article->excerpt }}</p>
+                            <p class="admin-data-card__description">{{ $article->excerpt_ar }}</p>
 
                             <div class="admin-data-card__meta">
                                 <div>
                                     <span>التصنيف</span>
-                                    <strong>{{ $article->category?->name ?? 'بدون تصنيف' }}</strong>
+                                    <strong>{{ $article->category?->name_ar ?? 'بدون تصنيف' }}</strong>
                                 </div>
                                 <div>
                                     <span>المشاهدات</span>
@@ -170,8 +182,13 @@
                         </div>
 
                         <div class="admin-data-card__actions">
-                            @if ($article->status === 'published')
-                                <a href="{{ route('articles.show', $article) }}" target="_blank" rel="noopener" class="admin-action-button" title="عرض" aria-label="عرض المقال">
+                            @php
+                                $previewLocale = $article->translatedSlug('ar') ? 'ar' : 'en';
+                                $previewSlug = $article->translatedSlug($previewLocale);
+                            @endphp
+
+                            @if ($article->status === 'published' && $previewSlug)
+                                <a href="{{ article_route('show', [$previewSlug], $previewLocale) }}" target="_blank" rel="noopener" class="admin-action-button" title="عرض" aria-label="عرض المقال">
                                     <i class="fa-solid fa-eye" aria-hidden="true"></i>
                                 </a>
                             @endif

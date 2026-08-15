@@ -82,24 +82,56 @@
     ======================================================
 
          ملاحظة:
-         الموقع يستخدم Session لتبديل اللغة وليس URL منفصل
-         مثل /ar/... و /en/...
+         عموم الموقع يستخدم Session لتبديل اللغة وليس URL منفصل،
+         لذلك افتراضيًا نعلن لغة الصفحة الحالية فقط + x-default.
 
-         لذلك لا نعلن رابط AR و EN مزيفين لنفس URL.
-         نعلن لغة الصفحة الحالية فقط + x-default.
+         الصفحات التي لها فعليًا رابط مستقل لكل لغة (مثل المقالات)
+         تمرر hreflang_ar / hreflang_en عبر @@section فتُستبدل
+         بروابط AR/EN حقيقية + x-default يشير للعربية.
     ====================================================== --}}
 
-    <link
-        rel="alternate"
-        hreflang="{{ $isArabic ? 'ar-OM' : 'en' }}"
-        href="{{ $seoCanonical }}"
-    >
+    @php
+        $hreflangAr = trim($__env->yieldContent('hreflang_ar'));
+        $hreflangEn = trim($__env->yieldContent('hreflang_en'));
+    @endphp
 
-    <link
-        rel="alternate"
-        hreflang="x-default"
-        href="{{ $seoCanonical }}"
-    >
+    @if ($hreflangAr)
+
+        <link
+            rel="alternate"
+            hreflang="ar"
+            href="{{ $hreflangAr }}"
+        >
+
+        @if ($hreflangEn)
+            <link
+                rel="alternate"
+                hreflang="en"
+                href="{{ $hreflangEn }}"
+            >
+        @endif
+
+        <link
+            rel="alternate"
+            hreflang="x-default"
+            href="{{ $hreflangAr }}"
+        >
+
+    @else
+
+        <link
+            rel="alternate"
+            hreflang="{{ $isArabic ? 'ar-OM' : 'en' }}"
+            href="{{ $seoCanonical }}"
+        >
+
+        <link
+            rel="alternate"
+            hreflang="x-default"
+            href="{{ $seoCanonical }}"
+        >
+
+    @endif
 
 
     {{-- =====================================================

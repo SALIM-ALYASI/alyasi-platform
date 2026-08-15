@@ -59,7 +59,7 @@
                 </a>
 
                 @if ($showArticlesFooter)
-                    <a href="{{ route('articles.index') }}">
+                    <a href="{{ article_route('index') }}">
                         {{ __('layout.nav.articles') }}
                     </a>
                 @endif
