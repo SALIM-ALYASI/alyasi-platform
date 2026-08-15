@@ -37,10 +37,7 @@ class PageController extends Controller
      */
     public function contact(): View
     {
-        $socialLinks = SocialLink::query()
-            ->active()
-            ->ordered()
-            ->get();
+        $socialLinks = SocialLink::forDisplay();
 
         $contactEmail = Setting::get('contact_email');
         $contactPhone = Setting::get('contact_phone');

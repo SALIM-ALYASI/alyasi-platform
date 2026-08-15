@@ -9,10 +9,7 @@ class SocialLinkController extends Controller
 {
     public function index(): View
     {
-        $socialLinks = SocialLink::query()
-            ->active()
-            ->ordered()
-            ->get();
+        $socialLinks = SocialLink::forDisplay();
 
         return view('social-links.index', compact('socialLinks'));
     }
