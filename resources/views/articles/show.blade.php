@@ -86,20 +86,177 @@
 </script>
 @endsection
 
+
 {{-- =========================================================
      Page Styles
 ========================================================= --}}
 @push('styles')
+
     <link
         rel="stylesheet"
         href="{{ versioned_asset('css/pages/articles-show.css') }}"
     >
+
+    {{-- =====================================================
+         Buttons inside article content
+    ====================================================== --}}
+    <style>
+
+        /*
+        |--------------------------------------------------------------------------
+        | Article Button
+        |--------------------------------------------------------------------------
+        | الاستخدام داخل بيانات المقال:
+        |
+        | <a href="/contact" class="article-btn">تواصل معي</a>
+        |
+        */
+
+        .articles-detail__content a.article-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            width: auto;
+            min-height: 46px;
+
+            margin: 10px 0;
+            padding: 11px 22px;
+
+            background: #0B1F3A;
+            color: #ffffff !important;
+
+            border: 1px solid #0B1F3A;
+            border-radius: 10px;
+
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.5;
+
+            text-decoration: none !important;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 12px rgba(11, 31, 58, 0.12);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .articles-detail__content a.article-btn:hover {
+            background: #16375f;
+            border-color: #16375f;
+            color: #ffffff !important;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(11, 31, 58, 0.20);
+        }
+
+        .articles-detail__content a.article-btn:focus-visible {
+            outline: 3px solid rgba(11, 31, 58, 0.25);
+            outline-offset: 3px;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | YouTube Button
+        |--------------------------------------------------------------------------
+        | الاستخدام:
+        |
+        | <a href="..." class="article-btn article-btn--youtube">
+        |     استمع للمقال
+        | </a>
+        |
+        */
+
+        .articles-detail__content a.article-btn--youtube {
+            background: #ffffff;
+            color: #0B1F3A !important;
+
+            border-color: #d9dee7;
+
+            box-shadow:
+                0 4px 12px rgba(11, 31, 58, 0.08);
+        }
+
+        .articles-detail__content a.article-btn--youtube:hover {
+            background: #f5f7fa;
+            color: #0B1F3A !important;
+            border-color: #c8d0dc;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Article Separator
+        |--------------------------------------------------------------------------
+        */
+
+        .articles-detail__content hr {
+            border: 0;
+            border-top: 1px solid #e3e7ed;
+            margin: 32px 0;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mobile
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 640px) {
+
+            .articles-detail__content a.article-btn {
+                width: 100%;
+                box-sizing: border-box;
+
+                padding: 12px 18px;
+            }
+
+        }
+
+    </style>
+
 @endpush
+
 
 @section('content')
 
 @php
-    $allowedTags = '<p><br><strong><em><b><i><a><ul><ol><li><h2><h3><h4><blockquote>';
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed HTML inside article content
+    |--------------------------------------------------------------------------
+    */
+
+    $allowedTags = '
+        <p>
+        <br>
+        <strong>
+        <em>
+        <b>
+        <i>
+        <a>
+        <ul>
+        <ol>
+        <li>
+        <h2>
+        <h3>
+        <h4>
+        <blockquote>
+        <hr>
+    ';
 
     $articleContent = trim(
         (string) $article->content
@@ -107,7 +264,9 @@
 
     $hasHtmlMarkup =
         $articleContent !== strip_tags($articleContent);
+
 @endphp
+
 
 {{-- =========================================================
      Article Header
@@ -121,19 +280,28 @@
         </a>
 
         @if ($article->category)
+
             <span>/</span>
-            <span>{{ $article->category->name }}</span>
+
+            <span>
+                {{ $article->category->name }}
+            </span>
+
         @endif
 
     </div>
 
+
     <div class="articles-detail__meta">
 
         @if ($article->category)
+
             <span class="badge">
                 {{ $article->category->name }}
             </span>
+
         @endif
+
 
         <span class="articles-detail__date">
 
@@ -149,11 +317,13 @@
 
     </div>
 
+
     <h1 class="articles-detail__title">
         {{ $article->title }}
     </h1>
 
 </section>
+
 
 {{-- =========================================================
      Featured Image
@@ -171,6 +341,7 @@
 
 </section>
 
+
 {{-- =========================================================
      Article Content
 ========================================================= --}}
@@ -179,31 +350,38 @@
     @if ($hasHtmlMarkup)
 
         <div class="articles-detail__content">
+
             {!! strip_tags(
                 $articleContent,
                 $allowedTags
             ) !!}
+
         </div>
 
     @else
 
-        @foreach (
-            collect(
-                preg_split(
-                    '/\r?\n+/',
-                    $articleContent
-                )
-            )->filter()
-            as $paragraph
-        )
+        <div class="articles-detail__content">
 
-            <p class="articles-detail__paragraph">
-                {{ $paragraph }}
-            </p>
+            @foreach (
+                collect(
+                    preg_split(
+                        '/\r?\n+/',
+                        $articleContent
+                    )
+                )->filter()
+                as $paragraph
+            )
 
-        @endforeach
+                <p class="articles-detail__paragraph">
+                    {{ $paragraph }}
+                </p>
+
+            @endforeach
+
+        </div>
 
     @endif
+
 
     {{-- =====================================================
          Share Buttons
@@ -214,15 +392,18 @@
             {{ __('articles.share') }}:
         </span>
 
-        {{-- X / Twitter --}}
+
+        {{-- X --}}
         <a
             href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->title) }}"
             target="_blank"
             rel="noopener"
             class="articles-detail__share-btn"
+            aria-label="X"
         >
             X
         </a>
+
 
         {{-- LinkedIn --}}
         <a
@@ -230,9 +411,11 @@
             target="_blank"
             rel="noopener"
             class="articles-detail__share-btn"
+            aria-label="LinkedIn"
         >
             IN
         </a>
+
 
         {{-- WhatsApp --}}
         <a
@@ -240,9 +423,11 @@
             target="_blank"
             rel="noopener"
             class="articles-detail__share-btn"
+            aria-label="WhatsApp"
         >
             WA
         </a>
+
 
         {{-- Facebook --}}
         <a
@@ -250,6 +435,7 @@
             target="_blank"
             rel="noopener"
             class="articles-detail__share-btn"
+            aria-label="Facebook"
         >
             FB
         </a>
@@ -257,6 +443,7 @@
     </div>
 
 </section>
+
 
 {{-- =========================================================
      Related Articles
@@ -271,9 +458,11 @@
                 {{ __('articles.related_badge') }}
             </div>
 
+
             <h2 class="section-head__title articles-detail__related-title">
                 {{ __('articles.related_title') }}
             </h2>
+
 
             <div class="grid-3">
 
@@ -294,6 +483,7 @@
 
                         </div>
 
+
                         <div class="articles-detail__related-body">
 
                             <div class="articles-detail__related-date">
@@ -303,6 +493,7 @@
                                 )->translatedFormat('d.m.Y') }}
 
                             </div>
+
 
                             <div class="articles-detail__related-title-text">
                                 {{ $related->title }}
