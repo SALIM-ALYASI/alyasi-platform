@@ -398,64 +398,64 @@
     @endif
 
 
-    {{-- =====================================================
-         Share Buttons
-    ====================================================== --}}
-    <div class="articles-detail__share">
+ {{-- =====================================================
+     Share Buttons
+====================================================== --}}
+<div class="articles-detail__share">
 
-        <span class="articles-detail__share-label">
-            {{ __('articles.share') }}:
-        </span>
+    <span class="articles-detail__share-label">
+        {{ __('articles.share') }}:
+    </span>
 
+    {{-- X --}}
+    <a
+        href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->title) }}"
+        target="_blank"
+        rel="noopener"
+        class="articles-detail__share-btn"
+        aria-label="مشاركة على X"
+        title="X"
+    >
+        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+    </a>
 
-        {{-- X --}}
-        <a
-            href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->title) }}"
-            target="_blank"
-            rel="noopener"
-            class="articles-detail__share-btn"
-            aria-label="X"
-        >
-            X
-        </a>
+    {{-- LinkedIn --}}
+    <a
+        href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(url()->current()) }}"
+        target="_blank"
+        rel="noopener"
+        class="articles-detail__share-btn"
+        aria-label="مشاركة على LinkedIn"
+        title="LinkedIn"
+    >
+        <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+    </a>
 
+    {{-- WhatsApp --}}
+    <a
+        href="https://wa.me/?text={{ urlencode($article->title.' '.url()->current()) }}"
+        target="_blank"
+        rel="noopener"
+        class="articles-detail__share-btn"
+        aria-label="مشاركة على WhatsApp"
+        title="WhatsApp"
+    >
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+    </a>
 
-        {{-- LinkedIn --}}
-        <a
-            href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(url()->current()) }}"
-            target="_blank"
-            rel="noopener"
-            class="articles-detail__share-btn"
-            aria-label="LinkedIn"
-        >
-            IN
-        </a>
+    {{-- Facebook --}}
+    <a
+        href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+        target="_blank"
+        rel="noopener"
+        class="articles-detail__share-btn"
+        aria-label="مشاركة على Facebook"
+        title="Facebook"
+    >
+        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+    </a>
 
-
-        {{-- WhatsApp --}}
-        <a
-            href="https://wa.me/?text={{ urlencode($article->title.' '.url()->current()) }}"
-            target="_blank"
-            rel="noopener"
-            class="articles-detail__share-btn"
-            aria-label="WhatsApp"
-        >
-            WA
-        </a>
-
-
-        {{-- Facebook --}}
-        <a
-            href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
-            target="_blank"
-            rel="noopener"
-            class="articles-detail__share-btn"
-            aria-label="Facebook"
-        >
-            FB
-        </a>
-
-    </div>
+</div>
 
 </section>
 
