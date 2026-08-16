@@ -94,6 +94,10 @@
                     {{ __('layout.footer.contact_us') }}
                 </a>
 
+                <a href="{{ localized_route('careers') }}">
+                    {{ __('layout.footer.careers') }}
+                </a>
+
             </div>
 
         </div>

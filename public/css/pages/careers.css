@@ -1,0 +1,19 @@
+/* صفحة الوظائف — مبنية بنفس مكوّنات النظام (section-head, grid-3, cta-band) */
+
+.careers-section { padding-top: 70px; padding-bottom: 60px; }
+
+.careers-value {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 30px 26px;
+    box-shadow: var(--shadow-sm);
+}
+.careers-value h3 { font-size: 18px; margin-bottom: 10px; }
+.careers-value p { color: rgba(20, 32, 46, .62); font-size: 14px; line-height: 1.8; margin: 0; }
+
+.cta-band__email { color: rgba(255, 255, 255, .78); font-size: 14px; margin-top: -14px; }
+.cta-band__email a { color: var(--color-accent-300); font-weight: 700; }
+
+@media (max-width: 767px) {
+    .careers-section { padding-top: 48px; padding-bottom: 48px; }
+}

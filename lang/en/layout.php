@@ -23,6 +23,7 @@ return [
         'community_title' => 'Community',
         'faq' => 'FAQ',
         'contact_us' => 'Contact Us',
+        'careers' => 'Careers',
         'connect_title' => 'Connect With Us',
         'copyright' => '© :year ALYASI. All rights reserved.',
         'privacy' => 'Privacy',

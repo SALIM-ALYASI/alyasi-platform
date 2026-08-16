@@ -243,6 +243,14 @@ Route::post('/contact', [ContactMessageController::class, 'store'])
 Route::get('/about', [PageController::class, 'about'])
     ->name('about');
 
+Route::middleware('force.locale:ar')
+    ->get('/careers', [PageController::class, 'careers'])
+    ->name('careers');
+
+Route::middleware('force.locale:en')
+    ->get('/en/careers', [PageController::class, 'careers'])
+    ->name('careers.en');
+
 /*
 |--------------------------------------------------------------------------
 | Legal Pages

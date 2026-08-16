@@ -23,6 +23,7 @@ return [
         'community_title' => 'المجتمع',
         'faq' => 'الأسئلة الشائعة',
         'contact_us' => 'تواصل معنا',
+        'careers' => 'الوظائف',
         'connect_title' => 'تواصل معنا',
         'copyright' => '© :year ALYASI. جميع الحقوق محفوظة.',
         'privacy' => 'الخصوصية',

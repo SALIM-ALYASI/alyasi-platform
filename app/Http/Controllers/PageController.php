@@ -33,6 +33,16 @@ class PageController extends Controller
     }
 
     /**
+     * صفحة الوظائف (عامة، بلا قائمة شواغر — دعوة للتواصل).
+     */
+    public function careers(): View
+    {
+        $contactEmail = Setting::get('contact_email');
+
+        return view('careers.index', compact('contactEmail'));
+    }
+
+    /**
      * صفحة تواصل معنا.
      */
     public function contact(): View
