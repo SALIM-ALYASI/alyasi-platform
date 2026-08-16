@@ -445,8 +445,8 @@
                 directionality: 'rtl',
                 height: 420,
                 menubar: false,
-                plugins: 'lists link',
-                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | blockquote | link | removeformat',
+                plugins: 'lists link code',
+                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | blockquote | link | removeformat | code',
                 block_formats: 'الفقرة=p; عنوان 2=h2; عنوان 3=h3; عنوان 4=h4',
                 content_style: 'body { direction: rtl; font-family: Tajawal, sans-serif; }',
             });
@@ -456,8 +456,8 @@
                 directionality: 'ltr',
                 height: 420,
                 menubar: false,
-                plugins: 'lists link',
-                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | blockquote | link | removeformat',
+                plugins: 'lists link code',
+                toolbar: 'undo redo | formatselect | bold italic | bullist numlist | blockquote | link | removeformat | code',
                 block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4',
                 content_style: 'body { direction: ltr; font-family: Arial, sans-serif; }',
             });

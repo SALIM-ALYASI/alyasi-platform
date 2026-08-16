@@ -37,6 +37,18 @@
     <loc>http://127.0.0.1:8000/alyasicarwash</loc>
             </url>
     <url>
+    <loc>http://127.0.0.1:8000/articles/silent-partner</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://127.0.0.1:8000/en/articles/my-silent-partner" />
+    <xhtml:link rel="alternate" hreflang="ar" href="http://127.0.0.1:8000/articles/silent-partner" />
+    <lastmod>2026-08-16T12:41:44+00:00</lastmod>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/en/articles/my-silent-partner</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="http://127.0.0.1:8000/articles/silent-partner" />
+    <xhtml:link rel="alternate" hreflang="en" href="http://127.0.0.1:8000/en/articles/my-silent-partner" />
+    <lastmod>2026-08-16T12:41:44+00:00</lastmod>
+            </url>
+    <url>
     <loc>http://127.0.0.1:8000/services/web-design-dev</loc>
     <xhtml:link rel="alternate" hreflang="en" href="http://127.0.0.1:8000/en/services/web-design-dev-en" />
     <xhtml:link rel="alternate" hreflang="ar" href="http://127.0.0.1:8000/services/web-design-dev" />
