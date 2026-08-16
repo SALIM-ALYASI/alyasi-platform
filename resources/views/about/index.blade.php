@@ -2,6 +2,10 @@
 
 @section('title', __('about.hero_title').' '.__('about.hero_title_highlight').' — ALYASI')
 @section('meta_description', __('about.hero_description'))
+@section('canonical', localized_route('about'))
+@section('hreflang_ar', localized_route('about', [], 'ar'))
+@section('hreflang_en', localized_route('about', [], 'en'))
+@section('og_url', localized_route('about'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

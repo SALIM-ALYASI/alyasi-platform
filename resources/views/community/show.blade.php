@@ -551,7 +551,7 @@
             {{ __('community.comment_follow_confirmation') }}
 
             <a
-                href="{{ route('social-links.index') }}"
+                href="{{ localized_route('social-links.index') }}"
                 target="_blank"
             >
                 {{ __('community.comment_follow_link') }}

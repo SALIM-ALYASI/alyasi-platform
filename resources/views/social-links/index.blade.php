@@ -2,6 +2,10 @@
 
 @section('title', __('social-links.title').' — ALYASI')
 @section('meta_description', __('social-links.hero_description'))
+@section('canonical', localized_route('social-links.index'))
+@section('hreflang_ar', localized_route('social-links.index', [], 'ar'))
+@section('hreflang_en', localized_route('social-links.index', [], 'en'))
+@section('og_url', localized_route('social-links.index'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

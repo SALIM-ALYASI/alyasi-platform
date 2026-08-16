@@ -97,7 +97,7 @@
                                 </a>
                             @endforeach
                         </div>
-                        <a href="{{ route('social-links.index') }}" class="contact-side__link">{{ __('contact.view_all') }}</a>
+                        <a href="{{ localized_route('social-links.index') }}" class="contact-side__link">{{ __('contact.view_all') }}</a>
                     </div>
                 @endif
             </div>

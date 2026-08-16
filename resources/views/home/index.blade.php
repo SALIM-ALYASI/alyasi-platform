@@ -7,48 +7,31 @@
 @section('og_url', localized_route('home'))
 @section('hreflang_ar', localized_route('home', [], 'ar'))
 @section('hreflang_en', localized_route('home', [], 'en'))
-@section('og_image', asset('images/home/hero.webp'))
+@section('og_image', asset('images/home/og-image.png'))
+@section('og_image_width', '1200')
+@section('og_image_height', '630')
 
+{{--
+    Organization وWebSite أصبحت بالـ layout (layouts/app.blade.php)
+    وتُعرض بكل صفحة — تركت هنا فقط FAQPage الخاص بأسئلة الرئيسية.
+--}}
 @section('schema')
-@php
-    $homeSchemaGraph = [
-        [
-            '@type' => 'Organization',
-            '@id' => url('/').'#organization',
-            'name' => 'ALYASI',
-            'url' => url('/'),
-            'logo' => asset('images/logo/logo-icon-navy.png'),
-        ],
-        [
-            '@type' => 'WebSite',
-            '@id' => url('/').'#website',
-            'name' => 'ALYASI',
-            'url' => url('/'),
-            'publisher' => ['@id' => url('/').'#organization'],
-            'inLanguage' => app()->getLocale(),
-        ],
-    ];
-
-    if ($faqs->isNotEmpty()) {
-        $homeSchemaGraph[] = [
-            '@type' => 'FAQPage',
-            'mainEntity' => $faqs->map(fn ($faq) => [
-                '@type' => 'Question',
-                'name' => $faq->localizedQuestion(),
-                'acceptedAnswer' => [
-                    '@type' => 'Answer',
-                    'text' => $faq->localizedAnswer(),
-                ],
-            ])->values()->all(),
-        ];
-    }
-@endphp
+@if ($faqs->isNotEmpty())
 <script type="application/ld+json">
 {!! json_encode([
     '@'.'context' => 'https://schema.org',
-    '@graph' => $homeSchemaGraph,
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqs->map(fn ($faq) => [
+        '@type' => 'Question',
+        'name' => $faq->localizedQuestion(),
+        'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => $faq->localizedAnswer(),
+        ],
+    ])->values()->all(),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
+@endif
 @endsection
 
 @push('styles')

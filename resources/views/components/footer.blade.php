@@ -81,7 +81,7 @@
             <div class="site-footer__links">
 
                 @if ($showCommunityFooter)
-                    <a href="{{ route('community.index') }}">
+                    <a href="{{ localized_route('community.index') }}">
                         {{ __('layout.nav.community') }}
                     </a>
                 @endif
@@ -145,11 +145,11 @@
 
         <div class="site-footer__legal">
 
-            <a href="{{ route('privacy') }}">
+            <a href="{{ localized_route('privacy') }}">
                 {{ __('layout.footer.privacy') }}
             </a>
 
-            <a href="{{ route('terms') }}">
+            <a href="{{ localized_route('terms') }}">
                 {{ __('layout.footer.terms') }}
             </a>
 

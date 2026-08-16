@@ -174,6 +174,20 @@
         content="{{ $seoTitle }}"
     >
 
+    @hasSection('og_image_width')
+        <meta
+            property="og:image:width"
+            content="@yield('og_image_width')"
+        >
+    @endif
+
+    @hasSection('og_image_height')
+        <meta
+            property="og:image:height"
+            content="@yield('og_image_height')"
+        >
+    @endif
+
     <meta
         property="og:locale"
         content="{{ $seoLocale }}"
@@ -326,7 +340,47 @@
 
     {{-- =====================================================
          Structured Data / JSON-LD
+         Organization + WebSite ثابتة بكل صفحة، تُستخدم كمرجع (@id)
+         من أي مخطط ثاني بالصفحة (مثل Article) بدل تكرار الكائن كامل.
     ====================================================== --}}
+
+    @php
+        $organizationId = url('/').'#organization';
+        $websiteId = url('/').'#website';
+
+        $organizationSchema = [
+            '@'.'type' => 'Organization',
+            '@'.'id' => $organizationId,
+            'name' => 'ALYASI',
+            'url' => url('/'),
+            'logo' => asset('images/logo/logo-icon-navy.png'),
+        ];
+
+        $organizationSocialLinks = \App\Models\SocialLink::forDisplay()
+            ->pluck('url')
+            ->filter()
+            ->values();
+
+        if ($organizationSocialLinks->isNotEmpty()) {
+            $organizationSchema['sameAs'] = $organizationSocialLinks;
+        }
+
+        $websiteSchema = [
+            '@'.'type' => 'WebSite',
+            '@'.'id' => $websiteId,
+            'name' => 'ALYASI',
+            'url' => url('/'),
+            'inLanguage' => app()->getLocale(),
+            'publisher' => ['@'.'id' => $organizationId],
+        ];
+    @endphp
+
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@'.'context' => 'https://schema.org',
+        '@'.'graph' => [$organizationSchema, $websiteSchema],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
 
     @yield('schema')
 

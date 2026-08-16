@@ -195,16 +195,16 @@ Route::get('/events', [EventController::class, 'index'])
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('community')
-    ->name('community.')
-    ->controller(CommunityController::class)
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
+Route::middleware('force.locale:ar')
+    ->get('/community', [CommunityController::class, 'index'])
+    ->name('community.index');
 
-        Route::get('/{communityPost:slug}', 'show')
-            ->name('show');
-    });
+Route::middleware('force.locale:en')
+    ->get('/en/community', [CommunityController::class, 'index'])
+    ->name('community.index.en');
+
+Route::get('/community/{communityPost:slug}', [CommunityController::class, 'show'])
+    ->name('community.show');
 
 Route::post(
     'community/{communityPost:slug}/comments',
@@ -212,15 +212,6 @@ Route::post(
 )
     ->middleware('throttle:5,1')
     ->name('community.comments.store');
-
-/*
-|--------------------------------------------------------------------------
-| Public Social Links
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/social-links', [SocialLinkController::class, 'index'])
-    ->name('social-links.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -240,8 +231,13 @@ Route::post('/contact', [ContactMessageController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('contact.store');
 
-Route::get('/about', [PageController::class, 'about'])
+Route::middleware('force.locale:ar')
+    ->get('/about', [PageController::class, 'about'])
     ->name('about');
+
+Route::middleware('force.locale:en')
+    ->get('/en/about', [PageController::class, 'about'])
+    ->name('about.en');
 
 Route::middleware('force.locale:ar')
     ->get('/careers', [PageController::class, 'careers'])
@@ -251,17 +247,35 @@ Route::middleware('force.locale:en')
     ->get('/en/careers', [PageController::class, 'careers'])
     ->name('careers.en');
 
+Route::middleware('force.locale:ar')
+    ->get('/social-links', [SocialLinkController::class, 'index'])
+    ->name('social-links.index');
+
+Route::middleware('force.locale:en')
+    ->get('/en/social-links', [SocialLinkController::class, 'index'])
+    ->name('social-links.index.en');
+
 /*
 |--------------------------------------------------------------------------
 | Legal Pages
 |--------------------------------------------------------------------------
 */
 
-Route::get('/privacy', [PageController::class, 'privacy'])
+Route::middleware('force.locale:ar')
+    ->get('/privacy', [PageController::class, 'privacy'])
     ->name('privacy');
 
-Route::get('/terms', [PageController::class, 'terms'])
+Route::middleware('force.locale:en')
+    ->get('/en/privacy', [PageController::class, 'privacy'])
+    ->name('privacy.en');
+
+Route::middleware('force.locale:ar')
+    ->get('/terms', [PageController::class, 'terms'])
     ->name('terms');
+
+Route::middleware('force.locale:en')
+    ->get('/en/terms', [PageController::class, 'terms'])
+    ->name('terms.en');
 
 /*
 |--------------------------------------------------------------------------

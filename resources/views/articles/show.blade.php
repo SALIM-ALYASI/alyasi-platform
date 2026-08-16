@@ -82,9 +82,7 @@
         ],
 
         'publisher' => [
-            '@type' => 'Organization',
-            'name' => 'ALYASI',
-            'url' => url('/'),
+            '@'.'id' => url('/').'#organization',
         ],
     ];
 

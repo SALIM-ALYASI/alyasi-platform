@@ -2,6 +2,10 @@
 
 @section('title', __('community.title').' — ALYASI')
 @section('meta_description', __('community.description'))
+@section('canonical', localized_route('community.index'))
+@section('hreflang_ar', localized_route('community.index', [], 'ar'))
+@section('hreflang_en', localized_route('community.index', [], 'en'))
+@section('og_url', localized_route('community.index'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

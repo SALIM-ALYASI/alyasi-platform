@@ -33,6 +33,11 @@ class ArticleLocaleLinksComposer
         'news.index',
         'contact',
         'careers',
+        'about',
+        'privacy',
+        'terms',
+        'social-links.index',
+        'community.index',
     ];
 
     /**

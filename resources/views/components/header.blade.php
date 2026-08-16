@@ -3,7 +3,7 @@
     $showCommunityNav = \App\Models\Setting::get('show_community_events', '1') === '1';
 
     // الروابط التي لها فعليًا نسخة /en (غيرها يبقى بدون prefix بغض النظر عن اللغة).
-    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index'];
+    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index', 'community.index'];
 
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],

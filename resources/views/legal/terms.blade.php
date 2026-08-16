@@ -2,6 +2,10 @@
 
 @section('title', __('legal.terms_title').' — ALYASI')
 @section('meta_description', __('legal.terms_intro'))
+@section('canonical', localized_route('terms'))
+@section('hreflang_ar', localized_route('terms', [], 'ar'))
+@section('hreflang_en', localized_route('terms', [], 'en'))
+@section('og_url', localized_route('terms'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

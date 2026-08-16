@@ -2,6 +2,10 @@
 
 @section('title', __('legal.privacy_title').' — ALYASI')
 @section('meta_description', __('legal.privacy_intro'))
+@section('canonical', localized_route('privacy'))
+@section('hreflang_ar', localized_route('privacy', [], 'ar'))
+@section('hreflang_en', localized_route('privacy', [], 'en'))
+@section('og_url', localized_route('privacy'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
