@@ -324,6 +324,26 @@
 
     </div>
 
+    <div class="dashboard-panel" style="margin-top: 24px;">
+
+        <div class="dashboard-panel-header">
+            <div>
+                <h3>خريطة الموقع (Sitemap)</h3>
+                <p>يُعاد توليدها تلقائيًا عند إضافة/تعديل أي مقال أو خدمة أو خبر أو عمل. استخدم هذا الزر لإعادة توليدها يدويًا فورًا (مثلًا بعد تعديل صفحة ثابتة، أو للتأكد إنها محدّثة).</p>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.settings.regenerate-sitemap') }}" method="POST">
+            @csrf
+
+            <button type="submit" class="admin-primary-button">
+                <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+                إعادة توليد Sitemap الآن
+            </button>
+        </form>
+
+    </div>
+
 </div>
 
 @endsection

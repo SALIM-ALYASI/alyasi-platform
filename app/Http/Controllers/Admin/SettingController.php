@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -103,6 +104,25 @@ class SettingController extends Controller
             : 'تم إظهار قسم مقالاتي بالموقع العام مجددًا.';
 
         return back()->with('success', $message);
+    }
+
+    /**
+     * إعادة توليد public/sitemap.xml يدويًا — الأمر نفسه يعمل تلقائيًا
+     * عند إضافة/تعديل مقال أو خدمة أو خبر أو عمل، لكن هذا الزر مفيد
+     * لتحديث الصفحات الثابتة فورًا، أو بعد أي مشكلة تحتاج إعادة توليد يدوية.
+     */
+    public function regenerateSitemap(): RedirectResponse
+    {
+        $exitCode = Artisan::call('sitemap:generate');
+
+        if ($exitCode !== 0) {
+            return back()->with(
+                'error',
+                'فشل توليد sitemap.xml: '.trim(Artisan::output())
+            );
+        }
+
+        return back()->with('success', 'تم إعادة توليد sitemap.xml بنجاح — '.trim(Artisan::output()));
     }
 
     /**

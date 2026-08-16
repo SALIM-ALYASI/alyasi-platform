@@ -798,6 +798,11 @@ Route::prefix('admin')
                     [SettingController::class, 'toggleArticles']
                 )->name('settings.toggle-articles');
 
+                Route::post(
+                    'settings/regenerate-sitemap',
+                    [SettingController::class, 'regenerateSitemap']
+                )->name('settings.regenerate-sitemap');
+
                 Route::patch(
                     'settings/profile',
                     [SettingController::class, 'updateProfile']
