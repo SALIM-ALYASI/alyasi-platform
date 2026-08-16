@@ -76,7 +76,7 @@
             <h2 class="cta-band__title">{{ __('community.cta_title') }}</h2>
             <p class="cta-band__desc">{{ __('community.cta_description') }}</p>
             <div class="cta-band__actions">
-                <a href="{{ route('contact') }}" class="btn btn--light">{{ __('community.contact_us') }}</a>
+                <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('community.contact_us') }}</a>
             </div>
         </div>
     </section>

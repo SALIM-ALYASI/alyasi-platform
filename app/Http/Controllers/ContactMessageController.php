@@ -26,8 +26,7 @@ class ContactMessageController extends Controller
 
         $deviceToken = $this->resolveDeviceToken($request);
 
-        $redirect = redirect()
-            ->route('contact')
+        $redirect = redirect(localized_route('contact'))
             ->withFragment('contact-form');
 
         if ($this->isVisitorBlocked($deviceToken, $request->ip())) {

@@ -53,7 +53,7 @@
                 @endif
             </div>
 
-            <a href="{{ route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>
+            <a href="{{ localized_route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>
 
             <button type="button" class="site-header__menu-toggle" data-menu-toggle aria-expanded="false" aria-label="{{ __('layout.menu_open') }}">
                 <span></span><span></span><span></span>
@@ -69,6 +69,6 @@
                 </a>
             @endforeach
         </nav>
-        <a href="{{ route('contact') }}" class="btn btn--primary btn--block">{{ __('layout.start_now') }}</a>
+        <a href="{{ localized_route('contact') }}" class="btn btn--primary btn--block">{{ __('layout.start_now') }}</a>
     </div>
 </header>

@@ -46,7 +46,7 @@
                             <h3 class="services-card__title">{{ $service->localizedTitle() }}</h3>
                             <p class="services-card__desc">{{ \Illuminate\Support\Str::limit($service->localizedDescription(), 130) }}</p>
                             <div class="services-card__actions">
-                                <a href="{{ route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
+                                <a href="{{ localized_route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
                                 <span class="services-card__sep"></span>
                                 <a href="{{ $slug ? route('services.show', $slug) : route('services.index') }}" class="services-card__link services-card__link--muted">{{ __('services.view_details') }}</a>
                             </div>
@@ -72,7 +72,7 @@
             <h2 class="cta-band__title">{{ __('services.cta_title') }} <em>{{ __('services.cta_title_highlight') }}</em></h2>
             <p class="cta-band__desc">{{ __('services.cta_description') }}</p>
             <div class="cta-band__actions">
-                <a href="{{ route('contact') }}" class="btn btn--light">{{ __('services.contact_us') }}</a>
+                <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('services.contact_us') }}</a>
                 <a href="{{ route('home') }}" class="btn btn--ghost-light">{{ __('services.back_home') }}</a>
             </div>
         </div>

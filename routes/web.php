@@ -228,8 +228,13 @@ Route::get('/social-links', [SocialLinkController::class, 'index'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/contact', [PageController::class, 'contact'])
+Route::middleware('force.locale:ar')
+    ->get('/contact', [PageController::class, 'contact'])
     ->name('contact');
+
+Route::middleware('force.locale:en')
+    ->get('/en/contact', [PageController::class, 'contact'])
+    ->name('contact.en');
 
 Route::post('/contact', [ContactMessageController::class, 'store'])
     ->middleware('throttle:5,1')

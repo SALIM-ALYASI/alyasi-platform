@@ -2,8 +2,10 @@
 
 @section('title', __('contact.title').' — ALYASI')
 @section('meta_description', __('contact.hero_description'))
-@section('canonical', route('contact'))
-@section('og_url', route('contact'))
+@section('canonical', localized_route('contact'))
+@section('hreflang_ar', localized_route('contact', [], 'ar'))
+@section('hreflang_en', localized_route('contact', [], 'en'))
+@section('og_url', localized_route('contact'))
 @section('og_image', asset('images/home/hero.webp'))
 
 @push('styles')

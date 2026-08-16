@@ -429,7 +429,7 @@
             <p class="cta-band__desc">{{ __('home.cta_description') }}</p>
             <div class="cta-band__actions">
                 <a href="{{ route('services.index') }}" class="btn btn--light">{{ __('home.cta_services') }}</a>
-                <a href="{{ route('contact') }}" class="btn btn--ghost-light">{{ __('home.cta_contact') }}</a>
+                <a href="{{ localized_route('contact') }}" class="btn btn--ghost-light">{{ __('home.cta_contact') }}</a>
             </div>
         </div>
     </section>

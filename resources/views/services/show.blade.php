@@ -277,7 +277,7 @@
 
 
         <a
-            href="{{ route('contact') }}"
+            href="{{ localized_route('contact') }}"
             class="btn btn--light"
         >
             {{ __('services.show.request_service') }}

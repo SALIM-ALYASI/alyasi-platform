@@ -90,7 +90,7 @@
                     {{ __('layout.footer.faq') }}
                 </a>
 
-                <a href="{{ route('contact') }}">
+                <a href="{{ localized_route('contact') }}">
                     {{ __('layout.footer.contact_us') }}
                 </a>
 

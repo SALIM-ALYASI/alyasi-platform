@@ -54,7 +54,7 @@
             <h2 class="cta-band__title">{{ __('social-links.verified_title') }}</h2>
             <p class="cta-band__desc">{{ __('social-links.verified_description') }}</p>
             <div class="cta-band__actions">
-                <a href="{{ route('contact') }}" class="btn btn--light">{{ __('social-links.direct_contact') }}</a>
+                <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('social-links.direct_contact') }}</a>
             </div>
         </div>
     </section>

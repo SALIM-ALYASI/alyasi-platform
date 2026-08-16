@@ -31,6 +31,7 @@ class ArticleLocaleLinksComposer
         'works.index',
         'works.show',
         'news.index',
+        'contact',
     ];
 
     /**
