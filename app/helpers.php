@@ -47,6 +47,25 @@ if (! function_exists('article_route')) {
     }
 }
 
+if (! function_exists('localized_route')) {
+    /**
+     * بناء رابط لصفحة عامة حسب اللغة (عربي بدون prefix، إنجليزي بـ /en)،
+     * لأي راوت غير راوتات المقالات (article_route() تخصهم لمنطقها المختلف:
+     * slug مختلف فعليًا لكل لغة). هنا نفس الـ slug/params لكل اللغتين،
+     * فرق فقط اسم الراوت المستهدف.
+     */
+    function localized_route(string $name, array $parameters = [], ?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+
+        if ($locale !== 'en') {
+            return route($name, $parameters);
+        }
+
+        return route($name === 'home' ? 'home.en' : "{$name}.en", $parameters);
+    }
+}
+
 if (! function_exists('versioned_asset')) {
     /**
      * Build an asset URL with a cache-busting query string based on the

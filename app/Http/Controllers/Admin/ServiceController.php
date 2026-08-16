@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -56,6 +57,8 @@ class ServiceController extends Controller
             throw $exception;
         }
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.services.index')
             ->with('success', 'تمت إضافة الخدمة وإنشاء روابطها الدائمة بنجاح.');
@@ -101,6 +104,8 @@ class ServiceController extends Controller
             $this->deleteImage($oldImage);
         }
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.services.index')
             ->with('success', 'تم تحديث الخدمة بنجاح مع الحفاظ على روابطها الدائمة.');
@@ -116,6 +121,8 @@ class ServiceController extends Controller
         });
 
         $this->deleteImage($image);
+
+        $this->regenerateSitemap();
 
         return redirect()
             ->route('admin.services.index')
@@ -300,5 +307,13 @@ class ServiceController extends Controller
         if (File::isFile($fullPath)) {
             File::delete($fullPath);
         }
+    }
+
+    /**
+     * إعادة توليد sitemap.xml ليبقى متزامنًا مع حالة نشر الخدمات.
+     */
+    private function regenerateSitemap(): void
+    {
+        Artisan::call('sitemap:generate');
     }
 }

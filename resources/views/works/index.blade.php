@@ -3,6 +3,11 @@
 @section('title', __('works.meta_title'))
 @section('meta_description', __('works.meta_description'))
 
+@section('canonical', localized_route('works.index'))
+@section('og_url', localized_route('works.index'))
+@section('hreflang_ar', localized_route('works.index', [], 'ar'))
+@section('hreflang_en', localized_route('works.index', [], 'en'))
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/works-index.css') }}">
@@ -15,7 +20,9 @@
         :title="__('works.hero.title')"
         :highlight="__('works.hero.highlight')"
         :description="__('works.hero.description')"
-        :image="asset('images/works/hero.png')"
+        :image="asset('images/works/hero.webp')"
+        :image-width="1832"
+        :image-height="859"
     />
 
     <section class="container works-section">

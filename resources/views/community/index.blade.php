@@ -14,7 +14,9 @@
         :badge="__('community.badge')"
         :title="__('community.title')"
         :description="__('community.description')"
-        :image="asset('images/community/hero.png')"
+        :image="asset('images/community/hero.webp')"
+        :image-width="1672"
+        :image-height="941"
     />
 
     <section class="container community-section">

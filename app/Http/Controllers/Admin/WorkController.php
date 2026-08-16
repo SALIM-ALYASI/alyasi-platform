@@ -9,6 +9,7 @@ use App\Models\Work;
 use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -200,6 +201,8 @@ class WorkController extends Controller
             }
         );
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.works.index')
             ->with(
@@ -346,6 +349,8 @@ class WorkController extends Controller
             }
         );
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.works.index')
             ->with(
@@ -393,6 +398,8 @@ class WorkController extends Controller
             $this->deleteStoredFile($galleryImage);
         }
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.works.index')
             ->with(
@@ -434,6 +441,8 @@ class WorkController extends Controller
         $work->update([
             'is_active' => ! $work->is_active,
         ]);
+
+        $this->regenerateSitemap();
 
         $message = $work->is_active
             ? 'تم نشر العمل بنجاح.'
@@ -717,5 +726,13 @@ class WorkController extends Controller
             'personal' => 'عمل شخصي',
             'other' => 'أعمال أخرى',
         ];
+    }
+
+    /**
+     * إعادة توليد sitemap.xml ليبقى متزامنًا مع حالة نشر الأعمال.
+     */
+    private function regenerateSitemap(): void
+    {
+        Artisan::call('sitemap:generate');
     }
 }

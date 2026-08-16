@@ -3,6 +3,11 @@
 @section('title', __('news.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('news.meta_description'))
 
+@section('canonical', localized_route('news.index'))
+@section('og_url', localized_route('news.index'))
+@section('hreflang_ar', localized_route('news.index', [], 'ar'))
+@section('hreflang_en', localized_route('news.index', [], 'en'))
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/news-index.css') }}">
@@ -15,7 +20,9 @@
         :title="__('news.hero_title')"
         :highlight="__('news.hero_title_highlight')"
         :description="__('news.hero_description')"
-        :image="asset('images/news/hero.png')"
+        :image="asset('images/news/hero.webp')"
+        :image-width="1832"
+        :image-height="859"
     />
 
     <section class="container news-section">

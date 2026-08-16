@@ -10,10 +10,18 @@
     )
 )
 
+@php
+    $arServicePermalink = $service->permalinks->firstWhere('locale', 'ar');
+    $enServicePermalink = $service->permalinks->firstWhere('locale', 'en');
+@endphp
+
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', route('services.show', $service->slug))
+@section('canonical', url()->current())
+
+@section('hreflang_ar', $arServicePermalink ? route('services.show', $arServicePermalink->slug) : '')
+@section('hreflang_en', $enServicePermalink ? localized_route('services.show', ['slug' => $enServicePermalink->slug], 'en') : '')
 
 {{-- =========================================================
      Open Graph
@@ -30,7 +38,7 @@
     )
 )
 
-@section('og_url', route('services.show', $service->slug))
+@section('og_url', url()->current())
 
 @section(
     'og_image',
@@ -53,7 +61,7 @@
         160
     ),
 
-    'url' => route('services.show', $service->slug),
+    'url' => url()->current(),
 
     'image' => media_url($service->image),
 

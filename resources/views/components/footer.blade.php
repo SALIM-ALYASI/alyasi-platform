@@ -44,19 +44,19 @@
 
             <div class="site-footer__links">
 
-                <a href="{{ route('home') }}">
+                <a href="{{ localized_route('home') }}">
                     {{ __('layout.nav.home') }}
                 </a>
 
-                <a href="{{ route('services.index') }}">
+                <a href="{{ localized_route('services.index') }}">
                     {{ __('layout.nav.services') }}
                 </a>
 
-                <a href="{{ route('works.index') }}">
+                <a href="{{ localized_route('works.index') }}">
                     {{ __('layout.nav.works') }}
                 </a>
 
-                <a href="{{ route('news.index') }}">
+                <a href="{{ localized_route('news.index') }}">
                     {{ __('layout.nav.news') }}
                 </a>
 

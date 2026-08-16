@@ -11,10 +11,18 @@
         )
 )
 
+@php
+    $arNewsPermalink = $article->permalinks->firstWhere('locale', 'ar');
+    $enNewsPermalink = $article->permalinks->firstWhere('locale', 'en');
+@endphp
+
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', route('news.show', $article->slug()))
+@section('canonical', url()->current())
+
+@section('hreflang_ar', $arNewsPermalink ? route('news.show', $arNewsPermalink->slug) : '')
+@section('hreflang_en', $enNewsPermalink ? localized_route('news.show', ['slug' => $enNewsPermalink->slug], 'en') : '')
 
 {{-- =========================================================
      Open Graph
@@ -35,7 +43,7 @@
         )
 )
 
-@section('og_url', route('news.show', $article->slug()))
+@section('og_url', url()->current())
 
 @section(
     'og_image',
@@ -50,6 +58,8 @@
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => 'NewsArticle',
+
+    'inLanguage' => app()->getLocale(),
 
     'headline' => $article->title,
 
@@ -73,7 +83,7 @@
 
     'mainEntityOfPage' => [
         '@type' => 'WebPage',
-        '@id' => route('news.show', $article->slug()),
+        '@id' => url()->current(),
     ],
 
     'publisher' => [

@@ -3,6 +3,54 @@
 @section('title', __('home.brand').' — '.__('home.tagline'))
 @section('meta_description', __('home.hero_description'))
 
+@section('canonical', localized_route('home'))
+@section('og_url', localized_route('home'))
+@section('hreflang_ar', localized_route('home', [], 'ar'))
+@section('hreflang_en', localized_route('home', [], 'en'))
+@section('og_image', asset('images/home/hero.webp'))
+
+@section('schema')
+@php
+    $homeSchemaGraph = [
+        [
+            '@type' => 'Organization',
+            '@id' => url('/').'#organization',
+            'name' => 'ALYASI',
+            'url' => url('/'),
+            'logo' => asset('images/logo/logo-icon-navy.png'),
+        ],
+        [
+            '@type' => 'WebSite',
+            '@id' => url('/').'#website',
+            'name' => 'ALYASI',
+            'url' => url('/'),
+            'publisher' => ['@id' => url('/').'#organization'],
+            'inLanguage' => app()->getLocale(),
+        ],
+    ];
+
+    if ($faqs->isNotEmpty()) {
+        $homeSchemaGraph[] = [
+            '@type' => 'FAQPage',
+            'mainEntity' => $faqs->map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq->localizedQuestion(),
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $faq->localizedAnswer(),
+                ],
+            ])->values()->all(),
+        ];
+    }
+@endphp
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => $homeSchemaGraph,
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endsection
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/home.css') }}">
 @endpush
@@ -19,7 +67,7 @@
     {{-- HERO --}}
     <section class="home-hero">
         <div class="home-hero__bg">
-            <img src="{{ asset('images/home/hero.png') }}" alt="ALYASI" loading="eager">
+            <img src="{{ asset('images/home/hero.webp') }}" alt="ALYASI" loading="eager" width="1672" height="188">
         </div>
         <div class="home-hero__overlay"></div>
 
@@ -47,17 +95,17 @@
 
                 <div class="home-hero__metrics">
                     <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="4">0</div>
+                        <div class="home-hero__metric-value" data-count-target="4">4</div>
                         <div class="home-hero__metric-label">{{ __('home.metrics.sections') }}</div>
                     </div>
                     <span class="home-hero__metric-divider"></span>
                     <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="{{ $yearsOfExperience }}">0</div>
+                        <div class="home-hero__metric-value" data-count-target="{{ $yearsOfExperience }}">{{ $yearsOfExperience }}</div>
                         <div class="home-hero__metric-label">{{ __('home.metrics.experience') }}</div>
                     </div>
                     <span class="home-hero__metric-divider"></span>
                     <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="{{ $visitorsCount }}">0</div>
+                        <div class="home-hero__metric-value" data-count-target="{{ $visitorsCount }}">{{ $visitorsCount }}</div>
                         <div class="home-hero__metric-label">{{ __('home.metrics.visitors') }}</div>
                     </div>
                 </div>

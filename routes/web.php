@@ -56,7 +56,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])
+    ->middleware('force.locale:ar')
     ->name('home');
+
+Route::get('/en', [HomeController::class, 'index'])
+    ->middleware('force.locale:en')
+    ->name('home.en');
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +83,8 @@ Route::get('/locale/{locale}', function (string $locale) {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('services')
+Route::middleware('force.locale:ar')
+    ->prefix('services')
     ->name('services.')
     ->controller(ServiceController::class)
     ->group(function () {
@@ -88,6 +94,19 @@ Route::prefix('services')
         Route::get('/{slug}', 'show')
             ->where('slug', '[^/]+')
             ->name('show');
+    });
+
+Route::middleware('force.locale:en')
+    ->prefix('en/services')
+    ->name('services.')
+    ->controller(ServiceController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index.en');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show.en');
     });
 
 Route::post(
@@ -103,7 +122,8 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('news')
+Route::middleware('force.locale:ar')
+    ->prefix('news')
     ->name('news.')
     ->controller(NewsController::class)
     ->group(function () {
@@ -113,6 +133,19 @@ Route::prefix('news')
         Route::get('/{slug}', 'show')
             ->where('slug', '[^/]+')
             ->name('show');
+    });
+
+Route::middleware('force.locale:en')
+    ->prefix('en/news')
+    ->name('news.')
+    ->controller(NewsController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index.en');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show.en');
     });
 
 /*
@@ -254,7 +287,8 @@ Route::get('/Ra3iSwait', [PageController::class, 'ra3iSwait'])
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('works')
+Route::middleware('force.locale:ar')
+    ->prefix('works')
     ->name('works.')
     ->controller(WorkController::class)
     ->group(function () {
@@ -264,6 +298,20 @@ Route::prefix('works')
 
         Route::get('/{work:slug}', 'show')
             ->name('show');
+
+    });
+
+Route::middleware('force.locale:en')
+    ->prefix('en/works')
+    ->name('works.')
+    ->controller(WorkController::class)
+    ->group(function () {
+
+        Route::get('/', 'index')
+            ->name('index.en');
+
+        Route::get('/{work:slug}', 'show')
+            ->name('show.en');
 
     });
 

@@ -3,6 +3,11 @@
 @section('title', __('services.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('services.meta_description'))
 
+@section('canonical', localized_route('services.index'))
+@section('og_url', localized_route('services.index'))
+@section('hreflang_ar', localized_route('services.index', [], 'ar'))
+@section('hreflang_en', localized_route('services.index', [], 'en'))
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/services-index.css') }}">
@@ -15,7 +20,9 @@
         :title="__('services.hero_title')"
         :highlight="__('services.hero_title_highlight')"
         :description="__('services.hero_description')"
-        :image="asset('images/services/hero.png')"
+        :image="asset('images/services/hero.webp')"
+        :image-width="1832"
+        :image-height="859"
     />
 
     <section class="container services-section">

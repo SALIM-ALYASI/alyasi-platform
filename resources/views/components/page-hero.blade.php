@@ -4,12 +4,20 @@
     'highlight' => null,
     'description' => null,
     'image' => null,
+    'imageWidth' => null,
+    'imageHeight' => null,
 ])
 
 <section class="page-hero @unless($image) page-hero--solid @endunless">
     @if ($image)
         <div class="page-hero__bg">
-            <img src="{{ $image }}" alt="" loading="eager">
+            <img
+                src="{{ $image }}"
+                alt=""
+                loading="eager"
+                @if ($imageWidth) width="{{ $imageWidth }}" @endif
+                @if ($imageHeight) height="{{ $imageHeight }}" @endif
+            >
         </div>
     @endif
     <div class="page-hero__overlay"></div>

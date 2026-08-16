@@ -10,14 +10,16 @@ use Symfony\Component\HttpFoundation\Response;
 class ForceLocale
 {
     /**
-     * فرض لغة الطلب من الرابط نفسه (بغض النظر عن جلسة المستخدم).
-     *
-     * تُستخدم لمجموعات روابط ثابتة اللغة مثل /articles و /en/articles،
-     * حيث يجب أن تُعرض الصفحة دائمًا بلغة الرابط، لا بلغة الجلسة.
+     * فرض لغة الطلب من الرابط نفسه (بغض النظر عن جلسة المستخدم الحالية)،
+     * ثم حفظها بالجلسة حتى تبقى بقية الموقع (الصفحات التي ما زالت
+     * تعتمد على الجلسة فقط مثل /contact و/about) متسقة مع نفس اللغة
+     * بعد التنقل من صفحة برابط لغوي إلى صفحة بدونه.
      */
     public function handle(Request $request, Closure $next, string $locale): Response
     {
         App::setLocale($locale);
+
+        $request->session()->put('locale', $locale);
 
         return $next($request);
     }

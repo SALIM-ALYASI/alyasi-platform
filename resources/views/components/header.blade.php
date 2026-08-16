@@ -2,6 +2,9 @@
     $showArticlesNav = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
     $showCommunityNav = \App\Models\Setting::get('show_community_events', '1') === '1';
 
+    // الروابط التي لها فعليًا نسخة /en (غيرها يبقى بدون prefix بغض النظر عن اللغة).
+    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index'];
+
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
@@ -18,18 +21,22 @@
     }
 
     $currentLocale = app()->getLocale();
+
+    $navHref = fn (string $routeName) => in_array($routeName, $localeAwareRoutes, true)
+        ? localized_route($routeName)
+        : route($routeName);
 @endphp
 
 <header class="site-header" data-site-header>
     <div class="site-header__bar container">
-        <a href="{{ route('home') }}" class="site-header__brand">
+        <a href="{{ localized_route('home') }}" class="site-header__brand">
             <img src="{{ asset('images/logo/logo-icon-navy.png') }}" alt="ALYASI" class="site-header__logo">
             <span class="site-header__brand-name">ALYASI</span>
         </a>
 
         <nav class="site-header__nav" aria-label="{{ __('layout.nav.home') }}">
             @foreach ($navItems as $key => $item)
-                <a href="{{ route($item['route']) }}" class="site-header__nav-link @if($item['active']) is-active @endif">
+                <a href="{{ $navHref($item['route']) }}" class="site-header__nav-link @if($item['active']) is-active @endif">
                     {{ __('layout.nav.'.$key) }}
                 </a>
             @endforeach
@@ -57,7 +64,7 @@
     <div class="site-header__mobile-menu" data-mobile-menu aria-hidden="true">
         <nav class="site-header__mobile-nav">
             @foreach ($navItems as $key => $item)
-                <a href="{{ route($item['route']) }}" class="site-header__mobile-link @if($item['active']) is-active @endif">
+                <a href="{{ $navHref($item['route']) }}" class="site-header__mobile-link @if($item['active']) is-active @endif">
                     {{ __('layout.nav.'.$key) }}
                 </a>
             @endforeach

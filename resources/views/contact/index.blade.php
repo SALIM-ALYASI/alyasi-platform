@@ -2,6 +2,9 @@
 
 @section('title', __('contact.title').' — ALYASI')
 @section('meta_description', __('contact.hero_description'))
+@section('canonical', route('contact'))
+@section('og_url', route('contact'))
+@section('og_image', asset('images/home/hero.webp'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

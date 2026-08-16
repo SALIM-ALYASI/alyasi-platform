@@ -10,6 +10,7 @@ use App\Models\PermalinkRedirect;
 use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -97,6 +98,8 @@ class NewsController extends Controller
 
         $this->syncPermalinks($article, $manualSlugs);
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.news.index')
             ->with('success', 'تمت إضافة الخبر بنجاح.');
@@ -143,6 +146,8 @@ class NewsController extends Controller
 
         $this->syncPermalinks($news, $manualSlugs);
 
+        $this->regenerateSitemap();
+
         return redirect()
             ->route('admin.news.index')
             ->with('success', 'تم تحديث الخبر بنجاح.');
@@ -154,6 +159,8 @@ class NewsController extends Controller
     public function destroy(NewsArticle $news): RedirectResponse
     {
         $news->delete();
+
+        $this->regenerateSitemap();
 
         return redirect()
             ->route('admin.news.index')
@@ -171,6 +178,8 @@ class NewsController extends Controller
             'status' => $isPublished ? NewsArticle::STATUS_DRAFT : NewsArticle::STATUS_PUBLISHED,
             'published_at' => $isPublished ? $news->published_at : ($news->published_at ?? now()),
         ]);
+
+        $this->regenerateSitemap();
 
         $message = $isPublished ? 'تم تحويل الخبر إلى مسودة.' : 'تم نشر الخبر.';
 
@@ -314,5 +323,13 @@ class NewsController extends Controller
         }
 
         return $slug;
+    }
+
+    /**
+     * إعادة توليد sitemap.xml ليبقى متزامنًا مع حالة نشر الأخبار.
+     */
+    private function regenerateSitemap(): void
+    {
+        Artisan::call('sitemap:generate');
     }
 }

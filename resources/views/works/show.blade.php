@@ -13,7 +13,9 @@
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', route('works.show', $work))
+@section('canonical', url()->current())
+@section('hreflang_ar', route('works.show', $work))
+@section('hreflang_en', localized_route('works.show', ['work' => $work], 'en'))
 
 {{-- =========================================================
      Open Graph
@@ -30,7 +32,7 @@
     )
 )
 
-@section('og_url', route('works.show', $work))
+@section('og_url', url()->current())
 
 @section(
     'og_image',

@@ -127,7 +127,7 @@ http://www.tooplate.com/view/2110-character
             </div>
         </div>
         <div class="item" data-desktop-seq-no="4" data-mobile-seq-no="8">
-            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[1]) }}" alt="{{ $t['feature_image_alt'] }}" class="tm-img-left">
+            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[1]) }}" alt="{{ $t['feature_image_alt'] }}" class="tm-img-left" loading="lazy">
         </div>
         <div class="tm-footer" id="tmFooter" data-desktop-seq-no="5" data-mobile-seq-no="9">
             <img src="{{ asset('markify-assets/img/markify/profile.jpg') }}" alt="{{ $t['footer_logo_alt'] }}" class="tm-img-qr">
@@ -137,7 +137,7 @@ http://www.tooplate.com/view/2110-character
             </div>
         </div>
         <div class="item" data-desktop-seq-no="6" data-mobile-seq-no="2">
-            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[2]) }}" alt="{{ $t['feature_image_alt'] }}">
+            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[2]) }}" alt="{{ $t['feature_image_alt'] }}" loading="lazy">
         </div>
         <div class="item tm-block-right" data-desktop-seq-no="7" data-mobile-seq-no="3">
             <div class="tm-block-right-inner tm-bg-primary-light tm-text-white tm-block tm-block-wider tm-block-pad">
@@ -154,7 +154,7 @@ http://www.tooplate.com/view/2110-character
         </div>
 
         <div class="item" data-desktop-seq-no="8" data-mobile-seq-no="6">
-            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[3]) }}" alt="{{ $t['feature_image_alt'] }}">
+            <img src="{{ asset('markify-assets/img/markify/' . $featureImages[3]) }}" alt="{{ $t['feature_image_alt'] }}" loading="lazy">
         </div>
 
         <div class="item tm-bg-white tm-block tm-form-section" data-desktop-seq-no="9" data-mobile-seq-no="7">

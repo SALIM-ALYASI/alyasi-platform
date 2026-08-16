@@ -20,7 +20,9 @@
         :title="__('articles.hero_title')"
         :highlight="__('articles.hero_title_highlight')"
         :description="__('articles.hero_description')"
-        :image="asset('images/articles/hero.png')"
+        :image="asset('images/articles/hero.webp')"
+        :image-width="1672"
+        :image-height="941"
     />
 
     <section class="container articles-section">
