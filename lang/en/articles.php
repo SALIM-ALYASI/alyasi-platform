@@ -23,6 +23,7 @@ return [
     'related_badge' => 'Articles',
     'related_title' => 'Related Articles',
 
+    'author_label' => 'Author',
     'minutes_read' => ':minutes min read',
     'views_count' => '{0} No views|{1} 1 view|[2,*] :count views',
 

@@ -23,6 +23,7 @@ return [
     'related_badge' => 'مقالات',
     'related_title' => 'مقالات مشابهة',
 
+    'author_label' => 'الكاتب',
     'minutes_read' => ':minutes دقائق',
     'views_count' => '{0} لا مشاهدات|{1} مشاهدة واحدة|[2,10] :count مشاهدات|[11,*] :count مشاهدة',
 

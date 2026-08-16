@@ -86,7 +86,7 @@
                     </a>
                 @endif
 
-                <a href="{{ route('home') }}#faq">
+                <a href="{{ localized_route('home') }}#faq">
                     {{ __('layout.footer.faq') }}
                 </a>
 

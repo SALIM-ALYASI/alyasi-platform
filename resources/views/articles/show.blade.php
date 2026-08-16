@@ -49,45 +49,54 @@
      Article Schema (JSON-LD)
 ========================================================= --}}
 @section('schema')
+@php
+    $articleSchema = [
+        '@'.'context' => 'https://schema.org',
+        '@type' => 'Article',
+
+        'inLanguage' => app()->getLocale(),
+
+        'headline' => $article->title,
+
+        'description' => $article->meta_description
+            ?: \Illuminate\Support\Str::limit(
+                strip_tags($article->excerpt ?: $article->content),
+                160
+            ),
+
+        'image' => [
+            media_url($article->featured_image)
+        ],
+
+        'datePublished' => optional(
+            $article->published_at
+        )->toIso8601String(),
+
+        'dateModified' => optional(
+            $article->updated_at
+        )->toIso8601String(),
+
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => article_route('show', [$article->slug()]),
+        ],
+
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'ALYASI',
+            'url' => url('/'),
+        ],
+    ];
+
+    if ($article->author) {
+        $articleSchema['author'] = [
+            '@type' => 'Person',
+            'name' => $article->author->name,
+        ];
+    }
+@endphp
 <script type="application/ld+json">
-{!! json_encode([
-    '@'.'context' => 'https://schema.org',
-    '@type' => 'Article',
-
-    'inLanguage' => app()->getLocale(),
-
-    'headline' => $article->title,
-
-    'description' => $article->meta_description
-        ?: \Illuminate\Support\Str::limit(
-            strip_tags($article->excerpt ?: $article->content),
-            160
-        ),
-
-    'image' => [
-        media_url($article->featured_image)
-    ],
-
-    'datePublished' => optional(
-        $article->published_at
-    )->toIso8601String(),
-
-    'dateModified' => optional(
-        $article->updated_at
-    )->toIso8601String(),
-
-    'mainEntityOfPage' => [
-        '@type' => 'WebPage',
-        '@id' => article_route('show', [$article->slug()]),
-    ],
-
-    'publisher' => [
-        '@type' => 'Organization',
-        'name' => 'ALYASI',
-        'url' => url('/'),
-    ],
-
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+{!! json_encode($articleSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endsection
 
@@ -198,6 +207,14 @@
 
 
         <span class="articles-detail__date">
+
+            @if ($article->author)
+
+                {{ __('articles.author_label') }}: {{ $article->author->name }}
+
+                ·
+
+            @endif
 
             {{ optional($article->published_at)->translatedFormat('d.m.Y') }}
 
