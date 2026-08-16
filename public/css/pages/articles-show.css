@@ -1,4 +1,7 @@
-/* ALYASI-Article-Detail.html */
+/* ALYASI — Article Detail — Content Design System
+   نظام تصميم موحّد لمحتوى المقال، يتفاعل تلقائيًا مع عناصر HTML
+   القادمة من قاعدة البيانات (h2/h3/p/ul/blockquote/strong/a/hr)،
+   بدل تنسيق كل مقال يدويًا. */
 
 .articles-detail__top { max-width: 900px; padding-top: 70px; }
 .articles-detail__breadcrumb { display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(20, 32, 46, .55); margin-bottom: 22px; }
@@ -12,36 +15,227 @@
 .articles-detail__media { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 8; box-shadow: var(--shadow-lg); }
 .articles-detail__media img { width: 100%; height: 100%; object-fit: cover; }
 
+.articles-detail__header-after-image { max-width: 820px; margin: 32px auto 0; }
+.articles-detail__header-after-image .articles-detail__breadcrumb { margin-bottom: 16px; }
+.articles-detail__header-after-image .articles-detail__meta { margin-bottom: 14px; }
+.articles-detail__header-after-image .articles-detail__title { margin-top: 0; margin-bottom: 0; }
+
 .articles-detail__content-wrap { max-width: 760px; padding-top: 50px; padding-bottom: 30px; }
+
+/* ------------------------------------------------------------
+   الفقرات
+------------------------------------------------------------ */
 .articles-detail__paragraph,
-.articles-detail__content p { font-size: 16.5px; line-height: 2.1; color: rgba(20, 32, 46, .82); margin: 0 0 24px; }
-.articles-detail__content ul,
-.articles-detail__content ol { font-size: 16.5px; line-height: 2.1; color: rgba(20, 32, 46, .82); margin: 0 0 24px; padding-inline-start: 24px; }
-.articles-detail__content li { margin-bottom: 8px; }
+.articles-detail__content p {
+    font-size: 16.5px;
+    line-height: 2.1;
+    color: rgba(20, 32, 46, .82);
+    margin: 0 0 24px;
+}
+
+/* ------------------------------------------------------------
+   العناوين الفرعية (h2/h3/h4) — إيقاع بصري واضح بين الأقسام
+------------------------------------------------------------ */
 .articles-detail__content h2,
 .articles-detail__content h3,
-.articles-detail__content h4 { margin: 32px 0 16px; }
-.articles-detail__content blockquote {
+.articles-detail__content h4 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-heading-weight);
+    color: var(--color-text);
+    line-height: 1.4;
+    margin: 44px 0 18px;
+}
+.articles-detail__content h2 { font-size: clamp(22px, 2.6vw, 28px); }
+.articles-detail__content h3 { font-size: clamp(19px, 2.2vw, 23px); }
+.articles-detail__content h4 { font-size: 18px; }
+
+.articles-detail__content > *:first-child { margin-top: 0; }
+
+/* ------------------------------------------------------------
+   القوائم
+------------------------------------------------------------ */
+.articles-detail__content ul,
+.articles-detail__content ol {
+    font-size: 16.5px;
+    line-height: 2.1;
+    color: rgba(20, 32, 46, .82);
     margin: 0 0 24px;
-    padding: 16px 20px;
+    padding-inline-start: 26px;
+}
+.articles-detail__content li { margin-bottom: 10px; }
+.articles-detail__content li:last-child { margin-bottom: 0; }
+.articles-detail__content ul { list-style-type: disc; }
+.articles-detail__content ol { list-style-type: decimal; }
+
+/* ------------------------------------------------------------
+   اقتباس
+------------------------------------------------------------ */
+.articles-detail__content blockquote {
+    position: relative;
+    margin: 8px 0 28px;
+    padding: 18px 24px;
     border-inline-start: 3px solid var(--color-accent-400);
     background: var(--color-surface);
     border-radius: var(--radius-sm);
-    color: rgba(20, 32, 46, .75);
+    color: rgba(20, 32, 46, .78);
+    font-size: 17px;
+    line-height: 1.9;
+    font-style: normal;
 }
-.articles-detail__content a { color: var(--color-accent-600); text-decoration: underline; }
-.articles-detail__content strong { font-weight: 700; }
+.articles-detail__content blockquote p { margin: 0; color: inherit; font-size: inherit; line-height: inherit; }
 
-.articles-detail__share { display: flex; align-items: center; gap: 14px; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--color-divider); flex-wrap: wrap; }
-.articles-detail__share-label { font-weight: 700; font-size: 14px; }
+/* ------------------------------------------------------------
+   إبراز وروابط
+------------------------------------------------------------ */
+.articles-detail__content strong { font-weight: 700; color: var(--color-text); }
+.articles-detail__content em { font-style: italic; }
+
+.articles-detail__content a:not(.article-btn) {
+    color: var(--color-accent-600);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color .15s ease;
+}
+.articles-detail__content a:not(.article-btn):hover { color: var(--color-accent-800); }
+
+/* ------------------------------------------------------------
+   صور داخل المحتوى (لو أضيف دعمها لاحقًا للحقل نفسه)
+------------------------------------------------------------ */
+.articles-detail__content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 8px 0 28px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ------------------------------------------------------------
+   فاصل
+------------------------------------------------------------ */
+.articles-detail__content hr {
+    border: 0;
+    border-top: 1px solid var(--color-divider);
+    margin: 40px 0;
+}
+
+/* ------------------------------------------------------------
+   زر CTA — يُنشأ تلقائيًا لروابط الفيديو/الصوت المعروفة
+   (يوتيوب/فيميو/سبوتيفاي/ساوندكلاود/بودكاست) عبر
+   App\Support\RichContentRenderer وقت العرض، وليس عبر
+   وسم يدوي بالمحتوى. تصميم موحّد بهوية ALYASI (كحلي)،
+   الأيقونة فقط تتغيّر حسب المنصة.
+------------------------------------------------------------ */
+.articles-detail__content p:has(> a.article-btn:only-child) {
+    margin-bottom: 28px;
+}
+
+.articles-detail__content a.article-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: auto;
+    min-height: 48px;
+
+    margin: 4px 0;
+    padding: 12px 24px;
+
+    background: var(--color-accent-900);
+    color: #ffffff !important;
+
+    border: 1px solid var(--color-accent-900);
+    border-radius: var(--radius-sm);
+
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+
+    text-decoration: none !important;
+
+    cursor: pointer;
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background-color .2s ease,
+        border-color .2s ease;
+}
+
+.articles-detail__content a.article-btn i {
+    font-size: 17px;
+}
+
+.articles-detail__content a.article-btn:hover {
+    background: var(--color-accent-700);
+    border-color: var(--color-accent-700);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.articles-detail__content a.article-btn:focus-visible {
+    outline: 3px solid var(--color-accent-300);
+    outline-offset: 3px;
+}
+
+/* المنصات ذات الشعار الأبيض المعروف (يوتيوب) تُقرأ أفضل بمفتاح فاتح */
+.articles-detail__content a.article-btn--youtube {
+    background: #ffffff;
+    color: var(--color-accent-900) !important;
+    border-color: var(--color-divider);
+    box-shadow: var(--shadow-sm);
+}
+.articles-detail__content a.article-btn--youtube:hover {
+    background: var(--color-surface);
+    color: var(--color-accent-900) !important;
+    border-color: var(--color-accent-300);
+}
+
+/* ------------------------------------------------------------
+   المشاركة
+------------------------------------------------------------ */
+.articles-detail__share {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-divider);
+    flex-wrap: wrap;
+}
+.articles-detail__share-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--color-text);
+    margin-inline-end: 4px;
+}
 .articles-detail__share-btn {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--color-accent-100); color: var(--color-accent-700);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 800;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background-color .15s ease, color .15s ease, transform .15s ease;
 }
-.articles-detail__share-btn:hover { background: var(--color-accent-500); color: #fff; }
+.articles-detail__share-btn:hover {
+    background: var(--color-accent-900);
+    color: #fff;
+    transform: translateY(-2px);
+}
 
+/* ------------------------------------------------------------
+   مقالات ذات صلة
+------------------------------------------------------------ */
 .articles-detail__related { background: var(--color-surface); padding: 90px 0; }
 .articles-detail__related-title { margin: 10px 0 40px; }
 .articles-detail__related-media { aspect-ratio: 16 / 10; overflow: hidden; }
@@ -50,6 +244,23 @@
 .articles-detail__related-date { font-size: 12px; color: rgba(20, 32, 46, .55); margin-bottom: 8px; }
 .articles-detail__related-title-text { font-size: 15px; font-weight: 700; line-height: 1.6; }
 
+/* ------------------------------------------------------------
+   الجوال
+------------------------------------------------------------ */
 @media (max-width: 767px) {
     .articles-detail__top { padding-top: 40px; }
+}
+
+@media (max-width: 640px) {
+    .articles-detail__media-wrap { padding-top: 20px; }
+    .articles-detail__header-after-image { margin-top: 24px; }
+
+    .articles-detail__content h2 { margin-top: 36px; }
+    .articles-detail__content h3 { margin-top: 32px; }
+
+    .articles-detail__content a.article-btn {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 18px;
+    }
 }

@@ -66,6 +66,20 @@ if (! function_exists('localized_route')) {
     }
 }
 
+if (! function_exists('render_rich_content')) {
+    /**
+     * تجهيز محتوى المقال للعرض: تصفية للوسوم المسموحة (دفاع إضافي رغم
+     * تعقيمه مسبقًا وقت الحفظ)، ثم تحويل روابط الفيديو/الصوت المعروفة
+     * تلقائيًا إلى زر CTA عبر App\Support\RichContentRenderer.
+     */
+    function render_rich_content(?string $html, string $allowedTags): string
+    {
+        $filtered = strip_tags((string) $html, $allowedTags);
+
+        return \App\Support\RichContentRenderer::render($filtered);
+    }
+}
+
 if (! function_exists('versioned_asset')) {
     /**
      * Build an asset URL with a cache-busting query string based on the
