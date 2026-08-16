@@ -99,7 +99,7 @@ class ArticleIngestController extends Controller
             ]);
 
             if (! $article->exists && filled($validated['featured_image_url'] ?? null)) {
-                $article->featured_image = $this->downloadImage($validated['featured_image_url']);
+                $article->featured_image_ar = $this->downloadImage($validated['featured_image_url']);
             }
 
             $article->save();

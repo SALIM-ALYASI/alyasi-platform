@@ -122,8 +122,8 @@
                     <article class="admin-data-card">
 
                         <div class="admin-data-card__media">
-                            @if ($article->featured_image)
-                                <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title_ar }}" loading="lazy">
+                            @if ($article->featured_image_ar)
+                                <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title_ar }}" loading="lazy">
                             @else
                                 <i class="fa-regular fa-image" aria-hidden="true"></i>
                             @endif

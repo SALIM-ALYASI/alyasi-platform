@@ -315,7 +315,7 @@
                     @foreach ($latestArticles as $article)
                         <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover home-news-card" data-reveal>
                             <div class="home-news-card__media">
-                                <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
+                                <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title }}" loading="lazy">
                             </div>
                             <div class="home-news-card__body">
                                 <div class="home-news-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>

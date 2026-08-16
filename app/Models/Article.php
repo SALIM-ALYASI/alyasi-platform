@@ -32,7 +32,8 @@ class Article extends Model
         'excerpt_en',
         'content_ar',
         'content_en',
-        'featured_image',
+        'featured_image_ar',
+        'featured_image_en',
         'status',
         'is_featured',
         'published_at',
@@ -189,6 +190,21 @@ class Article extends Model
     public function getMetaDescriptionAttribute(): ?string
     {
         return $this->localizedValue('meta_description');
+    }
+
+    /**
+     * صورة المقال المعروضة أعلى صفحة تفاصيله فقط — تتبع لغة الصفحة
+     * الحالية مع رجوع لصورة العربي لو ما فيه صورة إنجليزية بعد.
+     * باقي الاستخدامات (بطاقات الفهرس، og:image، JSON-LD، المقالات
+     * المشابهة) تبقى عمدًا على الصورة العربية دائمًا — ما تتغيّر باللغة.
+     */
+    public function displayImage(): ?string
+    {
+        if (app()->getLocale() === 'en' && filled($this->featured_image_en)) {
+            return $this->featured_image_en;
+        }
+
+        return $this->featured_image_ar;
     }
 
     public function getMetaKeywordsAttribute(): ?string

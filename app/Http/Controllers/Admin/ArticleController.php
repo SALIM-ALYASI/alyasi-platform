@@ -74,11 +74,13 @@ class ArticleController extends Controller
         $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareArticleData($request, $validated);
 
-        $storedImage = null;
+        $storedImages = [];
 
-        if ($request->hasFile('featured_image')) {
-            $storedImage = $this->storeImage($request);
-            $validated['featured_image'] = $storedImage;
+        foreach (['featured_image_ar', 'featured_image_en'] as $field) {
+            if ($request->hasFile($field)) {
+                $storedImages[$field] = $this->storeImage($request, $field);
+                $validated[$field] = $storedImages[$field];
+            }
         }
 
         try {
@@ -88,7 +90,9 @@ class ArticleController extends Controller
                 $this->syncPermalinks($article, $manualSlugs);
             });
         } catch (\Throwable $exception) {
-            $this->deleteImage($storedImage);
+            foreach ($storedImages as $path) {
+                $this->deleteImage($path);
+            }
             throw $exception;
         }
 
@@ -115,12 +119,14 @@ class ArticleController extends Controller
         $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareArticleData($request, $validated);
 
-        $oldImage = $article->featured_image;
-        $newImage = null;
+        $oldImages = ['featured_image_ar' => $article->featured_image_ar, 'featured_image_en' => $article->featured_image_en];
+        $newImages = [];
 
-        if ($request->hasFile('featured_image')) {
-            $newImage = $this->storeImage($request);
-            $validated['featured_image'] = $newImage;
+        foreach (['featured_image_ar', 'featured_image_en'] as $field) {
+            if ($request->hasFile($field)) {
+                $newImages[$field] = $this->storeImage($request, $field);
+                $validated[$field] = $newImages[$field];
+            }
         }
 
         try {
@@ -130,12 +136,18 @@ class ArticleController extends Controller
                 $this->syncPermalinks($article, $manualSlugs);
             });
         } catch (\Throwable $exception) {
-            $this->deleteImage($newImage);
+            foreach ($newImages as $path) {
+                $this->deleteImage($path);
+            }
             throw $exception;
         }
 
-        if ($newImage !== null && $oldImage !== null && $oldImage !== $newImage) {
-            $this->deleteImage($oldImage);
+        foreach ($newImages as $field => $newPath) {
+            $oldPath = $oldImages[$field];
+
+            if ($oldPath !== null && $oldPath !== $newPath) {
+                $this->deleteImage($oldPath);
+            }
         }
 
         $this->regenerateSitemap();
@@ -147,14 +159,16 @@ class ArticleController extends Controller
 
     public function destroy(Article $article): RedirectResponse
     {
-        $image = $article->featured_image;
+        $images = [$article->featured_image_ar, $article->featured_image_en];
 
         DB::transaction(function () use ($article): void {
             $article->permalinks()->delete();
             $article->delete();
         });
 
-        $this->deleteImage($image);
+        foreach ($images as $image) {
+            $this->deleteImage($image);
+        }
 
         $this->regenerateSitemap();
 
@@ -194,6 +208,14 @@ class ArticleController extends Controller
 
     private function validateArticle(Request $request, ?Article $article = null): array
     {
+        /*
+         * الصورتين إلزاميتان عند إنشاء مقال جديد (طلب صريح: صورة عربية
+         * وصورة إنجليزية منفصلتين لكل مقال). عند التعديل تبقيان اختياريتين
+         * (رفع بديل فقط) حتى لا يُمنع تعديل أي مقال قديم قبل هذا التغيير
+         * ولا يملك بعد صورة إنجليزية.
+         */
+        $imageRule = $article === null ? 'required' : 'nullable';
+
         return $request->validate([
             'article_category_id' => ['nullable', 'integer', 'exists:article_categories,id'],
             'author_id' => ['nullable', 'integer', 'exists:admins,id'],
@@ -203,7 +225,8 @@ class ArticleController extends Controller
             'excerpt_en' => ['nullable', 'string', 'max:500'],
             'content_ar' => ['required', 'string'],
             'content_en' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'featured_image_ar' => [$imageRule, 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'featured_image_en' => [$imageRule, 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'status' => ['required', \Illuminate\Validation\Rule::in([
                 Article::STATUS_DRAFT,
                 Article::STATUS_PUBLISHED,
@@ -222,9 +245,14 @@ class ArticleController extends Controller
         ], [
             'title_ar.required' => 'عنوان المقال بالعربية مطلوب.',
             'content_ar.required' => 'محتوى المقال بالعربية مطلوب.',
-            'featured_image.image' => 'الملف المحدد يجب أن يكون صورة.',
-            'featured_image.mimes' => 'صيغة الصورة يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
-            'featured_image.max' => 'حجم الصورة يجب ألا يتجاوز 4 ميجابايت.',
+            'featured_image_ar.required' => 'صورة المقال بالعربية مطلوبة.',
+            'featured_image_ar.image' => 'الملف المحدد للصورة العربية يجب أن يكون صورة.',
+            'featured_image_ar.mimes' => 'صيغة الصورة العربية يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
+            'featured_image_ar.max' => 'حجم الصورة العربية يجب ألا يتجاوز 4 ميجابايت.',
+            'featured_image_en.required' => 'صورة المقال بالإنجليزية مطلوبة.',
+            'featured_image_en.image' => 'الملف المحدد للصورة الإنجليزية يجب أن يكون صورة.',
+            'featured_image_en.mimes' => 'صيغة الصورة الإنجليزية يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
+            'featured_image_en.max' => 'حجم الصورة الإنجليزية يجب ألا يتجاوز 4 ميجابايت.',
         ]);
     }
 
@@ -245,7 +273,7 @@ class ArticleController extends Controller
             $validated['published_at'] = now();
         }
 
-        unset($validated['featured_image'], $validated['slug_ar'], $validated['slug_en']);
+        unset($validated['featured_image_ar'], $validated['featured_image_en'], $validated['slug_ar'], $validated['slug_en']);
 
         return $validated;
     }
@@ -344,9 +372,9 @@ class ArticleController extends Controller
      * حفظ صورة المقال مباشرة داخل public/uploads/articles
      * بدون الحاجة إلى php artisan storage:link.
      */
-    private function storeImage(Request $request): string
+    private function storeImage(Request $request, string $field): string
     {
-        $image = $request->file('featured_image');
+        $image = $request->file($field);
         $directory = public_path('uploads/articles');
 
         File::ensureDirectoryExists($directory, 0755, true);

@@ -44,7 +44,7 @@
                 @foreach ($articles as $article)
                     <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover articles-card" data-reveal>
                         <div class="articles-card__media">
-                            <img src="{{ media_url($article->featured_image) }}" alt="{{ $article->title }}" loading="lazy">
+                            <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title }}" loading="lazy">
                             @if ($article->is_featured)
                                 <span class="badge articles-card__badge">{{ __('articles.featured_badge') }}</span>
                             @endif

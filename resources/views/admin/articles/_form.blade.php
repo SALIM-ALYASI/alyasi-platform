@@ -111,23 +111,45 @@
     </div>
 
     <div class="form-group full">
-        <label for="featured_image">الصورة الرئيسية</label>
+        <label for="featured_image_ar">الصورة الرئيسية (عربي)</label>
 
         <input
             type="file"
-            id="featured_image"
-            name="featured_image"
+            id="featured_image_ar"
+            name="featured_image_ar"
             class="form-control"
             accept="image/png,image/jpeg,image/webp"
         >
 
-        @if ($article?->featured_image)
+        @if ($article?->featured_image_ar)
             <div style="margin-top:10px;">
-                <img src="{{ media_url($article->featured_image) }}" alt="" style="max-width:220px;border-radius:8px;">
+                <img src="{{ media_url($article->featured_image_ar) }}" alt="" style="max-width:220px;border-radius:8px;">
             </div>
         @endif
 
-        @error('featured_image')
+        @error('featured_image_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group full">
+        <label for="featured_image_en">الصورة الرئيسية (إنجليزي)</label>
+
+        <input
+            type="file"
+            id="featured_image_en"
+            name="featured_image_en"
+            class="form-control"
+            accept="image/png,image/jpeg,image/webp"
+        >
+
+        @if ($article?->featured_image_en)
+            <div style="margin-top:10px;">
+                <img src="{{ media_url($article->featured_image_en) }}" alt="" style="max-width:220px;border-radius:8px;">
+            </div>
+        @endif
+
+        @error('featured_image_en')
             <small class="text-danger">{{ $message }}</small>
         @enderror
     </div>

@@ -42,7 +42,7 @@
 
 @section(
     'og_image',
-    media_url($article->featured_image)
+    media_url($article->featured_image_ar)
 )
 
 {{-- =========================================================
@@ -65,7 +65,7 @@
             ),
 
         'image' => [
-            media_url($article->featured_image)
+            media_url($article->featured_image_ar)
         ],
 
         'datePublished' => optional(
@@ -159,7 +159,7 @@
     <div class="articles-detail__media">
 
         <img
-            src="{{ media_url($article->featured_image) }}"
+            src="{{ media_url($article->displayImage()) }}"
             alt="{{ $article->title }}"
         >
 
@@ -365,7 +365,7 @@
                     <div class="articles-detail__related-media">
 
                         <img
-                            src="{{ media_url($related->featured_image) }}"
+                            src="{{ media_url($related->featured_image_ar) }}"
                             alt="{{ $related->title }}"
                             loading="lazy"
                         >
