@@ -83,37 +83,68 @@
         @enderror
     </div>
 
-    @if($service)
-        <div class="form-group">
-            <label>الرابط العربي الدائم</label>
+    <div class="form-group" data-slug-preview data-slug-base="{{ url('/services').'/' }}" data-slug-source-id="title_ar">
+        <label for="slug_ar">
+            الرابط المختصر بالعربية
+            <span class="text-danger">*</span>
+        </label>
 
-            <input
-                type="text"
-                class="form-control"
-                value="{{ $arabicPermalink?->slug ?? 'سيتم إنشاؤه تلقائياً عند الحفظ' }}"
-                readonly
-                dir="ltr"
-            >
-        </div>
+        <input
+            type="text"
+            id="slug_ar"
+            name="slug_ar"
+            class="form-control"
+            dir="ltr"
+            data-slug-input
+            value="{{ old('slug_ar', $arabicPermalink?->slug) }}"
+            maxlength="180"
+            placeholder="مثال: social-media-design"
+            required
+        >
 
-        <div class="form-group">
-            <label>الرابط الإنجليزي الدائم</label>
+        <small style="display:block;margin-top:6px;color:#555;">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+            <span data-slug-preview-text>{{ url('/services').'/' }}</span>
+        </small>
 
-            <input
-                type="text"
-                class="form-control"
-                value="{{ $englishPermalink?->slug ?? 'سيتم إنشاؤه تلقائياً عند توفر عنوان إنجليزي' }}"
-                readonly
-                dir="ltr"
-            >
-        </div>
+        @error('slug_ar')
+            <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+        @enderror
+    </div>
 
-        <div class="form-group full">
-            <small style="color:#777;">
-                الروابط الدائمة لا تتغير تلقائياً عند تعديل عنوان الخدمة.
-            </small>
-        </div>
-    @endif
+    <div class="form-group" data-slug-preview data-slug-base="{{ url('/services').'/' }}" data-slug-source-id="title_en">
+        <label for="slug_en">
+            الرابط المختصر بالإنجليزية
+            <span class="text-danger">*</span> <small style="font-weight:400;">(عند وجود عنوان إنجليزي)</small>
+        </label>
+
+        <input
+            type="text"
+            id="slug_en"
+            name="slug_en"
+            class="form-control"
+            dir="ltr"
+            data-slug-input
+            value="{{ old('slug_en', $englishPermalink?->slug) }}"
+            maxlength="180"
+            placeholder="e.g. social-media-design"
+        >
+
+        <small style="display:block;margin-top:6px;color:#555;">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+            <span data-slug-preview-text>{{ url('/services').'/' }}</span>
+        </small>
+
+        @error('slug_en')
+            <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group full">
+        <small style="color:#777;">
+            لا يوجد توليد تلقائي للرابط — اكتب رابطًا إنجليزيًا واضحًا وقصيرًا. تغيير الرابط يحفظ القديم تلقائيًا كتحويل 301 حتى لا تنكسر روابط سبق مشاركتها.
+        </small>
+    </div>
 
     <div class="form-group full">
         <label for="image">صورة الخدمة</label>
@@ -177,3 +208,7 @@
         إلغاء
     </a>
 </div>
+
+@push('scripts')
+<script src="{{ versioned_asset('js/admin/slug-preview.js') }}"></script>
+@endpush

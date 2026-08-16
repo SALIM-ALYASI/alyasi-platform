@@ -35,7 +35,7 @@
     </div>
 
     {{-- الرابط المختصر --}}
-    <div class="form-group">
+    <div class="form-group" data-slug-preview data-slug-base="{{ url('/works').'/' }}" data-slug-source-id="title">
 
         <label for="slug" class="form-label">
             الرابط المختصر
@@ -46,11 +46,17 @@
             name="slug"
             id="slug"
             class="form-control @error('slug') is-invalid @enderror"
+            data-slug-input
             value="{{ old('slug', $work?->slug) }}"
-            maxlength="255"
+            maxlength="180"
             dir="ltr"
-            placeholder="يُنشأ تلقائيًا عند تركه فارغًا"
+            placeholder="مثال: markify (لا تلصق رابطًا كاملًا هنا)"
         >
+
+        <small style="display:block;margin-top:6px;color:#555;">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+            <span data-slug-preview-text>{{ url('/works').'/' }}</span>
+        </small>
 
         @error('slug')
             <span class="form-error">{{ $message }}</span>

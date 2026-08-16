@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\NewsArticle;
 use App\Models\NewsCategory;
 use App\Models\Permalink;
+use App\Models\PermalinkRedirect;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -49,7 +51,7 @@ class NewsController extends Controller
     /**
      * عرض تفاصيل خبر منشور.
      */
-    public function show(string $slug): View
+    public function show(string $slug): View|RedirectResponse
     {
         /*
          * البحث عن الرابط المطابق للغة الحالية أولًا.
@@ -67,7 +69,15 @@ class NewsController extends Controller
         $permalink ??= Permalink::query()
             ->with('linkable')
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->first();
+
+        /*
+         * لا رابط حالي مطابق إطلاقًا — نجرّب رابطًا قديمًا محوّلاً
+         * قبل الاستسلام بـ 404.
+         */
+        if (! $permalink) {
+            return $this->redirectFromOldSlug($slug, app()->getLocale());
+        }
 
         $article = $permalink->linkable;
 
@@ -174,6 +184,40 @@ class NewsController extends Controller
 
         return new Collection(
             $relatedArticles->take(3)->values()->all()
+        );
+    }
+
+    /**
+     * تحويل الروابط القديمة إلى الرابط الحالي للخبر.
+     */
+    private function redirectFromOldSlug(string $slug, string $locale): RedirectResponse
+    {
+        $redirect = PermalinkRedirect::query()
+            ->with('permalink.linkable')
+            ->where('old_slug', $slug)
+            ->orderByRaw(
+                'CASE WHEN locale = ? THEN 0 ELSE 1 END',
+                [$locale]
+            )
+            ->first();
+
+        abort_unless($redirect?->permalink, 404);
+
+        $article = $redirect->permalink->linkable;
+
+        abort_unless($article instanceof NewsArticle, 404);
+
+        $isPublished = NewsArticle::query()
+            ->published()
+            ->whereKey($article->getKey())
+            ->exists();
+
+        abort_unless($isPublished, 404);
+
+        return redirect()->route(
+            'news.show',
+            ['slug' => $redirect->permalink->slug],
+            301
         );
     }
 }

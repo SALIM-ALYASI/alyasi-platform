@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\Technology;
 use App\Models\Work;
+use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -487,7 +488,8 @@ class WorkController extends Controller
             'slug' => [
                 'nullable',
                 'string',
-                'max:255',
+                'max:180',
+                new CleanSlug,
                 Rule::unique(
                     'works',
                     'slug'

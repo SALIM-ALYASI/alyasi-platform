@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
 use App\Models\NewsCategory;
 use App\Models\Permalink;
+use App\Models\PermalinkRedirect;
+use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -74,6 +77,8 @@ class NewsController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateArticle($request);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
+        unset($validated['slug_ar'], $validated['slug_en']);
 
         $validated['status'] = $request->boolean('is_published')
             ? NewsArticle::STATUS_PUBLISHED
@@ -90,7 +95,7 @@ class NewsController extends Controller
 
         $article = NewsArticle::query()->create($validated);
 
-        $this->syncPermalinks($article);
+        $this->syncPermalinks($article, $manualSlugs);
 
         return redirect()
             ->route('admin.news.index')
@@ -118,6 +123,8 @@ class NewsController extends Controller
     public function update(Request $request, NewsArticle $news): RedirectResponse
     {
         $validated = $this->validateArticle($request, $news);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
+        unset($validated['slug_ar'], $validated['slug_en']);
 
         $validated['status'] = $request->boolean('is_published')
             ? NewsArticle::STATUS_PUBLISHED
@@ -133,6 +140,8 @@ class NewsController extends Controller
         unset($validated['is_published']);
 
         $news->update($validated);
+
+        $this->syncPermalinks($news, $manualSlugs);
 
         return redirect()
             ->route('admin.news.index')
@@ -213,6 +222,8 @@ class NewsController extends Controller
             'is_published' => ['nullable', 'boolean'],
             'is_breaking' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
+            'slug_ar' => ['nullable', 'string', 'max:180', new CleanSlug],
+            'slug_en' => ['nullable', 'string', 'max:180', new CleanSlug],
         ], [
             'title_ar.required' => 'العنوان بالعربية مطلوب.',
             'title_en.required' => 'العنوان بالإنجليزية مطلوب.',
@@ -221,32 +232,66 @@ class NewsController extends Controller
     }
 
     /**
-     * إنشاء الروابط الدائمة للخبر باللغتين.
+     * إنشاء الروابط الدائمة الناقصة للخبر باللغتين، أو تحديثها لو المدير
+     * كتب رابطًا يدويًا مختلفًا عن الحالي — مع حفظ القديم كتحويل 301
+     * تلقائي في permalink_redirects بدل ما ينكسر.
      */
-    private function syncPermalinks(NewsArticle $article): void
+    private function syncPermalinks(NewsArticle $article, array $manualSlugs = []): void
     {
         foreach (['ar' => $article->title_ar, 'en' => $article->title_en] as $locale => $title) {
             if (blank($title)) {
                 continue;
             }
 
-            $exists = Permalink::query()
+            $manualSlug = filled($manualSlugs[$locale] ?? null) ? trim($manualSlugs[$locale]) : null;
+
+            $permalink = Permalink::query()
                 ->where('linkable_type', 'news_article')
                 ->where('linkable_id', $article->id)
                 ->where('locale', $locale)
-                ->exists();
+                ->first();
 
-            if ($exists) {
+            if (! $permalink) {
+                Permalink::query()->create([
+                    'linkable_type' => 'news_article',
+                    'linkable_id' => $article->id,
+                    'locale' => $locale,
+                    'slug' => $this->generateUniqueSlug($manualSlug ?: $title),
+                ]);
+
                 continue;
             }
 
-            Permalink::query()->create([
-                'linkable_type' => 'news_article',
-                'linkable_id' => $article->id,
-                'locale' => $locale,
-                'slug' => $this->generateUniqueSlug($title),
-            ]);
+            if ($manualSlug === null || $manualSlug === $permalink->slug) {
+                continue;
+            }
+
+            $this->movePermalinkSlug($permalink, $manualSlug);
         }
+    }
+
+    /**
+     * تحديث رابط دائم موجود إلى slug جديد، مع حفظ القديم كتحويل 301.
+     */
+    private function movePermalinkSlug(Permalink $permalink, string $newRequestedSlug): void
+    {
+        $newSlug = $this->generateUniqueSlug($newRequestedSlug);
+        $oldSlug = $permalink->slug;
+
+        DB::transaction(function () use ($permalink, $newSlug, $oldSlug): void {
+            PermalinkRedirect::query()
+                ->where('locale', $permalink->locale)
+                ->where('old_slug', $oldSlug)
+                ->delete();
+
+            PermalinkRedirect::query()->create([
+                'permalink_id' => $permalink->id,
+                'locale' => $permalink->locale,
+                'old_slug' => $oldSlug,
+            ]);
+
+            $permalink->update(['slug' => $newSlug]);
+        });
     }
 
     /**

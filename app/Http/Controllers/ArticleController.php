@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Permalink;
+use App\Models\PermalinkRedirect;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -61,7 +63,7 @@ class ArticleController extends Controller
     /**
      * صفحة تفاصيل المقال.
      */
-    public function show(string $slug): View
+    public function show(string $slug): View|RedirectResponse
     {
         $locale = app()->getLocale();
 
@@ -72,7 +74,9 @@ class ArticleController extends Controller
             ->where('slug', $slug)
             ->first();
 
-        abort_if($permalink === null, 404);
+        if (! $permalink) {
+            return $this->redirectFromOldSlug($slug, $locale);
+        }
 
         $article = $permalink->linkable;
 
@@ -110,5 +114,35 @@ class ArticleController extends Controller
             'article',
             'relatedArticles'
         ));
+    }
+
+    /**
+     * تحويل الروابط القديمة إلى الرابط الحالي للمقال.
+     */
+    private function redirectFromOldSlug(string $slug, string $locale): RedirectResponse
+    {
+        $redirect = PermalinkRedirect::query()
+            ->with('permalink.linkable')
+            ->where('locale', $locale)
+            ->where('old_slug', $slug)
+            ->first();
+
+        abort_unless($redirect?->permalink, 404);
+
+        $article = $redirect->permalink->linkable;
+
+        abort_unless($article instanceof Article, 404);
+
+        $isPublished = Article::query()
+            ->published()
+            ->whereKey($article->getKey())
+            ->exists();
+
+        abort_unless($isPublished, 404);
+
+        return redirect()->to(
+            article_route('show', [$redirect->permalink->slug], $locale),
+            301
+        );
     }
 }

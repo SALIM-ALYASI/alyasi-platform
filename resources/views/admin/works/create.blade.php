@@ -100,5 +100,6 @@
 @endsection
 
 @push('scripts')
+<script src="{{ versioned_asset('js/admin/slug-preview.js') }}"></script>
 <script src="{{ versioned_asset('assets/admin/js/works.js') }}"></script>
 @endpush

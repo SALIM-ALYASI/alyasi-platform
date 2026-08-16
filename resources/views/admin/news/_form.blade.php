@@ -40,6 +40,56 @@
         >
     </div>
 
+    <div class="form-group" data-slug-preview data-slug-base="{{ url('/news').'/' }}" data-slug-source-id="title_ar">
+        <label for="slug_ar">رابط الصفحة</label>
+
+        <input
+            type="text"
+            id="slug_ar"
+            name="slug_ar"
+            class="form-control"
+            dir="ltr"
+            data-slug-input
+            value="{{ old('slug_ar', $article?->slug('ar') ?? '') }}"
+            maxlength="180"
+            placeholder="مثال: news-slug"
+        >
+
+        <small style="display:block;margin-top:6px;color:#555;">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+            <span data-slug-preview-text>{{ url('/news').'/' }}</span>
+        </small>
+
+        @error('slug_ar')
+            <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group" data-slug-preview data-slug-base="{{ url('/news').'/' }}" data-slug-source-id="title_en">
+        <label for="slug_en">Page URL</label>
+
+        <input
+            type="text"
+            id="slug_en"
+            name="slug_en"
+            class="form-control"
+            dir="ltr"
+            data-slug-input
+            value="{{ old('slug_en', $article?->slug('en') ?? '') }}"
+            maxlength="180"
+            placeholder="e.g. news-slug"
+        >
+
+        <small style="display:block;margin-top:6px;color:#555;">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+            <span data-slug-preview-text>{{ url('/news').'/' }}</span>
+        </small>
+
+        @error('slug_en')
+            <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+        @enderror
+    </div>
+
     <div class="form-group">
         <label for="news_category_id">التصنيف</label>
 
@@ -222,3 +272,7 @@
     </button>
 
 </div>
+
+@push('scripts')
+<script src="{{ versioned_asset('js/admin/slug-preview.js') }}"></script>
+@endpush

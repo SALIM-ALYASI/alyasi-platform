@@ -89,13 +89,7 @@ class Permalink extends Model
      */
     public function path(): string
     {
-        return route(
-            'news.show',
-            [
-                'slug' => $this->slug,
-            ],
-            false
-        );
+        return $this->buildUrl(absolute: false);
     }
 
     /**
@@ -103,11 +97,26 @@ class Permalink extends Model
      */
     public function url(): string
     {
-        return route(
-            'news.show',
-            [
-                'slug' => $this->slug,
-            ]
-        );
+        return $this->buildUrl(absolute: true);
+    }
+
+    /**
+     * بناء الرابط حسب نوع العنصر المرتبط (linkable_type)، بدل افتراض
+     * أنه دائمًا خبر — كل نوع له اسم راوت مختلف، والمقالات تحتاج أيضًا
+     * اختيار الراوت الصحيح حسب لغة الرابط نفسه.
+     */
+    private function buildUrl(bool $absolute): string
+    {
+        return match ($this->linkable_type) {
+            'article' => $absolute
+                ? article_route('show', ['slug' => $this->slug], $this->locale)
+                : route(
+                    $this->locale === 'en' ? 'articles.show.en' : 'articles.show',
+                    ['slug' => $this->slug],
+                    false
+                ),
+            'service' => route('services.show', ['slug' => $this->slug], $absolute),
+            default => route('news.show', ['slug' => $this->slug], $absolute),
+        };
     }
 }

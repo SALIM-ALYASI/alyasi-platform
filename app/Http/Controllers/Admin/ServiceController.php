@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permalink;
+use App\Models\PermalinkRedirect;
 use App\Models\Service;
+use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +36,7 @@ class ServiceController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateServiceRequest($request);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareServiceData($request, $validated);
 
         $storedImage = null;
@@ -44,9 +47,9 @@ class ServiceController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($validated): void {
+            DB::transaction(function () use ($validated, $manualSlugs): void {
                 $service = Service::query()->create($validated);
-                $this->ensureServicePermalinksExist($service);
+                $this->syncServicePermalinks($service, $manualSlugs);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($storedImage);
@@ -73,6 +76,7 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service): RedirectResponse
     {
         $validated = $this->validateServiceRequest($request);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareServiceData($request, $validated);
 
         $oldImage = $service->image;
@@ -84,9 +88,9 @@ class ServiceController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($service, $validated): void {
+            DB::transaction(function () use ($service, $validated, $manualSlugs): void {
                 $service->update($validated);
-                $this->ensureServicePermalinksExist($service->fresh());
+                $this->syncServicePermalinks($service->fresh(), $manualSlugs);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($newImage);
@@ -128,6 +132,8 @@ class ServiceController extends Controller
                 'description_en' => ['nullable', 'string', 'min:10', 'max:5000', 'required_with:title_en'],
                 'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
                 'is_active' => ['nullable', 'boolean'],
+                'slug_ar' => ['required', 'string', 'max:180', new CleanSlug],
+                'slug_en' => ['nullable', 'string', 'max:180', new CleanSlug, 'required_with:title_en'],
             ],
             [
                 'title_ar.required' => 'عنوان الخدمة بالعربية مطلوب.',
@@ -140,6 +146,8 @@ class ServiceController extends Controller
                 'image.image' => 'الملف المحدد يجب أن يكون صورة.',
                 'image.mimes' => 'صيغة الصورة يجب أن تكون JPG أو JPEG أو PNG أو WEBP.',
                 'image.max' => 'حجم الصورة يجب ألا يتجاوز 4 ميجابايت.',
+                'slug_ar.required' => 'الرابط المختصر بالعربية (الإنجليزي الشكل) مطلوب — لا يوجد توليد تلقائي بعد الآن.',
+                'slug_en.required_with' => 'الرابط المختصر الإنجليزي مطلوب عند كتابة عنوان إنجليزي.',
             ]
         );
     }
@@ -156,7 +164,7 @@ class ServiceController extends Controller
             : null;
         $validated['is_active'] = $request->boolean('is_active');
 
-        unset($validated['image']);
+        unset($validated['image'], $validated['slug_ar'], $validated['slug_en']);
 
         return $validated;
     }
@@ -184,46 +192,73 @@ class ServiceController extends Controller
         return 'uploads/services/'.$fileName;
     }
 
-    private function ensureServicePermalinksExist(Service $service): void
+    /**
+     * إنشاء الروابط الدائمة الناقصة للخدمة، أو تحديثها لو المدير كتب
+     * رابطًا يدويًا مختلفًا عن الحالي — مع حفظ القديم كتحويل 301 تلقائي.
+     *
+     * لا يوجد أي توليد/تخمين تلقائي للرابط هنا — العربي إلزامي دائمًا
+     * والإنجليزي إلزامي عند وجود عنوان إنجليزي (يُمنع الحفظ بدونه أصلًا
+     * عبر التحقق في validateServiceRequest())، تفاديًا لمشكلة الروابط
+     * العربية الخام المرمّزة (%D8%...) التي كانت تظهر سابقًا.
+     */
+    private function syncServicePermalinks(Service $service, array $manualSlugs): void
     {
-        $this->createPermalinkIfMissing(
-            service: $service,
-            locale: 'ar',
-            title: $service->title_ar
-        );
+        $this->createOrUpdateServicePermalink($service, 'ar', $manualSlugs['ar'] ?? null);
 
         if (filled($service->title_en)) {
-            $this->createPermalinkIfMissing(
-                service: $service,
-                locale: 'en',
-                title: $service->title_en
-            );
+            $this->createOrUpdateServicePermalink($service, 'en', $manualSlugs['en'] ?? null);
         }
     }
 
-    private function createPermalinkIfMissing(
-        Service $service,
-        string $locale,
-        string $title
-    ): void {
-        $exists = $service
-            ->permalinks()
-            ->where('locale', $locale)
-            ->exists();
+    private function createOrUpdateServicePermalink(Service $service, string $locale, ?string $manualSlug): void
+    {
+        $manualSlug = filled($manualSlug) ? trim($manualSlug) : null;
 
-        if ($exists) {
+        $permalink = $service->permalinks()->where('locale', $locale)->first();
+
+        if (! $permalink) {
+            $service->permalinks()->create([
+                'locale' => $locale,
+                'slug' => $this->generateUniqueSlug($manualSlug, $locale),
+            ]);
+
             return;
         }
 
-        $service->permalinks()->create([
-            'locale' => $locale,
-            'slug' => $this->generateUniqueSlug($title, $locale),
-        ]);
+        if ($manualSlug === null || $manualSlug === $permalink->slug) {
+            return;
+        }
+
+        $this->movePermalinkSlug($permalink, $manualSlug, $locale);
     }
 
-    private function generateUniqueSlug(string $title, string $locale): string
+    /**
+     * تحديث رابط دائم موجود إلى slug جديد، مع حفظ القديم كتحويل 301.
+     */
+    private function movePermalinkSlug(Permalink $permalink, string $newRequestedSlug, string $locale): void
     {
-        $baseSlug = $this->formatSlug($title, $locale);
+        $newSlug = $this->generateUniqueSlug($newRequestedSlug, $locale);
+        $oldSlug = $permalink->slug;
+
+        DB::transaction(function () use ($permalink, $newSlug, $oldSlug, $locale): void {
+            PermalinkRedirect::query()
+                ->where('locale', $locale)
+                ->where('old_slug', $oldSlug)
+                ->delete();
+
+            PermalinkRedirect::query()->create([
+                'permalink_id' => $permalink->id,
+                'locale' => $locale,
+                'old_slug' => $oldSlug,
+            ]);
+
+            $permalink->update(['slug' => $newSlug]);
+        });
+    }
+
+    private function generateUniqueSlug(string $requestedSlug, string $locale): string
+    {
+        $baseSlug = Str::slug($requestedSlug);
 
         if ($baseSlug === '') {
             $baseSlug = 'service-'.Str::lower(Str::random(8));
@@ -243,21 +278,6 @@ class ServiceController extends Controller
         }
 
         return $slug;
-    }
-
-    private function formatSlug(string $value, string $locale): string
-    {
-        $value = trim($value);
-
-        if ($locale === 'en') {
-            return Str::slug($value);
-        }
-
-        $value = mb_strtolower($value);
-        $value = preg_replace('/[^\p{Arabic}\p{L}\p{N}\s_-]+/u', '', $value);
-        $value = preg_replace('/[\s_-]+/u', '-', (string) $value);
-
-        return trim((string) $value, '-');
     }
 
     /**

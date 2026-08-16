@@ -5,6 +5,8 @@
 
     $showCommunityFooter =
         \App\Models\Setting::get('show_community_events', '1') === '1';
+
+    $footerSocialLinks = \App\Models\SocialLink::forDisplay();
 @endphp
 
 <footer class="site-footer">
@@ -106,52 +108,22 @@
 
             <div class="site-footer__socials">
 
-                {{-- WhatsApp --}}
-                <a
-                    href="https://wa.me/968XXXXXXXX"
-                    class="site-footer__social"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="WhatsApp"
-                    title="WhatsApp"
-                >
-                    <i
-                        class="fa-brands fa-whatsapp"
-                        aria-hidden="true"
-                    ></i>
-                </a>
+                @foreach ($footerSocialLinks as $link)
 
+                    <a
+                        href="{{ $link->url }}"
+                        class="site-footer__social"
+                        @if ($link->open_new_tab) target="_blank" rel="noopener noreferrer" @endif
+                        aria-label="{{ $link->name }}"
+                        title="{{ $link->name }}"
+                    >
+                        <i
+                            class="{{ $link->icon }}"
+                            aria-hidden="true"
+                        ></i>
+                    </a>
 
-                {{-- Instagram --}}
-                <a
-                    href="https://www.instagram.com/alyasi.dev/"
-                    class="site-footer__social"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    title="Instagram"
-                >
-                    <i
-                        class="fa-brands fa-instagram"
-                        aria-hidden="true"
-                    ></i>
-                </a>
-
-
-                {{-- X --}}
-                <a
-                    href="https://x.com/USERNAME"
-                    class="site-footer__social"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="X"
-                    title="X"
-                >
-                    <i
-                        class="fa-brands fa-x-twitter"
-                        aria-hidden="true"
-                    ></i>
-                </a>
+                @endforeach
 
             </div>
 

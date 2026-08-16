@@ -7,6 +7,8 @@ use App\Models\Admin;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Permalink;
+use App\Models\PermalinkRedirect;
+use App\Rules\CleanSlug;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -69,6 +71,7 @@ class ArticleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateArticle($request);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareArticleData($request, $validated);
 
         $storedImage = null;
@@ -79,10 +82,10 @@ class ArticleController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($validated): void {
+            DB::transaction(function () use ($validated, $manualSlugs): void {
                 $article = Article::query()->create($validated);
 
-                $this->syncPermalinks($article);
+                $this->syncPermalinks($article, $manualSlugs);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($storedImage);
@@ -109,6 +112,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article): RedirectResponse
     {
         $validated = $this->validateArticle($request, $article);
+        $manualSlugs = ['ar' => $validated['slug_ar'] ?? null, 'en' => $validated['slug_en'] ?? null];
         $validated = $this->prepareArticleData($request, $validated);
 
         $oldImage = $article->featured_image;
@@ -120,10 +124,10 @@ class ArticleController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($article, $validated): void {
+            DB::transaction(function () use ($article, $validated, $manualSlugs): void {
                 $article->update($validated);
 
-                $this->syncPermalinks($article);
+                $this->syncPermalinks($article, $manualSlugs);
             });
         } catch (\Throwable $exception) {
             $this->deleteImage($newImage);
@@ -213,6 +217,8 @@ class ArticleController extends Controller
             'meta_description_en' => ['nullable', 'string', 'max:500'],
             'meta_keywords_ar' => ['nullable', 'string', 'max:255'],
             'meta_keywords_en' => ['nullable', 'string', 'max:255'],
+            'slug_ar' => ['nullable', 'string', 'max:180', new CleanSlug],
+            'slug_en' => ['nullable', 'string', 'max:180', new CleanSlug],
         ], [
             'title_ar.required' => 'عنوان المقال بالعربية مطلوب.',
             'content_ar.required' => 'محتوى المقال بالعربية مطلوب.',
@@ -239,42 +245,72 @@ class ArticleController extends Controller
             $validated['published_at'] = now();
         }
 
-        unset($validated['featured_image']);
+        unset($validated['featured_image'], $validated['slug_ar'], $validated['slug_en']);
 
         return $validated;
     }
 
     /**
-     * إنشاء الروابط الدائمة الناقصة للمقال (عربي إلزامي، إنجليزي عند توفر عنوانه).
-     *
-     * لا نُعدّل رابطًا موجودًا مسبقًا حتى لا نكسر روابط منشورة سابقًا،
-     * لكن خلافًا لـ News نُعيد الفحص عند كل تحديث حتى تُنشأ الترجمة
-     * الإنجليزية تلقائيًا إن أُضيفت لاحقًا بعد إنشاء المقال.
+     * إنشاء الروابط الدائمة الناقصة للمقال (عربي إلزامي، إنجليزي عند توفر عنوانه)،
+     * أو تحديثها لو المدير كتب رابطًا يدويًا مختلفًا عن الحالي — وفي هذه الحالة
+     * نحفظ الرابط القديم في permalink_redirects لضمان 301 تلقائي، بدل ما ينكسر.
      */
-    private function syncPermalinks(Article $article): void
+    private function syncPermalinks(Article $article, array $manualSlugs): void
     {
         foreach (['ar' => $article->title_ar, 'en' => $article->title_en] as $locale => $title) {
             if (blank($title)) {
                 continue;
             }
 
-            $exists = Permalink::query()
+            $manualSlug = filled($manualSlugs[$locale] ?? null) ? trim($manualSlugs[$locale]) : null;
+
+            $permalink = Permalink::query()
                 ->where('linkable_type', 'article')
                 ->where('linkable_id', $article->id)
                 ->where('locale', $locale)
-                ->exists();
+                ->first();
 
-            if ($exists) {
+            if (! $permalink) {
+                Permalink::query()->create([
+                    'linkable_type' => 'article',
+                    'linkable_id' => $article->id,
+                    'locale' => $locale,
+                    'slug' => $this->generateUniqueSlug($manualSlug ?: $title),
+                ]);
+
                 continue;
             }
 
-            Permalink::query()->create([
-                'linkable_type' => 'article',
-                'linkable_id' => $article->id,
-                'locale' => $locale,
-                'slug' => $this->generateUniqueSlug($title),
-            ]);
+            if ($manualSlug === null || $manualSlug === $permalink->slug) {
+                continue;
+            }
+
+            $this->movePermalinkSlug($permalink, $manualSlug);
         }
+    }
+
+    /**
+     * تحديث رابط دائم موجود إلى slug جديد، مع حفظ القديم كتحويل 301.
+     */
+    private function movePermalinkSlug(Permalink $permalink, string $newRequestedSlug): void
+    {
+        $newSlug = $this->generateUniqueSlug($newRequestedSlug);
+        $oldSlug = $permalink->slug;
+
+        DB::transaction(function () use ($permalink, $newSlug, $oldSlug): void {
+            PermalinkRedirect::query()
+                ->where('locale', $permalink->locale)
+                ->where('old_slug', $oldSlug)
+                ->delete();
+
+            PermalinkRedirect::query()->create([
+                'permalink_id' => $permalink->id,
+                'locale' => $permalink->locale,
+                'old_slug' => $oldSlug,
+            ]);
+
+            $permalink->update(['slug' => $newSlug]);
+        });
     }
 
     private function generateUniqueSlug(string $title): string

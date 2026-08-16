@@ -186,6 +186,36 @@
             >
         </div>
 
+        <div class="form-group full" data-slug-preview data-slug-base="{{ url('/articles').'/' }}" data-slug-source-id="title_ar">
+            <label for="slug_ar">رابط الصفحة (URL)</label>
+
+            <input
+                type="text"
+                id="slug_ar"
+                name="slug_ar"
+                class="form-control"
+                dir="ltr"
+                data-slug-input
+                value="{{ old('slug_ar', $article?->translatedSlug('ar') ?? '') }}"
+                maxlength="180"
+                placeholder="مثال: silent-partner"
+            >
+
+            <small style="display:block;margin-top:6px;color:#555;">
+                <i class="fa-solid fa-link" aria-hidden="true"></i>
+                <span data-slug-preview-text>{{ url('/articles').'/' }}</span>
+            </small>
+
+            <small data-slug-warning hidden style="display:block;margin-top:4px;color:#b45309;">
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                سيُنشأ رابط تلقائيًا من العنوان (قد يكون بالنقحرة وغير واضح) — يُفضّل تحديد رابط يدوي واضح أعلاه.
+            </small>
+
+            @error('slug_ar')
+                <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+            @enderror
+        </div>
+
         <div class="form-group full">
             <label for="excerpt_ar">مقتطف مختصر</label>
 
@@ -273,6 +303,31 @@
             >
         </div>
 
+        <div class="form-group full" data-slug-preview data-slug-base="{{ url('/en/articles').'/' }}" data-slug-source-id="title_en">
+            <label for="slug_en">Page URL</label>
+
+            <input
+                type="text"
+                id="slug_en"
+                name="slug_en"
+                class="form-control"
+                dir="ltr"
+                data-slug-input
+                value="{{ old('slug_en', $article?->translatedSlug('en') ?? '') }}"
+                maxlength="180"
+                placeholder="e.g. silent-partner"
+            >
+
+            <small style="display:block;margin-top:6px;color:#555;">
+                <i class="fa-solid fa-link" aria-hidden="true"></i>
+                <span data-slug-preview-text>{{ url('/en/articles').'/' }}</span>
+            </small>
+
+            @error('slug_en')
+                <small class="text-danger" style="display:block;margin-top:4px;">{{ $message }}</small>
+            @enderror
+        </div>
+
         <div class="form-group full">
             <label for="excerpt_en">Short excerpt</label>
 
@@ -357,6 +412,8 @@
 </div>
 
 @push('scripts')
+<script src="{{ versioned_asset('js/admin/slug-preview.js') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
 
 <script>
