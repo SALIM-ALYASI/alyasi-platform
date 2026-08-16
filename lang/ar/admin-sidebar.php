@@ -13,6 +13,7 @@ return [
 
     'dashboard' => 'لوحة التحكم',
     'services' => 'الخدمات',
+    'service_slug_cleanup' => 'تنظيف روابط الخدمات',
     'news' => 'الأخبار',
     'articles' => 'مقالاتي',
     'community' => 'فعاليات المجتمع الرقمي',

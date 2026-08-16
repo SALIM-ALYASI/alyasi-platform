@@ -94,6 +94,23 @@
                     </span>
                 </a>
 
+                {{-- تنظيف روابط الخدمات --}}
+                <a
+                    href="{{ route('admin.service-slug-cleanup.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.service-slug-cleanup.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-link-slash"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.service_slug_cleanup') }}
+                    </span>
+                </a>
+
                 {{-- الأعمال --}}
                 <a
                     href="{{ route('admin.works.index') }}"

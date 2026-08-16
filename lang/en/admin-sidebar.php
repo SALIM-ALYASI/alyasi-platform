@@ -13,6 +13,7 @@ return [
 
     'dashboard' => 'Dashboard',
     'services' => 'Services',
+    'service_slug_cleanup' => 'Clean Service Links',
     'news' => 'News',
     'articles' => 'My Articles',
     'community' => 'Digital Community Events',

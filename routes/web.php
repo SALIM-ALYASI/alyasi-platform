@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServerInfoController;
+use App\Http\Controllers\Admin\ServiceSlugCleanupController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\TechnologyController;
@@ -414,6 +415,17 @@ Route::prefix('admin')
                 */
 
                 Route::resource('services', AdminServiceController::class);
+
+                Route::prefix('service-slug-cleanup')
+                    ->name('service-slug-cleanup.')
+                    ->controller(ServiceSlugCleanupController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::post('/execute', 'execute')
+                            ->name('execute');
+                    });
 
                 /*
 |--------------------------------------------------------------------------
