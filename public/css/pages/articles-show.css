@@ -266,6 +266,11 @@
 }
 
 
+/* Compact wrapper spacing — only for formatted article content */
+.articles-detail__content-wrap:has(.articles-detail__content--compact) {
+    padding-top: 28px;
+}
+
 /* Compact spacing for formatted article content */
 .articles-detail__content--compact p {
     margin-bottom: 18px;
@@ -283,7 +288,8 @@
 }
 
 .articles-detail__content--compact p:has(> a.article-btn:only-child) {
-    margin-bottom: 18px;
+    margin: 0 0 18px;
+    line-height: 1;
 }
 
 @media (max-width: 640px) {
