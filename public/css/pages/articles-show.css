@@ -301,3 +301,7 @@
         margin-top: 24px;
     }
 }
+/* Compact blockquote spacing */
+.articles-detail__content--compact blockquote {
+    line-height: 1.2;
+}
