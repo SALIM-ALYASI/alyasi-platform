@@ -42,7 +42,7 @@
 
 @section(
     'og_image',
-    media_url($article->featured_image_ar)
+    media_url($article->displayImage())
 )
 
 {{-- =========================================================
@@ -65,7 +65,7 @@
             ),
 
         'image' => [
-            media_url($article->featured_image_ar)
+            media_url($article->displayImage())
         ],
 
         'datePublished' => optional(
@@ -89,7 +89,9 @@
     if ($article->author) {
         $articleSchema['author'] = [
             '@type' => 'Person',
-            'name' => $article->author->name,
+            'name' => app()->getLocale() === 'en'
+                ? 'Salem bin Mohammed Al Hajri'
+                : 'سالم بن محمد الحجري',
         ];
     }
 @endphp
@@ -208,7 +210,7 @@
 
             @if ($article->author)
 
-                {{ __('articles.author_label') }}: {{ $article->author->name }}
+                {{ __('articles.author_label') }}: {{ app()->getLocale() === 'en' ? 'Salem bin Mohammed Al Hajri' : 'سالم بن محمد الحجري' }}
 
                 ·
 
