@@ -1,44 +1,44 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ArticleCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Public Controllers
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlockedVisitorController;
 use App\Http\Controllers\Admin\CommunityCommentController as AdminCommunityCommentController;
 use App\Http\Controllers\Admin\CommunityPostController;
-use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\MarketerController;
-use App\Http\Controllers\Admin\ArticleCategoryController;
-use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
-use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\PronunciationQueueController;
+use App\Http\Controllers\Admin\PublishController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\ServerInfoController;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceSlugCleanupController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
-use App\Http\Controllers\Admin\TechnologyController;
 /*
 |--------------------------------------------------------------------------
 | Admin Controllers
 |--------------------------------------------------------------------------
 */
 
-use App\Http\Controllers\Admin\PronunciationQueueController;
-use App\Http\Controllers\Admin\PublishController;
+use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
+use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
-use App\Http\Controllers\CommunityCommentController;
-use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -48,6 +48,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\WorkController;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,9 +71,38 @@ Route::get('/en', [HomeController::class, 'index'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/locale/{locale}', function (string $locale) {
+Route::get('/locale/{locale}', function (Request $request, string $locale) {
     if (in_array($locale, SetLocale::SUPPORTED_LOCALES, true)) {
         session(['locale' => $locale]);
+    }
+
+    /*
+     * الصفحات التي لا يوجد لها راوت جاهز بلغة أخرى (مثل Markify ومغسلة
+     * الياسي) تمرر رابط الصفحة الحالية صراحة (عادة url()->current()،
+     * أي رابط مطلق) بدل الاعتماد على Referer (غير موثوق دائمًا، وقد
+     * يرجّع المستخدم للرئيسية بالخطأ). نتحقق أن مضيفه هو نفس مضيف
+     * الموقع المعتمد قبل التحويل إليه لمنع Open Redirect، سواء جاء
+     * كمسار نسبي أو رابط مطلق.
+     */
+    $redirectTo = $request->string('redirect')->toString();
+
+    $target = null;
+
+    if ($redirectTo !== '') {
+        if (str_starts_with($redirectTo, '/') && ! str_starts_with($redirectTo, '//')) {
+            $target = $redirectTo;
+        } else {
+            $parsed = parse_url($redirectTo);
+            $appHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+
+            if ($parsed !== false && ($parsed['host'] ?? null) !== null && $parsed['host'] === $appHost) {
+                $target = ($parsed['path'] ?? '/').(isset($parsed['query']) ? '?'.$parsed['query'] : '');
+            }
+        }
+    }
+
+    if ($target !== null) {
+        return redirect()->to($target);
     }
 
     return redirect()->back();
@@ -287,8 +317,7 @@ Route::middleware('force.locale:en')
 Route::get('/markify', [PageController::class, 'markify'])
     ->name('markify');
 
-
-    Route::get('/sitemap.xml', [PageController::class, 'sitemap'])
+Route::get('/sitemap.xml', [PageController::class, 'sitemap'])
     ->name('sitemap');
 
 /*

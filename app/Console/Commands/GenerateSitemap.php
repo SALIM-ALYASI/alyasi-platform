@@ -31,6 +31,7 @@ class GenerateSitemap extends Command
         'services.index',
         'works.index',
         'news.index',
+        'articles.index',
         'community.index',
         'social-links.index',
         'privacy',

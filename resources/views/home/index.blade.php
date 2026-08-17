@@ -69,11 +69,11 @@
                 <p class="home-hero__desc">{{ __('home.hero_description') }}</p>
 
                 <div class="home-hero__ctas">
-                    <a href="{{ route('services.index') }}" class="btn btn--light">
+                    <a href="{{ localized_route('services.index') }}" class="btn btn--light">
                         {{ __('home.explore_services') }}
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
                     </a>
-                    <a href="{{ route('news.index') }}" class="btn btn--ghost-light">{{ __('home.latest_news') }}</a>
+                    <a href="{{ localized_route('news.index') }}" class="btn btn--ghost-light">{{ __('home.latest_news') }}</a>
                 </div>
 
                 <div class="home-hero__metrics">
@@ -111,8 +111,8 @@
                 <h2 class="section-head__title">{{ $spotlightService->localizedTitle() }}</h2>
                 <p class="home-spotlight__desc">{{ $spotlightService->localizedDescription() }}</p>
                 <div class="home-spotlight__actions">
-                    <a href="{{ $spotlightService->slug() ? route('services.show', $spotlightService->slug()) : route('services.index') }}" class="btn btn--primary">{{ __('home.view_service_details') }}</a>
-                    <a href="{{ route('services.index') }}" class="home-spotlight__link">{{ __('home.all_services') }} ←</a>
+                    <a href="{{ $spotlightService->slug() ? localized_route('services.show', ['slug' => $spotlightService->slug()]) : localized_route('services.index') }}" class="btn btn--primary">{{ __('home.view_service_details') }}</a>
+                    <a href="{{ localized_route('services.index') }}" class="home-spotlight__link">{{ __('home.all_services') }} ←</a>
                 </div>
             </div>
         </section>
@@ -161,12 +161,12 @@
                     <div class="section-head__eyebrow">{{ __('home.services_badge') }}</div>
                     <h2 class="section-head__title">{{ __('home.services_title') }}</h2>
                 </div>
-                <a href="{{ route('services.index') }}" class="btn btn--outline">{{ __('home.all_services') }}</a>
+                <a href="{{ localized_route('services.index') }}" class="btn btn--outline">{{ __('home.all_services') }}</a>
             </div>
 
             <div class="grid-3">
                 @foreach ($gridServices as $service)
-                    <a href="{{ $service->slug() ? route('services.show', $service->slug()) : route('services.index') }}" class="home-service-card" data-reveal>
+                    <a href="{{ $service->slug() ? localized_route('services.show', ['slug' => $service->slug()]) : localized_route('services.index') }}" class="home-service-card" data-reveal>
                         <img src="{{ media_url($service->image) }}" alt="{{ $service->localizedTitle() }}" loading="lazy">
                         <div class="home-service-card__scrim"></div>
                         <div class="home-service-card__text">
@@ -216,12 +216,12 @@
                     <div class="section-head__eyebrow">{{ __('home.portfolio_badge') }}</div>
                     <h2 class="section-head__title">{{ __('home.portfolio_title') }} <em>{{ __('home.portfolio_title_highlight') }}</em></h2>
                 </div>
-                <a href="{{ route('works.index') }}" class="btn btn--outline">{{ __('home.all_projects') }}</a>
+                <a href="{{ localized_route('works.index') }}" class="btn btn--outline">{{ __('home.all_projects') }}</a>
             </div>
 
             <div class="grid-3">
                 @foreach ($works as $work)
-                    <a href="{{ route('works.show', $work) }}" class="card card--hover home-work-card" data-reveal>
+                    <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover home-work-card" data-reveal>
                         <div class="home-work-card__media">
                             <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
                         </div>
@@ -274,13 +274,13 @@
                 <div class="section-head__eyebrow">{{ __('home.news_badge') }}</div>
                 <h2 class="section-head__title">{{ __('home.news_title') }} <em>{{ __('home.news_title_highlight') }}</em></h2>
             </div>
-            <a href="{{ route('news.index') }}" class="btn btn--outline">{{ __('home.all_news') }}</a>
+            <a href="{{ localized_route('news.index') }}" class="btn btn--outline">{{ __('home.all_news') }}</a>
         </div>
 
         @if ($latestNews->isNotEmpty())
             <div class="grid-3">
                 @foreach ($latestNews as $article)
-                    <a href="{{ $article->slug() ? route('news.show', $article->slug()) : route('news.index') }}" class="card card--hover home-news-card" data-reveal>
+                    <a href="{{ $article->slug() ? localized_route('news.show', ['slug' => $article->slug()]) : localized_route('news.index') }}" class="card card--hover home-news-card" data-reveal>
                         <div class="home-news-card__media">
                             <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
                         </div>
@@ -342,7 +342,7 @@
                         <div class="section-head__eyebrow">{{ __('home.community_badge') }}</div>
                         <h2 class="section-head__title">{{ __('home.community_title') }} <em>{{ __('home.community_title_highlight') }}</em></h2>
                     </div>
-                    <a href="{{ route('community.index') }}" class="btn btn--outline">{{ __('community.show_all') }}</a>
+                    <a href="{{ localized_route('community.index') }}" class="btn btn--outline">{{ __('community.show_all') }}</a>
                 </div>
 
                 @if ($communityHighlights->isNotEmpty())
@@ -411,7 +411,7 @@
             <h2 class="cta-band__title">{{ __('home.cta_title') }} <em>{{ __('home.cta_title_highlight') }}</em></h2>
             <p class="cta-band__desc">{{ __('home.cta_description') }}</p>
             <div class="cta-band__actions">
-                <a href="{{ route('services.index') }}" class="btn btn--light">{{ __('home.cta_services') }}</a>
+                <a href="{{ localized_route('services.index') }}" class="btn btn--light">{{ __('home.cta_services') }}</a>
                 <a href="{{ localized_route('contact') }}" class="btn btn--ghost-light">{{ __('home.cta_contact') }}</a>
             </div>
         </div>

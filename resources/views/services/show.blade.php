@@ -18,7 +18,7 @@
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', url()->current())
+@section('canonical', $permalink->url())
 
 @section('hreflang_ar', $arServicePermalink ? route('services.show', $arServicePermalink->slug) : '')
 @section('hreflang_en', $enServicePermalink ? localized_route('services.show', ['slug' => $enServicePermalink->slug], 'en') : '')
@@ -312,7 +312,7 @@
                 @foreach ($service->works as $work)
 
                     <a
-                        href="{{ route('works.show', $work) }}"
+                        href="{{ localized_route('works.show', ['work' => $work]) }}"
                         class="card card--hover service-detail__work-card"
                     >
 

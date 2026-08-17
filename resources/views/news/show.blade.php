@@ -14,12 +14,13 @@
 @php
     $arNewsPermalink = $article->permalinks->firstWhere('locale', 'ar');
     $enNewsPermalink = $article->permalinks->firstWhere('locale', 'en');
+    $currentNewsPermalink = app()->getLocale() === 'en' ? $enNewsPermalink : $arNewsPermalink;
 @endphp
 
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', url()->current())
+@section('canonical', $currentNewsPermalink ? $currentNewsPermalink->url() : url()->current())
 
 @section('hreflang_ar', $arNewsPermalink ? route('news.show', $arNewsPermalink->slug) : '')
 @section('hreflang_en', $enNewsPermalink ? localized_route('news.show', ['slug' => $enNewsPermalink->slug], 'en') : '')
@@ -238,7 +239,7 @@
     {{-- Breadcrumb --}}
     <div class="news-detail__breadcrumb">
 
-        <a href="{{ route('news.index') }}">
+        <a href="{{ localized_route('news.index') }}">
             {{ __('news.breadcrumb_news') }}
         </a>
 
@@ -404,8 +405,8 @@
 
                     <a
                         href="{{ $relatedSlug
-                            ? route('news.show', $relatedSlug)
-                            : route('news.index') }}"
+                            ? localized_route('news.show', ['slug' => $relatedSlug])
+                            : localized_route('news.index') }}"
                         class="card card--hover news-detail__related-card"
                     >
 

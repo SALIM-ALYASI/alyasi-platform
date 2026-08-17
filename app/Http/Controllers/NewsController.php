@@ -45,6 +45,8 @@ class NewsController extends Controller
             ->paginate(12)
             ->withQueryString();
 
+        abort_if_page_out_of_range($articles);
+
         return view('news.index', compact('articles', 'categories'));
     }
 
@@ -53,30 +55,43 @@ class NewsController extends Controller
      */
     public function show(string $slug): View|RedirectResponse
     {
+        $locale = app()->getLocale();
+
         /*
-         * البحث عن الرابط المطابق للغة الحالية أولًا.
+         * البحث عن الرابط المطابق للغة الحالية فقط — تقييد صارم حتى لا
+         * يظهر slug اللغة الأخرى بنفس المسار بردّ 200 مكرر.
          */
         $permalink = Permalink::query()
             ->with('linkable')
-            ->where('locale', app()->getLocale())
+            ->where('locale', $locale)
             ->where('slug', $slug)
             ->first();
 
-        /*
-         * عند عدم وجود رابط باللغة الحالية،
-         * نبحث عن الرابط بأي لغة.
-         */
-        $permalink ??= Permalink::query()
-            ->with('linkable')
-            ->where('slug', $slug)
-            ->first();
-
-        /*
-         * لا رابط حالي مطابق إطلاقًا — نجرّب رابطًا قديمًا محوّلاً
-         * قبل الاستسلام بـ 404.
-         */
         if (! $permalink) {
-            return $this->redirectFromOldSlug($slug, app()->getLocale());
+            /*
+             * الرابط موجود لكن بلغة أخرى — نحوّل 301 إلى مساره الصحيح
+             * بدل عرضه على مسار اللغة الخاطئة.
+             */
+            $otherLocale = $locale === 'ar' ? 'en' : 'ar';
+
+            $otherLocalePermalink = Permalink::query()
+                ->where('locale', $otherLocale)
+                ->where('slug', $slug)
+                ->first();
+
+            if ($otherLocalePermalink) {
+                return redirect()->route(
+                    $otherLocale === 'en' ? 'news.show.en' : 'news.show',
+                    ['slug' => $otherLocalePermalink->slug],
+                    301
+                );
+            }
+
+            /*
+             * لا رابط حالي مطابق إطلاقًا — نجرّب رابطًا قديمًا محوّلاً
+             * قبل الاستسلام بـ 404.
+             */
+            return $this->redirectFromOldSlug($slug, $locale);
         }
 
         $article = $permalink->linkable;

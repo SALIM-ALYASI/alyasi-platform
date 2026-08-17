@@ -1,5 +1,9 @@
 <?php
 
+use App\Support\RichContentRenderer;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
+
 if (! function_exists('media_url')) {
     /**
      * Resolve a content-image path to a public URL, regardless of whether
@@ -27,7 +31,7 @@ if (! function_exists('media_url')) {
             return asset($normalized);
         }
 
-        return \Illuminate\Support\Facades\Storage::url($normalized);
+        return Storage::url($normalized);
     }
 }
 
@@ -76,7 +80,33 @@ if (! function_exists('render_rich_content')) {
     {
         $filtered = strip_tags((string) $html, $allowedTags);
 
-        return \App\Support\RichContentRenderer::render($filtered);
+        return RichContentRenderer::render($filtered);
+    }
+}
+
+if (! function_exists('paginated_canonical')) {
+    /**
+     * canonical لصفحة مرقّمة: الصفحة الأولى بدون ?page، وما بعدها
+     * canonical ذاتي يحتوي ?page=N (لا يشير أبدًا للصفحة الأولى).
+     */
+    function paginated_canonical(string $baseUrl): string
+    {
+        $page = (int) request()->query('page', 1);
+
+        return $page > 1 ? $baseUrl.'?page='.$page : $baseUrl;
+    }
+}
+
+if (! function_exists('abort_if_page_out_of_range')) {
+    /**
+     * صفحة ترقيم خارج النطاق (أكبر من آخر صفحة فعلية) يجب أن ترجع 404
+     * بدل صفحة فارغة بردّ 200.
+     */
+    function abort_if_page_out_of_range(LengthAwarePaginator $paginator): void
+    {
+        if ($paginator->currentPage() > 1 && $paginator->currentPage() > $paginator->lastPage()) {
+            abort(404);
+        }
     }
 }
 

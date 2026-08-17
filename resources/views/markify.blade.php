@@ -42,7 +42,7 @@
     ];
 @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ $isArabic ? 'ar' : 'en' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -50,6 +50,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $t['title'] }}</title>
     <meta name="description" content="{{ $t['description'] }}">
+    <link rel="canonical" href="{{ route('markify') }}">
     <link rel="icon" type="image/jpeg" href="{{ asset('markify-assets/img/markify/profile.jpg') }}">
 <!--
 Markify — مبني على قالب Tooplate 2110 Character
@@ -97,9 +98,9 @@ http://www.tooplate.com/view/2110-character
 <body class="tm-bg-dark">
 
     <div class="tm-lang-switch">
-        <a href="{{ route('locale.switch', 'ar') }}" class="{{ $isArabic ? 'active' : '' }}">AR</a>
+        <a href="{{ route('locale.switch', ['locale' => 'ar', 'redirect' => url()->current()]) }}" class="{{ $isArabic ? 'active' : '' }}">AR</a>
         <span>/</span>
-        <a href="{{ route('locale.switch', 'en') }}" class="{{ ! $isArabic ? 'active' : '' }}">EN</a>
+        <a href="{{ route('locale.switch', ['locale' => 'en', 'redirect' => url()->current()]) }}" class="{{ ! $isArabic ? 'active' : '' }}">EN</a>
     </div>
 
     <main class="tm-container masonry">

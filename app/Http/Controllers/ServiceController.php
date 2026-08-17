@@ -40,6 +40,17 @@ class ServiceController extends Controller
         $permalink = $this->findServicePermalink($slug, $locale);
 
         if (! $permalink) {
+            $otherLocale = $locale === 'ar' ? 'en' : 'ar';
+            $otherLocalePermalink = $this->findServicePermalink($slug, $otherLocale);
+
+            if ($otherLocalePermalink) {
+                return redirect()->route(
+                    $otherLocale === 'en' ? 'services.show.en' : 'services.show',
+                    ['slug' => $otherLocalePermalink->slug],
+                    301
+                );
+            }
+
             return $this->redirectFromOldSlug($slug, $locale);
         }
 
@@ -65,7 +76,8 @@ class ServiceController extends Controller
     }
 
     /**
-     * البحث عن الرابط الحالي للخدمة، مع تفضيل لغة الموقع.
+     * البحث عن الرابط الحالي للخدمة، مقيّدًا باللغة المطلوبة فقط —
+     * حتى لا يظهر slug اللغة الأخرى بنفس المسار (200 مكرر).
      */
     private function findServicePermalink(
         string $slug,
@@ -74,14 +86,11 @@ class ServiceController extends Controller
         return Permalink::query()
             ->with('linkable')
             ->where('slug', $slug)
+            ->where('locale', $locale)
             ->whereHasMorph(
                 'linkable',
                 [Service::class],
                 fn ($query) => $query->where('is_active', true)
-            )
-            ->orderByRaw(
-                'CASE WHEN locale = ? THEN 0 ELSE 1 END',
-                [$locale]
             )
             ->first();
     }

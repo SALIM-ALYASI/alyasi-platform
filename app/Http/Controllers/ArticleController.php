@@ -53,6 +53,8 @@ class ArticleController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        abort_if_page_out_of_range($articles);
+
         return view('articles.index', compact(
             'categories',
             'featuredArticles',

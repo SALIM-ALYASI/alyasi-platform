@@ -3,7 +3,7 @@
 @section('title', __('articles.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('articles.meta_description'))
 
-@section('canonical', article_route('index'))
+@section('canonical', paginated_canonical(article_route('index')))
 @section('og_url', article_route('index'))
 @section('hreflang_ar', article_route('index', [], 'ar'))
 @section('hreflang_en', article_route('index', [], 'en'))

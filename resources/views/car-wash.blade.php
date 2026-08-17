@@ -78,6 +78,7 @@
     <title>{{ $t['title'] }}</title>
     <meta name="description" content="{{ $t['description'] }}">
     <meta name="theme-color" content="#0B1F3A">
+    <link rel="canonical" href="{{ route('car-wash') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/car-wash/logo.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,9 +236,9 @@
 <body>
 
     <div class="lang-switch">
-        <a href="{{ route('locale.switch', 'ar') }}" class="{{ $isArabic ? 'active' : '' }}">AR</a>
+        <a href="{{ route('locale.switch', ['locale' => 'ar', 'redirect' => url()->current()]) }}" class="{{ $isArabic ? 'active' : '' }}">AR</a>
         <span>/</span>
-        <a href="{{ route('locale.switch', 'en') }}" class="{{ ! $isArabic ? 'active' : '' }}">EN</a>
+        <a href="{{ route('locale.switch', ['locale' => 'en', 'redirect' => url()->current()]) }}" class="{{ ! $isArabic ? 'active' : '' }}">EN</a>
     </div>
 
     <main class="main">
@@ -247,7 +248,7 @@
 
             <div class="hero__grid"></div>
 
-            <a href="{{ route('home') }}" class="cw-hero__logo" aria-label="{{ $t['brand_alt'] }}">
+            <a href="{{ localized_route('home') }}" class="cw-hero__logo" aria-label="{{ $t['brand_alt'] }}">
                 <img src="{{ asset('images/car-wash/logo.png') }}" alt="{{ $t['brand_alt'] }}">
             </a>
 
@@ -414,7 +415,7 @@
                             {{ $t['get_directions'] }}
                         </a>
 
-                        <a href="{{ route('home') }}" class="btn btn--secondary">
+                        <a href="{{ localized_route('home') }}" class="btn btn--secondary">
                             {{ $t['visit_alyasi'] }}
                         </a>
                     </div>
@@ -426,7 +427,7 @@
             <span>{{ $t['footer_credit'] }}</span>
 
             <div>
-                <a href="{{ route('home') }}">ALYASI Platform</a>
+                <a href="{{ localized_route('home') }}">ALYASI Platform</a>
             </div>
         </footer>
 

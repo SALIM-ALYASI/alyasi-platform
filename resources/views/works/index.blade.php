@@ -27,11 +27,11 @@
 
     <section class="container works-section">
         <div class="filters">
-            <a href="{{ route('works.index') }}" class="filters__btn @if(!request('type')) is-active @endif">
+            <a href="{{ localized_route('works.index') }}" class="filters__btn @if(!request('type')) is-active @endif">
                 {{ __('works.filters.all_types') }}
             </a>
             @foreach ($types as $key => $label)
-                <a href="{{ route('works.index', ['type' => $key]) }}" class="filters__btn @if(request('type') === $key) is-active @endif">
+                <a href="{{ localized_route('works.index', ['type' => $key]) }}" class="filters__btn @if(request('type') === $key) is-active @endif">
                     {{ $label }}
                 </a>
             @endforeach
@@ -40,7 +40,7 @@
         @if ($works->isNotEmpty())
             <div class="grid-3">
                 @foreach ($works as $work)
-                    <a href="{{ route('works.show', $work) }}" class="card card--hover works-card" data-reveal>
+                    <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover works-card" data-reveal>
                         <div class="works-card__media">
                             <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
                         </div>
@@ -67,7 +67,7 @@
             <div class="empty-state">
                 <div class="empty-state__title">{{ __('works.grid.empty_title') }}</div>
                 <p class="empty-state__desc">{{ __('works.grid.empty_description') }}</p>
-                <a href="{{ route('works.index') }}" class="btn btn--outline">{{ __('works.grid.show_all') }}</a>
+                <a href="{{ localized_route('works.index') }}" class="btn btn--outline">{{ __('works.grid.show_all') }}</a>
             </div>
         @endif
     </section>
@@ -79,7 +79,7 @@
             <p class="cta-band__desc">{{ __('works.cta.description') }}</p>
             <div class="cta-band__actions">
                 <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('works.cta.contact') }}</a>
-                <a href="{{ route('services.index') }}" class="btn btn--ghost-light">{{ __('works.cta.services') }}</a>
+                <a href="{{ localized_route('services.index') }}" class="btn btn--ghost-light">{{ __('works.cta.services') }}</a>
             </div>
         </div>
     </section>

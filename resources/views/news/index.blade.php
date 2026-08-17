@@ -3,7 +3,7 @@
 @section('title', __('news.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('news.meta_description'))
 
-@section('canonical', localized_route('news.index'))
+@section('canonical', paginated_canonical(localized_route('news.index')))
 @section('og_url', localized_route('news.index'))
 @section('hreflang_ar', localized_route('news.index', [], 'ar'))
 @section('hreflang_en', localized_route('news.index', [], 'en'))
@@ -28,11 +28,11 @@
     <section class="container news-section">
         @if ($categories->isNotEmpty())
             <div class="filters">
-                <a href="{{ route('news.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
+                <a href="{{ localized_route('news.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
                     {{ __('news.all_categories') }}
                 </a>
                 @foreach ($categories as $category)
-                    <a href="{{ route('news.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
+                    <a href="{{ localized_route('news.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
                         {{ $category->name }}
                     </a>
                 @endforeach
@@ -43,7 +43,7 @@
             <div class="grid-3">
                 @foreach ($articles as $article)
                     @php $slug = $article->slug(); @endphp
-                    <a href="{{ $slug ? route('news.show', $slug) : route('news.index') }}" class="card card--hover news-card" data-reveal>
+                    <a href="{{ $slug ? localized_route('news.show', ['slug' => $slug]) : localized_route('news.index') }}" class="card card--hover news-card" data-reveal>
                         <div class="news-card__media">
                             <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
                         </div>

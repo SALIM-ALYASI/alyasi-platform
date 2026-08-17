@@ -50,6 +50,8 @@ class CommunityController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        abort_if_page_out_of_range($posts);
+
         return view('community.index', compact(
             'categories',
             'featuredPosts',

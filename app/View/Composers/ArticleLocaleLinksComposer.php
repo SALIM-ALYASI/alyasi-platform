@@ -71,6 +71,20 @@ class ArticleLocaleLinksComposer
             return;
         }
 
+        /*
+         * منشورات المجتمع بلغة واحدة فقط بلا راوت مقابل — أفضل من تمرير
+         * المستخدم عبر /locale/{locale} (يرجع للرئيسية) إخطه مباشرة إلى
+         * صفحة قسم المجتمع باللغة المطلوبة.
+         */
+        if ($baseName === 'community.show') {
+            $view->with('langLinks', [
+                'ar' => localized_route('community.index', [], 'ar'),
+                'en' => localized_route('community.index', [], 'en'),
+            ]);
+
+            return;
+        }
+
         if ($baseName !== null && array_key_exists($baseName, self::PERMALINK_BASED_ROUTES)) {
             $view->with('langLinks', $this->permalinkLinks(
                 $route,

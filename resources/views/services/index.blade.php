@@ -48,7 +48,7 @@
                             <div class="services-card__actions">
                                 <a href="{{ localized_route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
                                 <span class="services-card__sep"></span>
-                                <a href="{{ $slug ? route('services.show', $slug) : route('services.index') }}" class="services-card__link services-card__link--muted">{{ __('services.view_details') }}</a>
+                                <a href="{{ $slug ? localized_route('services.show', ['slug' => $slug]) : localized_route('services.index') }}" class="services-card__link services-card__link--muted">{{ __('services.view_details') }}</a>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
             <p class="cta-band__desc">{{ __('services.cta_description') }}</p>
             <div class="cta-band__actions">
                 <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('services.contact_us') }}</a>
-                <a href="{{ route('home') }}" class="btn btn--ghost-light">{{ __('services.back_home') }}</a>
+                <a href="{{ localized_route('home') }}" class="btn btn--ghost-light">{{ __('services.back_home') }}</a>
             </div>
         </div>
     </section>

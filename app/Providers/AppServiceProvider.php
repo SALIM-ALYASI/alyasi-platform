@@ -14,6 +14,7 @@ use App\Models\Work;
 use App\View\Composers\ArticleLocaleLinksComposer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,6 +33,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /*
+         * نفرض جذر الروابط من APP_URL دايمًا (بدل الاعتماد على Host الخاص
+         * بالطلب الحالي)، حتى لو وصل الطلب عبر www أو /public أو أي مضيف
+         * غير معتمد — كل route()/url() مولّدة بالموقع (canonical، hreflang،
+         * الروابط الداخلية، sitemap) تبقى دايمًا على الدومين المعتمد.
+         */
+        $appUrl = rtrim((string) config('app.url'), '/');
+
+        if ($appUrl !== '') {
+            URL::forceRootUrl($appUrl);
+
+            if (str_starts_with($appUrl, 'https://')) {
+                URL::forceScheme('https');
+            }
+        }
+
         Paginator::defaultView('components.pagination');
         Paginator::defaultSimpleView('components.pagination');
 

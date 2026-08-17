@@ -13,7 +13,7 @@
 {{-- =========================================================
      SEO / Canonical
 ========================================================= --}}
-@section('canonical', url()->current())
+@section('canonical', localized_route('works.show', ['work' => $work]))
 @section('hreflang_ar', route('works.show', $work))
 @section('hreflang_en', localized_route('works.show', ['work' => $work], 'en'))
 
@@ -32,7 +32,7 @@
     )
 )
 
-@section('og_url', url()->current())
+@section('og_url', localized_route('works.show', ['work' => $work]))
 
 @section(
     'og_image',
@@ -55,7 +55,7 @@
         160
     ),
 
-    'url' => route('works.show', $work),
+    'url' => localized_route('works.show', ['work' => $work]),
 
     'image' => media_url($work->cover_image),
 
@@ -327,7 +327,7 @@
                 @foreach ($relatedWorks as $related)
 
                     <a
-                        href="{{ route('works.show', $related) }}"
+                        href="{{ localized_route('works.show', ['work' => $related]) }}"
                         class="card card--hover work-detail__related-card"
                     >
 

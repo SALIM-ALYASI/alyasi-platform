@@ -115,8 +115,16 @@ class Permalink extends Model
                     ['slug' => $this->slug],
                     false
                 ),
-            'service' => route('services.show', ['slug' => $this->slug], $absolute),
-            default => route('news.show', ['slug' => $this->slug], $absolute),
+            'service' => route(
+                $this->locale === 'en' ? 'services.show.en' : 'services.show',
+                ['slug' => $this->slug],
+                $absolute
+            ),
+            default => route(
+                $this->locale === 'en' ? 'news.show.en' : 'news.show',
+                ['slug' => $this->slug],
+                $absolute
+            ),
         };
     }
 }

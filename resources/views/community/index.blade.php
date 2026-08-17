@@ -2,7 +2,7 @@
 
 @section('title', __('community.title').' — ALYASI')
 @section('meta_description', __('community.description'))
-@section('canonical', localized_route('community.index'))
+@section('canonical', paginated_canonical(localized_route('community.index')))
 @section('hreflang_ar', localized_route('community.index', [], 'ar'))
 @section('hreflang_en', localized_route('community.index', [], 'en'))
 @section('og_url', localized_route('community.index'))
@@ -26,11 +26,11 @@
     <section class="container community-section">
         @if ($categories->isNotEmpty())
             <div class="filters">
-                <a href="{{ route('community.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
+                <a href="{{ localized_route('community.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
                     {{ __('community.all_categories') }}
                 </a>
                 @foreach ($categories as $category)
-                    <a href="{{ route('community.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
+                    <a href="{{ localized_route('community.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
                         {{ $category->name }}
                     </a>
                 @endforeach

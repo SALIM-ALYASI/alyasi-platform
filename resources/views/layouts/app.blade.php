@@ -14,8 +14,25 @@
     $pageDescription = trim($__env->yieldContent('meta_description'))
         ?: __('home.hero_description');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Canonical Fallback
+    |--------------------------------------------------------------------------
+    |
+    | لا نعتمد على url()->current() مباشرة — يعكس Host/مسار الطلب الفعلي
+    | حرفيًا (www، /public، إلخ)، فيصير أي رابط مخالف canonical لنفسه.
+    | بدلها نعيد بناء الرابط من اسم الراوت الحالي عبر route() (اللي
+    | صار مضمون الدومين المعتمد بفضل URL::forceRootUrl() في
+    | AppServiceProvider)، وتُستبعد أي query string تلقائيًا.
+    | الصفحات التي تحتاج canonical مختلف (slug بلغة ثانية، ترقيم صفحات)
+    | تمرره صراحة عبر @section('canonical') فتُستخدم هذي فقط كـ fallback.
+    */
+    $currentRoute = request()->route();
+
     $seoCanonical = trim($__env->yieldContent('canonical'))
-        ?: url()->current();
+        ?: ($currentRoute?->getName()
+            ? route($currentRoute->getName(), $currentRoute->parameters())
+            : url()->current());
 
     $seoTitle = trim($__env->yieldContent('og_title'))
         ?: $pageTitle;

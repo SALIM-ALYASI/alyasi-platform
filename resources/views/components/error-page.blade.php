@@ -49,7 +49,7 @@
         <p>{{ $isArabic ? $messageAr : $messageEn }}</p>
 
         @if ($showHomeButton)
-            <a href="{{ route('home') }}" class="btn btn--primary">
+            <a href="{{ localized_route('home') }}" class="btn btn--primary">
                 {{ $isArabic ? 'العودة إلى الرئيسية' : 'Back to Homepage' }}
             </a>
         @endif
