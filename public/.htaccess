@@ -5,6 +5,14 @@
 
     RewriteEngine On
 
+    # Redirect direct /public/index.php requests to /
+    RewriteCond %{THE_REQUEST} \s/+public/index\.php(?:[?\s]|$) [NC]
+    RewriteRule ^index\.php$ / [R=301,L,NE]
+
+    # Redirect direct /public/* requests to clean URLs
+    RewriteCond %{THE_REQUEST} \s/+public(?:/([^\s?]*))?(?:[?\s]|$) [NC]
+    RewriteRule ^ /%1 [R=301,L,NE]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

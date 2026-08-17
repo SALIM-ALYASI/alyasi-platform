@@ -484,6 +484,15 @@
                 content_style: 'body { direction: ltr; font-family: Arial, sans-serif; }',
             });
         }
+        const articleForm = document.getElementById("content_en")?.closest("form");
+
+        if (articleForm) {
+            articleForm.addEventListener("submit", function () {
+                if (window.tinymce) {
+                    tinymce.triggerSave();
+                }
+            });
+        }
     })();
 </script>
 @endpush
