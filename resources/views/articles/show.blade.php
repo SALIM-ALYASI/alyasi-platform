@@ -146,6 +146,22 @@
         (string) $article->content
     );
 
+    // بعض المحتوى القديم محفوظ كـ HTML escaped، مثل:
+    // &lt;h2&gt;Before&lt;/h2&gt;
+    // نفك الترميز فقط عند وجود وسم HTML معروف بشكل escaped.
+    $hasEscapedHtml = (bool) preg_match(
+        '/&lt;\/?(?:p|h2|h3|h4|blockquote|strong|b|em|i|a|ul|ol|li|hr)\b/i',
+        $articleContent
+    );
+
+    if ($hasEscapedHtml) {
+        $articleContent = html_entity_decode(
+            $articleContent,
+            ENT_QUOTES | ENT_HTML5,
+            'UTF-8'
+        );
+    }
+
     $hasHtmlMarkup =
         $articleContent !== strip_tags($articleContent);
 
