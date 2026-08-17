@@ -264,3 +264,34 @@
         padding: 13px 18px;
     }
 }
+
+
+/* Compact spacing for formatted article content */
+.articles-detail__content--compact p {
+    margin-bottom: 18px;
+}
+
+.articles-detail__content--compact h2,
+.articles-detail__content--compact h3,
+.articles-detail__content--compact h4 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+.articles-detail__content--compact > *:first-child {
+    margin-top: 0;
+}
+
+.articles-detail__content--compact p:has(> a.article-btn:only-child) {
+    margin-bottom: 18px;
+}
+
+@media (max-width: 640px) {
+    .articles-detail__content--compact h2 {
+        margin-top: 26px;
+    }
+
+    .articles-detail__content--compact h3 {
+        margin-top: 24px;
+    }
+}

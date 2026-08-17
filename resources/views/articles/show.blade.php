@@ -259,7 +259,7 @@
 
     @if ($hasHtmlMarkup)
 
-        <div class="articles-detail__content">
+        <div class="articles-detail__content articles-detail__content--compact">
 
             {!! render_rich_content($articleContent, $allowedTags) !!}
 
