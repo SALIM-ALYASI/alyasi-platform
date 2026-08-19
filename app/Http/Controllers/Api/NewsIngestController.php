@@ -25,6 +25,13 @@ class NewsIngestController extends Controller
             'title_ar' => ['required', 'string', 'max:500'],
             'content_en' => ['nullable', 'string'],
             'content_ar' => ['nullable', 'string'],
+
+            // ALYASI Analysis — optional / non-blocking
+            'analysis_status' => ['nullable', 'string', 'in:none,ready,skipped,failed'],
+            'analysis_title_ar' => ['nullable', 'string', 'max:500'],
+            'analysis_ar' => ['nullable', 'string'],
+            'analysis_regional_angle_ar' => ['nullable', 'string'],
+
             'link' => ['required', 'url', 'max:2000'],
             'image' => ['nullable', 'string', 'max:2000'],
             'source' => ['nullable', 'string', 'max:255'],
@@ -48,6 +55,13 @@ class NewsIngestController extends Controller
                 'excerpt_en' => $this->makeExcerpt($validated['content_en'] ?? null),
                 'content_ar' => $this->sanitizeContent($validated['content_ar'] ?? null),
                 'content_en' => $this->sanitizeContent($validated['content_en'] ?? null),
+
+                // ALYASI Analysis
+                'analysis_status' => $validated['analysis_status'] ?? 'none',
+                'analysis_title_ar' => $validated['analysis_title_ar'] ?? null,
+                'analysis_ar' => $this->sanitizeContent($validated['analysis_ar'] ?? null),
+                'analysis_regional_angle_ar' => $this->sanitizeContent($validated['analysis_regional_angle_ar'] ?? null),
+
                 'image' => $validated['image'] ?? null,
                 'source_name' => $validated['source'] ?? 'TechCrunch',
                 'source_url' => $validated['link'],

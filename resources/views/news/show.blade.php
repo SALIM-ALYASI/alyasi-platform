@@ -326,6 +326,39 @@
 
     @endif
 
+    {{-- =====================================================
+         ALYASI Analysis
+    ====================================================== --}}
+    @if (
+        $article->analysis_status === 'ready'
+        && filled($article->analysis_ar)
+    )
+        <aside class="news-detail__analysis">
+            <div class="news-detail__analysis-badge">
+                تحليل ALYASI
+            </div>
+
+            @if (filled($article->analysis_title_ar))
+                <h2 class="news-detail__analysis-title">
+                    {{ $article->analysis_title_ar }}
+                </h2>
+            @endif
+
+            <div class="news-detail__analysis-content">
+                {!! nl2br(e(strip_tags($article->analysis_ar))) !!}
+            </div>
+
+            @if (filled($article->analysis_regional_angle_ar))
+                <div class="news-detail__analysis-regional">
+                    <strong>زاوية الخليج</strong>
+                    <p>
+                        {{ strip_tags($article->analysis_regional_angle_ar) }}
+                    </p>
+                </div>
+            @endif
+        </aside>
+    @endif
+
 
     {{-- =====================================================
          Share Buttons
