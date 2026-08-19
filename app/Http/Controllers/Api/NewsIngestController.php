@@ -285,7 +285,45 @@ class NewsIngestController extends Controller
      */
     private function generateUniqueSlug(string $title): string
     {
-        $baseSlug = Str::slug($title);
+        $title = trim($title);
+
+        /*
+         * Slug عربي مقروء مع الاحتفاظ بأسماء الشركات
+         * والمنتجات والمصطلحات الإنجليزية.
+         */
+        if (preg_match('/[\x{0600}-\x{06FF}]/u', $title)) {
+            $clean = preg_replace(
+                '/[^\p{Arabic}\p{Latin}\p{N}\s-]+/u',
+                ' ',
+                $title
+            );
+
+            $clean = preg_replace('/\s+/u', ' ', trim($clean));
+
+            $words = preg_split('/\s+/u', $clean);
+
+            $words = array_slice(
+                array_values(array_filter($words)),
+                0,
+                8
+            );
+
+            $baseSlug = implode('-', $words);
+            $baseSlug = mb_strtolower($baseSlug, 'UTF-8');
+            $baseSlug = preg_replace('/-+/u', '-', $baseSlug);
+            $baseSlug = trim($baseSlug, '-');
+        } else {
+            $baseSlug = Str::slug($title);
+
+            $parts = array_values(
+                array_filter(explode('-', $baseSlug))
+            );
+
+            $baseSlug = implode(
+                '-',
+                array_slice($parts, 0, 10)
+            );
+        }
 
         if ($baseSlug === '') {
             $baseSlug = 'news';
