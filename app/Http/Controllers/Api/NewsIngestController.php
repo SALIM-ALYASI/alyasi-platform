@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 
@@ -33,12 +34,41 @@ class NewsIngestController extends Controller
             'analysis_regional_angle_ar' => ['nullable', 'string'],
 
             'link' => ['required', 'url', 'max:2000'],
-            'image' => ['nullable', 'string', 'max:2000'],
+            'image' => $request->hasFile('image')
+                ? ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096']
+                : ['nullable', 'string', 'max:2000'],
             'source' => ['nullable', 'string', 'max:255'],
             'author' => ['nullable', 'string', 'max:255'],
             'published_at' => ['nullable', 'date'],
             'is_published' => ['nullable', 'boolean'],
         ]);
+
+        $storedImage = null;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $extension = strtolower(
+                $file->getClientOriginalExtension()
+                ?: $file->extension()
+                ?: 'png'
+            );
+
+            $fileName = sprintf(
+                '%s-%s.%s',
+                now()->format('YmdHis'),
+                Str::lower(Str::random(12)),
+                $extension
+            );
+
+            $storedImage = $file->storeAs(
+                'news',
+                $fileName,
+                'public'
+            );
+
+            $validated['image'] = $storedImage;
+        }
 
         $isPublished = $request->boolean('is_published', true);
 
@@ -120,6 +150,14 @@ class NewsIngestController extends Controller
             'id' => $article->id,
             'created' => $article->wasRecentlyCreated,
             'url' => $slug ? url("/news/{$slug}") : null,
+            'image' => $article->image,
+            'image_url' => filled($article->image)
+                ? (
+                    Str::startsWith($article->image, ['http://', 'https://'])
+                        ? $article->image
+                        : Storage::disk('public')->url($article->image)
+                )
+                : null,
         ]);
     }
 
