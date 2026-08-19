@@ -112,6 +112,20 @@ class NewsController extends Controller
         abort_unless($isPublished, 404);
 
         /*
+         * الرابط القديم /news/{slug}
+         * يتحول دائماً 301 إلى الرابط الذكي عندما تكون الهوية متوفرة.
+         */
+        if (
+            $article->publication_date
+            && $article->daily_sequence
+        ) {
+            return redirect()->to(
+                $permalink->url(),
+                301
+            );
+        }
+
+        /*
          * تحميل بيانات التصنيف والروابط.
          */
         $article->load([
@@ -145,6 +159,123 @@ class NewsController extends Controller
             'relatedArticles'
         ));
     }
+
+    /**
+     * عرض الخبر عبر الرابط الذكي:
+     * /news/YYYY/MM/DD/007/slug
+     *
+     * هوية الخبر الحقيقية هنا هي:
+     * publication_date + daily_sequence
+     *
+     * الـ slug وصيغة التاريخ/الرقم يتم تصحيحهما بـ 301.
+     */
+    public function showSmart(
+        string $year,
+        string $month,
+        string $day,
+        string $sequence,
+        string $slug
+    ): View|RedirectResponse {
+        $locale = app()->getLocale();
+
+        $date = "{$year}-{$month}-{$day}";
+        $sequenceNumber = (int) $sequence;
+
+        // رفض تاريخ غير صالح مثل 2026/13/40.
+        try {
+            $parsedDate = \Carbon\Carbon::createFromFormat(
+                '!Y-m-d',
+                $date,
+                'Asia/Muscat'
+            );
+        } catch (\Throwable) {
+            abort(404);
+        }
+
+        abort_unless(
+            $parsedDate->format('Y-m-d') === $date,
+            404
+        );
+
+        // البحث لا يعتمد على slug إطلاقاً.
+        $article = NewsArticle::query()
+            ->published()
+            ->whereDate('publication_date', $date)
+            ->where('daily_sequence', $sequenceNumber)
+            ->first();
+
+        abort_unless($article, 404);
+
+        $article->load([
+            'category',
+            'permalinks',
+        ]);
+
+        $permalink = $article->permalinks
+            ->firstWhere('locale', $locale);
+
+        abort_unless($permalink, 404);
+
+        $canonicalSequence = str_pad(
+            (string) $article->daily_sequence,
+            3,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $canonicalDate = $article->publication_date
+            ->format('Y/m/d');
+
+        [$canonicalYear, $canonicalMonth, $canonicalDay] =
+            explode('/', $canonicalDate);
+
+        /*
+         * أي اختلاف في:
+         * - slug
+         * - 7 بدل 007
+         * - التاريخ
+         *
+         * يتحول 301 للرابط الرسمي.
+         */
+        if (
+            $slug !== $permalink->slug
+            || $sequence !== $canonicalSequence
+            || $year !== $canonicalYear
+            || $month !== $canonicalMonth
+            || $day !== $canonicalDay
+        ) {
+            return redirect()->route(
+                $locale === 'en'
+                    ? 'news.show.smart.en'
+                    : 'news.show.smart',
+                [
+                    'year' => $canonicalYear,
+                    'month' => $canonicalMonth,
+                    'day' => $canonicalDay,
+                    'sequence' => $canonicalSequence,
+                    'slug' => $permalink->slug,
+                ],
+                301
+            );
+        }
+
+        $article->registerView();
+
+        $article->refresh();
+
+        $article->load([
+            'category',
+            'permalinks',
+        ]);
+
+        $relatedArticles = $this->getRelatedArticles($article);
+
+        return view('news.show', compact(
+            'article',
+            'relatedArticles'
+        ));
+    }
+
 
     /**
      * جلب ثلاثة أخبار ذات صلة بالخبر الحالي.

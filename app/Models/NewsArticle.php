@@ -44,6 +44,8 @@ class NewsArticle extends Model
         'is_breaking',
         'is_featured',
         'published_at',
+        'publication_date',
+        'daily_sequence',
         'social_sent_at',
         'views_count',
         'seo_title_ar',
@@ -58,6 +60,8 @@ class NewsArticle extends Model
             'is_breaking' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
+            'publication_date' => 'date',
+            'daily_sequence' => 'integer',
             'social_sent_at' => 'datetime',
             'views_count' => 'integer',
         ];

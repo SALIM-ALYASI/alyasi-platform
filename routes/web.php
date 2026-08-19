@@ -161,6 +161,16 @@ Route::middleware('force.locale:ar')
         Route::get('/', 'index')
             ->name('index');
 
+        Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
+            ->where([
+                'year' => '[0-9]{4}',
+                'month' => '[0-9]{2}',
+                'day' => '[0-9]{2}',
+                'sequence' => '[0-9]{3,}',
+                'slug' => '[^/]+',
+            ])
+            ->name('show.smart');
+
         Route::get('/{slug}', 'show')
             ->where('slug', '[^/]+')
             ->name('show');
@@ -173,6 +183,16 @@ Route::middleware('force.locale:en')
     ->group(function () {
         Route::get('/', 'index')
             ->name('index.en');
+
+        Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
+            ->where([
+                'year' => '[0-9]{4}',
+                'month' => '[0-9]{2}',
+                'day' => '[0-9]{2}',
+                'sequence' => '[0-9]{3,}',
+                'slug' => '[^/]+',
+            ])
+            ->name('show.smart.en');
 
         Route::get('/{slug}', 'show')
             ->where('slug', '[^/]+')

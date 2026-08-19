@@ -76,6 +76,33 @@ class NewsIngestController extends Controller
 
             $article->save();
 
+            // Smart News URL identity
+            // التاريخ والرقم يُحددان مرة واحدة فقط ولا يتغيران لاحقاً.
+            if (! $article->publication_date || ! $article->daily_sequence) {
+                $publishedAt = $article->published_at ?? now();
+
+                $publicationDate = $publishedAt
+                    ->copy()
+                    ->timezone('Asia/Muscat')
+                    ->toDateString();
+
+                // قفل سجلات اليوم أثناء تخصيص الرقم التالي لتجنب التكرار.
+                $lastSequence = NewsArticle::query()
+                    ->whereDate('publication_date', $publicationDate)
+                    ->lockForUpdate()
+                    ->max('daily_sequence');
+
+                $article->publication_date = $publicationDate;
+                $article->daily_sequence = ((int) $lastSequence) + 1;
+                $article->save();
+
+                Log::info('Smart news URL identity assigned.', [
+                    'news_id' => $article->id,
+                    'publication_date' => $publicationDate,
+                    'daily_sequence' => $article->daily_sequence,
+                ]);
+            }
+
             $this->syncPermalinks($article);
 
             return $article;

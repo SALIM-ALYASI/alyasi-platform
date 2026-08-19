@@ -120,11 +120,53 @@ class Permalink extends Model
                 ['slug' => $this->slug],
                 $absolute
             ),
-            default => route(
+            default => $this->buildNewsUrl($absolute),
+        };
+    }
+
+    /**
+     * بناء الرابط الذكي للخبر.
+     */
+    private function buildNewsUrl(bool $absolute): string
+    {
+        $article = $this->linkable;
+
+        // توافق مؤقت مع أي سجل قديم لم يحصل بعد على الهوية الذكية.
+        if (
+            ! $article instanceof NewsArticle
+            || ! $article->publication_date
+            || ! $article->daily_sequence
+        ) {
+            return route(
                 $this->locale === 'en' ? 'news.show.en' : 'news.show',
                 ['slug' => $this->slug],
                 $absolute
-            ),
-        };
+            );
+        }
+
+        $date = $article->publication_date->format('Y/m/d');
+
+        [$year, $month, $day] = explode('/', $date);
+
+        $sequence = str_pad(
+            (string) $article->daily_sequence,
+            3,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        return route(
+            $this->locale === 'en'
+                ? 'news.show.smart.en'
+                : 'news.show.smart',
+            [
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'sequence' => $sequence,
+                'slug' => $this->slug,
+            ],
+            $absolute
+        );
     }
 }
