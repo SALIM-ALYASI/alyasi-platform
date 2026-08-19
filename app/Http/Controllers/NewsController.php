@@ -178,6 +178,27 @@ class NewsController extends Controller
     ): View|RedirectResponse {
         $locale = app()->getLocale();
 
+        /*
+         * /news/YYYY/MM/DD/NNN/slug مسار عربي قديم.
+         * الرابط العربي الرسمي الوحيد هو /ar/news/...
+         */
+        if (
+            $locale === 'ar'
+            && request()->route()?->getName() === 'news.legacy.show.smart'
+        ) {
+            return redirect()->route(
+                'news.show.smart',
+                [
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'sequence' => $sequence,
+                    'slug' => $slug,
+                ],
+                301
+            );
+        }
+
         $date = "{$year}-{$month}-{$day}";
         $sequenceNumber = (int) $sequence;
 
@@ -360,9 +381,8 @@ class NewsController extends Controller
 
         abort_unless($isPublished, 404);
 
-        return redirect()->route(
-            'news.show',
-            ['slug' => $redirect->permalink->slug],
+        return redirect()->to(
+            $redirect->permalink->url(),
             301
         );
     }

@@ -153,13 +153,39 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
+// Canonical Arabic news URLs: /ar/news/...
 Route::middleware('force.locale:ar')
-    ->prefix('news')
+    ->prefix('ar/news')
     ->name('news.')
     ->controller(NewsController::class)
     ->group(function () {
         Route::get('/', 'index')
             ->name('index');
+
+        Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
+            ->where([
+                'year' => '[0-9]{4}',
+                'month' => '[0-9]{2}',
+                'day' => '[0-9]{2}',
+                'sequence' => '[0-9]{3,}',
+                'slug' => '[^/]+',
+            ])
+            ->name('show.smart');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show');
+    });
+
+// Legacy Arabic news URLs: /news/... -> controller returns 301.
+Route::middleware('force.locale:ar')
+    ->prefix('news')
+    ->name('news.legacy.')
+    ->controller(NewsController::class)
+    ->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('news.index', [], 301);
+        })->name('index');
 
         Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
             ->where([
