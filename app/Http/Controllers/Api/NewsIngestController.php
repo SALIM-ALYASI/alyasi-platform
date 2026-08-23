@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
+use App\Models\NewsCategory;
 use App\Models\Permalink;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,20 +13,42 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 
 class NewsIngestController extends Controller
 {
     /**
-     * استقبال خبر من بوت الأخبار وحفظه.
+     * استقبال خبر كامل من بوت الأخبار وحفظه.
+     *
+     * عقد v2 صارم: لا يُنشأ ولا يُحدّث أي خبر إذا كانت إحدى بيانات النشر
+     * الأساسية ناقصة. الحقول الاختيارية الوحيدة هنا هي حقول ALYASI Analysis.
      */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'title_en' => ['required', 'string', 'max:500'],
-            'title_ar' => ['required', 'string', 'max:500'],
-            'content_en' => ['nullable', 'string'],
-            'content_ar' => ['nullable', 'string'],
+            'title_en' => ['required', 'string', 'min:3', 'max:500'],
+            'title_ar' => ['required', 'string', 'min:3', 'max:500'],
+            'content_en' => ['required', 'string', 'min:20'],
+            'content_ar' => ['required', 'string', 'min:20'],
+
+            'category_slug' => [
+                'required',
+                'string',
+                'max:120',
+                Rule::exists('news_categories', 'slug')->where(
+                    fn ($query) => $query
+                        ->where('is_active', true)
+                        ->whereNull('deleted_at')
+                ),
+            ],
+            'slug' => [
+                'required',
+                'string',
+                'max:200',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            ],
 
             // ALYASI Analysis — optional / non-blocking
             'analysis_status' => ['nullable', 'string', 'in:none,ready,skipped,failed'],
@@ -35,15 +58,13 @@ class NewsIngestController extends Controller
 
             'link' => ['required', 'url', 'max:2000'],
             'image' => $request->hasFile('image')
-                ? ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096']
-                : ['nullable', 'string', 'max:2000'],
-            'source' => ['nullable', 'string', 'max:255'],
-            'author' => ['nullable', 'string', 'max:255'],
-            'published_at' => ['nullable', 'date'],
-            'is_published' => ['nullable', 'boolean'],
+                ? ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096']
+                : ['required', 'url', 'max:2000'],
+            'source' => ['required', 'string', 'min:2', 'max:255'],
+            'author' => ['required', 'string', 'min:2', 'max:255'],
+            'published_at' => ['required', 'date'],
+            'is_published' => ['required', 'boolean'],
         ]);
-
-        $storedImage = null;
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -61,30 +82,37 @@ class NewsIngestController extends Controller
                 $extension
             );
 
-            $storedImage = $file->storeAs(
+            $validated['image'] = $file->storeAs(
                 'news',
                 $fileName,
                 'public'
             );
-
-            $validated['image'] = $storedImage;
         }
 
-        $isPublished = $request->boolean('is_published', true);
+        $isPublished = $request->boolean('is_published');
 
-        $article = DB::transaction(function () use ($validated, $isPublished) {
+        $category = NewsCategory::query()
+            ->active()
+            ->where('slug', $validated['category_slug'])
+            ->firstOrFail();
+
+        $article = DB::transaction(function () use ($validated, $isPublished, $category) {
             $article = NewsArticle::query()
                 ->firstOrNew([
                     'source_url' => $validated['link'],
                 ]);
 
+            $excerptAr = $this->makeExcerpt($validated['content_ar']);
+            $excerptEn = $this->makeExcerpt($validated['content_en']);
+
             $article->fill([
+                'news_category_id' => $category->id,
                 'title_ar' => $validated['title_ar'],
                 'title_en' => $validated['title_en'],
-                'excerpt_ar' => $this->makeExcerpt($validated['content_ar'] ?? null),
-                'excerpt_en' => $this->makeExcerpt($validated['content_en'] ?? null),
-                'content_ar' => $this->sanitizeContent($validated['content_ar'] ?? null),
-                'content_en' => $this->sanitizeContent($validated['content_en'] ?? null),
+                'excerpt_ar' => $excerptAr,
+                'excerpt_en' => $excerptEn,
+                'content_ar' => $this->sanitizeContent($validated['content_ar']),
+                'content_en' => $this->sanitizeContent($validated['content_en']),
 
                 // ALYASI Analysis
                 'analysis_status' => $validated['analysis_status'] ?? 'none',
@@ -92,16 +120,22 @@ class NewsIngestController extends Controller
                 'analysis_ar' => $this->sanitizeContent($validated['analysis_ar'] ?? null),
                 'analysis_regional_angle_ar' => $this->sanitizeContent($validated['analysis_regional_angle_ar'] ?? null),
 
-                'image' => $validated['image'] ?? null,
-                'source_name' => $validated['source'] ?? 'TechCrunch',
+                'image' => $validated['image'],
+                'image_alt_ar' => $validated['title_ar'],
+                'image_alt_en' => $validated['title_en'],
+                'source_name' => $validated['source'],
                 'source_url' => $validated['link'],
-                'author_name' => $validated['author'] ?? null,
+                'author_name' => $validated['author'],
                 'status' => $isPublished
                     ? NewsArticle::STATUS_PUBLISHED
                     : NewsArticle::STATUS_DRAFT,
                 'published_at' => $isPublished
-                    ? ($validated['published_at'] ?? now())
+                    ? $validated['published_at']
                     : null,
+                'seo_title_ar' => Str::limit($validated['title_ar'], 70, ''),
+                'seo_title_en' => Str::limit($validated['title_en'], 70, ''),
+                'seo_description_ar' => Str::limit((string) $excerptAr, 170, ''),
+                'seo_description_en' => Str::limit((string) $excerptEn, 170, ''),
             ]);
 
             $article->save();
@@ -133,7 +167,7 @@ class NewsIngestController extends Controller
                 ]);
             }
 
-            $this->syncPermalinks($article);
+            $this->syncPermalinks($article, $validated['slug']);
 
             return $article;
         });
@@ -142,14 +176,16 @@ class NewsIngestController extends Controller
             $this->notifyN8nOfNewArticle();
         }
 
-        $slug = $article->permalinks()->where('locale', 'ar')->value('slug')
-            ?? $article->permalinks()->value('slug');
+        $permalink = $article->permalinks()->where('locale', 'ar')->first()
+            ?? $article->permalinks()->first();
 
         return response()->json([
             'success' => true,
             'id' => $article->id,
             'created' => $article->wasRecentlyCreated,
-            'url' => $slug ? url("/news/{$slug}") : null,
+            'url' => $permalink?->url(),
+            'slug' => $permalink?->slug,
+            'category_slug' => $category->slug,
             'image' => $article->image,
             'image_url' => filled($article->image)
                 ? (
@@ -193,9 +229,8 @@ class NewsIngestController extends Controller
             ->limit($limit)
             ->get()
             ->map(function (NewsArticle $article) {
-                $slug = $article->permalinks
-                    ->firstWhere('locale', 'ar')
-                    ?->slug;
+                $permalink = $article->permalinks
+                    ->firstWhere('locale', 'ar');
 
                 return [
                     'id' => $article->id,
@@ -206,7 +241,7 @@ class NewsIngestController extends Controller
                     ),
                     'source_name' => $article->source_name,
                     'published_at' => $article->published_at?->toIso8601String(),
-                    'url' => $slug ? url("/news/{$slug}") : null,
+                    'url' => $permalink?->url(),
                 ];
             })
             ->filter(fn (array $article) => $article['url'] !== null)
@@ -290,95 +325,38 @@ class NewsIngestController extends Controller
     }
 
     /**
-     * إنشاء أو تحديث الروابط الدائمة للخبر باللغتين.
+     * حفظ الـ slug الإنجليزي المرسل من البوت للغتين، مع منع أي تعارض
+     * مع خبر آخر. بهذا يصبح رابط العربية والإنجليزية ثابتًا ومقروءًا.
      */
-    private function syncPermalinks(NewsArticle $article): void
+    private function syncPermalinks(NewsArticle $article, string $slug): void
     {
-        foreach (['ar' => $article->title_ar, 'en' => $article->title_en] as $locale => $title) {
-            if (blank($title)) {
-                continue;
-            }
-
-            $permalink = Permalink::query()
-                ->where('linkable_type', 'news_article')
-                ->where('linkable_id', $article->id)
+        foreach (['ar', 'en'] as $locale) {
+            $conflict = Permalink::query()
                 ->where('locale', $locale)
-                ->first();
+                ->where('slug', $slug)
+                ->where(function ($query) use ($article) {
+                    $query
+                        ->where('linkable_type', '!=', 'news_article')
+                        ->orWhere('linkable_id', '!=', $article->id);
+                })
+                ->exists();
 
-            if ($permalink) {
-                continue;
+            if ($conflict) {
+                throw ValidationException::withMessages([
+                    'slug' => ["Slug already exists for locale {$locale}."],
+                ]);
             }
 
-            Permalink::query()->create([
-                'linkable_type' => 'news_article',
-                'linkable_id' => $article->id,
-                'locale' => $locale,
-                'slug' => $this->generateUniqueSlug($title),
-            ]);
-        }
-    }
-
-    /**
-     * إنشاء Slug فريد للرابط الدائم.
-     */
-    private function generateUniqueSlug(string $title): string
-    {
-        $title = trim($title);
-
-        /*
-         * Slug عربي مقروء مع الاحتفاظ بأسماء الشركات
-         * والمنتجات والمصطلحات الإنجليزية.
-         */
-        if (preg_match('/[\x{0600}-\x{06FF}]/u', $title)) {
-            $clean = preg_replace(
-                '/[^\p{Arabic}\p{Latin}\p{N}\s-]+/u',
-                ' ',
-                $title
-            );
-
-            $clean = preg_replace('/\s+/u', ' ', trim($clean));
-
-            $words = preg_split('/\s+/u', $clean);
-
-            $words = array_slice(
-                array_values(array_filter($words)),
-                0,
-                8
-            );
-
-            $baseSlug = implode('-', $words);
-            $baseSlug = mb_strtolower($baseSlug, 'UTF-8');
-            $baseSlug = preg_replace('/-+/u', '-', $baseSlug);
-            $baseSlug = trim($baseSlug, '-');
-        } else {
-            $baseSlug = Str::slug($title);
-
-            $parts = array_values(
-                array_filter(explode('-', $baseSlug))
-            );
-
-            $baseSlug = implode(
-                '-',
-                array_slice($parts, 0, 10)
+            Permalink::query()->updateOrCreate(
+                [
+                    'linkable_type' => 'news_article',
+                    'linkable_id' => $article->id,
+                    'locale' => $locale,
+                ],
+                [
+                    'slug' => $slug,
+                ]
             );
         }
-
-        if ($baseSlug === '') {
-            $baseSlug = 'news';
-        }
-
-        $slug = $baseSlug;
-        $counter = 2;
-
-        while (
-            Permalink::query()
-                ->where('slug', $slug)
-                ->exists()
-        ) {
-            $slug = "{$baseSlug}-{$counter}";
-            $counter++;
-        }
-
-        return $slug;
     }
 }
