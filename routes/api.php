@@ -16,9 +16,14 @@ use App\Http\Controllers\Api\InstagramWebhookController;
 |--------------------------------------------------------------------------
 */
 
-Route::post('news', [NewsIngestController::class, 'store'])
+Route::post('new', [NewsIngestController::class, 'store'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.store');
+
+// Legacy endpoint kept temporarily so existing news-bot/n8n clients do not break.
+Route::post('news', [NewsIngestController::class, 'store'])
+    ->middleware(['news-bot.auth', 'throttle:30,1'])
+    ->name('api.news.store.legacy');
 
 Route::get('news/pending-social', [NewsIngestController::class, 'pendingSocial'])
     ->middleware(['news-bot.auth', 'throttle:60,1'])
