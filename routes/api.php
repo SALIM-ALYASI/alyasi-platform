@@ -37,6 +37,10 @@ Route::get('news/daily-digest', [NewsIngestController::class, 'dailyDigest'])
     ->middleware(['news-bot.auth', 'throttle:60,1'])
     ->name('api.news.daily-digest');
 
+Route::get('news/regional-availability', [NewsIngestController::class, 'regionalAvailability'])
+    ->middleware(['news-bot.auth', 'throttle:60,1'])
+    ->name('api.news.regional-availability');
+
 /*
 |--------------------------------------------------------------------------
 | Event Bot Ingest

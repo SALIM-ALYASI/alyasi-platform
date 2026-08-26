@@ -34,6 +34,7 @@ class NewsArticle extends Model
         'analysis_title_ar',
         'analysis_ar',
         'analysis_regional_angle_ar',
+        'angle',
         'image',
         'image_alt_ar',
         'image_alt_en',
