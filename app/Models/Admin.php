@@ -17,6 +17,8 @@ class Admin extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'display_name_ar',
+        'display_name_en',
         'email',
         'password',
         'avatar',
@@ -65,4 +67,22 @@ class Admin extends Authenticatable
             .urlencode($this->name)
             .'&background=5E2324&color=F5DEB3';
     }
+
+/**
+ * اسم الكاتب المناسب للغة الحالية.
+ */
+public function displayName(?string $locale = null): string
+{
+    $locale ??= app()->getLocale();
+
+    if ($locale === 'en') {
+        return $this->display_name_en
+            ?: $this->display_name_ar
+            ?: $this->name;
+    }
+
+    return $this->display_name_ar
+        ?: $this->display_name_en
+        ?: $this->name;
+}
 }

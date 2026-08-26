@@ -73,6 +73,11 @@
 
     <title>{{ $pageTitle }}</title>
 
+    @hasSection('meta_author')
+        <meta name="author" content="@yield('meta_author')">
+        <meta property="article:author" content="@yield('meta_author')">
+    @endif
+
     <meta
         name="description"
         content="{{ $pageDescription }}"

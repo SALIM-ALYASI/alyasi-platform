@@ -66,6 +66,36 @@
                     @enderror
                 </div>
 
+
+                <div class="form-group">
+                    <label for="display_name_ar">الاسم الظاهر بالعربية</label>
+                    <input
+                        type="text"
+                        id="display_name_ar"
+                        name="display_name_ar"
+                        class="form-control"
+                        value="{{ old('display_name_ar', auth('admin')->user()->display_name_ar) }}"
+                        dir="rtl"
+                    >
+                    @error('display_name_ar')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="display_name_en">الاسم الظاهر بالإنجليزية</label>
+                    <input
+                        type="text"
+                        id="display_name_en"
+                        name="display_name_en"
+                        class="form-control"
+                        value="{{ old('display_name_en', auth('admin')->user()->display_name_en) }}"
+                        dir="ltr"
+                    >
+                    @error('display_name_en')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <label for="email">البريد الإلكتروني</label>
 
