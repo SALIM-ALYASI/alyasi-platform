@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
 use App\Models\NewsCategory;
 use App\Models\Permalink;
+use App\Models\RegionalAvailability;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,10 @@ class NewsIngestController extends Controller
             'analysis_title_ar' => ['nullable', 'string', 'max:500'],
             'analysis_ar' => ['nullable', 'string'],
             'analysis_regional_angle_ar' => ['nullable', 'string'],
+            'angle' => [
+                'nullable', 'string',
+                'in:price_reality,what_changed,who_cares,what_broke',
+            ],
 
             'link' => ['required', 'url', 'max:2000'],
             'image' => $request->hasFile('image')
@@ -119,6 +124,7 @@ class NewsIngestController extends Controller
                 'analysis_title_ar' => $validated['analysis_title_ar'] ?? null,
                 'analysis_ar' => $this->sanitizeContent($validated['analysis_ar'] ?? null),
                 'analysis_regional_angle_ar' => $this->sanitizeContent($validated['analysis_regional_angle_ar'] ?? null),
+                'angle' => $validated['angle'] ?? null,
 
                 'image' => $validated['image'],
                 'image_alt_ar' => $validated['title_ar'],
@@ -250,6 +256,26 @@ class NewsIngestController extends Controller
         return response()->json([
             'success' => true,
             'data' => $articles,
+        ]);
+    }
+
+    /**
+     * قراءة فقط -- بيانات التوفر الإقليمي اللي يعبّيها المحرر يدويًا أثناء
+     * المراجعة (لوحة الإدارة)، يستهلكها بوت الأخبار كسياق محلي (LOCAL_CONTEXT)
+     * عند كتابة خبر يذكر منتجًا/شركة موجودة بالجدول.
+     */
+    public function regionalAvailability(): JsonResponse
+    {
+        $rows = RegionalAvailability::query()
+            ->orderBy('entity')
+            ->get([
+                'entity', 'entity_type', 'status',
+                'has_local_warranty', 'local_reseller', 'note',
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $rows,
         ]);
     }
 
