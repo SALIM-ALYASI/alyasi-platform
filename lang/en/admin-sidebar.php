@@ -22,6 +22,7 @@ return [
     'blocked_visitors' => 'Blocked Visitors',
     'reviews' => 'Reviews',
     'social_links' => 'Social Links',
+    'youtube' => 'YouTube Connect',
 
     'users' => 'Users',
     'media_library' => 'Media Library',

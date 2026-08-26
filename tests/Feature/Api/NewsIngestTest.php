@@ -32,7 +32,7 @@ class NewsIngestTest extends TestCase
 
     public function test_request_without_token_is_rejected(): void
     {
-        $this->postJson('/api/news', $this->payload())
+        $this->postJson('/api/new', $this->payload())
             ->assertStatus(401);
 
         $this->assertDatabaseCount('news_articles', 0);
@@ -41,7 +41,7 @@ class NewsIngestTest extends TestCase
     public function test_request_with_wrong_token_is_rejected(): void
     {
         $this->withHeader('Authorization', 'Bearer wrong-token')
-            ->postJson('/api/news', $this->payload())
+            ->postJson('/api/new', $this->payload())
             ->assertStatus(401);
 
         $this->assertDatabaseCount('news_articles', 0);
@@ -50,7 +50,7 @@ class NewsIngestTest extends TestCase
     public function test_valid_request_creates_article(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer test-secret-token')
-            ->postJson('/api/news', $this->payload());
+            ->postJson('/api/new', $this->payload());
 
         $response->assertOk()->assertJson([
             'success' => true,
@@ -63,7 +63,7 @@ class NewsIngestTest extends TestCase
     public function test_script_tags_are_stripped_from_content(): void
     {
         $this->withHeader('Authorization', 'Bearer test-secret-token')
-            ->postJson('/api/news', $this->payload())
+            ->postJson('/api/new', $this->payload())
             ->assertOk();
 
         $article = NewsArticle::query()->firstOrFail();
@@ -75,11 +75,11 @@ class NewsIngestTest extends TestCase
     public function test_repeated_link_updates_existing_article_instead_of_duplicating(): void
     {
         $this->withHeader('Authorization', 'Bearer test-secret-token')
-            ->postJson('/api/news', $this->payload())
+            ->postJson('/api/new', $this->payload())
             ->assertOk();
 
         $response = $this->withHeader('Authorization', 'Bearer test-secret-token')
-            ->postJson('/api/news', $this->payload([
+            ->postJson('/api/new', $this->payload([
                 'title_en' => 'Updated headline',
             ]));
 
@@ -93,5 +93,16 @@ class NewsIngestTest extends TestCase
             'Updated headline',
             NewsArticle::query()->firstOrFail()->title_en
         );
+    }
+
+    public function test_legacy_news_endpoint_remains_available(): void
+    {
+        $this->withHeader('Authorization', 'Bearer test-secret-token')
+            ->postJson('/api/news', $this->payload())
+            ->assertOk()
+            ->assertJson([
+                'success' => true,
+                'created' => true,
+            ]);
     }
 }

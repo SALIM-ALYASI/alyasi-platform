@@ -297,6 +297,23 @@
                     </span>
                 </a>
 
+                {{-- ربط يوتيوب --}}
+                <a
+                    href="{{ route('admin.youtube.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.youtube.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-brands fa-youtube"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.youtube') }}
+                    </span>
+                </a>
+
                 {{-- الأسئلة الشائعة --}}
                 <a
                     href="{{ route('admin.faqs.index') }}"

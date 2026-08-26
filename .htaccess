@@ -2,25 +2,31 @@
     RewriteEngine On
 
     # -----------------------------------------------------------------
-    # كل شروط 1-4 تعتمد على THE_REQUEST/HTTP_HOST/HTTPS (سطر الطلب
-    # الأصلي من المتصفح) وليس REQUEST_URI — لأن REQUEST_URI يتغيّر
-    # داخليًا بعد إعادة الكتابة الداخلية لـ public/ بقاعدة (5)، وأي شرط
-    # يعتمد عليه هنا كان سيطابق مرة ثانية على الطلب المعاد كتابته
-    # داخليًا (اللي يحتوي فعليًا /public) ويسبب حلقة تحويلات لا نهائية.
-    # THE_REQUEST يبقى ثابتًا كما وصل من المتصفح طوال دورة الطلب.
-    # -----------------------------------------------------------------
-
     # 1) Canonical domain + scheme — تحويلة 301 واحدة.
     #    www.alyasi.dev (http أو https) → https://alyasi.dev
     #    http://alyasi.dev                → https://alyasi.dev
+    #    (ملاحظة: قد يسبق هذا تحويل https تلقائي من طبقة hCDN نفسها —
+    #    خارج نطاق هذا الملف، غير قابل للتعديل من هنا. القاعدة هنا
+    #    تبقى صحيحة وتُطبَّق دائمًا لأي طلب يصل فعليًا لهذا الملف.)
+    # -----------------------------------------------------------------
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE,QSA]
 
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE,QSA]
 
+    # -----------------------------------------------------------------
+    # القواعد 2-4 تعتمد على REQUEST_URI مقيّدة بشرط REDIRECT_STATUS
+    # فاضٍ (يعني هذا أول مرور على الطلب الخارجي الأصلي، قبل إعادة
+    # الكتابة الداخلية لـ public/ بقاعدة (5) بالأسفل). Apache/LiteSpeed
+    # يملأ REDIRECT_STATUS تلقائيًا بعد أي إعادة كتابة داخلية ضمن نفس
+    # الطلب، فهذا الشرط يمنع القواعد من مطابقة الطلب المعاد كتابته
+    # داخليًا (اللي يحتوي فعليًا /public) ومنع حلقة تحويلات لا نهائية.
+    # -----------------------------------------------------------------
+
     # 2) index.php أو public/index.php → /
-    RewriteCond %{THE_REQUEST} \s/+(?:public/)?index\.php[\s?] [NC]
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{REQUEST_URI} ^/(?:public/)?index\.php$ [NC]
     RewriteRule ^ https://%{HTTP_HOST}/ [L,R=301]
 
     # 3) امنع ظهور /public في الرابط نهائيًا — أي طلب صريح لـ /public/*
@@ -29,14 +35,16 @@
     #    للوصول فعليًا كملفات ما لم نمنعها هنا صراحة (المسار المثالي هو
     #    تعديل Document Root من إعدادات الاستضافة ليشير لـ public/
     #    مباشرة وحذف هذا الملف بالكامل — راجع ملاحظة النشر).
-    RewriteCond %{THE_REQUEST} \s/public(/[^\s?]*)?[\s?] [NC]
-    RewriteRule ^ https://%{HTTP_HOST}%1 [L,R=301,NE,QSA]
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{REQUEST_URI} ^/public(/(.*))?$ [NC]
+    RewriteRule ^ https://%{HTTP_HOST}/%2 [L,R=301,NE,QSA]
 
     # 4) رابط منتهٍ بشرطة مائلة → نفس الرابط النظيف بدونها (وليس إلى
     #    /public أبدًا). نستثني المجلدات الحقيقية الموجودة فعلاً تحت
     #    public/ (صور/ملفات مرفوعة) حتى لا نكسر تصفحها.
-    RewriteCond %{THE_REQUEST} \s/([^?\s]+)/(?:\?[^\s]*)?\s [NC]
-    RewriteCond %{DOCUMENT_ROOT}/public/%1 !-d
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} !-d
+    RewriteCond %{REQUEST_URI} ^/(.+)/$
     RewriteRule ^ https://%{HTTP_HOST}/%1 [L,R=301,NE,QSA]
 
     # -----------------------------------------------------------------

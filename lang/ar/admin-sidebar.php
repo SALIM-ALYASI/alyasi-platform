@@ -22,6 +22,7 @@ return [
     'blocked_visitors' => 'الزوار المحظورون',
     'reviews' => 'التقييمات',
     'social_links' => 'روابط التواصل',
+    'youtube' => 'ربط يوتيوب',
 
     'users' => 'المستخدمون',
     'media_library' => 'مكتبة الوسائط',

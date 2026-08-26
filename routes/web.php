@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController
 use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
+use App\Http\Controllers\Admin\YoutubeAuthController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
@@ -892,6 +893,29 @@ Route::prefix('admin')
                     'settings/contact-info',
                     [SettingController::class, 'updateContactInfo']
                 )->name('settings.update-contact-info');
+
+                /*
+                |----------------------------------------------------------
+                | YouTube Integration
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('youtube')
+                    ->name('youtube.')
+                    ->controller(YoutubeAuthController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')
+                            ->name('index');
+
+                        Route::get('/connect', 'connect')
+                            ->name('connect');
+
+                        Route::get('/callback', 'callback')
+                            ->name('callback');
+
+                        Route::delete('/', 'disconnect')
+                            ->name('disconnect');
+                    });
 
                 /*
                 |----------------------------------------------------------
