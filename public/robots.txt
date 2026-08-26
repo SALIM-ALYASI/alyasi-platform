@@ -2,3 +2,4 @@ User-agent: *
 Disallow:
 
 Sitemap: https://alyasi.dev/sitemap.xml
+Sitemap: https://alyasi.dev/sitemap-news.xml
