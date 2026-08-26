@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', ($article->meta_title ?: $article->title).' — ALYASI')
+@section('meta_author', $article->author?->displayName() ?? '')
 
 @section(
     'meta_description',
@@ -89,9 +90,7 @@
     if ($article->author) {
         $articleSchema['author'] = [
             '@type' => 'Person',
-            'name' => app()->getLocale() === 'en'
-                ? 'Salem bin Mohammed Al Hajri'
-                : 'سالم بن محمد الحجري',
+            'name' => $article->author->displayName(),
         ];
     }
 @endphp
@@ -226,7 +225,7 @@
 
             @if ($article->author)
 
-                {{ __('articles.author_label') }}: {{ app()->getLocale() === 'en' ? 'Salem bin Mohammed Al Hajri' : 'سالم بن محمد الحجري' }}
+                {{ __('articles.author_label') }}: {{ $article->author->displayName() }}
 
                 ·
 

@@ -93,6 +93,8 @@
         'url' => url('/'),
     ],
 
+    'isBasedOn' => $article->source_url,
+
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endsection
@@ -173,6 +175,31 @@
                 margin-top: 24px;
             }
 
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Source Box
+        |--------------------------------------------------------------------------
+        */
+
+        .news-detail__source {
+            margin-top: 18px;
+            padding: 10px 14px;
+            border-inline-start: 3px solid var(--color-primary, #0a4d8c);
+            background: rgba(10, 77, 140, 0.05);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .news-detail__source-label {
+            opacity: 0.7;
+        }
+
+        .news-detail__source a {
+            font-weight: 600;
+            text-decoration: underline;
         }
 
     </style>
@@ -282,6 +309,24 @@
     <h1 class="news-detail__title">
         {{ $article->title }}
     </h1>
+
+
+    {{-- Source Attribution --}}
+    @if (filled($article->source_url))
+        <div class="news-detail__source">
+            <span class="news-detail__source-label">
+                {{ __('news.source') }}:
+            </span>
+
+            <a
+                href="{{ $article->source_url }}"
+                rel="nofollow noopener"
+                target="_blank"
+            >
+                {{ $article->source_name ?: parse_url($article->source_url, PHP_URL_HOST) }}
+            </a>
+        </div>
+    @endif
 
 </section>
 

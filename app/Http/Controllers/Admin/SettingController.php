@@ -135,6 +135,8 @@ class SettingController extends Controller
         $validated = $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
+                'display_name_ar' => ['nullable', 'string', 'max:255'],
+                'display_name_en' => ['nullable', 'string', 'max:255'],
                 'email' => [
                     'required',
                     'email',
