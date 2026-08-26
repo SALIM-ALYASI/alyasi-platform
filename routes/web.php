@@ -367,6 +367,9 @@ Route::get('/markify', [PageController::class, 'markify'])
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])
     ->name('sitemap');
 
+Route::get('/sitemap-news.xml', [PageController::class, 'sitemapNews'])
+    ->name('sitemap.news');
+
 /*
 |--------------------------------------------------------------------------
 | مغسلة الياسي

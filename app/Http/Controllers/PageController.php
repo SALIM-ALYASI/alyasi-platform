@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NewsArticle;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\SocialLink;
 use App\Models\Work;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -118,4 +120,23 @@ class PageController extends Controller
             'Content-Type' => 'application/xml',
         ]);
 }
+
+    /**
+     * خريطة Google News -- تُبنى وقت الطلب مباشرة (لا ملف ثابت) لأن
+     * المعيار يشترط آخر 48 ساعة فقط: نافذة متحركة، ملف ثابت يحتاج تحديث
+     * يدوي كل مرة يفوّت الخبر النافذة أو يدخلها.
+     */
+    public function sitemapNews(): Response
+    {
+        $articles = NewsArticle::query()
+            ->published()
+            ->where('published_at', '>=', now()->subHours(48))
+            ->with('permalinks')
+            ->orderByDesc('published_at')
+            ->get();
+
+        return response()
+            ->view('sitemap-news', compact('articles'))
+            ->header('Content-Type', 'application/xml');
+    }
 }
