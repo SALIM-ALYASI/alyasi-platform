@@ -18,6 +18,7 @@ return [
     'empty_description' => 'New articles will be published soon.',
 
     'breadcrumb_news' => 'News',
+    'source' => 'Source',
     'share' => 'Share Article',
     'related_badge' => 'News',
     'related_title' => 'Related Articles',

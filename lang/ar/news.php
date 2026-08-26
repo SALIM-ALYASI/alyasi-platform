@@ -18,6 +18,7 @@ return [
     'empty_description' => 'سيتم نشر أخبار جديدة قريبًا.',
 
     'breadcrumb_news' => 'الأخبار',
+    'source' => 'المصدر',
     'share' => 'مشاركة الخبر',
     'related_badge' => 'أخبار',
     'related_title' => 'أخبار مشابهة',
