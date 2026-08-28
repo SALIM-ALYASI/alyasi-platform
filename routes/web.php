@@ -41,6 +41,7 @@ use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
@@ -266,6 +267,26 @@ Route::middleware('force.locale:en')
 
 Route::get('/events', [EventController::class, 'index'])
     ->name('events.index');
+
+Route::middleware('force.locale:ar')
+    ->prefix('events')
+    ->name('event_editions.')
+    ->controller(EventEditionController::class)
+    ->group(function () {
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show');
+    });
+
+Route::middleware('force.locale:en')
+    ->prefix('en/events')
+    ->name('event_editions.')
+    ->controller(EventEditionController::class)
+    ->group(function () {
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show.en');
+    });
 
 /*
 |--------------------------------------------------------------------------

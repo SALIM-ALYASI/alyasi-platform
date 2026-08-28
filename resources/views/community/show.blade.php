@@ -229,7 +229,7 @@
                 </div>
 
                 <div class="community-detail__info-value">
-                    {{ $communityPost->event_start_at->translatedFormat('d.m.Y — H:i') }}
+                    {{ $communityPost->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat('d.m.Y — H:i') }}
                 </div>
 
             </div>

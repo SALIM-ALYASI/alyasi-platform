@@ -6,6 +6,9 @@
 @section('hreflang_ar', localized_route('community.index', [], 'ar'))
 @section('hreflang_en', localized_route('community.index', [], 'en'))
 @section('og_url', localized_route('community.index'))
+@section('og_image', asset('images/events/og-cover.jpg'))
+@section('og_image_width', 1200)
+@section('og_image_height', 630)
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
@@ -60,7 +63,7 @@
                         </div>
                         <div class="community-card__body">
                             <div class="community-card__meta">
-                                {{ optional($post->event_start_at ?? $post->published_at)->translatedFormat('d.m.Y') }}
+                                {{ optional(($post->event_start_at ?? $post->published_at)?->copy()->timezone('Asia/Muscat'))->translatedFormat('d.m.Y') }}
                                 @if ($post->location)
                                     · {{ $post->location }}
                                 @endif

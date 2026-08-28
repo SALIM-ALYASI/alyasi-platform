@@ -61,7 +61,8 @@ class EventIngestController extends Controller
             'source_url' => ['nullable', 'url', 'max:2048'],
         ]);
 
-        $title = trim($validated['title']);
+        $title = $this->decodeEntities(trim($validated['title']));
+        $description = $this->decodeEntities($validated['description']);
 
         // نبحث عن فعالية موجودة أصلاً برابط مصدرها فقط أولاً. لو ولّدنا
         // slug فريد جديد ومريناه بنفس شرط البحث (زي ما كان بالكود القديم)،
@@ -83,8 +84,8 @@ class EventIngestController extends Controller
         $post->fill([
             'community_category_id' => $this->eventsCategoryId(),
             'title' => $title,
-            'short_description' => Str::limit(strip_tags($validated['description']), 500, ''),
-            'content' => $validated['description'],
+            'short_description' => Str::limit(strip_tags($description), 500, ''),
+            'content' => $description,
             'type' => 'event',
             'location' => $validated['location'] ?? null,
             'event_start_at' => $validated['event_start_at'],
@@ -144,6 +145,16 @@ class EventIngestController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * فك أي ترميز HTML entities وصل بالنص من المصدر (n8n يرسل أحياناً نصاً
+     * مُرمَّزاً مسبقاً مثل &#039;) قبل الحفظ - وإلا يُخزَّن حرفياً ويظهر
+     * مرمّزاً على الصفحة لأن Blade يُخرجه بـ{{ }} العادي.
+     */
+    private function decodeEntities(string $value): string
+    {
+        return html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**
