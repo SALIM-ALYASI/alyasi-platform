@@ -30,9 +30,18 @@
                     {{ __('community.all_categories') }}
                 </a>
                 @foreach ($categories as $category)
-                    <a href="{{ localized_route('community.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
-                        {{ $category->name }}
-                    </a>
+                    {{-- تصنيف "الفعاليات" مخصص حصرياً لمنشورات type=event، والاستعلام
+                    أعلاه يستثني هذا النوع دائماً -- فلترته هنا ترجع فاضية دايماً.
+                    نوجّهه لصفحة /events المخصصة بدل تكرار نفس الخلل. --}}
+                    @if ($category->slug === 'alfaaalyat')
+                        <a href="{{ route('events.index') }}" class="filters__btn">
+                            {{ $category->name }}
+                        </a>
+                    @else
+                        <a href="{{ localized_route('community.index', ['category' => $category->slug]) }}" class="filters__btn @if(request('category') === $category->slug) is-active @endif">
+                            {{ $category->name }}
+                        </a>
+                    @endif
                 @endforeach
             </div>
         @endif
