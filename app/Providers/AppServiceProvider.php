@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\CommunityCategory;
 use App\Models\CommunityComment;
 use App\Models\CommunityPost;
+use App\Models\EventEdition;
 use App\Models\ContactMessage;
 use App\Models\NewsArticle;
 use App\Models\Review;
@@ -59,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
             'article' => Article::class,
             'community_category' => CommunityCategory::class,
             'community_post' => CommunityPost::class,
+            'event_edition' => EventEdition::class,
 
             /*
              * نضيف الموديلات لاحقًا بعد إنشائها فعليًا.

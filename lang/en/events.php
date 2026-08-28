@@ -24,6 +24,48 @@ return [
 
     'view_details' => 'View Details',
 
+    'phase' => [
+        'upcoming' => 'Upcoming',
+        'live' => 'Live Now',
+        'concluded' => 'Concluded',
+    ],
+
+    'date_status' => [
+        'confirmed' => 'Confirmed date',
+        'expected' => 'Expected date',
+        'unknown' => 'Date not yet known',
+    ],
+
+    'confidence' => [
+        'confirmed' => 'Confirmed',
+        'expected' => 'Expected',
+        'rumored' => 'Rumored',
+    ],
+
+    'watch_live' => 'Watch the Livestream',
+
+    'expected_announcements' => 'What to Expect',
+
+    'what_was_announced' => 'What Was Announced',
+
+    'pricing_table_title' => 'Official Pricing',
+
+    'pricing_table_disclaimer' => 'OMR conversion is an estimate; local pricing may differ once available.',
+
+    'pricing_table_product' => 'Product',
+
+    'pricing_table_official_price' => 'Official Price',
+
+    'pricing_table_omr_price' => 'Estimated (OMR)',
+
+    'upgrade_verdict_title' => 'Is It Worth Upgrading?',
+
+    'upgrade_verdict' => [
+        'yes' => 'Yes',
+        'no' => 'No',
+        'specific_segment' => 'For specific users only',
+    ],
+
     'empty_title' => 'No events right now',
 
     'empty_description' => 'Check back soon for the latest tech events and conferences.',

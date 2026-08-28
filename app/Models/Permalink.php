@@ -35,6 +35,7 @@ class Permalink extends Model
      * قد يكون:
      * Service
      * NewsArticle
+     * EventEdition
      * Project
      * Page
      */
@@ -117,6 +118,11 @@ class Permalink extends Model
                 ),
             'service' => route(
                 $this->locale === 'en' ? 'services.show.en' : 'services.show',
+                ['slug' => $this->slug],
+                $absolute
+            ),
+            'event_edition' => route(
+                $this->locale === 'en' ? 'event_editions.show.en' : 'event_editions.show',
                 ['slug' => $this->slug],
                 $absolute
             ),
