@@ -398,40 +398,6 @@
                 aria-label="{{ __('admin-sidebar.platform_management') }}"
             >
 
-                {{-- المستخدمون --}}
-                <a
-                    href="#"
-                    class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}"
-                >
-                    <span class="sidebar-link-icon">
-                        <i
-                            class="fa-solid fa-user-group"
-                            aria-hidden="true"
-                        ></i>
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        {{ __('admin-sidebar.users') }}
-                    </span>
-                </a>
-
-                {{-- مكتبة الوسائط --}}
-                <a
-                    href="#"
-                    class="sidebar-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}"
-                >
-                    <span class="sidebar-link-icon">
-                        <i
-                            class="fa-regular fa-images"
-                            aria-hidden="true"
-                        ></i>
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        {{ __('admin-sidebar.media_library') }}
-                    </span>
-                </a>
-
                 {{-- الرسائل --}}
                 <a
                     href="{{ route('admin.messages.index') }}"

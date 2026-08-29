@@ -1,16 +1,16 @@
 :root {
-    --primary: #682627;
-    --primary-dark: #391617;
-    --primary-deep: #241011;
-    --primary-light: #9c4b4d;
+    --primary: #1B3560;
+    --primary-dark: #0F1F38;
+    --primary-deep: #0B1F3A;
+    --primary-light: #5E76A8;
 
-    --background: #f3eee7;
+    --background: #F7F8FA;
     --surface: #ffffff;
-    --surface-soft: #faf8f5;
+    --surface-soft: #ECEFF3;
 
-    --text: #241f1f;
-    --muted: #817777;
-    --border: #e9e1dd;
+    --text: #14202E;
+    --muted: #6E6E73;
+    --border: #E3E3E5;
 
     --danger: #b42318;
     --danger-background: #fff3f1;
@@ -19,7 +19,7 @@
     --success-background: #eefbf4;
 
     --shadow:
-        0 34px 90px rgba(61, 29, 29, 0.16);
+        0 34px 90px rgba(11, 31, 58, 0.16);
 
     --font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
 }
@@ -91,12 +91,12 @@ a {
     opacity: 0.42;
     background-image:
         linear-gradient(
-            rgba(104, 38, 39, 0.045) 1px,
+            rgba(11, 31, 58, 0.045) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(104, 38, 39, 0.045) 1px,
+            rgba(11, 31, 58, 0.045) 1px,
             transparent 1px
         );
     background-size: 54px 54px;
@@ -122,7 +122,7 @@ a {
     background:
         radial-gradient(
             circle,
-            rgba(104, 38, 39, 0.22),
+            rgba(11, 31, 58, 0.22),
             transparent 68%
         );
 }
@@ -135,7 +135,7 @@ a {
     background:
         radial-gradient(
             circle,
-            rgba(156, 75, 77, 0.15),
+            rgba(94, 118, 168, 0.15),
             transparent 68%
         );
 }
@@ -452,7 +452,7 @@ a {
 .form-label {
     display: block;
     margin-bottom: 9px;
-    color: #3a3333;
+    color: #3E3E41;
     font-size: 13px;
     font-weight: 700;
 }
@@ -469,7 +469,7 @@ a {
     display: grid;
     place-items: center;
     width: 22px;
-    color: #a09595;
+    color: #A8A8AD;
     pointer-events: none;
     transform: translateY(-50%);
 }
@@ -495,22 +495,22 @@ a {
 }
 
 .form-control::placeholder {
-    color: #b2a8a8;
+    color: #C7C7CB;
 }
 
 .form-control:hover {
-    border-color: #d7cbc7;
+    border-color: #E3E3E5;
 }
 
 .form-control:focus {
-    border-color: rgba(104, 38, 39, 0.56);
+    border-color: rgba(11, 31, 58, 0.56);
     box-shadow:
-        0 0 0 4px rgba(104, 38, 39, 0.075);
+        0 0 0 4px rgba(11, 31, 58, 0.075);
 }
 
 .form-control.is-invalid {
     border-color: rgba(180, 35, 24, 0.5);
-    background: #fffdfd;
+    background: #F7F8FA;
 }
 
 .password-toggle {
@@ -523,7 +523,7 @@ a {
     height: 40px;
     padding: 0;
     cursor: pointer;
-    color: #948989;
+    color: #8A8A90;
     border-radius: 11px;
     background: transparent;
     transform: translateY(-50%);
@@ -534,7 +534,7 @@ a {
 
 .password-toggle:hover {
     color: var(--primary);
-    background: rgba(104, 38, 39, 0.07);
+    background: rgba(11, 31, 58, 0.07);
 }
 
 .field-error {
@@ -582,7 +582,7 @@ a {
     width: 19px;
     height: 19px;
     color: transparent;
-    border: 1px solid #d5cac6;
+    border: 1px solid #E3E3E5;
     border-radius: 6px;
     background: #ffffff;
     font-size: 10px;
@@ -600,14 +600,14 @@ a {
 
 .remember-option input:focus-visible + .custom-checkbox {
     box-shadow:
-        0 0 0 4px rgba(104, 38, 39, 0.1);
+        0 0 0 4px rgba(11, 31, 58, 0.1);
 }
 
 .secure-connection {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    color: #9b9191;
+    color: #8A8A90;
     font-size: 11px;
 }
 
@@ -635,7 +635,7 @@ a {
             var(--primary-dark)
         );
     box-shadow:
-        0 15px 30px rgba(104, 38, 39, 0.21);
+        0 15px 30px rgba(11, 31, 58, 0.21);
     font-weight: 700;
     transition:
         transform 0.2s ease,
@@ -664,7 +664,7 @@ a {
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow:
-        0 19px 36px rgba(104, 38, 39, 0.26);
+        0 19px 36px rgba(11, 31, 58, 0.26);
 }
 
 .submit-button:hover::before {
@@ -697,12 +697,12 @@ a {
     justify-content: center;
     gap: 5px;
     margin-top: 28px;
-    color: #aaa0a0;
+    color: #A8A8AD;
     font-size: 11px;
 }
 
 .form-footer strong {
-    color: #847979;
+    color: #6E6E73;
     font-weight: 700;
 }
 
