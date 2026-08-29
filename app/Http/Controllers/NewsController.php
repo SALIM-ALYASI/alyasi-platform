@@ -179,8 +179,8 @@ class NewsController extends Controller
         $locale = app()->getLocale();
 
         /*
-         * /news/YYYY/MM/DD/NNN/slug مسار عربي قديم.
-         * الرابط العربي الرسمي الوحيد هو /ar/news/...
+         * /ar/news/YYYY/MM/DD/NNN/slug مسار عربي قديم.
+         * الرابط العربي الرسمي الوحيد هو /news/...
          */
         if (
             $locale === 'ar'

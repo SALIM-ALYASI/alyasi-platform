@@ -155,9 +155,11 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-// Canonical Arabic news URLs: /ar/news/...
+// Canonical Arabic news URLs: /news/... - بدون بادئة، نفس نمط باقي أنواع
+// المحتوى بالموقع (خدمات/مقالات/أعمال). /ar/news كانت الاستثناء الوحيد
+// ببادئة صريحة، فعكسناها هنا لتتسق مع الباقي بدل إضافة /ar/ بكل مكان ثاني.
 Route::middleware('force.locale:ar')
-    ->prefix('ar/news')
+    ->prefix('news')
     ->name('news.')
     ->controller(NewsController::class)
     ->group(function () {
@@ -179,9 +181,9 @@ Route::middleware('force.locale:ar')
             ->name('show');
     });
 
-// Legacy Arabic news URLs: /news/... -> controller returns 301.
+// Legacy Arabic news URLs: /ar/news/... -> controller returns 301.
 Route::middleware('force.locale:ar')
-    ->prefix('news')
+    ->prefix('ar/news')
     ->name('news.legacy.')
     ->controller(NewsController::class)
     ->group(function () {
