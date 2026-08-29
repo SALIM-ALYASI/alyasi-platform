@@ -48,6 +48,8 @@ return [
 
     'what_was_announced' => 'ما أُعلن فعلاً',
 
+    'gallery_title' => 'صور من الحدث',
+
     'pricing_table_title' => 'الأسعار الرسمية',
 
     'pricing_table_disclaimer' => 'التحويل للريال العُماني تقديري، والسعر المحلي عند التوفر قد يختلف.',

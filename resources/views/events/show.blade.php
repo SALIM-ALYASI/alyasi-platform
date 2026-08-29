@@ -150,6 +150,15 @@
         ====================================================== --}}
         @if ($phase === 'concluded')
 
+            @if (!empty($edition->gallery))
+                <h2 class="event-detail__section-title">{{ __('events.gallery_title') }}</h2>
+                <div class="event-detail__gallery">
+                    @foreach ($edition->gallery as $photo)
+                        <img src="{{ media_url($photo) }}" alt="{{ $edition->title }}" loading="lazy">
+                    @endforeach
+                </div>
+            @endif
+
             @if (!empty($edition->announcements))
                 <h2 class="event-detail__section-title">{{ __('events.what_was_announced') }}</h2>
                 <div class="event-detail__announcement-list">

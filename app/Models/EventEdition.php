@@ -24,6 +24,7 @@ class EventEdition extends Model
         'event_end_at',
         'livestream_url',
         'image',
+        'gallery',
         'short_description_ar',
         'short_description_en',
         'announcements',
@@ -44,6 +45,7 @@ class EventEdition extends Model
         'event_end_at' => 'datetime',
         'announcements' => 'array',
         'pricing_table' => 'array',
+        'gallery' => 'array',
         'published_at' => 'datetime',
     ];
 

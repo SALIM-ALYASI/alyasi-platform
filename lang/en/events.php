@@ -48,6 +48,8 @@ return [
 
     'what_was_announced' => 'What Was Announced',
 
+    'gallery_title' => 'Photos from the Event',
+
     'pricing_table_title' => 'Official Pricing',
 
     'pricing_table_disclaimer' => 'OMR conversion is an estimate; local pricing may differ once available.',
