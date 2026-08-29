@@ -85,7 +85,7 @@
 }
 
 .event-detail__verdict-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.event-detail__verdict-answer { font-size: 22px; font-weight: 800; color: var(--color-accent-700); margin-bottom: 10px; }
+.event-detail__verdict-answer { font-size: 22px; font-weight: 700; color: var(--color-accent-700); margin-bottom: 10px; }
 .event-detail__verdict-text { font-size: 15px; line-height: 1.9; color: rgba(20, 32, 46, .78); }
 
 @media (max-width: 767px) {

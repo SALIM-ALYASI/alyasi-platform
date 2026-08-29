@@ -470,7 +470,7 @@
                 plugins: 'lists link code',
                 toolbar: 'undo redo | formatselect | bold italic | bullist numlist | blockquote | link | removeformat | code',
                 block_formats: 'الفقرة=p; عنوان 2=h2; عنوان 3=h3; عنوان 4=h4',
-                content_style: 'body { direction: rtl; font-family: Tajawal, sans-serif; }',
+                content_style: 'body { direction: rtl; font-family: "IBM Plex Sans Arabic", sans-serif; line-height: 1.9; }',
             });
 
             tinymce.init({

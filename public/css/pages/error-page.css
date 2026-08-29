@@ -32,7 +32,7 @@ body {
 .error-page-code {
     font-size: clamp(3rem, 8vw, 6rem);
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1;
     background: linear-gradient(135deg, #fff, var(--color-accent-300), var(--color-accent-500));

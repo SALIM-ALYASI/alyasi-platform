@@ -36,9 +36,12 @@
     --color-status-ongoing-bg: #3FA66B;
     --color-status-ongoing-fg: #ffffff;
 
-    --font-heading: "Noto Kufi Arabic", system-ui, sans-serif;
+    /* الإنجليزي افتراضي؛ يُستبدل بـIBM Plex Sans Arabic تحت [dir="rtl"] */
+    --font-heading: "Inter", system-ui, sans-serif;
     --font-heading-weight: 700;
-    --font-body: "Tajawal", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --line-height-body: 1.7;
+    --letter-spacing-body: normal;
 
     --radius-sm: 10px;
     --radius-md: 14px;
@@ -59,4 +62,15 @@
      * جوال          < 768px
      * جوال صغير     < 480px (تحسينات إضافية عند الحاجة)
      */
+}
+
+/*
+ * تبديل الخط تلقائياً حسب لغة الصفحة — dir="rtl" يعني عربي.
+ * على :root (عنصر html) لا body، عشان يشمل أي عنصر بالصفحة بلا استثناء.
+ */
+:root[dir="rtl"] {
+    --font-heading: "IBM Plex Sans Arabic", system-ui, sans-serif;
+    --font-body: "IBM Plex Sans Arabic", system-ui, sans-serif;
+    --line-height-body: 1.9;
+    --letter-spacing-body: 0px;
 }

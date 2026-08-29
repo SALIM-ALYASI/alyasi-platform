@@ -16,7 +16,7 @@
 
 .site-footer__brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
 .site-footer__logo { height: 34px; filter: brightness(0) invert(1); }
-.site-footer__brand-name { font-family: var(--font-heading); font-weight: 800; font-size: 19px; color: #fff; }
+.site-footer__brand-name { font-family: var(--font-heading); font-weight: 700; font-size: 19px; color: #fff; }
 .site-footer__desc { color: rgba(255, 255, 255, .65); font-size: 14px; line-height: 1.9; max-width: 280px; margin: 0; }
 
 .site-footer__heading { color: #fff; font-size: 15px; margin-bottom: 18px; }

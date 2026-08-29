@@ -32,7 +32,7 @@
     --admin-shadow-soft:
         0 8px 24px rgba(74, 38, 38, 0.06);
 
-    --admin-font: 'Tajawal', sans-serif;
+    --admin-font: 'IBM Plex Sans Arabic', system-ui, sans-serif;
 }
 
 /* =========================================================
@@ -52,6 +52,8 @@ body {
     margin: 0;
     color: var(--admin-text);
     font-family: var(--admin-font);
+    line-height: 1.9;
+    letter-spacing: 0;
     background: var(--admin-background);
 }
 

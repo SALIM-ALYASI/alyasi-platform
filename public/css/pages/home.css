@@ -29,7 +29,7 @@
 .home-hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
 
 .home-hero__metrics { display: flex; gap: 40px; flex-wrap: wrap; }
-.home-hero__metric-value { font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #fff; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 1px 16px rgba(0, 0, 0, .2); }
+.home-hero__metric-value { font-family: var(--font-heading); font-size: 30px; font-weight: 700; color: #fff; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 1px 16px rgba(0, 0, 0, .2); }
 .home-hero__metric-label { font-size: 13px; color: rgba(255, 255, 255, .92); margin-top: 6px; text-shadow: 0 1px 3px rgba(0, 0, 0, .45); }
 .home-hero__metric-divider { width: 1px; background: rgba(255, 255, 255, .25); }
 
@@ -63,7 +63,7 @@
     background: #fff;
     color: var(--color-accent-600);
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 700;
     font-size: 14px;
     padding: 9px 15px;
     border-radius: var(--radius-pill);
@@ -152,7 +152,7 @@
 .home-why__title em { font-style: normal; color: var(--color-accent-300); }
 .home-why__desc { color: rgba(255, 255, 255, .7); font-size: 15px; margin: 0; }
 .home-why__item { border-top: 2px solid rgba(255, 255, 255, .2); padding-top: 22px; }
-.home-why__num { font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-300); font-weight: 800; margin-bottom: 14px; }
+.home-why__num { font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-300); font-weight: 700; margin-bottom: 14px; }
 .home-why__item h3 { font-size: 19px; color: #fff; margin: 0 0 8px; }
 .home-why__item p { color: rgba(255, 255, 255, .68); font-size: 14px; line-height: 1.8; margin: 0; }
 

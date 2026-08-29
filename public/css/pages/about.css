@@ -2,7 +2,7 @@
 
 .about-stats { padding-top: 70px; padding-bottom: 40px; }
 .about-stats__item { text-align: center; }
-.about-stats__value { font-family: var(--font-heading); font-size: 40px; font-weight: 800; color: var(--color-accent-600); }
+.about-stats__value { font-family: var(--font-heading); font-size: 40px; font-weight: 700; color: var(--color-accent-600); }
 .about-stats__label { font-size: 14px; color: rgba(20, 32, 46, .6); margin-top: 8px; }
 
 .about-section { padding-top: 60px; padding-bottom: 60px; }

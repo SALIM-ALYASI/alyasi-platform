@@ -33,7 +33,7 @@
 .site-header__logo { height: 38px; width: auto; }
 .site-header__brand-name {
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 700;
     font-size: 21px;
     color: var(--color-accent-500);
     letter-spacing: .3px;
@@ -125,7 +125,7 @@
     color: var(--color-text);
     border-bottom: 1px solid var(--color-divider);
 }
-.site-header__mobile-link.is-active { color: var(--color-accent-600); font-weight: 800; }
+.site-header__mobile-link.is-active { color: var(--color-accent-600); font-weight: 700; }
 
 body.has-mobile-menu-open { overflow: hidden; }
 
