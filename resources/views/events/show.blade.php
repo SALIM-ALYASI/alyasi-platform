@@ -10,6 +10,11 @@
 
 @section('canonical', $edition->permalink()?->url())
 
+@if ($edition->permalink('ar') && $edition->permalink('en'))
+    @section('hreflang_ar', $edition->permalink('ar')->url())
+    @section('hreflang_en', $edition->permalink('en')->url())
+@endif
+
 @section('og_type', 'article')
 @section('og_title', $edition->title)
 @section('og_description', $ogDescription)
