@@ -424,7 +424,7 @@ Route::middleware('force.locale:ar')
         Route::get('/', 'index')
             ->name('index');
 
-        Route::get('/{work:slug}', 'show')
+        Route::get('/{work}', 'show')
             ->name('show');
 
     });
@@ -438,7 +438,7 @@ Route::middleware('force.locale:en')
         Route::get('/', 'index')
             ->name('index.en');
 
-        Route::get('/{work:slug}', 'show')
+        Route::get('/{work}', 'show')
             ->name('show.en');
 
     });

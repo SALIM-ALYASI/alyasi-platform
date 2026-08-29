@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use App\Models\Work;
+use App\Models\WorkSlugRedirect;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -92,10 +94,29 @@ class WorkController extends Controller
     }
 
     /**
-     * عرض تفاصيل عمل واحد.
+     * عرض تفاصيل عمل واحد - بحث يدوي بدل الربط الضمني عشان نقدر نحوّل ٣٠١
+     * من سلق قديم لو تغيّر (مثلاً بعد تنظيف سلق مولّد من رابط العميل بدل
+     * اسم المشروع)، بدل 404 مباشر كان يصير مع route model binding.
      */
-    public function show(Work $work): View
+    public function show(string $work): View|RedirectResponse
     {
+        $slug = $work;
+        $work = Work::query()->where('slug', $slug)->first();
+
+        if (! $work) {
+            $redirect = WorkSlugRedirect::query()
+                ->where('old_slug', $slug)
+                ->first();
+
+            abort_unless($redirect, 404);
+
+            return redirect()->route(
+                app()->getLocale() === 'en' ? 'works.show.en' : 'works.show',
+                ['work' => $redirect->work->slug],
+                301
+            );
+        }
+
         abort_unless($work->is_active, 404);
 
         $work->load([
