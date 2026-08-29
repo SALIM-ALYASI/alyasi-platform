@@ -86,11 +86,6 @@
                         <div class="home-hero__metric-value" data-count-target="{{ $yearsOfExperience }}">{{ $yearsOfExperience }}</div>
                         <div class="home-hero__metric-label">{{ __('home.metrics.experience') }}</div>
                     </div>
-                    <span class="home-hero__metric-divider"></span>
-                    <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="{{ $visitorsCount }}">{{ $visitorsCount }}</div>
-                        <div class="home-hero__metric-label">{{ __('home.metrics.visitors') }}</div>
-                    </div>
                 </div>
             </div>
         </div>

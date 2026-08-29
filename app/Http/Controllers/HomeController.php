@@ -6,7 +6,6 @@ use App\Models\Article;
 use App\Models\CommunityPost;
 use App\Models\Faq;
 use App\Models\NewsArticle;
-use App\Models\PageVisit;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Technology;
@@ -73,10 +72,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        $visitorsCount = PageVisit::query()
-            ->distinct('ip_address')
-            ->count('ip_address');
-
         $yearsOfExperience = now()->year - 2019;
 
         return view(
@@ -91,7 +86,6 @@ class HomeController extends Controller
                 'latestArticles',
                 'showCommunityEvents',
                 'showArticles',
-                'visitorsCount',
                 'yearsOfExperience'
             )
         );
