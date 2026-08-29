@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -111,7 +112,7 @@ class VoiceStudioController extends Controller
     private function fetchVoices(): array
     {
         $baseUrl = rtrim((string) config('services.soundink.url'), '/');
-        $apiKey = config('services.soundink.key');
+        $apiKey = Setting::get('soundink_api_key', (string) config('services.soundink.key'));
 
         try {
             $response = Http::withHeaders($this->authHeaders($apiKey))

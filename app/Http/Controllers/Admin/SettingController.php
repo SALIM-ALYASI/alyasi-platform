@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
@@ -26,13 +27,43 @@ class SettingController extends Controller
         $showCommunityEvents = Setting::get('show_community_events', '1') === '1';
         $showArticles = Setting::get('show_articles', '1') === '1';
 
+        $soundinkKey = Setting::get('soundink_api_key', (string) config('services.soundink.key'));
+        $soundinkKeyMasked = $soundinkKey
+            ? str_repeat('•', 8).substr($soundinkKey, -4)
+            : null;
+        $soundinkConnected = $this->checkSoundinkConnection($soundinkKey);
+
         return view('admin.settings.index', compact(
             'maintenanceMode',
             'contactEmail',
             'contactPhone',
             'showCommunityEvents',
-            'showArticles'
+            'showArticles',
+            'soundinkKeyMasked',
+            'soundinkConnected'
         ));
+    }
+
+    /**
+     * فحص حي لاتصال SoundInk بمفتاح معيّن - تُستخدم لعرض حالة الاتصال بصفحة
+     * الإعدادات، وللتأكد قبل حفظ مفتاح جديد إنه فعلاً صحيح.
+     */
+    private function checkSoundinkConnection(?string $apiKey): bool
+    {
+        if (blank($apiKey)) {
+            return false;
+        }
+
+        $baseUrl = rtrim((string) config('services.soundink.url'), '/');
+
+        try {
+            return Http::withHeaders(['X-API-Key' => $apiKey])
+                ->timeout(5)
+                ->get("{$baseUrl}/api/v1/voices")
+                ->successful();
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     /**
@@ -123,6 +154,31 @@ class SettingController extends Controller
         }
 
         return back()->with('success', 'تم إعادة توليد sitemap.xml بنجاح — '.trim(Artisan::output()));
+    }
+
+    /**
+     * تحديث مفتاح SoundInk API من لوحة التحكم مباشرة، بدل الحاجة لتعديل
+     * .env عبر SSH كل مرة يتغيّر المفتاح. نتحقق من المفتاح ضد الخدمة
+     * الحقيقية قبل الحفظ، عشان ما نحفظ مفتاح خاطئ يعطّل الاتصال بصمت.
+     */
+    public function updateSoundinkKey(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'soundink_api_key' => ['required', 'string', 'max:255'],
+        ], [
+            'soundink_api_key.required' => 'يرجى إدخال المفتاح.',
+        ]);
+
+        if (! $this->checkSoundinkConnection($validated['soundink_api_key'])) {
+            return back()->with(
+                'error',
+                'تعذّر التحقق من المفتاح - الخدمة رفضته أو غير متاحة الآن. لم يُحفظ المفتاح.'
+            );
+        }
+
+        Setting::set('soundink_api_key', $validated['soundink_api_key']);
+
+        return back()->with('success', 'تم تحديث مفتاح SoundInk والتحقق من الاتصال بنجاح.');
     }
 
     /**

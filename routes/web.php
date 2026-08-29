@@ -904,6 +904,11 @@ Route::prefix('admin')
                 )->name('settings.regenerate-sitemap');
 
                 Route::patch(
+                    'settings/soundink',
+                    [SettingController::class, 'updateSoundinkKey']
+                )->name('settings.update-soundink-key');
+
+                Route::patch(
                     'settings/profile',
                     [SettingController::class, 'updateProfile']
                 )->name('settings.update-profile');

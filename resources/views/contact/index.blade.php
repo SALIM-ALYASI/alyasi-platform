@@ -38,6 +38,15 @@
                 <form method="POST" action="{{ route('contact.store') }}">
                     @csrf
 
+                    {{-- حقل فخ للبوتات — مخفي عن المستخدم الحقيقي بس البوتات اللي
+                    تعبّي كل حقل بالنموذج تلقائياً تعبّيه. لو وصل غير فاضي نرفض
+                    الطلب بصمت (نظهر نجاح وهمي بدون حفظ) - نفس المنطق بالكنترولر. --}}
+                    <div class="field" style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+                        <label for="contact-website">Website</label>
+                        <input type="text" name="website" id="contact-website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <input type="hidden" name="form_rendered_at" value="{{ now()->timestamp }}">
+
                     <div class="field">
                         <label class="field__label" for="contact-name">{{ __('contact.form_name') }}</label>
                         <input type="text" name="name" id="contact-name" class="field__control" value="{{ old('name') }}" required maxlength="255">

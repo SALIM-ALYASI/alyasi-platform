@@ -265,6 +265,48 @@
 
         <div class="dashboard-panel-header">
             <div>
+                <h3>اتصال SoundInk (استوديو الصوت)</h3>
+                <p>المفتاح المستخدم لاتصال استوديو الصوت بخدمة SoundInk الخارجية. يُتحقّق من المفتاح الجديد مباشرة مع الخدمة قبل الحفظ — لو كان خاطئ ما يُحفظ ويبقى القديم شغّال.</p>
+            </div>
+
+            <span class="admin-status {{ $soundinkConnected ? 'admin-status--active' : 'admin-status--inactive' }}">
+                <i class="fa-solid {{ $soundinkConnected ? 'fa-circle-check' : 'fa-triangle-exclamation' }}" aria-hidden="true"></i>
+                {{ $soundinkConnected ? 'متصل' : 'غير متصل' }}
+            </span>
+        </div>
+
+        <form action="{{ route('admin.settings.update-soundink-key') }}" method="POST">
+            @csrf
+            @method('PATCH')
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="soundink_api_key">المفتاح الحالي</label>
+
+                    <input
+                        type="text"
+                        id="soundink_api_key"
+                        name="soundink_api_key"
+                        class="form-control"
+                        placeholder="{{ $soundinkKeyMasked ?? 'ما فيه مفتاح محفوظ' }}"
+                        autocomplete="off"
+                    >
+                    @error('soundink_api_key') <span class="field__error">{{ $message }}</span> @enderror
+                </div>
+            </div>
+
+            <button type="submit" class="admin-primary-button">
+                <i class="fa-solid fa-key" aria-hidden="true"></i>
+                حفظ المفتاح الجديد
+            </button>
+        </form>
+
+    </div>
+
+    <div class="dashboard-panel" style="margin-top: 24px;">
+
+        <div class="dashboard-panel-header">
+            <div>
                 <h3>وضع الصيانة</h3>
                 <p>عند التفعيل، تُغلق كل الصفحات العامة للزوار وتظهر لهم صفحة "الموقع تحت الصيانة"، بينما تبقى لوحة التحكم متاحة لك دائمًا.</p>
             </div>
