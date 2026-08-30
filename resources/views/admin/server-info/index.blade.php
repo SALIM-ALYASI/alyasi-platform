@@ -26,13 +26,23 @@
     </div>
 </section>
 
-<section class="dashboard-panel" style="padding: 0; overflow: hidden;">
-    <iframe
-        src="{{ $url }}"
-        title="بيانات سيرفر"
-        loading="lazy"
-        style="display: block; width: 100%; height: calc(100vh - 220px); min-height: 480px; border: 0;"
-    ></iframe>
-</section>
+@if ($html)
+    <section class="dashboard-panel" style="padding: 0; overflow: hidden;">
+        <iframe
+            srcdoc="{{ $html }}"
+            title="بيانات سيرفر"
+            loading="lazy"
+            style="display: block; width: 100%; height: calc(100vh - 220px); min-height: 480px; border: 0;"
+        ></iframe>
+    </section>
+@else
+    <div class="admin-empty-state">
+        <div class="admin-empty-state__icon">
+            <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        </div>
+        <h3>تعذّر جلب بيانات السيرفر</h3>
+        <p>تعذّر الاتصال بأداة بيانات السيرفر الخارجية. تأكد إنها شغّالة، أو افتحها مباشرة من الرابط أعلاه.</p>
+    </div>
+@endif
 
 @endsection
