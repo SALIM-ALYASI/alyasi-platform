@@ -2,15 +2,15 @@
 
 return [
 
-    'meta_title' => 'ALYASI YouTube Publisher',
+    'meta_title' => 'ALYASI Platform Publisher',
 
-    'meta_description' => 'ALYASI YouTube Publisher أداة نشر وأتمتة عمل طوّرتها منصة ALYASI لمساعدة المستخدمين المصرّح لهم على إدارة ونشر محتوى الفيديو على يوتيوب.',
+    'meta_description' => 'ALYASI Platform Publisher أداة نشر وأتمتة عمل طوّرتها منصة ALYASI لمساعدة المستخدمين المصرّح لهم على إدارة ونشر محتوى الفيديو على يوتيوب.',
 
-    'app_name' => 'ALYASI YouTube Publisher',
+    'app_name' => 'ALYASI Platform Publisher',
 
     'tagline' => 'أداة نشر وأتمتة عمل من منصة ALYASI',
 
-    'intro' => 'ALYASI YouTube Publisher أداة نشر وأتمتة عمل طوّرتها منصة ALYASI لمساعدة المستخدمين المصرّح لهم على إدارة ونشر محتوى الفيديو على يوتيوب.',
+    'intro' => 'ALYASI Platform Publisher أداة نشر وأتمتة عمل طوّرتها منصة ALYASI لمساعدة المستخدمين المصرّح لهم على إدارة ونشر محتوى الفيديو على يوتيوب.',
 
     'what_it_does_title' => 'ماذا يفعل هذا التطبيق',
 
@@ -24,7 +24,7 @@ return [
 
     'privacy_title' => 'الخصوصية وبيانات مستخدمي Google',
 
-    'privacy_body' => 'يصل ALYASI YouTube Publisher لبيانات مستخدمي Google فقط بعد تفويض صريح من المستخدم عبر Google OAuth. تُستخدم هذي البيانات حصرًا لتقديم وظيفة نشر يوتيوب بالتطبيق، وتُعامَل حسب سياسة الخصوصية الخاصة بنا.',
+    'privacy_body' => 'يصل ALYASI Platform Publisher لبيانات مستخدمي Google فقط بعد تفويض صريح من المستخدم عبر Google OAuth. تُستخدم هذي البيانات حصرًا لتقديم وظيفة نشر يوتيوب بالتطبيق، وتُعامَل حسب سياسة الخصوصية الخاصة بنا.',
 
     'privacy_policy_link' => 'سياسة الخصوصية',
 

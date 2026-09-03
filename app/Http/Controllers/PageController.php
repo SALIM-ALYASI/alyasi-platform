@@ -78,7 +78,7 @@ class PageController extends Controller
     }
 
     /**
-     * صفحة تعريف تطبيق ALYASI YouTube Publisher — مطلوبة من Google لإثبات
+     * صفحة تعريف تطبيق ALYASI Platform Publisher — مطلوبة من Google لإثبات
      * الملكية والربط بين اسم تطبيق OAuth والموقع أثناء طلب التحقق
      * (Brand Verification)، ولازم تكون عامة بلا تسجيل دخول.
      */
