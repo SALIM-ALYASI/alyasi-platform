@@ -118,6 +118,10 @@ return [
             'title' => '24. Contact and Privacy Requests',
             'body' => 'Privacy requests, inquiries, and complaints may be submitted through the official contact channels published on the Platform. Users should identify the type of request and provide sufficient contact information for verification and response.',
         ],
+        [
+            'title' => '25. Google User Data (ALYASI YouTube Publisher)',
+            'body' => 'The ALYASI YouTube Publisher application uses Google OAuth to access a YouTube account only after explicit authorization from the authorized user. The data accessed is limited to what is required to publish videos and manage their metadata (title and description) on the authorized channel, and is not used for any other purpose. Google user data is never shared with third parties and is not retained beyond what is necessary to complete the requested publishing action. Users may revoke access at any time from their Google account settings.',
+        ],
     ],
 
     /*

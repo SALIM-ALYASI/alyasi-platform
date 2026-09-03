@@ -78,6 +78,16 @@ class PageController extends Controller
     }
 
     /**
+     * صفحة تعريف تطبيق ALYASI YouTube Publisher — مطلوبة من Google لإثبات
+     * الملكية والربط بين اسم تطبيق OAuth والموقع أثناء طلب التحقق
+     * (Brand Verification)، ولازم تكون عامة بلا تسجيل دخول.
+     */
+    public function youtubePublisher(): View
+    {
+        return view('legal.youtube-publisher');
+    }
+
+    /**
      * صفحة Markify المستقلة (تصميم وهوية بصرية خاصة بالحساب).
      *
      * توزَّع صور المعرض المحلية عشوائيًا في كل زيارة على أماكن الصفحة

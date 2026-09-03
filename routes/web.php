@@ -378,6 +378,14 @@ Route::middleware('force.locale:en')
     ->get('/en/terms', [PageController::class, 'terms'])
     ->name('terms.en');
 
+Route::middleware('force.locale:ar')
+    ->get('/youtube-publisher', [PageController::class, 'youtubePublisher'])
+    ->name('youtube-publisher');
+
+Route::middleware('force.locale:en')
+    ->get('/en/youtube-publisher', [PageController::class, 'youtubePublisher'])
+    ->name('youtube-publisher.en');
+
 /*
 |--------------------------------------------------------------------------
 | Markify (صفحة مستقلة بتصميم خاص)
