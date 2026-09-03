@@ -301,6 +301,32 @@
 
     </div>
 
+    {{-- نتيجة ملموسة (تظهر بالصفحة الرئيسية تحت المشروع) --}}
+    <div class="form-group form-group--full">
+
+        <label for="outcome" class="form-label">
+            نتيجة ملموسة
+        </label>
+
+        <input
+            type="text"
+            name="outcome"
+            id="outcome"
+            class="form-control @error('outcome') is-invalid @enderror"
+            maxlength="255"
+            value="{{ old('outcome', $work?->outcome) }}"
+        >
+
+        <small class="form-hint">
+            سطر نتيجة قصير يظهر تحت المشروع بالصفحة الرئيسية (مثلاً: "تم قبوله بمتجر آبل"). اتركه فاضي لو ما فيه نتيجة موثّقة بعد.
+        </small>
+
+        @error('outcome')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
     {{-- الوصف الكامل --}}
     <div class="form-group form-group--full">
 

@@ -22,15 +22,31 @@ return [
 
     'hero_badge' => 'Advanced Digital Platform',
 
-    'hero_title_1' => 'We Turn Ideas',
+    'hero_title_1' => 'We build your website or system',
 
-    'hero_title_2' => 'Into Reality',
+    'hero_title_2' => 'from idea to launch',
 
     'hero_description' => 'A platform that brings together services, tech news, and a digital community in one seamless experience.',
+
+    'hero_audience' => 'For individuals building their first idea, entrepreneurs growing their business, and companies that need complete technical solutions.',
+
+    'hero_cta_primary' => 'Request Your Service Now',
+
+    'hero_cta_secondary' => 'See Our Work',
 
     'explore_services' => 'Explore Our Services',
 
     'latest_news' => 'Latest News',
+
+    'request_service' => 'Request This Service',
+
+    'cta_mini_text' => 'Ready to start your project?',
+
+    'cta_mini_button' => 'Contact Us',
+
+    'updates_badge' => 'Latest Updates',
+
+    'updates_title' => 'Latest Updates',
 
     /*
     |--------------------------------------------------------------------------

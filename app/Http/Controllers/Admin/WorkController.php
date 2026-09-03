@@ -518,6 +518,12 @@ class WorkController extends Controller
                 'max:500',
             ],
 
+            'outcome' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
             'description' => [
                 'nullable',
                 'string',
@@ -599,6 +605,8 @@ class WorkController extends Controller
 
             'short_description.required' => 'الوصف المختصر مطلوب.',
             'short_description.max' => 'الوصف المختصر يجب ألا يتجاوز 500 حرف.',
+
+            'outcome.max' => 'سطر النتيجة يجب ألا يتجاوز 255 حرفًا.',
 
             'client_name.max' => 'اسم العميل يجب ألا يتجاوز 255 حرفًا.',
 

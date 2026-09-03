@@ -67,29 +67,20 @@
                 </h1>
 
                 <p class="home-hero__desc">{{ __('home.hero_description') }}</p>
+                <p class="home-hero__audience">{{ __('home.hero_audience') }}</p>
 
                 <div class="home-hero__ctas">
-                    <a href="{{ localized_route('services.index') }}" class="btn btn--light">
-                        {{ __('home.explore_services') }}
+                    <a href="{{ localized_route('contact') }}" class="btn btn--light">
+                        {{ __('home.hero_cta_primary') }}
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
                     </a>
-                    <a href="{{ localized_route('news.index') }}" class="btn btn--ghost-light">{{ __('home.latest_news') }}</a>
-                </div>
-
-                <div class="home-hero__metrics">
-                    <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="4">4</div>
-                        <div class="home-hero__metric-label">{{ __('home.metrics.sections') }}</div>
-                    </div>
-                    <span class="home-hero__metric-divider"></span>
-                    <div class="home-hero__metric">
-                        <div class="home-hero__metric-value" data-count-target="{{ $yearsOfExperience }}">{{ $yearsOfExperience }}</div>
-                        <div class="home-hero__metric-label">{{ __('home.metrics.experience') }}</div>
-                    </div>
+                    <a href="{{ localized_route('works.index') }}" class="btn btn--ghost-light">{{ __('home.hero_cta_secondary') }}</a>
                 </div>
             </div>
         </div>
     </section>
+
+    {{-- ===================== منطقة الخدمات ===================== --}}
 
     {{-- SPOTLIGHT --}}
     @if ($spotlightService)
@@ -107,7 +98,7 @@
                 <p class="home-spotlight__desc">{{ $spotlightService->localizedDescription() }}</p>
                 <div class="home-spotlight__actions">
                     <a href="{{ $spotlightService->slug() ? localized_route('services.show', ['slug' => $spotlightService->slug()]) : localized_route('services.index') }}" class="btn btn--primary">{{ __('home.view_service_details') }}</a>
-                    <a href="{{ localized_route('services.index') }}" class="home-spotlight__link">{{ __('home.all_services') }} ←</a>
+                    <a href="{{ localized_route('contact') }}" class="btn btn--outline">{{ __('home.request_service') }}</a>
                 </div>
             </div>
         </section>
@@ -161,76 +152,24 @@
 
             <div class="grid-3">
                 @foreach ($gridServices as $service)
-                    <a href="{{ $service->slug() ? localized_route('services.show', ['slug' => $service->slug()]) : localized_route('services.index') }}" class="home-service-card" data-reveal>
+                    <div class="home-service-card" data-reveal>
                         <img src="{{ media_url($service->image) }}" alt="{{ $service->localizedTitle() }}" loading="lazy">
                         <div class="home-service-card__scrim"></div>
                         <div class="home-service-card__text">
                             <span>{{ sprintf('%02d', $loop->iteration) }}</span>
                             <strong>{{ $service->localizedTitle() }}</strong>
+                            <div class="home-service-card__actions">
+                                <a href="{{ $service->slug() ? localized_route('services.show', ['slug' => $service->slug()]) : localized_route('services.index') }}" class="home-service-card__link">{{ __('home.view_service_details') }} ←</a>
+                                <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('home.request_service') }}</a>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 @endforeach
             </div>
         </section>
     @endif
 
-    {{-- WHY ALYASI --}}
-    <section class="home-why">
-        <div class="container">
-            <div class="home-why__head" data-reveal>
-                <div class="home-why__eyebrow">{{ __('home.about_badge') }}</div>
-                <h2 class="home-why__title">{{ __('home.about_title') }} <em>{{ __('home.about_title_highlight') }}</em></h2>
-                <p class="home-why__desc">{{ __('home.about_description') }}</p>
-            </div>
-
-            <div class="grid-3">
-                <div class="home-why__item" data-reveal>
-                    <div class="home-why__num">01</div>
-                    <h3>{{ __('home.about_feature_1_title') }}</h3>
-                    <p>{{ __('home.about_feature_1_description') }}</p>
-                </div>
-                <div class="home-why__item" data-reveal>
-                    <div class="home-why__num">02</div>
-                    <h3>{{ __('home.about_feature_2_title') }}</h3>
-                    <p>{{ __('home.about_feature_2_description') }}</p>
-                </div>
-                <div class="home-why__item" data-reveal>
-                    <div class="home-why__num">03</div>
-                    <h3>{{ __('home.about_feature_3_title') }}</h3>
-                    <p>{{ __('home.about_feature_3_description') }}</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- WORKS --}}
-    @if ($works->isNotEmpty())
-        <section class="container home-section">
-            <div class="home-section__head">
-                <div>
-                    <div class="section-head__eyebrow">{{ __('home.portfolio_badge') }}</div>
-                    <h2 class="section-head__title">{{ __('home.portfolio_title') }} <em>{{ __('home.portfolio_title_highlight') }}</em></h2>
-                </div>
-                <a href="{{ localized_route('works.index') }}" class="btn btn--outline">{{ __('home.all_projects') }}</a>
-            </div>
-
-            <div class="grid-3">
-                @foreach ($works as $work)
-                    <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover home-work-card" data-reveal>
-                        <div class="home-work-card__media">
-                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
-                        </div>
-                        <div class="home-work-card__body">
-                            <div class="home-work-card__tag">{{ $work->service?->localizedTitle() ?? $work->type_label }}</div>
-                            <div class="home-work-card__title">{{ $work->title }}</div>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        </section>
-    @endif
-
-    {{-- TECH MARQUEE --}}
+    {{-- TECH MARQUEE (تُعرض هنا ضمن منطقة الخدمات — ما فيها موقع صريح بترتيب المستخدم) --}}
     @if ($technologies->isNotEmpty())
         <section class="home-tech">
             <div class="container">
@@ -262,114 +201,171 @@
         </section>
     @endif
 
-    {{-- NEWS --}}
-    <section id="news" class="container home-section">
-        <div class="home-section__head">
-            <div>
-                <div class="section-head__eyebrow">{{ __('home.news_badge') }}</div>
-                <h2 class="section-head__title">{{ __('home.news_title') }} <em>{{ __('home.news_title_highlight') }}</em></h2>
-            </div>
-            <a href="{{ localized_route('news.index') }}" class="btn btn--outline">{{ __('home.all_news') }}</a>
+    {{-- CTA مصغّر ١ --}}
+    <section class="container">
+        <div class="cta-band cta-band--mini" data-reveal>
+            <p class="cta-band__mini-text">{{ __('home.cta_mini_text') }}</p>
+            <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('home.cta_mini_button') }}</a>
         </div>
+    </section>
 
-        @if ($latestNews->isNotEmpty())
+    {{-- WORKS --}}
+    @if ($works->isNotEmpty())
+        <section class="container home-section">
+            <div class="home-section__head">
+                <div>
+                    <div class="section-head__eyebrow">{{ __('home.portfolio_badge') }}</div>
+                    <h2 class="section-head__title">{{ __('home.portfolio_title') }} <em>{{ __('home.portfolio_title_highlight') }}</em></h2>
+                </div>
+                <a href="{{ localized_route('works.index') }}" class="btn btn--outline">{{ __('home.all_projects') }}</a>
+            </div>
+
             <div class="grid-3">
-                @foreach ($latestNews as $article)
-                    <a href="{{ $article->slug() ? localized_route('news.show', ['slug' => $article->slug()]) : localized_route('news.index') }}" class="card card--hover home-news-card" data-reveal>
-                        <div class="home-news-card__media">
-                            <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
+                @foreach ($works as $work)
+                    <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover home-work-card" data-reveal>
+                        <div class="home-work-card__media">
+                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
                         </div>
-                        <div class="home-news-card__body">
-                            <div class="home-news-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
-                            <h3>{{ $article->title }}</h3>
-                            <span class="home-news-card__link">{{ __('home.read_article') }} ←</span>
+                        <div class="home-work-card__body">
+                            <div class="home-work-card__tag">{{ $work->service?->localizedTitle() ?? $work->type_label }}</div>
+                            <div class="home-work-card__title">{{ $work->title }}</div>
+                            @if ($work->outcome)
+                                <div class="home-work-card__outcome">✓ {{ $work->outcome }}</div>
+                            @endif
                         </div>
                     </a>
                 @endforeach
             </div>
-        @else
-            <div class="empty-state">
-                <div class="empty-state__title">{{ __('home.news_empty') }}</div>
-            </div>
-        @endif
+        </section>
+    @endif
+
+    {{-- CTA مصغّر ٢ --}}
+    <section class="container">
+        <div class="cta-band cta-band--mini" data-reveal>
+            <p class="cta-band__mini-text">{{ __('home.cta_mini_text') }}</p>
+            <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('home.cta_mini_button') }}</a>
+        </div>
     </section>
 
-    {{-- ARTICLES --}}
-    @if ($showArticles)
-        <section id="articles" class="container home-section">
-            <div class="home-section__head">
-                <div>
-                    <div class="section-head__eyebrow">{{ __('home.articles_badge') }}</div>
-                    <h2 class="section-head__title">{{ __('home.articles_title') }} <em>{{ __('home.articles_title_highlight') }}</em></h2>
-                </div>
-                <a href="{{ article_route('index') }}" class="btn btn--outline">{{ __('home.all_articles') }}</a>
+    {{-- WHY ALYASI --}}
+    <section class="home-why">
+        <div class="container">
+            <div class="home-why__head" data-reveal>
+                <div class="home-why__eyebrow">{{ __('home.about_badge') }}</div>
+                <h2 class="home-why__title">{{ __('home.about_title') }} <em>{{ __('home.about_title_highlight') }}</em></h2>
             </div>
 
-            @if ($latestArticles->isNotEmpty())
-                <div class="grid-3">
-                    @foreach ($latestArticles as $article)
-                        <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover home-news-card" data-reveal>
-                            <div class="home-news-card__media">
-                                <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title }}" loading="lazy">
+            <div class="grid-3">
+                <div class="home-why__item" data-reveal>
+                    <div class="home-why__num">01</div>
+                    <h3>{{ __('home.about_feature_1_title') }}</h3>
+                    <p>{{ __('home.about_feature_1_description') }}</p>
+                </div>
+                <div class="home-why__item" data-reveal>
+                    <div class="home-why__num">02</div>
+                    <h3>{{ __('home.about_feature_2_title') }}</h3>
+                    <p>{{ __('home.about_feature_2_description') }}</p>
+                </div>
+                <div class="home-why__item" data-reveal>
+                    <div class="home-why__num">03</div>
+                    <h3>{{ __('home.about_feature_3_title') }}</h3>
+                    <p>{{ __('home.about_feature_3_description') }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- LATEST UPDATES (أخبار + مقالات + مجتمع مدمجة) --}}
+    <section id="updates" class="container home-section">
+        <div class="home-section__head">
+            <div>
+                <div class="section-head__eyebrow">{{ __('home.updates_badge') }}</div>
+                <h2 class="section-head__title">{{ __('home.updates_title') }}</h2>
+            </div>
+        </div>
+
+        <div class="home-updates-grid">
+
+            {{-- News column --}}
+            <div class="home-updates-col" id="news">
+                <div class="home-updates-col__head">
+                    <h3>{{ __('home.news_badge') }}</h3>
+                    <a href="{{ localized_route('news.index') }}">{{ __('home.all_news') }} ←</a>
+                </div>
+
+                @if ($latestNews->isNotEmpty())
+                    @foreach ($latestNews as $article)
+                        <a href="{{ $article->slug() ? localized_route('news.show', ['slug' => $article->slug()]) : localized_route('news.index') }}" class="home-updates-card">
+                            <div class="home-updates-card__media">
+                                <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
                             </div>
-                            <div class="home-news-card__body">
-                                <div class="home-news-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
-                                <h3>{{ $article->title }}</h3>
-                                <span class="home-news-card__link">{{ __('articles.read_more') }} ←</span>
+                            <div class="home-updates-card__body">
+                                <div class="home-updates-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
+                                <h4>{{ $article->title }}</h4>
                             </div>
                         </a>
                     @endforeach
-                </div>
-            @else
-                <div class="empty-state">
-                    <div class="empty-state__title">{{ __('home.articles_empty') }}</div>
-                </div>
-            @endif
-        </section>
-    @endif
+                @else
+                    <p class="home-updates-empty">{{ __('home.news_empty') }}</p>
+                @endif
+            </div>
 
-    {{-- COMMUNITY --}}
-    @if ($showCommunityEvents)
-        <section id="community" class="home-community">
-            <div class="container">
-                <div class="home-section__head">
-                    <div>
-                        <div class="section-head__eyebrow">{{ __('home.community_badge') }}</div>
-                        <h2 class="section-head__title">{{ __('home.community_title') }} <em>{{ __('home.community_title_highlight') }}</em></h2>
+            {{-- Articles column --}}
+            @if ($showArticles)
+                <div class="home-updates-col" id="articles">
+                    <div class="home-updates-col__head">
+                        <h3>{{ __('home.articles_badge') }}</h3>
+                        <a href="{{ article_route('index') }}">{{ __('home.all_articles') }} ←</a>
                     </div>
-                    <a href="{{ localized_route('community.index') }}" class="btn btn--outline">{{ __('community.show_all') }}</a>
-                </div>
 
-                @if ($communityHighlights->isNotEmpty())
-                    <div class="grid-3">
-                        @foreach ($communityHighlights as $post)
-                            <a href="{{ route('community.show', $post) }}" class="card card--hover home-community-card" data-reveal>
-                                <div class="home-community-card__media">
-                                    <img src="{{ media_url($post->image) }}" alt="{{ $post->title }}" loading="lazy">
-                                    @if ($post->event_status)
-                                        <span class="badge badge--status-{{ $post->event_status }} home-community-card__badge">{{ __('events.status.'.$post->event_status) }}</span>
-                                    @endif
+                    @if ($latestArticles->isNotEmpty())
+                        @foreach ($latestArticles as $article)
+                            <a href="{{ article_route('show', [$article->slug()]) }}" class="home-updates-card">
+                                <div class="home-updates-card__media">
+                                    <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title }}" loading="lazy">
                                 </div>
-                                <div class="home-community-card__body">
-                                    <div class="home-community-card__meta">
-                                        {{ optional($post->event_start_at ?? $post->published_at)->translatedFormat('d.m.Y') }}
-                                        @if ($post->location || $post->category)
-                                            · {{ $post->location ?: $post->category->name }}
-                                        @endif
-                                    </div>
-                                    <h3>{{ $post->title }}</h3>
+                                <div class="home-updates-card__body">
+                                    <div class="home-updates-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
+                                    <h4>{{ $article->title }}</h4>
                                 </div>
                             </a>
                         @endforeach
+                    @else
+                        <p class="home-updates-empty">{{ __('home.articles_empty') }}</p>
+                    @endif
+                </div>
+            @endif
+
+            {{-- Community column --}}
+            @if ($showCommunityEvents)
+                <div class="home-updates-col" id="community">
+                    <div class="home-updates-col__head">
+                        <h3>{{ __('home.community_badge') }}</h3>
+                        <a href="{{ localized_route('community.index') }}">{{ __('community.show_all') }} ←</a>
                     </div>
-                @else
-                    <div class="empty-state">
-                        <div class="empty-state__title">{{ __('community.empty_title') }}</div>
-                    </div>
-                @endif
-            </div>
-        </section>
-    @endif
+
+                    @if ($communityHighlights->isNotEmpty())
+                        @foreach ($communityHighlights as $post)
+                            <a href="{{ route('community.show', $post) }}" class="home-updates-card">
+                                <div class="home-updates-card__media">
+                                    <img src="{{ media_url($post->image) }}" alt="{{ $post->title }}" loading="lazy">
+                                </div>
+                                <div class="home-updates-card__body">
+                                    <div class="home-updates-card__date">
+                                        {{ optional($post->event_start_at ?? $post->published_at)->translatedFormat('d.m.Y') }}
+                                    </div>
+                                    <h4>{{ $post->title }}</h4>
+                                </div>
+                            </a>
+                        @endforeach
+                    @else
+                        <p class="home-updates-empty">{{ __('community.empty_title') }}</p>
+                    @endif
+                </div>
+            @endif
+
+        </div>
+    </section>
 
     {{-- FAQ --}}
     @if ($faqs->isNotEmpty())
@@ -399,7 +395,7 @@
         </section>
     @endif
 
-    {{-- CTA --}}
+    {{-- CTA ختامي --}}
     <section id="contact" class="container">
         <div class="cta-band" data-reveal>
             <div class="cta-band__eyebrow">{{ __('home.cta_badge') }}</div>

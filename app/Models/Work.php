@@ -20,6 +20,7 @@ class Work extends Model
         'slug',
         'type',
         'short_description',
+        'outcome',
         'description',
         'cover_image',
         'client_name',

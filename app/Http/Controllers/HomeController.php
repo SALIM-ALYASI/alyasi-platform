@@ -36,7 +36,7 @@ class HomeController extends Controller
             ->with('permalinks')
             ->published()
             ->latestPublished()
-            ->take(3)
+            ->take(2)
             ->get();
 
         $technologies = Technology::query()
@@ -58,7 +58,7 @@ class HomeController extends Controller
                 ->active()
                 ->published()
                 ->ordered()
-                ->take(3)
+                ->take(2)
                 ->get()
             : collect();
 
@@ -68,11 +68,9 @@ class HomeController extends Controller
                 ->published()
                 ->availableIn(app()->getLocale())
                 ->ordered()
-                ->take(3)
+                ->take(2)
                 ->get()
             : collect();
-
-        $yearsOfExperience = now()->year - 2019;
 
         return view(
             'home.index',
@@ -85,8 +83,7 @@ class HomeController extends Controller
                 'communityHighlights',
                 'latestArticles',
                 'showCommunityEvents',
-                'showArticles',
-                'yearsOfExperience'
+                'showArticles'
             )
         );
     }
