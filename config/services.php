@@ -78,6 +78,14 @@ return [
         'webhook_verify_token' => env('WHATSAPP_CLOUD_WEBHOOK_VERIFY_TOKEN'),
     ],
 
+    // جسر واتساب غير رسمي (WhatsApp Web session) لتنبيهات المالك الفورية —
+    // منفصل تمامًا عن whatsapp_cloud أعلاه (API الرسمي، غير مفعّل حاليًا).
+    'whatsapp_notify' => [
+        'base_url' => env('WHATSAPP_NOTIFY_BASE_URL'),
+        'api_key' => env('WHATSAPP_NOTIFY_API_KEY'),
+        'number' => env('WHATSAPP_NOTIFY_NUMBER'),
+    ],
+
 
     'facebook' => [
         'webhook_verify_token' => env('FACEBOOK_WEBHOOK_VERIFY_TOKEN'),

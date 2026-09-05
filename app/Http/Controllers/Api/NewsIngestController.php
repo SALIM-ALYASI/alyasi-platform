@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Concerns\NotifiesWhatsApp;
 use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
 use App\Models\NewsCategory;
@@ -20,6 +21,8 @@ use Mews\Purifier\Facades\Purifier;
 
 class NewsIngestController extends Controller
 {
+    use NotifiesWhatsApp;
+
     /**
      * استقبال خبر كامل من بوت الأخبار وحفظه.
      *
@@ -157,7 +160,11 @@ class NewsIngestController extends Controller
                     ->toDateString();
 
                 // قفل سجلات اليوم أثناء تخصيص الرقم التالي لتجنب التكرار.
-                $lastSequence = NewsArticle::query()
+                // withTrashed() إلزامي هنا: الرقم دائم ولا يُعاد استخدامه حتى
+                // لو حُذف الخبر لاحقاً (soft delete) -- القيد الفريد بقاعدة
+                // البيانات ما يستثني السجلات المحذوفة، فتجاهلها بالحساب هنا
+                // ينتج رقماً محجوزاً فعلياً ويطيح بـ Integrity constraint.
+                $lastSequence = NewsArticle::withTrashed()
                     ->whereDate('publication_date', $publicationDate)
                     ->lockForUpdate()
                     ->max('daily_sequence');
@@ -184,6 +191,13 @@ class NewsIngestController extends Controller
 
         $permalink = $article->permalinks()->where('locale', 'ar')->first()
             ?? $article->permalinks()->first();
+
+        if ($isPublished) {
+            $this->notifyWhatsApp(
+                "📰 خبر جديد على ALYASI:\n{$article->title_ar}"
+                .($permalink ? "\n{$permalink->url()}" : '')
+            );
+        }
 
         return response()->json([
             'success' => true,
