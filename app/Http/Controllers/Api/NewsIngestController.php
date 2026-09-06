@@ -298,6 +298,46 @@ class NewsIngestController extends Controller
     }
 
     /**
+     * استقبال فيديو النشرة اليومية الجاهز من بوت الأخبار (رندر خارجي على
+     * السيرفر المنزلي) وتخزينه بتخزين عام، لأن smart-content يحتاج رابط
+     * HTTP عام بلا مصادقة خاصة لتنزيله قبل رفعه ليوتيوب (نفس افتراض تحميل
+     * صور الأخبار العادية).
+     */
+    public function storeDigestVideo(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'video' => ['required', 'file', 'mimes:mp4', 'max:512000'],
+        ]);
+
+        $path = $validated['video']->storeAs(
+            'news-videos',
+            sprintf('digest-%s-%s.mp4', now()->format('Ymd-His'), Str::lower(Str::random(8))),
+            'public'
+        );
+
+        return response()->json([
+            'success' => true,
+            'url' => Storage::disk('public')->url($path),
+        ]);
+    }
+
+    /**
+     * تنبيه واتساب عام يستدعيه بوت الأخبار (مثلاً بعد نشر نشرة الفيديو
+     * اليومية ليوتيوب) — يمرّ عبر Laravel عشان مفاتيح واتساب تبقى بمكان
+     * واحد فقط، بدل تكرارها بأنظمة ثانية.
+     */
+    public function notifyWhatsAppEndpoint(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:2000'],
+        ]);
+
+        $this->notifyWhatsApp($validated['message']);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * تحديد الخبر كمُرسَل لبرامج التواصل (بعد نشره فعليًا عبر n8n).
      */
     public function markSocialSent(NewsArticle $newsArticle): JsonResponse
@@ -310,29 +350,48 @@ class NewsIngestController extends Controller
     /**
      * كل الأخبار المنشورة بتاريخ معيّن (اليوم افتراضيًا)، بمحتوى كافٍ
      * لتوليد فكرة مقال أصلي لاحقًا — يستهلكها n8n بجدولة يومية مستقلة.
+     *
+     * `?window=rolling24h` يبدّل النافذة من يوم تقويمي ثابت إلى آخر 24 ساعة
+     * متحركة من لحظة الطلب — يستخدمها بوت نشرة الفيديو اليومية (خارج نطاق
+     * n8n الحالي الذي يستمر يعمل بسلوكه الافتراضي دون أي تأثير).
      */
     public function dailyDigest(Request $request): JsonResponse
     {
         $date = $request->date('date') ?? now();
+        $rolling = $request->string('window')->value() === 'rolling24h';
 
         $articles = NewsArticle::query()
+            ->with(['category', 'permalinks'])
             ->published()
-            ->whereBetween('published_at', [
-                $date->copy()->startOfDay(),
-                $date->copy()->endOfDay(),
-            ])
+            ->whereBetween('published_at', $rolling
+                ? [now()->subHours(24), now()]
+                : [$date->copy()->startOfDay(), $date->copy()->endOfDay()])
             ->orderBy('published_at')
             ->get()
-            ->map(fn (NewsArticle $article) => [
-                'id' => $article->id,
-                'title_ar' => $article->title_ar,
-                'title_en' => $article->title_en,
-                'excerpt_ar' => $article->excerpt_ar,
-                'content_ar' => strip_tags((string) $article->content_ar),
-                'source_name' => $article->source_name,
-                'source_url' => $article->source_url,
-                'published_at' => $article->published_at?->toIso8601String(),
-            ])
+            ->map(function (NewsArticle $article) {
+                $permalink = $article->permalinks->firstWhere('locale', 'ar')
+                    ?? $article->permalinks->first();
+
+                return [
+                    'id' => $article->id,
+                    'title_ar' => $article->title_ar,
+                    'title_en' => $article->title_en,
+                    'excerpt_ar' => $article->excerpt_ar,
+                    'content_ar' => strip_tags((string) $article->content_ar),
+                    'category' => $article->category?->name_ar,
+                    'source_name' => $article->source_name,
+                    'source_url' => $article->source_url,
+                    'url' => $permalink?->url(),
+                    'image_url' => filled($article->image)
+                        ? (
+                            Str::startsWith($article->image, ['http://', 'https://'])
+                                ? $article->image
+                                : Storage::disk('public')->url($article->image)
+                        )
+                        : null,
+                    'published_at' => $article->published_at?->toIso8601String(),
+                ];
+            })
             ->values();
 
         return response()->json([

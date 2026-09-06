@@ -41,6 +41,14 @@ Route::get('news/regional-availability', [NewsIngestController::class, 'regional
     ->middleware(['news-bot.auth', 'throttle:60,1'])
     ->name('api.news.regional-availability');
 
+Route::post('news/digest-video', [NewsIngestController::class, 'storeDigestVideo'])
+    ->middleware(['news-bot.auth', 'throttle:10,1'])
+    ->name('api.news.digest-video');
+
+Route::post('news/notify-whatsapp', [NewsIngestController::class, 'notifyWhatsAppEndpoint'])
+    ->middleware(['news-bot.auth', 'throttle:30,1'])
+    ->name('api.news.notify-whatsapp');
+
 /*
 |--------------------------------------------------------------------------
 | Event Bot Ingest
