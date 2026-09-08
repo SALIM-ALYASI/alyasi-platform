@@ -378,6 +378,9 @@ Route::middleware('force.locale:en')
     ->get('/en/terms', [PageController::class, 'terms'])
     ->name('terms.en');
 
+Route::get('/data-deletion', [PageController::class, 'dataDeletion'])
+    ->name('data-deletion');
+
 Route::middleware('force.locale:ar')
     ->get('/youtube-publisher', [PageController::class, 'youtubePublisher'])
     ->name('youtube-publisher');

@@ -78,6 +78,18 @@ class PageController extends Controller
     }
 
     /**
+     * صفحة تعليمات حذف البيانات (عربي + قسم إنجليزي) — مطلوبة من Meta لإكمال
+     * مراجعة تطبيق ALYASI الخاص بـ Facebook وInstagram (Data Deletion
+     * Instructions URL)، ولازم تكون عامة بلا تسجيل دخول.
+     */
+    public function dataDeletion(): View
+    {
+        $contactEmail = Setting::get('contact_email', 'alyasiforchargers@gmail.com');
+
+        return view('legal.data-deletion', compact('contactEmail'));
+    }
+
+    /**
      * صفحة تعريف تطبيق ALYASI Platform Publisher — مطلوبة من Google لإثبات
      * الملكية والربط بين اسم تطبيق OAuth والموقع أثناء طلب التحقق
      * (Brand Verification)، ولازم تكون عامة بلا تسجيل دخول.
