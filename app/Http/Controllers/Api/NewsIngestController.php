@@ -210,6 +210,8 @@ class NewsIngestController extends Controller
             'url' => $permalink?->url(),
             'slug' => $permalink?->slug,
             'category_slug' => $category->slug,
+            'title_ar' => $article->title_ar,
+            'excerpt_ar' => $article->excerpt_ar,
             'image' => $article->image,
             'image_url' => filled($article->image)
                 ? (
