@@ -184,6 +184,12 @@
                         <option value="rumored">إشاعة/تسريب</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>صورة المنتج</label>
+                    <img class="announcement-image-preview" style="display:none; width:70px; height:70px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
+                    <input type="hidden" name="announcements[__INDEX__][image]" data-field="image" class="announcement-image-hidden">
+                    <input type="file" name="announcement_images[__INDEX__]" accept="image/*" class="announcement-image-file">
+                </div>
             </div>
             <button type="button" class="btn btn-secondary remove-row" style="margin-top:8px;">حذف هذا الصف</button>
         </div>
@@ -280,6 +286,24 @@
                     var field = el.getAttribute('data-field');
                     if (values[field] !== undefined && values[field] !== null) {
                         el.value = values[field];
+                    }
+                });
+            }
+
+            var preview = row.querySelector('.announcement-image-preview');
+            var fileInput = row.querySelector('.announcement-image-file');
+            var hiddenInput = row.querySelector('.announcement-image-hidden');
+
+            if (preview && hiddenInput && hiddenInput.value) {
+                preview.src = '/' + hiddenInput.value.replace(/^\/+/, '');
+                preview.style.display = 'block';
+            }
+
+            if (fileInput && preview) {
+                fileInput.addEventListener('change', function () {
+                    if (fileInput.files && fileInput.files[0]) {
+                        preview.src = URL.createObjectURL(fileInput.files[0]);
+                        preview.style.display = 'block';
                     }
                 });
             }

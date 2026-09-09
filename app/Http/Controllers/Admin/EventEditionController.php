@@ -160,6 +160,9 @@ class EventEditionController extends Controller
             'announcements.*.note_ar' => ['nullable', 'string', 'max:500'],
             'announcements.*.note_en' => ['nullable', 'string', 'max:500'],
             'announcements.*.confidence' => ['nullable', 'in:confirmed,expected,rumored'],
+            'announcements.*.image' => ['nullable', 'string'],
+            'announcement_images' => ['nullable', 'array'],
+            'announcement_images.*' => ['nullable', 'image', 'max:5120'],
             'pricing_table' => ['nullable', 'array'],
             'pricing_table.*.product_ar' => ['nullable', 'string', 'max:255'],
             'pricing_table.*.product_en' => ['nullable', 'string', 'max:255'],
@@ -173,8 +176,18 @@ class EventEditionController extends Controller
 
         $data['attended'] = $request->boolean('attended');
 
+        $announcementImages = $request->file('announcement_images', []);
+
         $data['announcements'] = collect($data['announcements'] ?? [])
             ->filter(fn (array $row) => filled($row['label_ar'] ?? null) || filled($row['label_en'] ?? null))
+            ->map(function (array $row, int|string $key) use ($announcementImages) {
+                $uploaded = $announcementImages[$key] ?? null;
+                if ($uploaded instanceof UploadedFile && $uploaded->isValid()) {
+                    $row['image'] = $this->storeUpload($uploaded);
+                }
+
+                return $row;
+            })
             ->values()
             ->all();
 
@@ -187,7 +200,7 @@ class EventEditionController extends Controller
             $data['published_at'] = now();
         }
 
-        unset($data['kept_gallery'], $data['new_gallery_images']);
+        unset($data['kept_gallery'], $data['new_gallery_images'], $data['announcement_images']);
 
         return $data;
     }

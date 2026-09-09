@@ -70,6 +70,14 @@
 .event-detail__announcement-label { font-weight: 700; font-size: 15px; }
 .event-detail__announcement-note { font-size: 13px; color: rgba(20, 32, 46, .6); margin-top: 4px; }
 
+.event-detail__announcement-image {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
 .event-detail__pricing-table {
     width: 100%;
     border-collapse: collapse;

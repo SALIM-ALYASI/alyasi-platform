@@ -126,21 +126,7 @@
             <h2 class="event-detail__section-title">{{ __('events.expected_announcements') }}</h2>
             <div class="event-detail__announcement-list">
                 @foreach ($edition->announcements as $item)
-                    <div class="event-detail__announcement">
-                        <div>
-                            <div class="event-detail__announcement-label">
-                                {{ app()->getLocale() === 'en' ? ($item['label_en'] ?? $item['label_ar'] ?? '') : ($item['label_ar'] ?? '') }}
-                            </div>
-                            @if (!empty($item['note_ar']) || !empty($item['note_en']))
-                                <div class="event-detail__announcement-note">
-                                    {{ app()->getLocale() === 'en' ? ($item['note_en'] ?? $item['note_ar'] ?? '') : ($item['note_ar'] ?? '') }}
-                                </div>
-                            @endif
-                        </div>
-                        @if (!empty($item['confidence']))
-                            <span class="badge">{{ __('events.confidence.'.$item['confidence']) }}</span>
-                        @endif
-                    </div>
+                        @include('events._announcement-item', ['item' => $item])
                 @endforeach
             </div>
         @endif
@@ -163,18 +149,7 @@
                 <h2 class="event-detail__section-title">{{ __('events.what_was_announced') }}</h2>
                 <div class="event-detail__announcement-list">
                     @foreach ($edition->announcements as $item)
-                        <div class="event-detail__announcement">
-                            <div>
-                                <div class="event-detail__announcement-label">
-                                    {{ app()->getLocale() === 'en' ? ($item['label_en'] ?? $item['label_ar'] ?? '') : ($item['label_ar'] ?? '') }}
-                                </div>
-                                @if (!empty($item['note_ar']) || !empty($item['note_en']))
-                                    <div class="event-detail__announcement-note">
-                                        {{ app()->getLocale() === 'en' ? ($item['note_en'] ?? $item['note_ar'] ?? '') : ($item['note_ar'] ?? '') }}
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+                        @include('events._announcement-item', ['item' => $item])
                     @endforeach
                 </div>
             @endif
