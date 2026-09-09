@@ -62,6 +62,10 @@ return [
 
     'starting_price' => 'Starting at',
 
+    'official_price_label' => 'Official Price',
+
+    'omr_estimate_label' => 'Est. in OMR',
+
     'close_lightbox' => 'Close',
 
     'upgrade_verdict_title' => 'Is It Worth Upgrading?',

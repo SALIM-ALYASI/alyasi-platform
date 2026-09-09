@@ -36,14 +36,19 @@
 
         @if (!empty($priceInfo))
             <div class="product-card__price">
-                @if ($priceInfo['is_starting'])
-                    <span class="product-card__price-label">{{ __('events.starting_price') }}</span>
-                @endif
-                <span class="product-card__price-value">
-                    {{ $priceInfo['official_price'] }} {{ $priceInfo['official_currency'] }}
-                </span>
+                <div class="product-card__price-group">
+                    <span class="product-card__price-tag">
+                        {{ $priceInfo['is_starting'] ? __('events.starting_price') : __('events.official_price_label') }}
+                    </span>
+                    <span class="product-card__price-value">
+                        {{ $priceInfo['official_price'] }} {{ $priceInfo['official_currency'] }}
+                    </span>
+                </div>
                 @if ($priceInfo['omr_price'])
-                    <span class="product-card__price-omr">{{ $priceInfo['omr_price'] }} OMR</span>
+                    <div class="product-card__price-group">
+                        <span class="product-card__price-tag">{{ __('events.omr_estimate_label') }}</span>
+                        <span class="product-card__price-omr">{{ $priceInfo['omr_price'] }} OMR</span>
+                    </div>
                 @endif
             </div>
         @endif

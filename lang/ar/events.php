@@ -62,6 +62,10 @@ return [
 
     'starting_price' => 'يبدأ من',
 
+    'official_price_label' => 'السعر الرسمي',
+
+    'omr_estimate_label' => 'تقديري بالريال العُماني',
+
     'close_lightbox' => 'إغلاق',
 
     'upgrade_verdict_title' => 'هل يستحق الترقية؟',
