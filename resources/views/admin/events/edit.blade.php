@@ -2,6 +2,10 @@
 
 @section('title', 'تعديل نسخة مؤتمر')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ versioned_asset('assets/admin/css/events.css') }}">
+@endpush
+
 @section('content')
 
 <div class="admin-data-page">
@@ -23,7 +27,7 @@
         </div>
     </div>
 
-    <div class="social-form-card">
+    <div class="events-form-card">
         <form action="{{ route('admin.events.update', $edition) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')

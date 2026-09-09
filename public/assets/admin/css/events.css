@@ -1,0 +1,254 @@
+/* =========================================================
+   ALYASI Admin - Events Module
+   ========================================================= */
+
+:root {
+    --events-primary: var(--admin-primary);
+    --events-primary-dark: var(--admin-primary-dark);
+
+    --events-gold: #d8b56a;
+    --events-gold-dark: #b58f43;
+    --events-gold-soft: rgba(216, 181, 106, 0.14);
+
+    --events-danger: var(--admin-danger);
+    --events-danger-soft: var(--admin-danger-soft);
+
+    --events-text: var(--admin-text);
+    --events-text-muted: var(--admin-muted);
+    --events-border: var(--admin-border);
+    --events-radius-sm: 10px;
+    --events-radius: 16px;
+    --events-transition: 0.2s ease;
+}
+
+.events-form-card {
+    background: var(--events-primary-dark, #ffffff);
+    background: #ffffff;
+    border: 1px solid var(--events-border);
+    border-radius: var(--events-radius);
+    padding: 28px;
+    box-shadow: 0 10px 28px rgba(11, 31, 58, 0.06);
+}
+
+.events-form-section {
+    margin-bottom: 32px;
+}
+
+.events-form-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.events-form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--events-border);
+    color: var(--events-primary-dark);
+    font-size: 15.5px;
+    font-weight: 800;
+}
+
+.events-form-section-title i {
+    color: var(--events-gold-dark);
+    font-size: 14px;
+}
+
+/* — Grid / groups (bare elements, no .form-control class needed) — */
+
+.events-form-card .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.events-form-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.events-form-card .form-group-full {
+    grid-column: 1 / -1;
+}
+
+.events-form-card label {
+    color: var(--events-text);
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.events-form-card input[type="text"],
+.events-form-card input[type="url"],
+.events-form-card input[type="number"],
+.events-form-card input[type="date"],
+.events-form-card input[type="datetime-local"],
+.events-form-card input[type="file"],
+.events-form-card select,
+.events-form-card textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid var(--events-border);
+    border-radius: var(--events-radius-sm);
+    outline: none;
+    background: #fff;
+    color: var(--events-text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color var(--events-transition), box-shadow var(--events-transition);
+    box-sizing: border-box;
+}
+
+.events-form-card textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.events-form-card input:disabled {
+    background: var(--admin-surface-soft, #ECEFF3);
+    color: var(--events-text-muted);
+}
+
+.events-form-card input:focus,
+.events-form-card select:focus,
+.events-form-card textarea:focus {
+    border-color: var(--events-gold-dark);
+    box-shadow: 0 0 0 4px var(--events-gold-soft);
+}
+
+.events-form-card .form-hint {
+    color: var(--events-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.events-form-card .form-error {
+    color: var(--events-danger);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.events-form-card .check-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.events-form-card .check-option input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--events-gold-dark);
+}
+
+/* — Repeater rows (announcements / pricing) — */
+
+.events-repeater-row {
+    border: 1px solid var(--events-border);
+    border-radius: var(--events-radius-sm);
+    background: #fbfbfc;
+    padding: 18px;
+    margin-top: 14px;
+}
+
+.events-repeater-empty {
+    color: var(--events-text-muted);
+    font-size: 13px;
+    padding: 14px 0;
+}
+
+/* — Image previews / gallery — */
+
+.events-image-thumb {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--events-border);
+}
+
+.events-gallery-item {
+    position: relative;
+}
+
+.events-gallery-item__remove {
+    position: absolute;
+    top: -8px;
+    inset-inline-start: -8px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    background: var(--events-danger);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* — Buttons — */
+
+.events-form-card .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: var(--events-radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform var(--events-transition), box-shadow var(--events-transition), background var(--events-transition), border-color var(--events-transition);
+}
+
+.events-form-card .btn:hover {
+    transform: translateY(-1px);
+}
+
+.events-form-card .btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, var(--events-primary), var(--events-primary-dark));
+    box-shadow: 0 8px 18px rgba(11, 31, 58, 0.22);
+}
+
+.events-form-card .btn-secondary {
+    color: var(--events-primary-dark);
+    background: #fff;
+    border-color: var(--events-border);
+}
+
+.events-form-card .btn-secondary:hover {
+    border-color: var(--events-gold-dark);
+    background: var(--events-gold-soft);
+}
+
+.events-form-card .form-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--events-border);
+}
+
+@media (max-width: 768px) {
+    .events-form-card .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .events-form-card .form-group-full {
+        grid-column: auto;
+    }
+}
