@@ -12,6 +12,24 @@
             "runtimeExecutable": "bash",
             "runtimeArgs": ["-c", "cd /Volumes/Projects/Laravel/alyasi-educational-agent && PHPRC=/Volumes/Projects/Laravel/alyasi-educational-agent/.claude/php-dev php artisan serve --port=8123"],
             "port": 8123
+        },
+        {
+            "name": "albadyah-web",
+            "runtimeExecutable": "bash",
+            "runtimeArgs": ["-c", "cd /Volumes/Projects/Laravel/ALbadyah-Web && npx concurrently -k \"php artisan serve --port=8201\" \"npm run dev\""],
+            "port": 8201
+        },
+        {
+            "name": "adib-alsaghir",
+            "runtimeExecutable": "bash",
+            "runtimeArgs": ["-c", "cd /Volumes/Projects/Laravel/adib-alsaghir && php artisan serve --port=8100"],
+            "port": 8100
+        },
+        {
+            "name": "mockup-preview",
+            "runtimeExecutable": "php",
+            "runtimeArgs": ["-S", "127.0.0.1:8199", "-t", "/private/tmp/claude-501/-Volumes-Projects-Laravel-alyasi-platform/deadc06a-f4b3-4cc2-8e28-2ac1cc7be725/scratchpad/mockup-preview"],
+            "port": 8199
         }
     ]
 }

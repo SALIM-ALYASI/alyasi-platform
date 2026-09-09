@@ -43,5 +43,6 @@ return [
     'voice_studio' => 'استوديو الصوت',
     'publish' => 'النشر الذكي',
     'server_info' => 'بيانات سيرفر',
+    'whatsapp_api' => 'واتساب API',
 
 ];

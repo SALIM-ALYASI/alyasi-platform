@@ -149,7 +149,7 @@
                 </div>
                 <div class="community-detail__info-value">
                     @if ($edition->event_start_at)
-                        {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat('d.m.Y — H:i') }}
+                        {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
                     @else
                         —
                     @endif

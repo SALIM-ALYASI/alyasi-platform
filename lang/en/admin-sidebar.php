@@ -43,5 +43,6 @@ return [
     'voice_studio' => 'Voice Studio',
     'publish' => 'Smart Publish',
     'server_info' => 'Server Info',
+    'whatsapp_api' => 'WhatsApp API',
 
 ];

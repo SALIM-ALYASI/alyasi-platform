@@ -458,6 +458,23 @@
                     </span>
                 </a>
 
+                {{-- واتساب API --}}
+                <a
+                    href="{{ route('admin.whatsapp.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.whatsapp.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-brands fa-whatsapp"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.whatsapp_api') }}
+                    </span>
+                </a>
+
                 {{-- الإعدادات --}}
                 <a
                     href="{{ route('admin.settings.index') }}"

@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\VoiceStudioController;
+use App\Http\Controllers\Admin\WhatsAppController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\Admin\YoutubeAuthController;
 use App\Http\Controllers\ArticleController;
@@ -992,6 +993,22 @@ Route::prefix('admin')
                     'server-info',
                     [ServerInfoController::class, 'index']
                 )->name('server-info.index');
+
+                /*
+                |----------------------------------------------------------
+                | WhatsApp API
+                |----------------------------------------------------------
+                */
+
+                Route::prefix('whatsapp')
+                    ->name('whatsapp.')
+                    ->group(function () {
+                        Route::get('/', [WhatsAppController::class, 'index'])
+                            ->name('index');
+
+                        Route::post('/send-test', [WhatsAppController::class, 'sendTest'])
+                            ->name('send-test');
+                    });
 
                 /*
                 |----------------------------------------------------------
