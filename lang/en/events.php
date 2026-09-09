@@ -44,6 +44,8 @@ return [
 
     'watch_live' => 'Watch the Livestream',
 
+    'held_on' => 'Held on',
+
     'expected_announcements' => 'What to Expect',
 
     'what_was_announced' => 'What Was Announced',

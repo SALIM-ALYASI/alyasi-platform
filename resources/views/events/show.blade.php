@@ -136,13 +136,17 @@
 
         <h1 class="community-detail__title">{{ $edition->title }}</h1>
 
-        <div class="event-detail__date-status">
-            {{ __('events.date_status.'.$edition->date_status) }}
-        </div>
+        @if ($phase !== 'concluded')
+            <div class="event-detail__date-status">
+                {{ __('events.date_status.'.$edition->date_status) }}
+            </div>
+        @endif
 
         <div class="grid-2 community-detail__info-grid">
             <div class="community-detail__info-card">
-                <div class="community-detail__info-label">{{ __('community.event_information') }}</div>
+                <div class="community-detail__info-label">
+                    {{ $phase === 'concluded' ? __('events.held_on') : __('community.event_information') }}
+                </div>
                 <div class="community-detail__info-value">
                     @if ($edition->event_start_at)
                         {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat('d.m.Y — H:i') }}

@@ -44,6 +44,8 @@ return [
 
     'watch_live' => 'شاهد البث المباشر',
 
+    'held_on' => 'أُقيمت بتاريخ',
+
     'expected_announcements' => 'المتوقع طرحه',
 
     'what_was_announced' => 'ما أُعلن فعلاً',
