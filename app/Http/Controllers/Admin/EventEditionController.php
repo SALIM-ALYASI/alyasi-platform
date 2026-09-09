@@ -1,0 +1,245 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Event;
+use App\Models\EventEdition;
+use App\Models\Permalink;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+
+class EventEditionController extends Controller
+{
+    /**
+     * قائمة نسخ المؤتمرات (upcoming/live/concluded تُحسب تلقائيًا من التاريخ).
+     */
+    public function index(): View
+    {
+        $editions = EventEdition::query()
+            ->with('event')
+            ->orderByDesc('event_start_at')
+            ->paginate(15);
+
+        return view('admin.events.index', compact('editions'));
+    }
+
+    /**
+     * صفحة إضافة نسخة مؤتمر جديدة.
+     */
+    public function create(): View
+    {
+        $events = Event::query()->orderBy('name')->get();
+
+        return view('admin.events.create', compact('events'));
+    }
+
+    /**
+     * حفظ نسخة مؤتمر جديدة (مع مؤتمرها الدائم لو ما كان موجود، وروابطها الدائمة).
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $this->validatedData($request);
+
+        $eventId = $validated['event_id'];
+        if ($eventId === 'new') {
+            $event = Event::query()->create([
+                'name' => $validated['new_event_name'],
+                'organizer' => $validated['new_event_organizer'] ?? null,
+            ]);
+            $eventId = $event->id;
+        }
+        unset($validated['new_event_name'], $validated['new_event_organizer']);
+        $validated['event_id'] = $eventId;
+
+        $storedImage = null;
+        if ($request->hasFile('image')) {
+            $storedImage = $this->storeUpload($request->file('image'));
+            $validated['image'] = $storedImage;
+        }
+
+        $validated['gallery'] = $this->mergeGallery($request, []);
+
+        $slug = Str::slug($validated['title_ar']).'-'.$validated['year'];
+
+        try {
+            $edition = DB::transaction(function () use ($validated, $slug) {
+                $edition = EventEdition::query()->create($validated);
+
+                foreach (['ar', 'en'] as $locale) {
+                    Permalink::query()->create([
+                        'locale' => $locale,
+                        'slug' => $slug,
+                        'linkable_type' => 'event_edition',
+                        'linkable_id' => $edition->id,
+                    ]);
+                }
+
+                return $edition;
+            });
+        } catch (\Throwable $exception) {
+            $this->deleteUpload($storedImage);
+            throw $exception;
+        }
+
+        return redirect()
+            ->route('admin.events.edit', $edition)
+            ->with('success', 'تمت إضافة نسخة المؤتمر بنجاح.');
+    }
+
+    /**
+     * صفحة تعديل نسخة مؤتمر.
+     */
+    public function edit(EventEdition $event): View
+    {
+        $event->load('event', 'permalinks');
+
+        return view('admin.events.edit', ['edition' => $event]);
+    }
+
+    /**
+     * تحديث نسخة مؤتمر — هنا يضيف المستخدم/يحدّث تفاصيل المنتجات (announcements)
+     * وجدول الأسعار (pricing_table) والصور أثناء المؤتمر نفسه.
+     */
+    public function update(Request $request, EventEdition $event): RedirectResponse
+    {
+        $validated = $this->validatedData($request);
+        unset($validated['event_id'], $validated['new_event_name'], $validated['new_event_organizer'], $validated['year']);
+
+        $oldImage = $event->image;
+        if ($request->hasFile('image')) {
+            $validated['image'] = $this->storeUpload($request->file('image'));
+        }
+
+        $validated['gallery'] = $this->mergeGallery($request, $event->gallery ?? []);
+
+        $event->update($validated);
+
+        if (! empty($validated['image']) && $oldImage && $oldImage !== $validated['image']) {
+            $this->deleteUpload($oldImage);
+        }
+
+        return redirect()
+            ->route('admin.events.edit', $event)
+            ->with('success', 'تم تحديث نسخة المؤتمر بنجاح.');
+    }
+
+    /**
+     * التحقق من البيانات + تنظيف صفوف الإعلانات وجدول الأسعار من الصفوف الفاضية.
+     */
+    private function validatedData(Request $request): array
+    {
+        $data = $request->validate([
+            'event_id' => ['required', 'string'],
+            'new_event_name' => ['required_if:event_id,new', 'nullable', 'string', 'max:255'],
+            'new_event_organizer' => ['nullable', 'string', 'max:255'],
+            'year' => ['required', 'integer', 'min:2000', 'max:2100'],
+            'title_ar' => ['required', 'string', 'max:255'],
+            'title_en' => ['nullable', 'string', 'max:255'],
+            'coverage_type' => ['required', 'in:global_remote,gulf_analysis,local_field'],
+            'attended' => ['nullable', 'boolean'],
+            'date_status' => ['required', 'in:confirmed,expected,unknown'],
+            'event_start_at' => ['nullable', 'date'],
+            'event_end_at' => ['nullable', 'date', 'after_or_equal:event_start_at'],
+            'livestream_url' => ['nullable', 'url', 'max:1000'],
+            'image' => ['nullable', 'image', 'max:5120'],
+            'kept_gallery' => ['nullable', 'array'],
+            'kept_gallery.*' => ['nullable', 'string'],
+            'new_gallery_images' => ['nullable', 'array'],
+            'new_gallery_images.*' => ['nullable', 'image', 'max:5120'],
+            'short_description_ar' => ['nullable', 'string', 'max:500'],
+            'short_description_en' => ['nullable', 'string', 'max:500'],
+            'announcements' => ['nullable', 'array'],
+            'announcements.*.label_ar' => ['nullable', 'string', 'max:255'],
+            'announcements.*.label_en' => ['nullable', 'string', 'max:255'],
+            'announcements.*.note_ar' => ['nullable', 'string', 'max:500'],
+            'announcements.*.note_en' => ['nullable', 'string', 'max:500'],
+            'announcements.*.confidence' => ['nullable', 'in:confirmed,expected,rumored'],
+            'pricing_table' => ['nullable', 'array'],
+            'pricing_table.*.product_ar' => ['nullable', 'string', 'max:255'],
+            'pricing_table.*.product_en' => ['nullable', 'string', 'max:255'],
+            'pricing_table.*.official_price' => ['nullable', 'string', 'max:50'],
+            'pricing_table.*.official_currency' => ['nullable', 'string', 'max:10'],
+            'pricing_table.*.omr_price' => ['nullable', 'string', 'max:50'],
+            'upgrade_verdict' => ['nullable', 'in:yes,no,specific_segment'],
+            'upgrade_verdict_text' => ['nullable', 'string', 'max:1000'],
+            'status' => ['required', 'in:draft,published'],
+        ]);
+
+        $data['attended'] = $request->boolean('attended');
+
+        $data['announcements'] = collect($data['announcements'] ?? [])
+            ->filter(fn (array $row) => filled($row['label_ar'] ?? null) || filled($row['label_en'] ?? null))
+            ->values()
+            ->all();
+
+        $data['pricing_table'] = collect($data['pricing_table'] ?? [])
+            ->filter(fn (array $row) => filled($row['product_ar'] ?? null) || filled($row['product_en'] ?? null))
+            ->values()
+            ->all();
+
+        if ($data['status'] === 'published') {
+            $data['published_at'] = now();
+        }
+
+        unset($data['kept_gallery'], $data['new_gallery_images']);
+
+        return $data;
+    }
+
+    private function storeUpload(UploadedFile $file): string
+    {
+        $directory = public_path('uploads/events');
+
+        File::ensureDirectoryExists($directory, 0755, true);
+
+        $extension = strtolower($file->getClientOriginalExtension());
+        $fileName = now()->format('YmdHis').'-'.Str::lower(Str::random(16)).'.'.$extension;
+
+        $file->move($directory, $fileName);
+
+        return 'uploads/events/'.$fileName;
+    }
+
+    /**
+     * يدمج مسارات صور المعرض المُبقاة (kept_gallery، حقول hidden بالفورم)
+     * مع أي صور جديدة مرفوعة الآن (new_gallery_images).
+     */
+    private function mergeGallery(Request $request, array $fallback): array
+    {
+        $kept = $request->input('kept_gallery');
+        $paths = is_array($kept) ? array_values(array_filter($kept)) : $fallback;
+
+        foreach ($request->file('new_gallery_images', []) as $image) {
+            if ($image instanceof UploadedFile && $image->isValid()) {
+                $paths[] = $this->storeUpload($image);
+            }
+        }
+
+        return $paths;
+    }
+
+    private function deleteUpload(?string $path): void
+    {
+        if (blank($path)) {
+            return;
+        }
+
+        $normalizedPath = ltrim(str_replace('\\', '/', $path), '/');
+
+        if (! Str::startsWith($normalizedPath, 'uploads/events/')) {
+            return;
+        }
+
+        $fullPath = public_path($normalizedPath);
+
+        if (File::isFile($fullPath)) {
+            File::delete($fullPath);
+        }
+    }
+}

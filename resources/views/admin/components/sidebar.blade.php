@@ -200,6 +200,23 @@
                     </span>
                 </a>
 
+                {{-- المؤتمرات والفعاليات --}}
+                <a
+                    href="{{ route('admin.events.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.events.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-calendar-days"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        المؤتمرات والفعاليات
+                    </span>
+                </a>
+
                 {{-- تعليقات المجتمع --}}
                 <a
                     href="{{ route('admin.community-comments.index') }}"

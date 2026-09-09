@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BlockedVisitorController;
 use App\Http\Controllers\Admin\CommunityCommentController as AdminCommunityCommentController;
 use App\Http\Controllers\Admin\CommunityPostController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventEditionController as AdminEventEditionController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\MarketerController;
@@ -781,6 +782,19 @@ Route::prefix('admin')
                     'social-links',
                     AdminSocialLinkController::class
                 )->except('show');
+
+                /*
+                |----------------------------------------------------------
+                | Events (Conferences) Management
+                |----------------------------------------------------------
+                */
+
+                Route::resource(
+                    'event-editions',
+                    AdminEventEditionController::class
+                )->except(['show', 'destroy'])
+                    ->parameters(['event-editions' => 'event'])
+                    ->names('events');
 
                 /*
                 |----------------------------------------------------------
