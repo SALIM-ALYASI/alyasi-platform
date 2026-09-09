@@ -429,7 +429,7 @@ Route::get('/Ra3iSwait', [PageController::class, 'ra3iSwait'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/apple-event', [PageController::class, 'appleEvent'])
+Route::redirect('/apple-event', '/events/apple-event-2026', 301)
     ->name('apple-event');
 
 /*

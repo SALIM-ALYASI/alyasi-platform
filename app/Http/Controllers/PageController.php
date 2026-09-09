@@ -134,17 +134,6 @@ class PageController extends Controller
         return view('ra3i-swait');
     }
 
-    /**
-     * صفحة تغطية ALYASI الحية لمؤتمر آبل 2026 — "رفوف" لكل منتج متوقع
-     * (آيفون 18، الآيفون القابل للطي، الساعة، السماعات)، تُحدَّث يدويًا
-     * بالمحتوى الحقيقي أثناء المؤتمر نفسه (راجع resources/views/apple-event.blade.php).
-     */
-    public function appleEvent(): View
-    {
-        return view('apple-event');
-    }
-
-
     public function sitemap()
 {
     return response()
