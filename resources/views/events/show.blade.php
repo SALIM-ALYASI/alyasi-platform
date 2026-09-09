@@ -2,6 +2,7 @@
 
 @php
     $phase = $edition->phase;
+    $isAppleEvent2026 = request()->route('slug') === 'apple-event-2026';
     $ogDescription = \Illuminate\Support\Str::limit(strip_tags($edition->short_description ?: ''), 160);
 
     // يربط كل "منتج/إعلان" بسعره من جدول الأسعار (لو موجود) -- مرن بالتطابق
@@ -148,7 +149,9 @@
                     {{ $phase === 'concluded' ? __('events.held_on') : __('community.event_information') }}
                 </div>
                 <div class="community-detail__info-value">
-                    @if ($edition->event_start_at)
+                    @if ($isAppleEvent2026)
+                        09.09.2026 — 22:00
+                    @elseif ($edition->event_start_at)
                         {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
                     @else
                         —
