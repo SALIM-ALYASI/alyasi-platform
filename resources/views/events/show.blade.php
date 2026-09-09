@@ -3,6 +3,32 @@
 @php
     $phase = $edition->phase;
     $ogDescription = \Illuminate\Support\Str::limit(strip_tags($edition->short_description ?: ''), 160);
+
+    // يربط كل "منتج/إعلان" بسعره من جدول الأسعار (لو موجود) عبر تطابق الاسم
+    // (عربي أولاً، إنجليزي احتياطاً) -- يسمح بعرض السعر على بطاقة المنتج
+    // مباشرة بمجرد ما المدير يضيفه، بغض النظر عن مرحلة المؤتمر (قادم/مباشر/انتهى).
+    $productKey = fn (array $row) => trim(filled($row['product_ar'] ?? null) ? $row['product_ar'] : ($row['product_en'] ?? ''));
+    $announcementKey = fn (array $row) => trim(filled($row['label_ar'] ?? null) ? $row['label_ar'] : ($row['label_en'] ?? ''));
+
+    $pricingGroups = collect($edition->pricing_table ?? [])->groupBy($productKey);
+
+    $priceInfoFor = function (array $item) use ($pricingGroups, $announcementKey) {
+        $key = $announcementKey($item);
+        $group = $key !== '' ? ($pricingGroups->get($key) ?? collect()) : collect();
+
+        if ($group->isEmpty()) {
+            return null;
+        }
+
+        $cheapest = $group->sortBy(fn ($row) => (float) preg_replace('/[^0-9.]/', '', $row['official_price'] ?? '0'))->first();
+
+        return [
+            'official_price' => $cheapest['official_price'] ?? null,
+            'official_currency' => $cheapest['official_currency'] ?? '',
+            'omr_price' => $cheapest['omr_price'] ?? null,
+            'is_starting' => $group->count() > 1,
+        ];
+    };
 @endphp
 
 @section('title', $edition->title.' — ALYASI')
@@ -120,19 +146,23 @@
         @endif
 
         {{-- =====================================================
-             upcoming / live: المتوقع طرحه (بدرجة تأكيد كل بند)
+             شبكة المنتجات — موحّدة لكل المراحل، السعر يظهر تلقائيًا
+             فوق البطاقة أول ما يتوفّر بجدول الأسعار (بدون انتظار "انتهى").
         ====================================================== --}}
-        @if (in_array($phase, ['upcoming', 'live'], true) && !empty($edition->announcements))
-            <h2 class="event-detail__section-title">{{ __('events.expected_announcements') }}</h2>
-            <div class="event-detail__announcement-list">
+        @if (!empty($edition->announcements))
+            <h2 class="event-detail__section-title">
+                {{ $phase === 'concluded' ? __('events.what_was_announced') : __('events.expected_announcements') }}
+            </h2>
+            <div class="product-grid">
                 @foreach ($edition->announcements as $item)
-                        @include('events._announcement-item', ['item' => $item])
+                    @include('events._announcement-item', ['item' => $item, 'priceInfo' => $priceInfoFor($item)])
                 @endforeach
             </div>
+            <p class="event-detail__pricing-disclaimer">{{ __('events.pricing_table_disclaimer') }}</p>
         @endif
 
         {{-- =====================================================
-             concluded: ما أُعلن فعلاً + جدول الأسعار + حكم الترقية
+             معرض الصور وحكم الترقية — لمرحلة "انتهى" فقط
         ====================================================== --}}
         @if ($phase === 'concluded')
 
@@ -143,38 +173,6 @@
                         <img src="{{ media_url($photo) }}" alt="{{ $edition->title }}" loading="lazy">
                     @endforeach
                 </div>
-            @endif
-
-            @if (!empty($edition->announcements))
-                <h2 class="event-detail__section-title">{{ __('events.what_was_announced') }}</h2>
-                <div class="event-detail__announcement-list">
-                    @foreach ($edition->announcements as $item)
-                        @include('events._announcement-item', ['item' => $item])
-                    @endforeach
-                </div>
-            @endif
-
-            @if (!empty($edition->pricing_table))
-                <h2 class="event-detail__section-title">{{ __('events.pricing_table_title') }}</h2>
-                <table class="event-detail__pricing-table">
-                    <thead>
-                        <tr>
-                            <th>{{ __('events.pricing_table_product') }}</th>
-                            <th>{{ __('events.pricing_table_official_price') }}</th>
-                            <th>{{ __('events.pricing_table_omr_price') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($edition->pricing_table as $row)
-                            <tr>
-                                <td>{{ app()->getLocale() === 'en' ? ($row['product_en'] ?? $row['product_ar'] ?? '') : ($row['product_ar'] ?? '') }}</td>
-                                <td>{{ $row['official_price'] ?? '—' }} {{ $row['official_currency'] ?? '' }}</td>
-                                <td>{{ isset($row['omr_price']) ? $row['omr_price'].' OMR' : '—' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <p class="event-detail__pricing-disclaimer">{{ __('events.pricing_table_disclaimer') }}</p>
             @endif
 
             @if ($edition->upgrade_verdict)
@@ -191,4 +189,53 @@
 
     </section>
 
+    {{-- تكبير صورة المنتج — نفس المعرض ونفس بطاقات المنتجات --}}
+    <div class="lightbox" id="event-lightbox" hidden>
+        <button type="button" class="lightbox__close" id="event-lightbox-close" aria-label="{{ __('events.close_lightbox') }}">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <img src="" alt="" id="event-lightbox-image">
+    </div>
+
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var lightbox = document.getElementById('event-lightbox');
+    var lightboxImage = document.getElementById('event-lightbox-image');
+    var closeBtn = document.getElementById('event-lightbox-close');
+
+    function openLightbox(src, alt) {
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || '';
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        lightbox.hidden = true;
+        lightboxImage.src = '';
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-lightbox-trigger]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            openLightbox(btn.getAttribute('data-lightbox-src'), btn.getAttribute('data-lightbox-alt'));
+        });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !lightbox.hidden) {
+            closeLightbox();
+        }
+    });
+});
+</script>
+@endpush

@@ -60,6 +60,10 @@ return [
 
     'pricing_table_omr_price' => 'Estimated (OMR)',
 
+    'starting_price' => 'Starting at',
+
+    'close_lightbox' => 'Close',
+
     'upgrade_verdict_title' => 'Is It Worth Upgrading?',
 
     'upgrade_verdict' => [

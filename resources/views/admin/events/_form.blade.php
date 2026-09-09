@@ -219,7 +219,11 @@
 
 <div class="events-form-section">
     <h3 class="events-form-section-title"><i class="fa-solid fa-tags"></i> جدول الأسعار</h3>
-    <p class="form-hint" style="margin-bottom:16px;">يُعبّى بعد إعلان الأسعار الرسمية.</p>
+    <p class="form-hint" style="margin-bottom:16px;">
+        يُعبّى بعد إعلان الأسعار الرسمية. مهم: اكتب "اسم المنتج (عربي)" هنا بنفس حروف/أرقام اسم المنتج
+        بالضبط كما بقسم "المنتجات/الإعلانات" أعلاه — هذا هو الرابط اللي يعرض السعر تلقائيًا فوق بطاقة
+        المنتج بالصفحة العامة. لو كتبت المنتج نفسه بأكثر من صف سعر، الصفحة تعرض أرخص سعر بعنوان "يبدأ من".
+    </p>
 
     <div id="pricing-list"></div>
     <p class="events-repeater-empty" id="pricing-empty" style="display:none;">ما فيه أسعار مضافة بعد.</p>

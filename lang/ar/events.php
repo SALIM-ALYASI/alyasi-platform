@@ -60,6 +60,10 @@ return [
 
     'pricing_table_omr_price' => 'التقدير بالريال العُماني',
 
+    'starting_price' => 'يبدأ من',
+
+    'close_lightbox' => 'إغلاق',
+
     'upgrade_verdict_title' => 'هل يستحق الترقية؟',
 
     'upgrade_verdict' => [
