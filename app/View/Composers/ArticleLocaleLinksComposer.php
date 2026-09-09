@@ -48,6 +48,7 @@ class ArticleLocaleLinksComposer
         'articles.show' => 'article',
         'services.show' => 'service',
         'news.show' => 'news_article',
+        'event_editions.show' => 'event_edition',
     ];
 
     public function compose(View $view): void
