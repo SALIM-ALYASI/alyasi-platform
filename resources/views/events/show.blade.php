@@ -4,17 +4,47 @@
     $phase = $edition->phase;
     $ogDescription = \Illuminate\Support\Str::limit(strip_tags($edition->short_description ?: ''), 160);
 
-    // يربط كل "منتج/إعلان" بسعره من جدول الأسعار (لو موجود) عبر تطابق الاسم
-    // (عربي أولاً، إنجليزي احتياطاً) -- يسمح بعرض السعر على بطاقة المنتج
-    // مباشرة بمجرد ما المدير يضيفه، بغض النظر عن مرحلة المؤتمر (قادم/مباشر/انتهى).
-    $productKey = fn (array $row) => trim(filled($row['product_ar'] ?? null) ? $row['product_ar'] : ($row['product_en'] ?? ''));
-    $announcementKey = fn (array $row) => trim(filled($row['label_ar'] ?? null) ? $row['label_ar'] : ($row['label_en'] ?? ''));
+    // يربط كل "منتج/إعلان" بسعره من جدول الأسعار (لو موجود) -- مرن بالتطابق
+    // (عربي أو إنجليزي، وتطابق جزئي زي "iPhone 18 Pro" داخل "iPhone 18 Pro
+    // 256GB") لأن المدير غالبًا يكتب اسم المنتج بصياغة مختلفة شوي بين قسم
+    // الإعلانات وقسم الأسعار (ترجمة عربية مقابل اسم إنجليزي، أو أرقام هندية
+    // ١٨ مقابل 18، أو سعة تخزين مذكورة بجدول الأسعار بس). يسمح بعرض السعر
+    // على بطاقة المنتج بمجرد ما المدير يضيفه، بغض النظر عن مرحلة المؤتمر.
+    $normalize = function (?string $text): string {
+        $text = trim((string) $text);
+        $text = strtr($text, ['١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9', '٠' => '0']);
 
-    $pricingGroups = collect($edition->pricing_table ?? [])->groupBy($productKey);
+        return mb_strtolower($text);
+    };
 
-    $priceInfoFor = function (array $item) use ($pricingGroups, $announcementKey) {
-        $key = $announcementKey($item);
-        $group = $key !== '' ? ($pricingGroups->get($key) ?? collect()) : collect();
+    $pricingRows = collect($edition->pricing_table ?? []);
+
+    $priceInfoFor = function (array $item) use ($pricingRows, $normalize) {
+        $labelAr = $normalize($item['label_ar'] ?? null);
+        $labelEn = $normalize($item['label_en'] ?? null);
+
+        // تطابق حرفي أول (بعد التطبيع) -- يمنع تصادم أسماء متشابهة زي
+        // "iPhone 18 Pro" داخل "iPhone 18 Pro Max". لو ما فيه تطابق حرفي،
+        // نرجع لتطابق جزئي (احتواء) يغطي حالات زي لاحقة سعة التخزين
+        // "iPhone Duo" مقابل "iPhone Duo 256GB".
+        $group = $pricingRows->filter(function (array $row) use ($labelAr, $labelEn, $normalize) {
+            $productAr = $normalize($row['product_ar'] ?? null);
+            $productEn = $normalize($row['product_en'] ?? null);
+
+            return ($labelAr !== '' && $labelAr === $productAr) || ($labelEn !== '' && $labelEn === $productEn);
+        });
+
+        if ($group->isEmpty()) {
+            $group = $pricingRows->filter(function (array $row) use ($labelAr, $labelEn, $normalize) {
+                $productAr = $normalize($row['product_ar'] ?? null);
+                $productEn = $normalize($row['product_en'] ?? null);
+
+                $arMatch = $labelAr !== '' && $productAr !== '' && (str_contains($labelAr, $productAr) || str_contains($productAr, $labelAr));
+                $enMatch = $labelEn !== '' && $productEn !== '' && (str_contains($labelEn, $productEn) || str_contains($productEn, $labelEn));
+
+                return $arMatch || $enMatch;
+            });
+        }
 
         if ($group->isEmpty()) {
             return null;
