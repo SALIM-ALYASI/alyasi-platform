@@ -6,6 +6,9 @@
 @endphp
 
 @if ($isEdit)
+    <input type="hidden" name="event_id" value="{{ $edition->event_id }}">
+    <input type="hidden" name="year" value="{{ $edition->year }}">
+
     <div class="form-group form-group-full">
         <label>المؤتمر الدائم</label>
         <input type="text" value="{{ $edition->event->name }}" disabled>
