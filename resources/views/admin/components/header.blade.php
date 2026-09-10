@@ -44,6 +44,18 @@
 
         <button
             type="button"
+            class="header-icon-button theme-toggle admin-theme-toggle"
+            data-theme-toggle
+            data-theme-dark-label="تفعيل الوضع الداكن"
+            data-theme-light-label="تفعيل الوضع الفاتح"
+            aria-label="تفعيل الوضع الداكن"
+            title="تفعيل الوضع الداكن"
+        >
+            <i class="fa-solid fa-moon" data-theme-icon aria-hidden="true"></i>
+        </button>
+
+        <button
+            type="button"
             class="header-icon-button"
             id="fullscreen-toggle"
             aria-label="ملء الشاشة"
