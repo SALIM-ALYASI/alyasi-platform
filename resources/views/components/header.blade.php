@@ -43,7 +43,41 @@
         </nav>
 
         <div class="site-header__actions">
-            <div class="site-header__lang" role="group">
+            <div class="site-header__desktop-preferences">
+                <div class="site-header__lang" role="group" aria-label="Language">
+                    @if (($langLinks['ar'] ?? null))
+                        <a href="{{ $langLinks['ar'] }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
+                    @endif
+
+                    @if (($langLinks['en'] ?? null))
+                        <a href="{{ $langLinks['en'] }}" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
+                    @endif
+                </div>
+
+                <button
+                    type="button"
+                    class="theme-toggle site-header__theme-toggle"
+                    data-theme-toggle
+                    data-theme-dark-label="{{ __('layout.theme.dark') }}"
+                    data-theme-light-label="{{ __('layout.theme.light') }}"
+                    aria-label="{{ __('layout.theme.dark') }}"
+                    title="{{ __('layout.theme.dark') }}"
+                >
+                    <i class="fa-solid fa-moon" data-theme-icon aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <a href="{{ localized_route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>
+
+            <button type="button" class="site-header__menu-toggle" data-menu-toggle aria-expanded="false" aria-label="{{ __('layout.menu_open') }}">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="site-header__mobile-menu" data-mobile-menu aria-hidden="true">
+        <div class="site-header__mobile-preferences">
+            <div class="site-header__lang site-header__lang--mobile" role="group" aria-label="Language">
                 @if (($langLinks['ar'] ?? null))
                     <a href="{{ $langLinks['ar'] }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
                 @endif
@@ -55,7 +89,7 @@
 
             <button
                 type="button"
-                class="theme-toggle site-header__theme-toggle"
+                class="theme-toggle site-header__theme-toggle site-header__theme-toggle--mobile"
                 data-theme-toggle
                 data-theme-dark-label="{{ __('layout.theme.dark') }}"
                 data-theme-light-label="{{ __('layout.theme.light') }}"
@@ -64,16 +98,8 @@
             >
                 <i class="fa-solid fa-moon" data-theme-icon aria-hidden="true"></i>
             </button>
-
-            <a href="{{ localized_route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>
-
-            <button type="button" class="site-header__menu-toggle" data-menu-toggle aria-expanded="false" aria-label="{{ __('layout.menu_open') }}">
-                <span></span><span></span><span></span>
-            </button>
         </div>
-    </div>
 
-    <div class="site-header__mobile-menu" data-mobile-menu aria-hidden="true">
         <nav class="site-header__mobile-nav">
             @foreach ($navItems as $key => $item)
                 <a href="{{ $navHref($item['route']) }}" class="site-header__mobile-link @if($item['active']) is-active @endif">
