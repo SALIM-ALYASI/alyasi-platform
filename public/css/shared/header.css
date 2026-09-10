@@ -58,6 +58,7 @@
 }
 
 .site-header__actions { display: flex; align-items: center; gap: 14px; }
+.site-header__desktop-preferences { display: flex; align-items: center; gap: 10px; }
 
 .site-header__lang {
     display: flex;
@@ -117,6 +118,24 @@
     box-shadow: var(--shadow-sm);
 }
 .site-header__mobile-menu.is-open { display: flex; }
+
+.site-header__mobile-preferences {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-divider);
+}
+
+.site-header__lang--mobile {
+    flex: 0 0 auto;
+}
+
+.site-header__theme-toggle--mobile {
+    flex: 0 0 40px;
+}
+
 .site-header__mobile-nav { display: flex; flex-direction: column; gap: 4px; }
 .site-header__mobile-link {
     padding: 12px 4px;
@@ -133,7 +152,9 @@ body.has-mobile-menu-open { overflow: hidden; }
 @media (max-width: 1023px) {
     .site-header__nav { display: none; }
     .site-header__cta { display: none; }
+    .site-header__desktop-preferences { display: none; }
     .site-header__menu-toggle { display: flex; }
+    .site-header__mobile-preferences { display: flex; }
 }
 
 /* — جوال — */
@@ -142,4 +163,6 @@ body.has-mobile-menu-open { overflow: hidden; }
     .site-header__brand-name { font-size: 18px; }
     .site-header__logo { height: 32px; }
     .site-header__lang { font-size: 11px; }
+    .site-header__mobile-menu { gap: 16px; padding-top: 18px; }
+    .site-header__mobile-preferences { padding-bottom: 14px; }
 }
