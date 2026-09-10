@@ -165,14 +165,18 @@ html.theme-ready textarea {
     .home-tech__pill,
     .faq-item,
     .contact-form-card,
-    .product-card
+    .product-card,
+    .service-detail__why-item,
+    .work-detail__info-card,
+    .pagination__link
 ) {
     background-color: var(--theme-card);
     color: var(--color-text);
     border-color: var(--color-divider);
 }
 
-:root[data-theme="dark"] .home-spotlight__number {
+:root[data-theme="dark"] .home-spotlight__number,
+:root[data-theme="dark"] .services-card__number {
     background: var(--theme-card);
     color: var(--color-accent-300);
 }
@@ -204,8 +208,36 @@ html.theme-ready textarea {
     .legal-intro,
     .legal-notice,
     .legal-item p,
+    .services-card__desc,
+    .services-card__link--muted,
+    .service-detail__desc,
+    .service-detail__why-item p,
+    .works-card__excerpt,
+    .work-detail__info-label,
+    .work-detail__desc,
+    .news-card__meta,
+    .news-card__excerpt,
+    .news-detail__breadcrumb,
+    .news-detail__date,
+    .news-detail__paragraph,
+    .news-detail__content p,
+    .news-detail__content ul,
+    .news-detail__content ol,
+    .news-detail__content blockquote,
+    .news-detail__related-date,
     .articles-card__meta,
     .articles-card__excerpt,
+    .articles-detail__breadcrumb,
+    .articles-detail__date,
+    .articles-detail__paragraph,
+    .articles-detail__content p,
+    .articles-detail__content ul,
+    .articles-detail__content ol,
+    .articles-detail__content blockquote,
+    .articles-detail__related-date,
+    .community-events-hub__description,
+    .community-card__meta,
+    .community-card__excerpt,
     .event-detail__date-status,
     .product-card__note,
     .product-card__availability-label,
@@ -224,9 +256,18 @@ html.theme-ready textarea {
     .home-updates-card__body h4,
     .faq-item__question,
     .articles-card__title,
+    .news-card__title,
+    .works-card__title,
+    .services-card__title,
+    .community-card__title,
     .product-card__name,
     .contact-side__social,
-    .field__label
+    .field__label,
+    .work-detail__info-value,
+    .work-detail__related-title-text,
+    .service-detail__work-title,
+    .news-detail__related-title-text,
+    .articles-detail__related-title-text
 ) {
     color: var(--color-text) !important;
 }
@@ -260,8 +301,14 @@ html.theme-ready textarea {
 :root[data-theme="dark"] .home-tech,
 :root[data-theme="dark"] .contact-side__card,
 :root[data-theme="dark"] .legal-notice,
-:root[data-theme="dark"] .event-detail__verdict {
+:root[data-theme="dark"] .event-detail__verdict,
+:root[data-theme="dark"] .service-detail__related,
+:root[data-theme="dark"] .work-detail__related,
+:root[data-theme="dark"] .news-detail__related,
+:root[data-theme="dark"] .articles-detail__related,
+:root[data-theme="dark"] .community-events-hub {
     background-color: var(--color-surface);
+    border-color: var(--color-divider);
 }
 
 :root[data-theme="dark"] .product-card__image-btn,
@@ -284,6 +331,26 @@ html.theme-ready textarea {
 :root[data-theme="dark"] .product-card__price-omr,
 :root[data-theme="dark"] .event-detail__verdict-answer {
     color: var(--color-accent-300);
+}
+
+:root[data-theme="dark"] .articles-detail__content a.article-btn--youtube {
+    background: #16243A;
+    color: #E8EEF6 !important;
+    border-color: var(--color-divider);
+}
+
+:root[data-theme="dark"] .articles-detail__content a.article-btn--youtube:hover {
+    background: #1B2D47;
+    color: #fff !important;
+}
+
+:root[data-theme="dark"] .pagination__link--active {
+    background: var(--color-accent-500);
+    color: #fff;
+}
+
+:root[data-theme="dark"] .pagination__link--dots {
+    background: transparent;
 }
 
 :root[data-theme="dark"] .form-alert--success {
