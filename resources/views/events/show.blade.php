@@ -127,9 +127,11 @@
                 src="{{ $edition->image ? media_url($edition->image) : asset('images/events/og-cover.jpg') }}"
                 alt="{{ $edition->title }}"
             >
-            <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing', 'concluded' => 'ended'][$phase] }} community-detail__hero-badge">
-                {{ __('events.phase.'.$phase) }}
-            </span>
+            @if ($phase !== 'concluded')
+                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing'][$phase] }} community-detail__hero-badge">
+                    {{ __('events.phase.'.$phase) }}
+                </span>
+            @endif
         </div>
     </section>
 
@@ -144,19 +146,28 @@
         @endif
 
         <div class="grid-2 community-detail__info-grid">
-            <div class="community-detail__info-card">
-                <div class="community-detail__info-label">
-                    {{ $phase === 'concluded' ? __('events.held_on') : __('community.event_information') }}
+            <div class="event-detail__date-card-row{{ $phase === 'concluded' ? ' event-detail__date-card-row--concluded' : '' }}">
+                <div class="community-detail__info-card">
+                    <div class="community-detail__info-label">
+                        {{ $phase === 'concluded' ? __('events.held_on') : __('community.event_information') }}
+                    </div>
+                    <div class="community-detail__info-value">
+                        @if ($isAppleEvent2026)
+                            09.09.2026 — 22:00
+                        @elseif ($edition->event_start_at)
+                            {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
+                        @else
+                            —
+                        @endif
+                    </div>
                 </div>
-                <div class="community-detail__info-value">
-                    @if ($isAppleEvent2026)
-                        09.09.2026 — 22:00
-                    @elseif ($edition->event_start_at)
-                        {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
-                    @else
-                        —
-                    @endif
-                </div>
+
+                @if ($phase === 'concluded')
+                    <span class="badge badge--status-ended event-detail__phase-badge">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                        {{ __('events.phase.concluded') }}
+                    </span>
+                @endif
             </div>
 
             @if ($edition->livestream_url && in_array($phase, ['upcoming', 'live'], true))
