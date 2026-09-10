@@ -1,6 +1,25 @@
 @php
-    $label = app()->getLocale() === 'en' ? ($item['label_en'] ?? $item['label_ar'] ?? '') : ($item['label_ar'] ?? '');
-    $note = app()->getLocale() === 'en' ? ($item['note_en'] ?? $item['note_ar'] ?? '') : ($item['note_ar'] ?? '');
+    $locale = app()->getLocale();
+    $label = $locale === 'en' ? ($item['label_en'] ?? $item['label_ar'] ?? '') : ($item['label_ar'] ?? '');
+    $note = $locale === 'en' ? ($item['note_en'] ?? $item['note_ar'] ?? '') : ($item['note_ar'] ?? '');
+
+    $preorderAt = !empty($item['preorder_at'])
+        ? \Carbon\Carbon::parse($item['preorder_at'], 'Asia/Muscat')->startOfDay()
+        : null;
+
+    $availableAt = !empty($item['available_at'])
+        ? \Carbon\Carbon::parse($item['available_at'], 'Asia/Muscat')->startOfDay()
+        : null;
+
+    $today = now('Asia/Muscat')->startOfDay();
+    $isAvailable = $availableAt && $today->greaterThanOrEqualTo($availableAt);
+    $isPreorderOpen = $preorderAt
+        && $today->greaterThanOrEqualTo($preorderAt)
+        && (!$availableAt || $today->lessThan($availableAt));
+
+    $formatProductDate = fn ($date) => $date
+        ? $date->copy()->locale($locale)->translatedFormat('d F Y')
+        : null;
 @endphp
 
 <div class="product-card">
@@ -32,6 +51,35 @@
 
         @if ($note)
             <p class="product-card__note">{{ $note }}</p>
+        @endif
+
+        @if ($preorderAt || $availableAt)
+            <div class="product-card__availability">
+                @if ($isAvailable)
+                    <div class="product-card__availability-row product-card__availability-row--available">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                        <strong>{{ __('events.available_now') }}</strong>
+                    </div>
+                @else
+                    @if ($preorderAt)
+                        <div class="product-card__availability-row">
+                            <span class="product-card__availability-label">
+                                {{ $isPreorderOpen ? __('events.preorder_open') : __('events.preorder_date') }}
+                            </span>
+                            @unless ($isPreorderOpen)
+                                <span class="product-card__availability-value">{{ $formatProductDate($preorderAt) }}</span>
+                            @endunless
+                        </div>
+                    @endif
+
+                    @if ($availableAt)
+                        <div class="product-card__availability-row">
+                            <span class="product-card__availability-label">{{ __('events.available_from') }}</span>
+                            <span class="product-card__availability-value">{{ $formatProductDate($availableAt) }}</span>
+                        </div>
+                    @endif
+                @endif
+            </div>
         @endif
 
         @if (!empty($priceInfo))
