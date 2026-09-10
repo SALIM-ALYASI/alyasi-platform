@@ -8,17 +8,23 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'title' => 'Digital Community Events',
+    'title' => 'ALYASI Digital Community',
 
-    'description' => 'A calendar of global and regional tech events and conferences, with a space for the ALYASI community to engage and share their thoughts through comments.',
+    'description' => 'A space for discussions, initiatives, announcements, and tech community posts, while conference coverage lives in a dedicated organized hub.',
 
-    'badge' => 'Tech Events',
+    'badge' => 'Community',
 
     'home' => 'Home',
 
     'explore' => 'Explore the Community',
 
     'join_us' => 'Join Us',
+
+    'events_hub_title' => 'Looking for conferences and events?',
+
+    'events_hub_description' => 'Visit the conference hub for Apple, Samsung, Huawei, COMEX, and future coverage organized by company and year.',
+
+    'events_hub_button' => 'Explore Conference Hub',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +58,7 @@ return [
 
     'latest_posts' => 'Latest Community Posts',
 
-    'latest_posts_description' => 'Check out the latest initiatives, events, announcements, and community posts.',
+    'latest_posts_description' => 'Browse the latest discussions, initiatives, announcements, and community posts.',
 
     'read_more' => 'Read More',
 
@@ -64,9 +70,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'empty_title' => 'No posts yet',
+    'empty_title' => 'The community is ready for its first post',
 
-    'empty_description' => 'More initiatives, events, and community content will be added soon.',
+    'empty_description' => 'There are no published community posts right now. In the meantime, you can explore conference and event coverage in the conference hub.',
 
     /*
     |--------------------------------------------------------------------------
@@ -76,7 +82,7 @@ return [
 
     'cta_title' => 'Have an initiative or idea you want to share?',
 
-    'cta_description' => 'We welcome ideas, initiatives, and events that help build a more collaborative tech and professional community.',
+    'cta_description' => 'We welcome ideas, initiatives, and discussions that help build a more collaborative tech and professional community.',
 
     'contact_us' => 'Contact Us',
 
