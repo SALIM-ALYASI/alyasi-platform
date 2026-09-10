@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\EventEdition;
 use App\Models\Permalink;
 use App\Models\PermalinkRedirect;
@@ -11,10 +12,33 @@ use Illuminate\View\View;
 class EventEditionController extends Controller
 {
     /**
-     * صفحة نسخة مؤتمر (رابط دائم عبر Permalink، نفس نمط NewsController::show()).
+     * نفس المسار /events/{slug} يخدم حالتين:
+     * 1) slug لسلسلة دائمة مثل apple أو samsung -> صفحة كل النسخ.
+     * 2) slug لنسخة بعينها مثل apple-event-2026 -> صفحة التغطية.
      */
     public function show(string $slug): View|RedirectResponse
     {
+        $series = Event::query()
+            ->where('slug', $slug)
+            ->first();
+
+        if ($series) {
+            $series->load([
+                'editions' => fn ($query) => $query
+                    ->published()
+                    ->with('permalinks')
+                    ->orderByDesc('year')
+                    ->orderByDesc('event_start_at'),
+            ]);
+
+            abort_if($series->editions->isEmpty(), 404);
+
+            return view('events.series', [
+                'event' => $series,
+                'editions' => $series->editions,
+            ]);
+        }
+
         $locale = app()->getLocale();
 
         $permalink = Permalink::query()
