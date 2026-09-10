@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CommunityCategory;
 use App\Models\CommunityPost;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -62,8 +63,14 @@ class CommunityController extends Controller
     /**
      * صفحة تفاصيل محتوى المجتمع.
      */
-    public function show(CommunityPost $communityPost): View
+    public function show(CommunityPost $communityPost): View|RedirectResponse
     {
+        // الرابط القديم كان يمثل مؤتمر Apple كفعالية داخل المجتمع.
+        // بعد فصل مركز المؤتمرات عن المجتمع نحافظ عليه بتحويل 301 دائم.
+        if ($communityPost->slug === 'motmr-abl-surprise-and-shine-iphone-18-september-2026') {
+            return redirect()->route('event_editions.show', ['slug' => 'apple'], 301);
+        }
+
         if (! $communityPost->is_active) {
             abort(404);
         }
