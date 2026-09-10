@@ -18,6 +18,11 @@ return [
     'menu_open' => 'Open menu',
     'menu_close' => 'Close menu',
 
+    'theme' => [
+        'dark' => 'Enable dark mode',
+        'light' => 'Enable light mode',
+    ],
+
     'footer' => [
         'about' => 'A platform bringing together digital services, tech news, conferences, and events in one integrated experience.',
         'quick_links' => 'Quick Links',
