@@ -12,12 +12,14 @@ class VerifyAppleEventDates extends Command
 {
     /**
      * يفحص تواريخ الطلب المسبق والتوفر المحفوظة مقابل مصادر Apple الرسمية.
-     * الفحص للقراءة فقط ولا يعدّل قاعدة البيانات تلقائيًا.
+     * افتراضيًا الفحص للقراءة فقط. خيار --fill-missing يملأ الحقول الفارغة
+     * فقط بعد نجاح التحقق من المصدر الرسمي، ولا يستبدل أي قيمة موجودة.
      */
     protected $signature = 'events:verify-apple-dates
         {--year=2026 : سنة نسخة المؤتمر}
         {--product=iPhone Duo : اسم المنتج كما هو محفوظ في label_en}
-        {--all : فحص جميع منتجات Apple المدعومة داخل النسخة}';
+        {--all : فحص جميع منتجات Apple المدعومة داخل النسخة}
+        {--fill-missing : تعبئة التواريخ غير المخزنة فقط بعد التحقق من Apple}';
 
     protected $description = 'Verify Apple product pre-order and availability dates against official Apple sources';
 
@@ -40,6 +42,7 @@ class VerifyAppleEventDates extends Command
     public function handle(): int
     {
         $year = (int) $this->option('year');
+        $fillMissing = (bool) $this->option('fill-missing');
 
         $edition = EventEdition::query()
             ->where('year', $year)
@@ -52,7 +55,7 @@ class VerifyAppleEventDates extends Command
         }
 
         if ($this->option('all')) {
-            return $this->verifyAll($edition, $year);
+            return $this->verifyAll($edition, $year, $fillMissing);
         }
 
         $requestedProduct = trim((string) $this->option('product'));
@@ -74,17 +77,38 @@ class VerifyAppleEventDates extends Command
 
         $result = $this->verifyProduct($requestedProduct, $product, $sourceUrl, $year, true);
 
-        return $result['ok'] ? self::SUCCESS : self::FAILURE;
+        if (! $result['ok']) {
+            return self::FAILURE;
+        }
+
+        if ($fillMissing && $result['incomplete']) {
+            $filled = $this->fillMissingDatesForProduct(
+                $edition,
+                $productKey,
+                $result['official_preorder'],
+                $result['official_available']
+            );
+
+            if ($filled > 0) {
+                $this->info("✓ تمت تعبئة {$filled} قيمة ناقصة من مصدر Apple الرسمي بدون استبدال أي قيمة موجودة.");
+            }
+        }
+
+        return self::SUCCESS;
     }
 
-    private function verifyAll(EventEdition $edition, int $year): int
+    private function verifyAll(EventEdition $edition, int $year, bool $fillMissing): int
     {
         $rows = [];
         $sources = [];
         $hasFailure = false;
+        $hasWarning = false;
         $checked = 0;
+        $filledCount = 0;
+        $missingCount = 0;
+        $announcements = $edition->announcements ?? [];
 
-        foreach ($edition->announcements ?? [] as $product) {
+        foreach ($announcements as $index => $product) {
             $name = trim((string) ($product['label_en'] ?? ''));
 
             if ($name === '') {
@@ -109,19 +133,57 @@ class VerifyAppleEventDates extends Command
             }
 
             $result = $this->verifyProduct($name, $product, $sourceUrl, $year, false);
+            $row = $result['row'];
 
-            $rows[] = $result['row'];
             $sources[$sourceUrl] = true;
             $checked++;
 
             if (! $result['ok']) {
                 $hasFailure = true;
             }
+
+            $preorderWasMissing = $result['preorder_missing'];
+            $availableWasMissing = $result['available_missing'];
+
+            if ($preorderWasMissing) {
+                $missingCount++;
+            }
+
+            if ($availableWasMissing) {
+                $missingCount++;
+            }
+
+            if ($result['incomplete'] && ! $fillMissing) {
+                $hasWarning = true;
+            }
+
+            if ($fillMissing && $result['ok']) {
+                if ($preorderWasMissing && $result['official_preorder']) {
+                    $announcements[$index]['preorder_at'] = $result['official_preorder'];
+                    $row[1] = $result['official_preorder'];
+                    $row[3] = '✓ تمت التعبئة';
+                    $filledCount++;
+                }
+
+                if ($availableWasMissing && $result['official_available']) {
+                    $announcements[$index]['available_at'] = $result['official_available'];
+                    $row[4] = $result['official_available'];
+                    $row[6] = '✓ تمت التعبئة';
+                    $filledCount++;
+                }
+            }
+
+            $rows[] = $row;
         }
 
         if ($checked === 0) {
             $this->error('لم أجد أي منتجات Apple مدعومة يمكن فحصها.');
             return self::FAILURE;
+        }
+
+        if ($fillMissing && $filledCount > 0 && ! $hasFailure) {
+            $edition->announcements = array_values($announcements);
+            $edition->save();
         }
 
         $this->table(
@@ -146,18 +208,38 @@ class VerifyAppleEventDates extends Command
         $this->newLine();
 
         if ($hasFailure) {
-            $this->warn('⚠ انتهى الفحص مع اختلاف أو مصدر غير متاح. لم يتم تعديل قاعدة البيانات.');
+            $this->warn('⚠ انتهى الفحص مع اختلاف أو مصدر غير متاح. لم يتم استبدال أي قيمة موجودة في قاعدة البيانات.');
             return self::FAILURE;
         }
 
-        $this->info('✓ جميع التواريخ المحفوظة التي تم فحصها مطابقة لمصادر Apple الرسمية.');
+        if ($fillMissing && $filledCount > 0) {
+            $this->info("✓ تمت تعبئة {$filledCount} قيمة ناقصة من مصادر Apple الرسمية.");
+            $this->line('لم يتم استبدال أي تاريخ كان مخزنًا مسبقًا.');
+            return self::SUCCESS;
+        }
+
+        if ($hasWarning) {
+            $this->warn("⚠ التواريخ الموجودة مطابقة، لكن توجد {$missingCount} قيمة رسمية غير مخزنة في قاعدة البيانات.");
+            $this->line('لملء الحقول الفارغة فقط بعد التحقق، شغّل: php artisan events:verify-apple-dates --all --fill-missing');
+            return self::SUCCESS;
+        }
+
+        $this->info('✓ جميع التواريخ مكتملة ومطابقة لمصادر Apple الرسمية.');
         $this->line('لم يتم تعديل قاعدة البيانات.');
 
         return self::SUCCESS;
     }
 
     /**
-     * @return array{ok: bool, row: array<int, string>}
+     * @return array{
+     *     ok: bool,
+     *     incomplete: bool,
+     *     preorder_missing: bool,
+     *     available_missing: bool,
+     *     official_preorder: ?string,
+     *     official_available: ?string,
+     *     row: array<int, string>
+     * }
      */
     private function verifyProduct(
         string $productName,
@@ -180,6 +262,11 @@ class VerifyAppleEventDates extends Command
 
             return [
                 'ok' => false,
+                'incomplete' => false,
+                'preorder_missing' => false,
+                'available_missing' => false,
+                'official_preorder' => null,
+                'official_available' => null,
                 'row' => [
                     $productName,
                     $this->normalizeStoredDate($product['preorder_at'] ?? null) ?: '—',
@@ -201,6 +288,11 @@ class VerifyAppleEventDates extends Command
 
             return [
                 'ok' => false,
+                'incomplete' => false,
+                'preorder_missing' => false,
+                'available_missing' => false,
+                'official_preorder' => $officialPreorder,
+                'official_available' => null,
                 'row' => [
                     $productName,
                     $this->normalizeStoredDate($product['preorder_at'] ?? null) ?: '—',
@@ -220,6 +312,7 @@ class VerifyAppleEventDates extends Command
         $availableState = $this->compareDate($storedAvailable, $officialAvailable);
 
         $ok = $preorderState['ok'] && $availableState['ok'];
+        $incomplete = $preorderState['missing'] || $availableState['missing'];
 
         if ($verbose) {
             $this->newLine();
@@ -241,17 +334,25 @@ class VerifyAppleEventDates extends Command
                 ]
             );
 
-            if ($ok) {
-                $this->info('✓ التواريخ المحفوظة مطابقة لمصدر Apple الرسمي.');
-                $this->line('لم يتم تعديل قاعدة البيانات.');
-            } else {
+            if (! $ok) {
                 $this->warn('⚠ يوجد اختلاف بين قاعدة البيانات ومصدر Apple. راجع التواريخ قبل اعتماد أي تعديل.');
                 $this->line('لم يتم تعديل قاعدة البيانات تلقائيًا.');
+            } elseif ($incomplete) {
+                $this->warn('⚠ التواريخ الموجودة مطابقة، لكن توجد قيمة رسمية غير مخزنة في قاعدة البيانات.');
+                $this->line('يمكن تعبئة الحقول الفارغة فقط باستخدام --fill-missing.');
+            } else {
+                $this->info('✓ التواريخ المحفوظة مكتملة ومطابقة لمصدر Apple الرسمي.');
+                $this->line('لم يتم تعديل قاعدة البيانات.');
             }
         }
 
         return [
             'ok' => $ok,
+            'incomplete' => $incomplete,
+            'preorder_missing' => $preorderState['missing'],
+            'available_missing' => $availableState['missing'],
+            'official_preorder' => $officialPreorder,
+            'official_available' => $officialAvailable,
             'row' => [
                 $productName,
                 $storedPreorder ?: '—',
@@ -262,6 +363,41 @@ class VerifyAppleEventDates extends Command
                 $availableState['label'],
             ],
         ];
+    }
+
+    private function fillMissingDatesForProduct(
+        EventEdition $edition,
+        string $productKey,
+        ?string $officialPreorder,
+        ?string $officialAvailable
+    ): int {
+        $announcements = $edition->announcements ?? [];
+        $filled = 0;
+
+        foreach ($announcements as $index => $item) {
+            if (Str::lower(trim((string) ($item['label_en'] ?? ''))) !== $productKey) {
+                continue;
+            }
+
+            if (blank($item['preorder_at'] ?? null) && $officialPreorder) {
+                $announcements[$index]['preorder_at'] = $officialPreorder;
+                $filled++;
+            }
+
+            if (blank($item['available_at'] ?? null) && $officialAvailable) {
+                $announcements[$index]['available_at'] = $officialAvailable;
+                $filled++;
+            }
+
+            break;
+        }
+
+        if ($filled > 0) {
+            $edition->announcements = array_values($announcements);
+            $edition->save();
+        }
+
+        return $filled;
     }
 
     private function findProduct(EventEdition $edition, string $productKey): ?array
@@ -281,7 +417,7 @@ class VerifyAppleEventDates extends Command
             $response = Http::timeout(20)
                 ->retry(2, 500)
                 ->withHeaders([
-                    'User-Agent' => 'ALYASI Event Verifier/1.1',
+                    'User-Agent' => 'ALYASI Event Verifier/1.2',
                     'Accept-Language' => 'en-US,en;q=0.9',
                 ])
                 ->get($sourceUrl);
@@ -369,23 +505,24 @@ class VerifyAppleEventDates extends Command
     }
 
     /**
-     * الحقل غير المخزّن لا نعتبره خطأ؛ نعرض تاريخ Apple كمعلومة إضافية.
+     * الحقل غير المخزّن يعتبر حالة ناقصة (تحذير)، وليس "مطابقًا" كاملًا.
+     * نحتفظ بـ ok=true ما دام لا يوجد تعارض، حتى يمكن تعبئته بأمان عبر --fill-missing.
      */
     private function compareDate(?string $stored, ?string $official): array
     {
         if (! $official) {
-            return ['ok' => false, 'label' => 'تعذر التحقق'];
+            return ['ok' => false, 'missing' => false, 'label' => 'تعذر التحقق'];
         }
 
         if (! $stored) {
-            return ['ok' => true, 'label' => 'غير مخزن'];
+            return ['ok' => true, 'missing' => true, 'label' => '⚠ غير مخزن'];
         }
 
         if ($stored === $official) {
-            return ['ok' => true, 'label' => '✓ مطابق'];
+            return ['ok' => true, 'missing' => false, 'label' => '✓ مطابق'];
         }
 
-        return ['ok' => false, 'label' => '✗ مختلف'];
+        return ['ok' => false, 'missing' => false, 'label' => '✗ مختلف'];
     }
 
     private function isOfficialAppleUrl(?string $url): bool
