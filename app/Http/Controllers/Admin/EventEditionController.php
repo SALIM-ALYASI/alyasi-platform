@@ -18,12 +18,18 @@ class EventEditionController extends Controller
 {
     public function index(): View
     {
-        $editions = EventEdition::query()
-            ->with('event')
-            ->orderByDesc('event_start_at')
-            ->paginate(15);
+        $events = Event::query()
+            ->with([
+                'editions' => fn ($query) => $query
+                    ->with('permalinks')
+                    ->orderByDesc('year')
+                    ->orderByDesc('event_start_at'),
+            ])
+            ->withCount('editions')
+            ->orderBy('name')
+            ->paginate(12);
 
-        return view('admin.events.index', compact('editions'));
+        return view('admin.events.index', compact('events'));
     }
 
     public function create(): View
