@@ -46,6 +46,14 @@ return [
 
     'held_on' => 'Held on',
 
+    'preorder_date' => 'Pre-order',
+
+    'preorder_open' => 'Pre-order available',
+
+    'available_from' => 'Available from',
+
+    'available_now' => 'Available now',
+
     'expected_announcements' => 'What to Expect',
 
     'what_was_announced' => 'What Was Announced',
