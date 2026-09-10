@@ -16,9 +16,6 @@ use Illuminate\View\View;
 
 class EventEditionController extends Controller
 {
-    /**
-     * قائمة نسخ المؤتمرات (upcoming/live/concluded تُحسب تلقائيًا من التاريخ).
-     */
     public function index(): View
     {
         $editions = EventEdition::query()
@@ -29,9 +26,6 @@ class EventEditionController extends Controller
         return view('admin.events.index', compact('editions'));
     }
 
-    /**
-     * صفحة إضافة نسخة مؤتمر جديدة.
-     */
     public function create(): View
     {
         $events = Event::query()->orderBy('name')->get();
@@ -39,17 +33,17 @@ class EventEditionController extends Controller
         return view('admin.events.create', compact('events'));
     }
 
-    /**
-     * حفظ نسخة مؤتمر جديدة (مع مؤتمرها الدائم لو ما كان موجود، وروابطها الدائمة).
-     */
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validatedData($request);
 
         $eventId = $validated['event_id'];
         if ($eventId === 'new') {
+            $eventName = $validated['new_event_name'];
+
             $event = Event::query()->create([
-                'name' => $validated['new_event_name'],
+                'name' => $eventName,
+                'slug' => $this->uniqueEventSlug($eventName),
                 'organizer' => $validated['new_event_organizer'] ?? null,
             ]);
             $eventId = $event->id;
@@ -92,9 +86,6 @@ class EventEditionController extends Controller
             ->with('success', 'تمت إضافة نسخة المؤتمر بنجاح.');
     }
 
-    /**
-     * صفحة تعديل نسخة مؤتمر.
-     */
     public function edit(EventEdition $event): View
     {
         $event->load('event', 'permalinks');
@@ -102,10 +93,6 @@ class EventEditionController extends Controller
         return view('admin.events.edit', ['edition' => $event]);
     }
 
-    /**
-     * تحديث نسخة مؤتمر — هنا يضيف المستخدم/يحدّث تفاصيل المنتجات (announcements)
-     * وجدول الأسعار (pricing_table) والصور أثناء المؤتمر نفسه.
-     */
     public function update(Request $request, EventEdition $event): RedirectResponse
     {
         $validated = $this->validatedData($request);
@@ -129,9 +116,6 @@ class EventEditionController extends Controller
             ->with('success', 'تم تحديث نسخة المؤتمر بنجاح.');
     }
 
-    /**
-     * التحقق من البيانات + تنظيف صفوف الإعلانات وجدول الأسعار من الصفوف الفاضية.
-     */
     private function validatedData(Request $request): array
     {
         $data = $request->validate([
@@ -207,6 +191,35 @@ class EventEditionController extends Controller
         return $data;
     }
 
+    private function uniqueEventSlug(string $name): string
+    {
+        $normalized = mb_strtolower(trim($name));
+
+        $base = match (true) {
+            str_contains($normalized, 'apple'), str_contains($normalized, 'آبل'), str_contains($normalized, 'ابل') => 'apple',
+            str_contains($normalized, 'samsung'), str_contains($normalized, 'سامسونج') => 'samsung',
+            str_contains($normalized, 'huawei'), str_contains($normalized, 'هواوي') => 'huawei',
+            str_contains($normalized, 'google'), str_contains($normalized, 'جوجل'), str_contains($normalized, 'غوغل') => 'google',
+            str_contains($normalized, 'microsoft'), str_contains($normalized, 'مايكروسوفت') => 'microsoft',
+            str_contains($normalized, 'comex') => 'comex-oman',
+            default => Str::slug($name),
+        };
+
+        if ($base === '') {
+            $base = 'event-'.Str::lower(Str::random(8));
+        }
+
+        $slug = $base;
+        $counter = 2;
+
+        while (Event::query()->where('slug', $slug)->exists()) {
+            $slug = $base.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
     private function storeUpload(UploadedFile $file): string
     {
         $directory = public_path('uploads/events');
@@ -221,10 +234,6 @@ class EventEditionController extends Controller
         return 'uploads/events/'.$fileName;
     }
 
-    /**
-     * يدمج مسارات صور المعرض المُبقاة (kept_gallery، حقول hidden بالفورم)
-     * مع أي صور جديدة مرفوعة الآن (new_gallery_images).
-     */
     private function mergeGallery(Request $request, array $fallback): array
     {
         $kept = $request->input('kept_gallery');
