@@ -22,20 +22,102 @@ class EventEditionController extends Controller
      */
     private const USD_TO_OMR = 0.3845;
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $events = Event::query()
+        $search = trim($request->string('q')->toString());
+        $phase = $request->string('phase')->toString();
+        $phase = in_array($phase, ['upcoming', 'live', 'concluded'], true) ? $phase : '';
+        $now = now();
+
+        $eventsQuery = Event::query()
             ->with([
                 'editions' => fn ($query) => $query
                     ->with('permalinks')
                     ->orderByDesc('year')
                     ->orderByDesc('event_start_at'),
             ])
-            ->withCount('editions')
-            ->orderBy('name')
-            ->paginate(12);
+            ->withCount('editions');
 
-        return view('admin.events.index', compact('events'));
+        if ($search !== '') {
+            $eventsQuery->where(function ($query) use ($search) {
+                $query
+                    ->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('slug', 'like', '%'.$search.'%')
+                    ->orWhere('organizer', 'like', '%'.$search.'%');
+            });
+        }
+
+        if ($phase !== '') {
+            $eventsQuery->whereHas('editions', function ($query) use ($phase, $now) {
+                if ($phase === 'upcoming') {
+                    $query->where(function ($phaseQuery) use ($now) {
+                        $phaseQuery
+                            ->whereNull('event_start_at')
+                            ->orWhere('event_start_at', '>', $now);
+                    });
+
+                    return;
+                }
+
+                if ($phase === 'live') {
+                    $query
+                        ->whereNotNull('event_start_at')
+                        ->where('event_start_at', '<=', $now)
+                        ->whereNotNull('event_end_at')
+                        ->where('event_end_at', '>=', $now);
+
+                    return;
+                }
+
+                $query
+                    ->whereNotNull('event_start_at')
+                    ->where(function ($phaseQuery) use ($now) {
+                        $phaseQuery
+                            ->where('event_end_at', '<', $now)
+                            ->orWhere(function ($withoutEnd) use ($now) {
+                                $withoutEnd
+                                    ->whereNull('event_end_at')
+                                    ->where('event_start_at', '<', $now);
+                            });
+                    });
+            });
+        }
+
+        $events = $eventsQuery
+            ->orderBy('name')
+            ->paginate(12)
+            ->withQueryString();
+
+        $stats = [
+            'series' => Event::query()->count(),
+            'editions' => EventEdition::query()->count(),
+            'upcoming' => EventEdition::query()
+                ->where(function ($query) use ($now) {
+                    $query
+                        ->whereNull('event_start_at')
+                        ->orWhere('event_start_at', '>', $now);
+                })
+                ->count(),
+            'concluded' => EventEdition::query()
+                ->whereNotNull('event_start_at')
+                ->where(function ($query) use ($now) {
+                    $query
+                        ->where('event_end_at', '<', $now)
+                        ->orWhere(function ($withoutEnd) use ($now) {
+                            $withoutEnd
+                                ->whereNull('event_end_at')
+                                ->where('event_start_at', '<', $now);
+                        });
+                })
+                ->count(),
+        ];
+
+        return view('admin.events.index', compact(
+            'events',
+            'stats',
+            'search',
+            'phase'
+        ));
     }
 
     public function create(): View
