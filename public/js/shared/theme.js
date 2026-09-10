@@ -89,6 +89,10 @@
                 setTheme(preferredTheme(), false);
             }
         });
+
+        window.requestAnimationFrame(function () {
+            root.classList.add('theme-ready');
+        });
     }
 
     if (document.readyState === 'loading') {
