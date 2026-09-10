@@ -1,9 +1,8 @@
 @php
     $showArticlesNav = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
-    $showCommunityNav = \App\Models\Setting::get('show_community_events', '1') === '1';
 
     // الروابط التي لها فعليًا نسخة /en (غيرها يبقى بدون prefix بغض النظر عن اللغة).
-    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index', 'community.index'];
+    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index'];
 
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
@@ -16,9 +15,10 @@
         $navItems['articles'] = ['route' => 'articles.index', 'active' => request()->routeIs('articles.*')];
     }
 
-    if ($showCommunityNav) {
-        $navItems['community'] = ['route' => 'community.index', 'active' => request()->routeIs('community.*')];
-    }
+    $navItems['events'] = [
+        'route' => 'events.index',
+        'active' => request()->routeIs('events.*', 'event_editions.*'),
+    ];
 
     $currentLocale = app()->getLocale();
 
