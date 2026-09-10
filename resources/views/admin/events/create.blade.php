@@ -31,3 +31,7 @@
 </div>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ versioned_asset('assets/admin/js/event-pricing-auto.js') }}" defer></script>
+@endpush
