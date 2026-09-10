@@ -46,6 +46,14 @@ return [
 
     'held_on' => 'أُقيمت بتاريخ',
 
+    'preorder_date' => 'الطلب المسبق',
+
+    'preorder_open' => 'الطلب المسبق متاح',
+
+    'available_from' => 'تاريخ التوفر',
+
+    'available_now' => 'متاح الآن',
+
     'expected_announcements' => 'المتوقع طرحه',
 
     'what_was_announced' => 'ما أُعلن فعلاً',
