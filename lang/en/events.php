@@ -74,7 +74,7 @@ return [
     'upgrade_verdict' => [
         'yes' => 'Yes',
         'no' => 'No',
-        'specific_segment' => 'For specific users only',
+        'specific_segment' => 'Worth upgrading for specific users',
     ],
 
     'empty_title' => 'No events right now',
