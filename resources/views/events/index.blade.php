@@ -17,8 +17,8 @@
 
     <x-page-hero
         :badge="__('events.hero_badge')"
-        :title="__('events.hero_title').' '.__('events.hero_title_highlight')"
-        :description="__('events.hero_description')"
+        :title="__('events.hub_title')"
+        :description="__('events.hub_description')"
         :image="asset('images/community/hero.webp')"
         :image-width="1672"
         :image-height="941"
@@ -28,23 +28,42 @@
         @if ($events->isNotEmpty())
             <div class="grid-3">
                 @foreach ($events as $event)
-                    <a href="{{ route('community.show', $event) }}" class="card card--hover community-card" data-reveal>
+                    @php
+                        $latestEdition = $event->editions->first();
+                        $phase = $latestEdition?->phase;
+                    @endphp
+
+                    <a href="{{ route(app()->getLocale() === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]) }}"
+                       class="card card--hover community-card" data-reveal>
                         <div class="community-card__media">
-                            <img src="{{ media_url($event->image) }}" alt="{{ $event->title }}" loading="lazy">
-                            @if ($event->event_status)
-                                <span class="badge badge--status-{{ $event->event_status }} community-card__badge">{{ __('events.status.'.$event->event_status) }}</span>
+                            <img
+                                src="{{ $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg') }}"
+                                alt="{{ $event->name }}"
+                                loading="lazy"
+                            >
+
+                            @if ($phase)
+                                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing', 'concluded' => 'ended'][$phase] }} community-card__badge">
+                                    {{ __('events.phase.'.$phase) }}
+                                </span>
                             @endif
                         </div>
+
                         <div class="community-card__body">
                             <div class="community-card__meta">
-                                {{ optional(($event->event_start_at ?? $event->published_at)?->copy()->timezone('Asia/Muscat'))->translatedFormat('d.m.Y — H:i') }}
-                                @if ($event->location)
-                                    · {{ $event->location }}
+                                {{ trans_choice('events.editions_count', $event->editions->count(), ['count' => $event->editions->count()]) }}
+                                @if ($latestEdition)
+                                    · {{ __('events.latest_year') }} {{ $latestEdition->year }}
                                 @endif
                             </div>
-                            <h3 class="community-card__title">{{ $event->title }}</h3>
-                            <p class="community-card__excerpt">{{ $event->short_description }}</p>
-                            <span class="community-card__link">{{ __('events.view_details') }} ←</span>
+
+                            <h3 class="community-card__title">{{ $event->name }}</h3>
+
+                            <p class="community-card__excerpt">
+                                {{ $latestEdition?->short_description ?: __('events.series_default_description') }}
+                            </p>
+
+                            <span class="community-card__link">{{ __('events.view_series') }} ←</span>
                         </div>
                     </a>
                 @endforeach
