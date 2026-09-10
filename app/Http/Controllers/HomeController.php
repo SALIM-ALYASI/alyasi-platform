@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\CommunityPost;
 use App\Models\Faq;
 use App\Models\NewsArticle;
 use App\Models\Service;
@@ -49,18 +48,12 @@ class HomeController extends Controller
             ->inRandomOrder()
             ->get();
 
-        $showCommunityEvents = Setting::get('show_community_events', '1') === '1';
-        $showArticles = Setting::get('show_articles', '1') === '1';
+        // قسم المجتمع العام تم تقاعده لصالح مركز /events الموحد.
+        // نبقي المتغيرات متاحة للـ view مؤقتًا حتى لا نكسر القالب القديم.
+        $showCommunityEvents = false;
+        $communityHighlights = collect();
 
-        $communityHighlights = $showCommunityEvents
-            ? CommunityPost::query()
-                ->with('category')
-                ->active()
-                ->published()
-                ->ordered()
-                ->take(2)
-                ->get()
-            : collect();
+        $showArticles = Setting::get('show_articles', '1') === '1';
 
         $latestArticles = $showArticles
             ? Article::query()
