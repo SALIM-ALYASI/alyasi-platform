@@ -217,7 +217,18 @@
                     <div class="event-detail__verdict-title">{{ __('events.upgrade_verdict_title') }}</div>
                     <div class="event-detail__verdict-answer">{{ __('events.upgrade_verdict.'.$edition->upgrade_verdict) }}</div>
                     @if ($edition->localized_upgrade_verdict_text)
-                        <div class="event-detail__verdict-text">{!! nl2br(e($edition->localized_upgrade_verdict_text)) !!}</div>
+                        @php
+                            $verdictParagraphs = preg_split('/\R\s*\R/u', trim($edition->localized_upgrade_verdict_text), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                        @endphp
+                        <div class="event-detail__verdict-text">
+                            @foreach ($verdictParagraphs as $paragraph)
+                                @php
+                                    $paragraph = trim($paragraph);
+                                    $isConclusion = \Illuminate\Support\Str::startsWith($paragraph, ['الخلاصة:', 'Bottom line:']);
+                                @endphp
+                                <p class="event-detail__verdict-paragraph{{ $isConclusion ? ' event-detail__verdict-conclusion' : '' }}">{{ $paragraph }}</p>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             @endif
