@@ -1,0 +1,473 @@
+/* =========================================================
+   ALYASI — Shared Light / Dark Theme
+   Loaded after page-specific CSS so the theme can safely
+   normalize hard-coded light surfaces across the platform.
+   ========================================================= */
+
+:root {
+    color-scheme: light;
+    --theme-card: #ffffff;
+    --theme-card-soft: #f2f5f8;
+    --theme-muted: rgba(20, 32, 46, .68);
+    --theme-muted-soft: rgba(20, 32, 46, .52);
+    --theme-input: #ECEFF3;
+    --theme-overlay: rgba(11, 31, 58, .68);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-bg: #07111F;
+    --color-surface: #0F1B2C;
+    --color-text: #E8EEF6;
+    --color-divider: rgba(232, 238, 246, .14);
+
+    --color-accent-100: #12233B;
+    --color-accent-200: #1B3555;
+    --color-accent-300: #86A7D4;
+    --color-accent-400: #7296C9;
+    --color-accent-500: #668BC2;
+    --color-accent-600: #86A7D4;
+    --color-accent-700: #A7C0E0;
+    --color-accent-800: #C7D7EA;
+    --color-accent-900: #0B1F3A;
+
+    --color-accent-2-100: #171D27;
+    --color-accent-2-200: #202A38;
+    --color-accent-2-300: #344154;
+    --color-accent-2-400: #617086;
+    --color-accent-2-500: #8794A6;
+    --color-accent-2-600: #A5AFBC;
+    --color-accent-2-700: #C2CBD5;
+    --color-accent-2-800: #DCE3EA;
+    --color-accent-2-900: #F0F4F8;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .30);
+    --shadow-md: 0 10px 28px rgba(0, 0, 0, .34);
+    --shadow-lg: 0 22px 52px rgba(0, 0, 0, .42);
+
+    --theme-card: #0D1827;
+    --theme-card-soft: #111F31;
+    --theme-muted: rgba(232, 238, 246, .72);
+    --theme-muted-soft: rgba(232, 238, 246, .54);
+    --theme-input: #111F31;
+    --theme-overlay: rgba(0, 0, 0, .70);
+
+    /* Admin design tokens — active only where admin CSS uses them. */
+    --admin-background: #07111F;
+    --admin-surface: #0D1827;
+    --admin-surface-soft: #111F31;
+    --admin-text: #E8EEF6;
+    --admin-muted: #9AA8BA;
+    --admin-border: #25344A;
+    --admin-primary-soft: #142A48;
+    --admin-success-soft: rgba(22, 128, 74, .18);
+    --admin-warning-soft: rgba(183, 121, 31, .18);
+    --admin-info-soft: rgba(37, 99, 169, .18);
+    --admin-danger-soft: rgba(180, 35, 24, .18);
+    --admin-shadow: 0 18px 45px rgba(0, 0, 0, .28);
+    --admin-shadow-soft: 0 8px 24px rgba(0, 0, 0, .24);
+}
+
+/* Smooth theme transition without animating layout. */
+html.theme-ready body,
+html.theme-ready .site-header,
+html.theme-ready .card,
+html.theme-ready .faq-item,
+html.theme-ready .product-card,
+html.theme-ready .contact-form-card,
+html.theme-ready .admin-header,
+html.theme-ready .admin-data-card,
+html.theme-ready input,
+html.theme-ready select,
+html.theme-ready textarea {
+    transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+/* =========================================================
+   Theme toggle — shared public/admin control
+   ========================================================= */
+
+.theme-toggle {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    padding: 0;
+    border: 1px solid var(--color-divider);
+    border-radius: 50%;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    box-shadow: none;
+    transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--color-accent-400);
+    color: var(--color-accent-600);
+}
+
+.theme-toggle:active { transform: translateY(0); }
+.theme-toggle i { font-size: 15px; pointer-events: none; }
+
+:root[data-theme="dark"] .theme-toggle {
+    background: #132238;
+    border-color: #2A3B54;
+    color: #F4DFAF;
+}
+
+/* =========================================================
+   Public website
+   ========================================================= */
+
+:root[data-theme="dark"] body {
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+:root[data-theme="dark"] .site-header {
+    background: rgba(7, 17, 31, .70);
+    border-bottom-color: rgba(255, 255, 255, .06);
+}
+
+:root[data-theme="dark"] .site-header.is-scrolled {
+    background: rgba(7, 17, 31, .95);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .28);
+}
+
+:root[data-theme="dark"] .site-header__logo {
+    filter: brightness(0) invert(1);
+}
+
+:root[data-theme="dark"] .site-header__brand-name,
+:root[data-theme="dark"] .site-header__nav-link:hover,
+:root[data-theme="dark"] .site-header__mobile-link.is-active {
+    color: var(--color-accent-300);
+}
+
+:root[data-theme="dark"] .site-header__mobile-menu {
+    background: #091522;
+}
+
+:root[data-theme="dark"] .site-header__menu-toggle span {
+    background: #E8EEF6;
+}
+
+/* Shared light surfaces */
+:root[data-theme="dark"] :where(
+    .card,
+    .empty-state,
+    .home-pillar,
+    .home-tech__pill,
+    .faq-item,
+    .contact-form-card,
+    .product-card
+) {
+    background-color: var(--theme-card);
+    color: var(--color-text);
+    border-color: var(--color-divider);
+}
+
+:root[data-theme="dark"] .home-spotlight__number {
+    background: var(--theme-card);
+    color: var(--color-accent-300);
+}
+
+:root[data-theme="dark"] .home-pillar__icon {
+    background: #142742;
+    color: #A7C0E0;
+}
+
+:root[data-theme="dark"] .home-pillar__icon--alt {
+    background: #202A38;
+    color: #C2CBD5;
+}
+
+/* Muted text that was authored with light-theme rgba literals. */
+:root[data-theme="dark"] :where(
+    .section-head__desc,
+    .home-spotlight__desc,
+    .home-pillar p,
+    .home-news-card__date,
+    .home-community-card__meta,
+    .home-updates-card__date,
+    .home-updates-empty,
+    .empty-state__desc,
+    .field__checkbox,
+    .contact-form-card__desc,
+    .contact-side__card p,
+    .legal-updated,
+    .legal-intro,
+    .legal-notice,
+    .legal-item p,
+    .articles-card__meta,
+    .articles-card__excerpt,
+    .event-detail__date-status,
+    .product-card__note,
+    .product-card__availability-label,
+    .product-card__price-tag,
+    .event-detail__pricing-disclaimer,
+    .event-detail__verdict-text
+) {
+    color: var(--theme-muted) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .home-news-card__body h3,
+    .home-community-card__body h3,
+    .home-work-card__title,
+    .home-updates-col__head h3,
+    .home-updates-card__body h4,
+    .faq-item__question,
+    .articles-card__title,
+    .product-card__name,
+    .contact-side__social,
+    .field__label
+) {
+    color: var(--color-text) !important;
+}
+
+/* Forms */
+:root[data-theme="dark"] :where(
+    .field__control,
+    body:not(.admin-body) input[type="text"],
+    body:not(.admin-body) input[type="email"],
+    body:not(.admin-body) input[type="tel"],
+    body:not(.admin-body) input[type="url"],
+    body:not(.admin-body) input[type="number"],
+    body:not(.admin-body) input[type="date"],
+    body:not(.admin-body) input[type="datetime-local"],
+    body:not(.admin-body) input[type="search"],
+    body:not(.admin-body) select,
+    body:not(.admin-body) textarea
+) {
+    background: var(--theme-input);
+    color: var(--color-text);
+    border-color: var(--color-divider);
+}
+
+:root[data-theme="dark"] :where(input, textarea)::placeholder {
+    color: rgba(232, 238, 246, .40);
+}
+
+/* Page families */
+:root[data-theme="dark"] .home-pillars,
+:root[data-theme="dark"] .home-community,
+:root[data-theme="dark"] .home-tech,
+:root[data-theme="dark"] .contact-side__card,
+:root[data-theme="dark"] .legal-notice,
+:root[data-theme="dark"] .event-detail__verdict {
+    background-color: var(--color-surface);
+}
+
+:root[data-theme="dark"] .product-card__image-btn,
+:root[data-theme="dark"] .product-card__image--placeholder {
+    background: #111F31;
+}
+
+:root[data-theme="dark"] .product-card__image--placeholder {
+    color: rgba(232, 238, 246, .28);
+}
+
+:root[data-theme="dark"] .product-card__availability-row--available {
+    color: #8FE0B0;
+    background: rgba(22, 128, 74, .16);
+    border-color: rgba(63, 166, 107, .34);
+}
+
+:root[data-theme="dark"] .product-card__availability-value,
+:root[data-theme="dark"] .product-card__price-value,
+:root[data-theme="dark"] .product-card__price-omr,
+:root[data-theme="dark"] .event-detail__verdict-answer {
+    color: var(--color-accent-300);
+}
+
+:root[data-theme="dark"] .form-alert--success {
+    color: #98E5B7;
+    background: rgba(63, 166, 107, .15);
+}
+
+:root[data-theme="dark"] .form-alert--error,
+:root[data-theme="dark"] .field__error {
+    color: #FFAAA3;
+}
+
+/* Protect image-backed/navy sections from generic dark overrides. */
+:root[data-theme="dark"] :where(
+    .home-hero,
+    .home-why,
+    .cta-band,
+    .event-detail__live-banner,
+    .site-footer
+) {
+    color: #fff;
+}
+
+:root[data-theme="dark"] :where(
+    .home-hero__desc,
+    .home-hero__audience,
+    .home-why__desc,
+    .home-why__item p,
+    .cta-band__desc,
+    .site-footer__desc,
+    .site-footer__links a,
+    .site-footer__bottom
+) {
+    color: rgba(255, 255, 255, .72) !important;
+}
+
+/* Footer stays intentionally navy in both themes. */
+:root[data-theme="dark"] .site-footer {
+    background: #050D18;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* Scrollbars */
+:root[data-theme="dark"] {
+    scrollbar-color: #34445C #07111F;
+}
+
+/* =========================================================
+   Admin dashboard
+   ========================================================= */
+
+:root[data-theme="dark"] .admin-layout,
+:root[data-theme="dark"] .admin-main,
+:root[data-theme="dark"] .admin-content {
+    background: var(--admin-background);
+    color: var(--admin-text);
+}
+
+:root[data-theme="dark"] :where(
+    .admin-header,
+    .admin-list-panel,
+    .admin-filter-panel,
+    .admin-stat-card,
+    .admin-data-card,
+    .events-form-card,
+    .admin-account-dropdown
+) {
+    background-color: var(--admin-surface) !important;
+    color: var(--admin-text);
+    border-color: var(--admin-border) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .admin-data-card__actions,
+    .admin-data-card__meta > div,
+    .admin-results-count,
+    .events-repeater-row,
+    .account-dropdown-header
+) {
+    background-color: var(--admin-surface-soft) !important;
+    border-color: var(--admin-border) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .admin-action-button,
+    .admin-reset-button,
+    .events-form-card .btn-secondary,
+    .header-icon-button,
+    .header-website-link
+) {
+    background: #111F31 !important;
+    color: var(--admin-text) !important;
+    border-color: var(--admin-border) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .admin-input-with-icon input,
+    .admin-filter-form select,
+    .events-form-card input[type="text"],
+    .events-form-card input[type="url"],
+    .events-form-card input[type="number"],
+    .events-form-card input[type="date"],
+    .events-form-card input[type="datetime-local"],
+    .events-form-card input[type="file"],
+    .events-form-card select,
+    .events-form-card textarea,
+    .admin-content input[type="text"],
+    .admin-content input[type="email"],
+    .admin-content input[type="password"],
+    .admin-content input[type="number"],
+    .admin-content input[type="url"],
+    .admin-content input[type="date"],
+    .admin-content input[type="datetime-local"],
+    .admin-content select,
+    .admin-content textarea
+) {
+    background: #111F31 !important;
+    color: var(--admin-text) !important;
+    border-color: var(--admin-border) !important;
+}
+
+:root[data-theme="dark"] .events-form-card input:disabled {
+    background: #0A1422 !important;
+    color: var(--admin-muted) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .admin-data-card__heading h3,
+    .admin-list-panel__header h2,
+    .admin-stat-card__content strong,
+    .events-form-section-title,
+    .header-page-info h1
+) {
+    color: var(--admin-text) !important;
+}
+
+:root[data-theme="dark"] :where(
+    .admin-data-card__heading span,
+    .admin-data-card__meta span:first-child,
+    .admin-list-panel__header p,
+    .admin-stat-card__content span,
+    .events-form-card .form-hint,
+    .header-page-info p
+) {
+    color: var(--admin-muted) !important;
+}
+
+:root[data-theme="dark"] .admin-data-card__media {
+    background: linear-gradient(135deg, #142238, #1A2940);
+}
+
+:root[data-theme="dark"] .admin-page-header {
+    border-color: #263A57;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .30);
+}
+
+:root[data-theme="dark"] .admin-pagination {
+    border-color: var(--admin-border);
+}
+
+.admin-theme-toggle {
+    border-color: var(--admin-border);
+    background: var(--admin-surface-soft);
+    color: var(--admin-text);
+}
+
+/* Avoid initial color flash before theme.js finishes binding. */
+html:not(.theme-ready) * {
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.theme-ready body,
+    html.theme-ready .site-header,
+    html.theme-ready .card,
+    html.theme-ready .faq-item,
+    html.theme-ready .product-card,
+    html.theme-ready .contact-form-card,
+    html.theme-ready .admin-header,
+    html.theme-ready .admin-data-card,
+    html.theme-ready input,
+    html.theme-ready select,
+    html.theme-ready textarea,
+    .theme-toggle {
+        transition: none;
+    }
+}
