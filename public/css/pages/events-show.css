@@ -137,6 +137,42 @@
 .product-card__name { font-weight: 700; font-size: 15.5px; margin: 0; }
 .product-card__note { font-size: 13px; color: rgba(20, 32, 46, .6); margin: 0; line-height: 1.7; }
 
+.product-card__availability {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-divider);
+}
+
+.product-card__availability-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12.5px;
+}
+
+.product-card__availability-label {
+    color: rgba(20, 32, 46, .55);
+    font-weight: 600;
+}
+
+.product-card__availability-value {
+    color: var(--color-accent-700);
+    font-weight: 700;
+}
+
+.product-card__availability-row--available {
+    justify-content: flex-start;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 9px 11px;
+}
+
 .product-card__price {
     display: flex;
     align-items: flex-start;
