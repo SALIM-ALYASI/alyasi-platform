@@ -27,15 +27,29 @@
     />
 
     <section class="container community-section">
+
+        <div class="community-events-hub" data-reveal>
+            <div class="community-events-hub__content">
+                <span class="community-events-hub__eyebrow">
+                    <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                    {{ __('events.title') }}
+                </span>
+                <h2 class="community-events-hub__title">{{ __('community.events_hub_title') }}</h2>
+                <p class="community-events-hub__description">{{ __('community.events_hub_description') }}</p>
+            </div>
+
+            <a href="{{ route('events.index') }}" class="btn btn--primary community-events-hub__button">
+                {{ __('community.events_hub_button') }}
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            </a>
+        </div>
+
         @if ($categories->isNotEmpty())
             <div class="filters">
                 <a href="{{ localized_route('community.index') }}" class="filters__btn @if(!request('category')) is-active @endif">
                     {{ __('community.all_categories') }}
                 </a>
                 @foreach ($categories as $category)
-                    {{-- تصنيف "الفعاليات" مخصص حصرياً لمنشورات type=event، والاستعلام
-                    أعلاه يستثني هذا النوع دائماً -- فلترته هنا ترجع فاضية دايماً.
-                    نوجّهه لصفحة /events المخصصة بدل تكرار نفس الخلل. --}}
                     @if ($category->slug === 'alfaaalyat')
                         <a href="{{ route('events.index') }}" class="filters__btn">
                             {{ $category->name }}
@@ -55,18 +69,13 @@
                     <a href="{{ route('community.show', $post) }}" class="card card--hover community-card" data-reveal>
                         <div class="community-card__media">
                             <img src="{{ media_url($post->image) }}" alt="{{ $post->title }}" loading="lazy">
-                            @if ($post->event_status)
-                                <span class="badge badge--status-{{ $post->event_status }} community-card__badge">{{ __('events.status.'.$post->event_status) }}</span>
-                            @elseif ($post->category)
+                            @if ($post->category)
                                 <span class="badge community-card__badge">{{ $post->category->name }}</span>
                             @endif
                         </div>
                         <div class="community-card__body">
                             <div class="community-card__meta">
-                                {{ optional(($post->event_start_at ?? $post->published_at)?->copy()->timezone('Asia/Muscat'))->translatedFormat('d.m.Y') }}
-                                @if ($post->location)
-                                    · {{ $post->location }}
-                                @endif
+                                {{ optional($post->published_at?->copy()->timezone('Asia/Muscat'))->translatedFormat('d.m.Y') }}
                             </div>
                             <h3 class="community-card__title">{{ $post->title }}</h3>
                             <p class="community-card__excerpt">{{ $post->short_description }}</p>
@@ -80,9 +89,12 @@
                 {{ $posts->links() }}
             </div>
         @else
-            <div class="empty-state">
+            <div class="empty-state community-empty-state">
                 <div class="empty-state__title">{{ __('community.empty_title') }}</div>
                 <p class="empty-state__desc">{{ __('community.empty_description') }}</p>
+                <a href="{{ route('events.index') }}" class="btn btn--primary community-empty-state__button">
+                    {{ __('community.events_hub_button') }}
+                </a>
             </div>
         @endif
     </section>
