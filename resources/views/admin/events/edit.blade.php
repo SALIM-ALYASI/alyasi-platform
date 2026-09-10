@@ -40,5 +40,12 @@
 @endsection
 
 @push('scripts')
+    <script>
+        window.__eventUpgradeVerdict = {
+            ar: @json(old('upgrade_verdict_text_ar', $edition->upgrade_verdict_text_ar ?? $edition->upgrade_verdict_text ?? '')),
+            en: @json(old('upgrade_verdict_text_en', $edition->upgrade_verdict_text_en ?? ''))
+        };
+    </script>
+    <script src="{{ versioned_asset('assets/admin/js/event-verdict-localization.js') }}" defer></script>
     <script src="{{ versioned_asset('assets/admin/js/event-pricing-auto.js') }}" defer></script>
 @endpush
