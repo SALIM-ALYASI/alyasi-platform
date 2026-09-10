@@ -71,6 +71,23 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    {{-- Apply the saved/system theme before paint to prevent a white flash. --}}
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('alyasi-theme');
+                var theme = saved === 'dark' || saved === 'light'
+                    ? saved
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.style.colorScheme = theme;
+            } catch (error) {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+
     <title>{{ $pageTitle }}</title>
 
     @hasSection('meta_author')
@@ -359,6 +376,12 @@
 
     @stack('styles')
 
+    {{-- Loaded last intentionally: dark mode can normalize page-level colors. --}}
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/shared/theme.css') }}"
+    >
+
 
     {{-- =====================================================
          Structured Data / JSON-LD
@@ -427,6 +450,11 @@
     {{-- =====================================================
          Shared Scripts
     ====================================================== --}}
+
+    <script
+        src="{{ versioned_asset('js/shared/theme.js') }}"
+        defer
+    ></script>
 
     <script
         src="{{ versioned_asset('js/shared/header.js') }}"
