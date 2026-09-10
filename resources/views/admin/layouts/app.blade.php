@@ -14,6 +14,24 @@
         content="{{ csrf_token() }}"
     >
 
+    <meta name="theme-color" content="#0B1F3A">
+
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('alyasi-theme');
+                var theme = saved === 'dark' || saved === 'light'
+                    ? saved
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.style.colorScheme = theme;
+            } catch (error) {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+
     <title>
         @yield('title', 'لوحة التحكم') | ALYASI
     </title>
@@ -47,9 +65,15 @@
     >
 
     @stack('styles')
+
+    {{-- Shared theme loads last so it can cover every admin module. --}}
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/shared/theme.css') }}"
+    >
 </head>
 
-<body>
+<body class="admin-body">
 
     <div class="admin-layout">
 
@@ -110,6 +134,7 @@
         id="sidebar-overlay"
     ></div>
 
+    <script src="{{ versioned_asset('js/shared/theme.js') }}" defer></script>
     <script src="{{ versioned_asset('assets/admin/js/dashboard.js') }}"></script>
 
     @stack('scripts')
