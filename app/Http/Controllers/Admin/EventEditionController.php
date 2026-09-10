@@ -250,11 +250,17 @@ class EventEditionController extends Controller
             'pricing_table.*.official_currency' => ['nullable', 'string', 'max:10'],
             'pricing_table.*.omr_price' => ['nullable', 'string', 'max:50'],
             'upgrade_verdict' => ['nullable', 'in:yes,no,specific_segment'],
-            'upgrade_verdict_text' => ['nullable', 'string', 'max:1000'],
+            'upgrade_verdict_text_ar' => ['nullable', 'string', 'max:2000'],
+            'upgrade_verdict_text_en' => ['nullable', 'string', 'max:2000'],
             'status' => ['required', 'in:draft,published'],
         ]);
 
         $data['attended'] = $request->boolean('attended');
+
+        // Keep the old single-language field synchronized with Arabic while
+        // older code/deployments are still around. Public rendering uses the
+        // new locale-specific fields.
+        $data['upgrade_verdict_text'] = $data['upgrade_verdict_text_ar'] ?? null;
 
         $announcementImages = $request->file('announcement_images', []);
 
