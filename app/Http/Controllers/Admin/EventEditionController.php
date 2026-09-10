@@ -16,6 +16,12 @@ use Illuminate\View\View;
 
 class EventEditionController extends Controller
 {
+    /**
+     * سعر صرف تقريبي ثابت لعرض الأسعار المنشورة بالدولار بالريال العُماني.
+     * نقرّب الناتج للأعلى حتى تكون القيمة المعروضة رقمًا صحيحًا واضحًا.
+     */
+    private const USD_TO_OMR = 0.3845;
+
     public function index(): View
     {
         $events = Event::query()
@@ -185,6 +191,14 @@ class EventEditionController extends Controller
 
         $data['pricing_table'] = collect($data['pricing_table'] ?? [])
             ->filter(fn (array $row) => filled($row['product_ar'] ?? null) || filled($row['product_en'] ?? null))
+            ->map(function (array $row) {
+                $row['omr_price'] = $this->estimateOmr(
+                    $row['official_price'] ?? null,
+                    $row['official_currency'] ?? null
+                );
+
+                return $row;
+            })
             ->values()
             ->all();
 
@@ -195,6 +209,32 @@ class EventEditionController extends Controller
         unset($data['kept_gallery'], $data['new_gallery_images'], $data['announcement_images']);
 
         return $data;
+    }
+
+    /**
+     * يحسب التقدير بالريال العُماني من السعر الرسمي.
+     * USD: السعر × 0.3845 ثم التقريب للأعلى.
+     * OMR: يحتفظ بالقيمة نفسها مع التقريب للأعلى.
+     */
+    private function estimateOmr(string|int|float|null $price, ?string $currency): ?string
+    {
+        if (blank($price) || blank($currency)) {
+            return null;
+        }
+
+        $amount = (float) preg_replace('/[^0-9.]/', '', (string) $price);
+
+        if ($amount <= 0) {
+            return null;
+        }
+
+        $estimated = match (strtoupper(trim($currency))) {
+            'USD' => ceil($amount * self::USD_TO_OMR),
+            'OMR' => ceil($amount),
+            default => null,
+        };
+
+        return $estimated === null ? null : (string) (int) $estimated;
     }
 
     private function uniqueEventSlug(string $name): string
