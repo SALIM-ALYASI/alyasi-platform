@@ -7,7 +7,6 @@
 <div class="admin-data-page">
 
     <div class="admin-page-header">
-
         <div class="admin-page-header__content">
             <span class="admin-page-header__badge">
                 <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
@@ -17,7 +16,7 @@
             <h1 class="admin-page-header__title">المؤتمرات والفعاليات</h1>
 
             <p class="admin-page-header__description">
-                إدارة نسخ المؤتمرات (آبل، سامسونج، GITEX...) — المنتجات المتوقعة، الأسعار، والصور.
+                إدارة سلاسل المؤتمرات والشركات ثم نسخ كل مؤتمر حسب السنة: Apple، Samsung، Huawei، COMEX وغيرها.
             </p>
         </div>
 
@@ -25,37 +24,35 @@
             <i class="fa-solid fa-plus" aria-hidden="true"></i>
             إضافة نسخة مؤتمر
         </a>
-
     </div>
 
     <section class="admin-list-panel">
-
         <div class="admin-list-panel__header">
             <div>
-                <h2>كل النسخ</h2>
-                <p>الحالة (قادم/مباشر/انتهى) تُحسب تلقائيًا من وقت البداية والنهاية.</p>
+                <h2>الشركات وسلاسل المؤتمرات</h2>
+                <p>كل بطاقة تجمع جميع النسخ التابعة لنفس المؤتمر، مع أحدث سنة والحالة الحالية.</p>
             </div>
 
-            <span class="admin-results-count">{{ number_format($editions->total()) }} نسخة</span>
+            <span class="admin-results-count">{{ number_format($events->total()) }} سلسلة</span>
         </div>
 
-        @if ($editions->isNotEmpty())
-
+        @if ($events->isNotEmpty())
             <div class="admin-card-grid">
-
-                @foreach ($editions as $edition)
+                @foreach ($events as $event)
                     @php
-                        $phaseLabel = ['upcoming' => 'قادم', 'live' => 'مباشر الآن', 'concluded' => 'انتهى'][$edition->phase];
-                        $phaseStatusClass = ['upcoming' => 'admin-status--active', 'live' => 'admin-status--featured', 'concluded' => 'admin-status--inactive'][$edition->phase];
+                        $latestEdition = $event->editions->first();
+                        $nextEdition = $event->editions->first(fn ($edition) => $edition->phase === 'upcoming');
+                        $phase = $latestEdition?->phase;
+                        $phaseLabel = $phase ? ['upcoming' => 'قادم', 'live' => 'مباشر الآن', 'concluded' => 'انتهى'][$phase] : 'بدون نسخة';
+                        $phaseStatusClass = $phase ? ['upcoming' => 'admin-status--active', 'live' => 'admin-status--featured', 'concluded' => 'admin-status--inactive'][$phase] : 'admin-status--inactive';
                     @endphp
 
                     <article class="admin-data-card">
-
                         <div class="admin-data-card__media">
-                            @if ($edition->image)
-                                <img src="{{ asset($edition->image) }}" alt="{{ $edition->title_ar }}">
+                            @if ($latestEdition?->image)
+                                <img src="{{ asset($latestEdition->image) }}" alt="{{ $event->name }}">
                             @else
-                                <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                                <i class="fa-solid fa-building" aria-hidden="true"></i>
                             @endif
 
                             <div class="admin-data-card__badges">
@@ -64,70 +61,85 @@
                                     {{ $phaseLabel }}
                                 </span>
                             </div>
-
-                            <div class="admin-data-card__badges admin-data-card__badges--end">
-                                <span class="admin-status {{ $edition->status === 'published' ? 'admin-status--active' : 'admin-status--inactive' }}">
-                                    {{ $edition->status === 'published' ? 'منشور' : 'مسودة' }}
-                                </span>
-                            </div>
                         </div>
 
                         <div class="admin-data-card__body">
-
                             <div class="admin-data-card__heading">
                                 <div>
-                                    <h3>{{ $edition->title_ar }}</h3>
-                                    <span>{{ $edition->event->name }}</span>
+                                    <h3>{{ $event->name }}</h3>
+                                    <span>/events/{{ $event->slug ?: '—' }}</span>
                                 </div>
                             </div>
 
                             <div class="admin-data-card__meta">
                                 <div>
-                                    <span>عدد المنتجات المرصودة</span>
-                                    <strong>{{ count($edition->announcements ?? []) }}</strong>
+                                    <span>عدد النسخ</span>
+                                    <strong>{{ $event->editions_count }}</strong>
                                 </div>
 
                                 <div>
-                                    <span>صفوف الأسعار</span>
-                                    <strong>{{ count($edition->pricing_table ?? []) }}</strong>
+                                    <span>آخر نسخة</span>
+                                    <strong>{{ $latestEdition?->year ?: '—' }}</strong>
+                                </div>
+
+                                <div>
+                                    <span>القادم</span>
+                                    <strong>{{ $nextEdition ? $nextEdition->year : '—' }}</strong>
                                 </div>
                             </div>
 
+                            @if ($event->editions->isNotEmpty())
+                                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+                                    @foreach ($event->editions as $edition)
+                                        <a href="{{ route('admin.events.edit', $edition) }}"
+                                           class="admin-action-button admin-action-button--edit"
+                                           style="width:auto;padding-inline:10px;gap:6px;"
+                                           title="تعديل نسخة {{ $edition->year }}">
+                                            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                                            {{ $edition->year }}
+                                            @if ($edition->phase === 'upcoming')
+                                                · قريبًا
+                                            @endif
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
 
                         <div class="admin-data-card__actions">
-
-                            @if ($edition->permalink('ar'))
-                                <a href="{{ $edition->permalink('ar')->url() }}" target="_blank" rel="noopener" class="admin-action-button" title="معاينة" aria-label="معاينة الصفحة العامة">
+                            @if ($event->slug)
+                                <a href="{{ route('event_editions.show', ['slug' => $event->slug]) }}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="admin-action-button"
+                                   title="صفحة السلسلة"
+                                   aria-label="معاينة صفحة السلسلة">
                                     <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                                 </a>
                             @endif
 
-                            <a href="{{ route('admin.events.edit', $edition) }}" class="admin-action-button admin-action-button--edit" title="تعديل" aria-label="تعديل النسخة">
-                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
-                            </a>
-
+                            @if ($latestEdition)
+                                <a href="{{ route('admin.events.edit', $latestEdition) }}"
+                                   class="admin-action-button admin-action-button--edit"
+                                   title="تعديل أحدث نسخة"
+                                   aria-label="تعديل أحدث نسخة">
+                                    <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                                </a>
+                            @endif
                         </div>
-
                     </article>
-
                 @endforeach
-
             </div>
 
             <div class="admin-pagination">
-                {{ $editions->links() }}
+                {{ $events->links() }}
             </div>
-
         @else
-
             <div class="admin-empty-state">
                 <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
-                <p>ما فيه نسخ مؤتمرات بعد.</p>
+                <p>ما فيه سلاسل مؤتمرات بعد.</p>
             </div>
-
         @endif
-
     </section>
 
 </div>
