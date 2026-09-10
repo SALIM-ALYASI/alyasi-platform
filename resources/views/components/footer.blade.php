@@ -3,7 +3,27 @@
         \App\Models\Setting::get('show_articles', '1') === '1'
         && \Illuminate\Support\Facades\Route::has('articles.index');
 
-    $footerSocialLinks = \App\Models\SocialLink::forDisplay();
+    // نعرض في الفوتر أهم 3 وسائل تواصل فقط بدل شبكة جميع الحسابات.
+    $allFooterSocialLinks = \App\Models\SocialLink::forDisplay();
+    $preferredFooterPlatforms = ['instagram', 'whatsapp', 'youtube'];
+
+    $footerSocialLinks = collect($preferredFooterPlatforms)
+        ->map(function (string $platform) use ($allFooterSocialLinks) {
+            return $allFooterSocialLinks->first(function ($link) use ($platform) {
+                $haystack = \Illuminate\Support\Str::lower(
+                    implode(' ', [
+                        (string) ($link->name ?? ''),
+                        (string) ($link->icon ?? ''),
+                        (string) ($link->url ?? ''),
+                    ])
+                );
+
+                return \Illuminate\Support\Str::contains($haystack, $platform);
+            });
+        })
+        ->filter()
+        ->unique(fn ($link) => $link->id ?? $link->url)
+        ->values();
 @endphp
 
 <footer class="site-footer">
