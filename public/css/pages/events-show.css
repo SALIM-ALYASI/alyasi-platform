@@ -77,7 +77,8 @@
     display: block;
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
     border: 0;
     padding: 0;
     cursor: zoom-in;
@@ -93,7 +94,7 @@
 
 .product-card__image--placeholder {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
     display: grid;
     place-items: center;
     background: var(--color-surface);
