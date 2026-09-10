@@ -49,6 +49,38 @@
 
 .community-detail__comment-form { background: var(--color-surface); border-radius: var(--radius-lg); padding: 28px; }
 
+/* Dark mode — event/community detail surfaces and text */
+:root[data-theme="dark"] .community-detail__info-card,
+:root[data-theme="dark"] .community-detail__comment {
+    background: var(--theme-card);
+    color: var(--color-text);
+    border: 1px solid var(--color-divider);
+}
+
+:root[data-theme="dark"] .community-detail__info-label,
+:root[data-theme="dark"] .community-detail__paragraph,
+:root[data-theme="dark"] .community-detail__map,
+:root[data-theme="dark"] .community-detail__related-meta,
+:root[data-theme="dark"] .community-detail__comment p,
+:root[data-theme="dark"] .community-detail__comment-date,
+:root[data-theme="dark"] .community-detail__comments-empty {
+    color: var(--theme-muted) !important;
+}
+
+:root[data-theme="dark"] .community-detail__info-value,
+:root[data-theme="dark"] .community-detail__title,
+:root[data-theme="dark"] .community-detail__related-title-text,
+:root[data-theme="dark"] .community-detail__comments-title {
+    color: var(--color-text) !important;
+}
+
+:root[data-theme="dark"] .community-detail__related,
+:root[data-theme="dark"] .community-detail__comment-form,
+:root[data-theme="dark"] .community-detail__map {
+    background: var(--color-surface);
+    border-color: var(--color-divider);
+}
+
 @media (max-width: 767px) {
     .community-detail__hero-wrap { padding-top: 36px; }
     .community-detail__body { padding-top: 32px; }
