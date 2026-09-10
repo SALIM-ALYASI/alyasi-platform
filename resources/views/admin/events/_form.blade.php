@@ -155,19 +155,21 @@
     <div class="form-grid">
         <div class="form-group form-group-full">
             <label for="short_description_ar">وصف مختصر (عربي)</label>
-            <textarea id="short_description_ar" name="short_description_ar" rows="3">{{ old('short_description_ar', $edition->short_description_ar ?? '') }}</textarea>
+            <textarea id="short_description_ar" name="short_description_ar" rows="5" maxlength="2000">{{ old('short_description_ar', $edition->short_description_ar ?? '') }}</textarea>
+            <span class="form-hint">حتى 2000 حرف.</span>
         </div>
 
         <div class="form-group form-group-full">
             <label for="short_description_en">وصف مختصر (إنجليزي)</label>
-            <textarea id="short_description_en" name="short_description_en" rows="3">{{ old('short_description_en', $edition->short_description_en ?? '') }}</textarea>
+            <textarea id="short_description_en" name="short_description_en" rows="5" maxlength="2000">{{ old('short_description_en', $edition->short_description_en ?? '') }}</textarea>
+            <span class="form-hint">حتى 2000 حرف.</span>
         </div>
     </div>
 </div>
 
 <div class="events-form-section">
     <h3 class="events-form-section-title"><i class="fa-solid fa-bullhorn"></i> المنتجات / الإعلانات</h3>
-    <p class="form-hint" style="margin-bottom:16px;">اسم المنتج بلغتين + ملاحظة + درجة تأكيد + صورة المنتج.</p>
+    <p class="form-hint" style="margin-bottom:16px;">اسم المنتج بلغتين + تفاصيل حتى 2000 حرف + الطلب المسبق + تاريخ التوفر + درجة التأكيد + صورة المنتج.</p>
 
     <div id="announcements-list"></div>
     <p class="events-repeater-empty" id="announcements-empty" style="display:none;">ما فيه منتجات مضافة بعد.</p>
@@ -187,13 +189,23 @@
                     <label>اسم المنتج (إنجليزي)</label>
                     <input type="text" name="announcements[__INDEX__][label_en]" data-field="label_en">
                 </div>
-                <div class="form-group">
-                    <label>ملاحظة (عربي)</label>
-                    <input type="text" name="announcements[__INDEX__][note_ar]" data-field="note_ar">
+                <div class="form-group form-group-full">
+                    <label>تفاصيل المنتج (عربي)</label>
+                    <textarea name="announcements[__INDEX__][note_ar]" data-field="note_ar" rows="4" maxlength="2000"></textarea>
+                </div>
+                <div class="form-group form-group-full">
+                    <label>تفاصيل المنتج (إنجليزي)</label>
+                    <textarea name="announcements[__INDEX__][note_en]" data-field="note_en" rows="4" maxlength="2000"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>ملاحظة (إنجليزي)</label>
-                    <input type="text" name="announcements[__INDEX__][note_en]" data-field="note_en">
+                    <label>تاريخ بدء الطلب المسبق</label>
+                    <input type="date" name="announcements[__INDEX__][preorder_at]" data-field="preorder_at">
+                    <span class="form-hint">بعد وصول هذا التاريخ يظهر: الطلب المسبق متاح.</span>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ النزول / التوفر</label>
+                    <input type="date" name="announcements[__INDEX__][available_at]" data-field="available_at">
+                    <span class="form-hint">عند وصول هذا التاريخ تختفي التواريخ ويظهر: متاح الآن.</span>
                 </div>
                 <div class="form-group">
                     <label>درجة التأكيد</label>
