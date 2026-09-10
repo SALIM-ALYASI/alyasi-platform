@@ -3,9 +3,6 @@
         \App\Models\Setting::get('show_articles', '1') === '1'
         && \Illuminate\Support\Facades\Route::has('articles.index');
 
-    $showCommunityFooter =
-        \App\Models\Setting::get('show_community_events', '1') === '1';
-
     $footerSocialLinks = \App\Models\SocialLink::forDisplay();
 @endphp
 
@@ -71,20 +68,18 @@
         </div>
 
 
-        {{-- المجتمع --}}
+        {{-- المؤتمرات والروابط العامة --}}
         <div class="site-footer__col">
 
             <h4 class="site-footer__heading">
-                {{ __('layout.footer.community_title') }}
+                {{ __('layout.footer.explore_title') }}
             </h4>
 
             <div class="site-footer__links">
 
-                @if ($showCommunityFooter)
-                    <a href="{{ localized_route('community.index') }}">
-                        {{ __('layout.nav.community') }}
-                    </a>
-                @endif
+                <a href="{{ route('events.index') }}">
+                    {{ __('layout.nav.events') }}
+                </a>
 
                 <a href="{{ localized_route('home') }}#faq">
                     {{ __('layout.footer.faq') }}
