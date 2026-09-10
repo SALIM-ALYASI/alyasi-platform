@@ -14,6 +14,7 @@ class CommunityPost extends Model
      */
     protected $fillable = [
         'community_category_id',
+        'event_edition_id',
         'title',
         'slug',
         'short_description',
@@ -35,6 +36,7 @@ class CommunityPost extends Model
      * التحويلات.
      */
     protected $casts = [
+        'event_edition_id' => 'integer',
         'event_start_at' => 'datetime',
         'event_end_at' => 'datetime',
         'published_at' => 'datetime',
@@ -59,6 +61,14 @@ class CommunityPost extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(CommunityCategory::class);
+    }
+
+    /**
+     * التغطية الرسمية المرتبطة بالمنشور، إن وجدت.
+     */
+    public function eventEdition(): BelongsTo
+    {
+        return $this->belongsTo(EventEdition::class);
     }
 
     /**
