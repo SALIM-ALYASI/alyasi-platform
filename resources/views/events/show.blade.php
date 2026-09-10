@@ -216,8 +216,8 @@
                 <div class="event-detail__verdict">
                     <div class="event-detail__verdict-title">{{ __('events.upgrade_verdict_title') }}</div>
                     <div class="event-detail__verdict-answer">{{ __('events.upgrade_verdict.'.$edition->upgrade_verdict) }}</div>
-                    @if ($edition->upgrade_verdict_text)
-                        <div class="event-detail__verdict-text">{{ $edition->upgrade_verdict_text }}</div>
+                    @if ($edition->localized_upgrade_verdict_text)
+                        <div class="event-detail__verdict-text">{!! nl2br(e($edition->localized_upgrade_verdict_text)) !!}</div>
                     @endif
                 </div>
             @endif
