@@ -53,6 +53,18 @@
                 @endif
             </div>
 
+            <button
+                type="button"
+                class="theme-toggle site-header__theme-toggle"
+                data-theme-toggle
+                data-theme-dark-label="{{ __('layout.theme.dark') }}"
+                data-theme-light-label="{{ __('layout.theme.light') }}"
+                aria-label="{{ __('layout.theme.dark') }}"
+                title="{{ __('layout.theme.dark') }}"
+            >
+                <i class="fa-solid fa-moon" data-theme-icon aria-hidden="true"></i>
+            </button>
+
             <a href="{{ localized_route('contact') }}" class="btn btn--primary site-header__cta">{{ __('layout.start_now') }}</a>
 
             <button type="button" class="site-header__menu-toggle" data-menu-toggle aria-expanded="false" aria-label="{{ __('layout.menu_open') }}">
