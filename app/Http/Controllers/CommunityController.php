@@ -12,9 +12,19 @@ class CommunityController extends Controller
 {
     /**
      * صفحة المجتمع الرئيسية.
+     *
+     * المؤتمرات لها مركز مستقل في /events، لذلك أي فلتر قديم للفعاليات
+     * يتحول إليه مباشرة بدل إظهار صفحة مجتمع فارغة.
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
+        $requestedCategory = $request->string('category')->toString();
+        $requestedType = $request->string('type')->toString();
+
+        if ($requestedCategory === 'alfaaalyat' || $requestedType === 'event') {
+            return redirect()->route('events.index');
+        }
+
         $categories = CommunityCategory::query()
             ->active()
             ->ordered()
