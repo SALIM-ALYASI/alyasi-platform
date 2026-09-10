@@ -74,7 +74,7 @@ return [
     'upgrade_verdict' => [
         'yes' => 'نعم',
         'no' => 'لا',
-        'specific_segment' => 'لفئة محددة فقط',
+        'specific_segment' => 'الترقية تستحق لفئات محددة',
     ],
 
     'empty_title' => 'لا توجد فعاليات حاليًا',
