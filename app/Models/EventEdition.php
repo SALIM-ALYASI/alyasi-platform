@@ -31,6 +31,8 @@ class EventEdition extends Model
         'pricing_table',
         'upgrade_verdict',
         'upgrade_verdict_text',
+        'upgrade_verdict_text_ar',
+        'upgrade_verdict_text_en',
         'status',
         'published_at',
     ];
@@ -106,6 +108,26 @@ class EventEdition extends Model
         }
 
         return $this->short_description_ar;
+    }
+
+    /**
+     * تفصيل حكم الترقية حسب لغة الصفحة.
+     * الإنجليزية لا ترجع تلقائيًا للنص العربي حتى لا يظهر محتوى عربي
+     * داخل /en. العربية ترجع للحقل القديم فقط كدعم انتقالي للبيانات القديمة.
+     */
+    public function getLocalizedUpgradeVerdictTextAttribute(): ?string
+    {
+        if (app()->getLocale() === 'en') {
+            return filled($this->upgrade_verdict_text_en)
+                ? $this->upgrade_verdict_text_en
+                : null;
+        }
+
+        if (filled($this->upgrade_verdict_text_ar)) {
+            return $this->upgrade_verdict_text_ar;
+        }
+
+        return $this->upgrade_verdict_text;
     }
 
     /**
