@@ -53,7 +53,7 @@ class ReliableAppleStorePricingService extends AppleStorePricingService
         $response = Http::withHeaders([
                 'Accept' => 'text/html,application/xhtml+xml',
                 'Accept-Language' => 'en-AE,en;q=0.9',
-                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0 Safari/537.36 ALYASI/1.2',
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0 Safari/537.36 ALYASI/1.3',
             ])
             ->timeout(20)
             ->retry(2, 750)
@@ -200,37 +200,78 @@ class ReliableAppleStorePricingService extends AppleStorePricingService
     }
 
     /**
-     * Apple تضع السعة ثم اللون ثم السعر في النص المرئي، ونفس الترتيب يظهر
-     * عادة داخل JSON الخاص بالـ configurator. نلتقط كل سجل محليًا بدل محاولة
-     * ربط السعر بأقرب سعة؛ طريقة "الأقرب" كانت تربط بعض الأسعار بالسعة التالية.
+     * Apple تضيف رقم الحاشية مباشرة بعد السعة (مثل 256GB¹ أو بعد إزالة HTML: 256GB1).
+     * لذلك لا نستخدم word-boundary بعد GB/TB. نلتقط مواضع السعات والأسعار بشكل
+     * مستقل ثم نربط كل سعر بآخر سعة سبقته قبل ظهور السعة التالية.
      *
-     * regex هنا صغير وثابت، لذلك لا يسبب خطأ PCRE "regular expression is too large".
+     * هذه الطريقة تعمل مع النص المرئي ومع JSON المضمّن، ولا تعتمد على regex كبير.
      *
      * @return array<string, array<int, int>>
      */
     private function extractCapacityPrices(string $text): array
     {
         preg_match_all(
-            '/\b(256GB|512GB|1TB|2TB)\b.{0,320}?\bAED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/isu',
+            '/(?<![A-Z0-9])(256\s*GB|512\s*GB|1\s*TB|2\s*TB)(?:\s*(?:\^?\s*\d+|\{\s*\^?\s*\d+\s*\}))?/iu',
             $text,
-            $matches,
-            PREG_SET_ORDER,
+            $capacityMatches,
+            PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
         );
+
+        preg_match_all(
+            '/AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu',
+            $text,
+            $priceMatches,
+            PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
+        );
+
+        if ($capacityMatches === [] || $priceMatches === []) {
+            return [];
+        }
+
+        $capacities = collect($capacityMatches)
+            ->map(function (array $match) {
+                $capacity = strtoupper(preg_replace('/\s+/u', '', (string) $match[1][0]) ?? '');
+
+                return [
+                    'capacity' => $capacity,
+                    'offset' => (int) $match[0][1],
+                    'end' => (int) $match[0][1] + strlen((string) $match[0][0]),
+                ];
+            })
+            ->values()
+            ->all();
 
         $prices = [];
 
-        foreach ($matches as $match) {
-            $capacity = strtoupper((string) $match[1]);
-            $amount = $this->parseAmount((string) $match[2]);
+        foreach ($capacities as $index => $capacityMatch) {
+            $nextCapacityOffset = $capacities[$index + 1]['offset'] ?? PHP_INT_MAX;
+            $capacityEnd = $capacityMatch['end'];
 
-            // نستبعد Trade In والإكسسوارات والأقساط الصغيرة، ونقبل نطاق
-            // أسعار أجهزة iPhone الحالية في متجر Apple الإمارات.
-            if ($amount < 3000 || $amount > 20000) {
-                continue;
+            foreach ($priceMatches as $priceMatch) {
+                $priceOffset = (int) $priceMatch[0][1];
+
+                if ($priceOffset < $capacityEnd) {
+                    continue;
+                }
+
+                // السعر يجب أن يخص السعة الحالية قبل ظهور سعة أخرى.
+                if ($priceOffset >= $nextCapacityOffset) {
+                    break;
+                }
+
+                $amount = $this->parseAmount((string) $priceMatch[1][0]);
+
+                if ($amount < 3000 || $amount > 20000) {
+                    continue;
+                }
+
+                $capacity = $capacityMatch['capacity'];
+                $prices[$capacity] ??= [];
+                $prices[$capacity][] = $amount;
+
+                // كل سجل لون/سعة له سعر واحد قبل السعة التالية.
+                break;
             }
-
-            $prices[$capacity] ??= [];
-            $prices[$capacity][] = $amount;
         }
 
         foreach ($prices as $capacity => $amounts) {
