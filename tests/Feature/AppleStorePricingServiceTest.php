@@ -60,6 +60,7 @@ class AppleStorePricingServiceTest extends TestCase
 
         $duo = $service->fetch('iphone-duo');
         $this->assertCount(4, $duo);
+        $this->assertSame('iPhone Duo 256GB', $duo[0]['product_en']);
         $this->assertSame('8,499', $duo[0]['official_price']);
         $this->assertSame('890', $duo[0]['omr_price']);
         $this->assertSame('256GB', $duo[0]['variant_en']);
@@ -67,14 +68,15 @@ class AppleStorePricingServiceTest extends TestCase
 
         $pro = $service->fetch('iphone-18-pro');
         $this->assertCount(8, $pro);
-        $this->assertSame('iPhone 18 Pro', $pro[0]['product_en']);
+        $this->assertSame('iPhone 18 Pro 256GB', $pro[0]['product_en']);
         $this->assertSame('5,099', $pro[0]['official_price']);
-        $this->assertSame('iPhone 18 Pro Max', $pro[1]['product_en']);
+        $this->assertSame('iPhone 18 Pro Max 256GB', $pro[1]['product_en']);
         $this->assertSame('5,499', $pro[1]['official_price']);
 
         $airPods = $service->fetch('airpods-5');
         $this->assertCount(2, $airPods);
         $this->assertSame('549', $airPods[0]['official_price']);
+        $this->assertSame('AirPods 5 with Wireless Charging Case', $airPods[1]['product_en']);
         $this->assertSame('629', $airPods[1]['official_price']);
 
         $watch = $service->fetch('apple-watch');
