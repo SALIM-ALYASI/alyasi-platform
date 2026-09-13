@@ -474,3 +474,164 @@
         min-height: 44px;
     }
 }
+
+/* — الأسعار مدمجة داخل بطاقات المنتجات — */
+
+.product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.product-card__body {
+    height: 100%;
+}
+
+.product-card__pricing-panel {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-divider);
+}
+
+.product-card__pricing-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.product-card__pricing-currencies {
+    direction: ltr;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    color: var(--color-accent-700);
+}
+
+.product-card__pricing-head,
+.product-card__pricing-row {
+    display: grid;
+    grid-template-columns: minmax(64px, .85fr) minmax(72px, 1fr) minmax(82px, 1.1fr);
+    align-items: center;
+    gap: 8px;
+}
+
+.product-card__pricing-head {
+    padding: 0 10px 7px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: rgba(20, 32, 46, .48);
+}
+
+.product-card__pricing-head span:not(:first-child) {
+    text-align: center;
+}
+
+.product-card__pricing-rows {
+    overflow: hidden;
+    border: 1px solid rgba(110, 142, 178, .18);
+    border-radius: 12px;
+    background: rgba(110, 142, 178, .055);
+}
+
+.product-card__pricing-row {
+    min-height: 44px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(110, 142, 178, .14);
+    font-size: 11.5px;
+}
+
+.product-card__pricing-row:last-child {
+    border-bottom: 0;
+}
+
+.product-card__pricing-variant {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    max-width: 100%;
+    min-width: 52px;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+    font-size: 10.5px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.product-card__pricing-usd,
+.product-card__pricing-local {
+    direction: ltr;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.product-card__pricing-usd strong,
+.product-card__pricing-local strong {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.product-card__pricing-usd strong {
+    color: var(--color-text);
+}
+
+.product-card__pricing-local {
+    color: var(--color-accent-700);
+}
+
+.product-card__pricing-approx {
+    margin-inline-end: 2px;
+    font-size: 10px;
+    opacity: .72;
+}
+
+/* السعر التفصيلي أصبح داخل المنتج، لذلك نخفي البطاقات البيضاء المكررة أسفل الصفحة. */
+.event-detail__section-title:has(+ .event-pricing-grid),
+.event-pricing-grid {
+    display: none !important;
+}
+
+.event-pricing-grid + .event-detail__pricing-disclaimer {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border: 1px solid rgba(110, 142, 178, .14);
+    border-radius: 10px;
+    background: rgba(110, 142, 178, .045);
+}
+
+@media (max-width: 767px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .product-card__pricing-head,
+    .product-card__pricing-row {
+        grid-template-columns: minmax(70px, .9fr) minmax(72px, 1fr) minmax(88px, 1.15fr);
+    }
+}
+
+@media (max-width: 380px) {
+    .product-card__pricing-head,
+    .product-card__pricing-row {
+        grid-template-columns: minmax(58px, .8fr) minmax(64px, .95fr) minmax(74px, 1.05fr);
+        gap: 5px;
+    }
+
+    .product-card__pricing-row {
+        padding-inline: 7px;
+    }
+
+    .product-card__pricing-variant {
+        min-width: 46px;
+        padding-inline: 6px;
+    }
+}
