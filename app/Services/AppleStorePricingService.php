@@ -9,6 +9,8 @@ class AppleStorePricingService
 {
     public const SOURCE = 'apple_ae';
 
+    private const AED_TO_OMR = 0.1047;
+
     /**
      * صفحات متجر Apple الإمارات الرسمية التي نعتمد عليها للأسعار.
      * لا يوجد API عام لأسعار Apple Store؛ لذلك نقرأ صفحات المتجر الرسمية
@@ -301,8 +303,7 @@ class AppleStorePricingService
             'variant_en' => $variantEn,
             'official_price' => number_format($amount, 0, '.', ','),
             'official_currency' => 'AED',
-            // يترك فارغًا حتى يحسب التطبيق التحويل التقريبي OMR عند الحفظ/العرض.
-            'omr_price' => null,
+            'omr_price' => (string) (int) ceil($amount * self::AED_TO_OMR),
         ];
     }
 
