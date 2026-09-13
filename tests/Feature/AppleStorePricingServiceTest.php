@@ -51,7 +51,7 @@ class AppleStorePricingServiceTest extends TestCase
             'https://www.apple.com/ae/shop/buy-watch' => Http::response(<<<'HTML'
                 <html><body>
                 <div>Apple Watch Series 12 Take a closer look From AED 1,599</div>
-                <div>Apple Watch Ultra 4 Take a closer look From AED 2,800</div>
+                <div>Apple Watch Ultra 4 Take a closer look From AED 3,199</div>
                 </body></html>
                 HTML),
         ]);
@@ -82,7 +82,52 @@ class AppleStorePricingServiceTest extends TestCase
         $watch = $service->fetch('apple-watch');
         $this->assertCount(2, $watch);
         $this->assertSame('1,599', $watch[0]['official_price']);
-        $this->assertSame('2,800', $watch[1]['official_price']);
+        $this->assertSame('3,199', $watch[1]['official_price']);
+    }
+
+    public function test_it_parses_iphone_prices_when_apple_embeds_them_inside_script_payloads(): void
+    {
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://www.apple.com/ae/shop/buy-iphone/iphone-duo' => Http::response(<<<'HTML'
+                <html><body><h1>iPhone Duo</h1>
+                <script type="application/json">
+                {"items":[
+                  {"capacity":"256GB","color":"Star White","price":"AED 8,499.00"},
+                  {"capacity":"512GB","color":"Star White","price":"AED 9,349.00"},
+                  {"capacity":"1TB","color":"Star White","price":"AED 11,049.00"},
+                  {"capacity":"2TB","color":"Star White","price":"AED 13,599.00"}
+                ]}
+                </script>
+                </body></html>
+                HTML),
+            'https://www.apple.com/ae/shop/buy-iphone/iphone-18-pro' => Http::response(<<<'HTML'
+                <html><body><h1>Shop iPhone 18 Pro</h1>
+                <script type="application/json">
+                {"items":[
+                  {"capacity":"256GB","price":"AED 5,099.00"},{"capacity":"256GB","price":"AED 5,499.00"},
+                  {"capacity":"512GB","price":"AED 5,949.00"},{"capacity":"512GB","price":"AED 6,349.00"},
+                  {"capacity":"1TB","price":"AED 7,649.00"},{"capacity":"1TB","price":"AED 8,049.00"},
+                  {"capacity":"2TB","price":"AED 10,199.00"},{"capacity":"2TB","price":"AED 10,599.00"}
+                ]}
+                </script>
+                </body></html>
+                HTML),
+        ]);
+
+        $service = app(AppleStorePricingService::class);
+
+        $duo = $service->fetch('iphone-duo');
+        $this->assertCount(4, $duo);
+        $this->assertSame('8,499', $duo[0]['official_price']);
+        $this->assertSame('13,599', $duo[3]['official_price']);
+
+        $pro = $service->fetch('iphone-18-pro');
+        $this->assertCount(8, $pro);
+        $this->assertSame('5,099', $pro[0]['official_price']);
+        $this->assertSame('5,499', $pro[1]['official_price']);
+        $this->assertSame('10,199', $pro[6]['official_price']);
+        $this->assertSame('10,599', $pro[7]['official_price']);
     }
 
     public function test_it_rejects_incomplete_source_data_instead_of_overwriting_good_prices(): void
