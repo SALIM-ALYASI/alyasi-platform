@@ -51,10 +51,10 @@ class ReliableAppleStorePricingService extends AppleStorePricingService
         }
 
         $response = Http::withHeaders([
-            'Accept' => 'text/html,application/xhtml+xml',
-            'Accept-Language' => 'en-AE,en;q=0.9',
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0 Safari/537.36 ALYASI/1.1',
-        ])
+                'Accept' => 'text/html,application/xhtml+xml',
+                'Accept-Language' => 'en-AE,en;q=0.9',
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0 Safari/537.36 ALYASI/1.2',
+            ])
             ->timeout(20)
             ->retry(2, 750)
             ->get($source['url']);
@@ -200,81 +200,35 @@ class ReliableAppleStorePricingService extends AppleStorePricingService
     }
 
     /**
-     * يستخرج كل السعات والأسعار بشكل منفصل ثم يربط كل سعر بأقرب سعة.
-     * نتجنب هنا tempered-dot regex الكبير الذي سبب PCRE "regular expression is too large".
+     * Apple تضع السعة ثم اللون ثم السعر في النص المرئي، ونفس الترتيب يظهر
+     * عادة داخل JSON الخاص بالـ configurator. نلتقط كل سجل محليًا بدل محاولة
+     * ربط السعر بأقرب سعة؛ طريقة "الأقرب" كانت تربط بعض الأسعار بالسعة التالية.
+     *
+     * regex هنا صغير وثابت، لذلك لا يسبب خطأ PCRE "regular expression is too large".
      *
      * @return array<string, array<int, int>>
      */
     private function extractCapacityPrices(string $text): array
     {
         preg_match_all(
-            '/\b(256GB|512GB|1TB|2TB)\b/iu',
+            '/\b(256GB|512GB|1TB|2TB)\b.{0,320}?\bAED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/isu',
             $text,
-            $capacityMatches,
-            PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
+            $matches,
+            PREG_SET_ORDER,
         );
-
-        preg_match_all(
-            '/\bAED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu',
-            $text,
-            $priceMatches,
-            PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
-        );
-
-        if ($capacityMatches === [] || $priceMatches === []) {
-            return [];
-        }
-
-        $capacities = collect($capacityMatches)
-            ->map(fn (array $match) => [
-                'capacity' => strtoupper((string) $match[1][0]),
-                'offset' => (int) $match[0][1],
-            ])
-            ->all();
 
         $prices = [];
 
-        foreach ($priceMatches as $match) {
-            $amount = $this->parseAmount((string) $match[1][0]);
-            $priceOffset = (int) $match[0][1];
+        foreach ($matches as $match) {
+            $capacity = strtoupper((string) $match[1]);
+            $amount = $this->parseAmount((string) $match[2]);
 
-            // أسعار iPhone في متجر Apple الإمارات تقع ضمن هذا النطاق؛
-            // يمنع التقاط Trade In والإكسسوارات والأقساط كأنها سعر جهاز.
+            // نستبعد Trade In والإكسسوارات والأقساط الصغيرة، ونقبل نطاق
+            // أسعار أجهزة iPhone الحالية في متجر Apple الإمارات.
             if ($amount < 3000 || $amount > 20000) {
                 continue;
             }
 
-            $nearest = null;
-            $nearestDistance = PHP_INT_MAX;
-
-            foreach ($capacities as $candidate) {
-                $distance = abs($priceOffset - $candidate['offset']);
-
-                if ($distance > 700) {
-                    continue;
-                }
-
-                if ($distance < $nearestDistance) {
-                    $nearest = $candidate;
-                    $nearestDistance = $distance;
-                    continue;
-                }
-
-                // عند التعادل نفضّل السعة التي تسبق السعر في النص.
-                if (
-                    $distance === $nearestDistance
-                    && $candidate['offset'] <= $priceOffset
-                    && ($nearest['offset'] ?? PHP_INT_MAX) > $priceOffset
-                ) {
-                    $nearest = $candidate;
-                }
-            }
-
-            if (! is_array($nearest)) {
-                continue;
-            }
-
-            $capacity = $nearest['capacity'];
             $prices[$capacity] ??= [];
             $prices[$capacity][] = $amount;
         }
@@ -285,7 +239,12 @@ class ReliableAppleStorePricingService extends AppleStorePricingService
         }
 
         $order = ['256GB', '512GB', '1TB', '2TB'];
-        uksort($prices, fn (string $a, string $b) => array_search($a, $order, true) <=> array_search($b, $order, true));
+        uksort($prices, function (string $a, string $b) use ($order) {
+            $aPos = array_search($a, $order, true);
+            $bPos = array_search($b, $order, true);
+
+            return ($aPos === false ? PHP_INT_MAX : $aPos) <=> ($bPos === false ? PHP_INT_MAX : $bPos);
+        });
 
         return $prices;
     }
