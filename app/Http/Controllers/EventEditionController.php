@@ -6,7 +6,9 @@ use App\Models\Event;
 use App\Models\EventEdition;
 use App\Models\Permalink;
 use App\Models\PermalinkRedirect;
+use App\Services\GulfPricingService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class EventEditionController extends Controller
@@ -16,7 +18,7 @@ class EventEditionController extends Controller
      * 1) slug لسلسلة دائمة مثل apple أو samsung -> صفحة كل النسخ.
      * 2) slug لنسخة بعينها مثل apple-event-2026 -> صفحة التغطية.
      */
-    public function show(string $slug): View|RedirectResponse
+    public function show(string $slug, Request $request, GulfPricingService $gulfPricing): View|RedirectResponse
     {
         $series = Event::query()
             ->where('slug', $slug)
@@ -79,7 +81,16 @@ class EventEditionController extends Controller
 
         abort_unless($isPublished, 404);
 
-        return view('events.show', compact('edition'));
+        // العرض فقط: نحافظ على السعر الأصلي في قاعدة البيانات، ونحوّله عند
+        // الطلب إلى USD + عملة دولة الزائر. دول الخليج تُعرض بعملتها المحلية،
+        // وأي دولة أخرى (أو غياب CF-IPCountry) تستخدم OMR تلقائياً.
+        $displayCurrency = $gulfPricing->currencyForRequest($request);
+        $edition->setAttribute(
+            'pricing_table',
+            $gulfPricing->localizeRows($edition->pricing_table ?? [], $displayCurrency),
+        );
+
+        return view('events.show', compact('edition', 'displayCurrency'));
     }
 
     /**
