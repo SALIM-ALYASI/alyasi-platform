@@ -281,10 +281,16 @@ class EventEditionController extends Controller
         $data['pricing_table'] = collect($data['pricing_table'] ?? [])
             ->filter(fn (array $row) => filled($row['product_ar'] ?? null) || filled($row['product_en'] ?? null))
             ->map(function (array $row) {
-                $row['omr_price'] = $this->estimateOmr(
-                    $row['official_price'] ?? null,
-                    $row['official_currency'] ?? null
-                );
+                // لو أُدخل سعر OMR يدويًا (مثلاً سعر متجر محلي/تحويل معتمد)
+                // نحافظ عليه. وإذا تُرك فارغًا نحسب تقديرًا تلقائيًا من العملة الرسمية.
+                if (blank($row['omr_price'] ?? null)) {
+                    $row['omr_price'] = $this->estimateOmr(
+                        $row['official_price'] ?? null,
+                        $row['official_currency'] ?? null
+                    );
+                } else {
+                    $row['omr_price'] = trim((string) $row['omr_price']);
+                }
 
                 return $row;
             })
