@@ -95,7 +95,7 @@
                 @if ($priceInfo['omr_price'])
                     <div class="product-card__price-group">
                         <span class="product-card__price-tag">{{ __('events.omr_estimate_label') }}</span>
-                        <span class="product-card__price-omr">{{ $priceInfo['omr_price'] }} OMR</span>
+                        <span class="product-card__price-omr">{{ $priceInfo['omr_price'] }}</span>
                     </div>
                 @endif
             </div>
