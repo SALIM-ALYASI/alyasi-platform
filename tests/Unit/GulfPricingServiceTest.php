@@ -66,7 +66,7 @@ class GulfPricingServiceTest extends TestCase
         $this->assertSame('official_fixed', $row['exchange_rate_status']);
     }
 
-    public function test_it_keeps_editor_approved_omr_value_for_oman_and_fallback_visitors(): void
+    public function test_it_uses_official_omr_rate_even_when_an_old_manual_value_exists(): void
     {
         $service = $this->service();
 
@@ -78,7 +78,7 @@ class GulfPricingServiceTest extends TestCase
         ], 'OMR');
 
         $this->assertSame('2,314', $row['official_price']);
-        $this->assertSame('895 OMR', $row['omr_price']);
+        $this->assertSame('890 OMR', $row['omr_price']);
         $this->assertSame('official_fixed', $row['exchange_rate_status']);
     }
 }
