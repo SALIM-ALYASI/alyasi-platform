@@ -69,9 +69,11 @@ class AppleStorePricingService
             throw new RuntimeException("Unknown Apple Store pricing source: {$sourceKey}");
         }
 
-        $response = Http::accept('text/html,application/xhtml+xml')
-            ->acceptLanguage('en-AE,en;q=0.9')
-            ->withUserAgent('ALYASI-ApplePricingSync/1.0 (+https://alyasi.dev)')
+        $response = Http::withHeaders([
+                'Accept' => 'text/html,application/xhtml+xml',
+                'Accept-Language' => 'en-AE,en;q=0.9',
+                'User-Agent' => 'ALYASI-ApplePricingSync/1.0 (+https://alyasi.dev)',
+            ])
             ->timeout(20)
             ->retry(2, 750)
             ->get($source['url']);
