@@ -12,6 +12,8 @@ use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\Work;
+use App\Services\AppleStorePricingService;
+use App\Services\ReliableAppleStorePricingService;
 use App\View\Composers\ArticleLocaleLinksComposer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -26,7 +28,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // نستبدل parser Apple القديم بالنسخة الموثوقة التي لا تستخدم
+        // regular expression ضخمة، مع بقاء نفس type-hint في الأوامر والاختبارات.
+        $this->app->bind(
+            AppleStorePricingService::class,
+            ReliableAppleStorePricingService::class,
+        );
     }
 
     /**
