@@ -55,6 +55,10 @@ class GulfPricingService
      * - omr_price => visitor-local estimated amount including currency code
      * - exchange_rate_* => source metadata for diagnostics/transparency
      *
+     * Any old/manual OMR value in pricing_table is deliberately ignored for
+     * public localization so every visitor sees the same central-bank-based
+     * conversion logic.
+     *
      * @return array<string, mixed>
      */
     public function localizeRow(array $row, string $localCurrency): array
@@ -84,15 +88,6 @@ class GulfPricingService
 
         $usdAmount = $sourceAmount / $sourceRate;
         $localAmount = $usdAmount * $localInfo['rate'];
-
-        // If OMR was explicitly saved, keep that value for Oman/fallback
-        // visitors instead of replacing an editor-approved conversion.
-        if ($localCurrency === 'OMR' && filled($row['omr_price'] ?? null)) {
-            $savedOmr = $this->parseAmount($row['omr_price']);
-            if ($savedOmr > 0) {
-                $localAmount = $savedOmr;
-            }
-        }
 
         $row['official_price'] = $this->formatAmount($usdAmount);
         $row['official_currency'] = 'USD';
