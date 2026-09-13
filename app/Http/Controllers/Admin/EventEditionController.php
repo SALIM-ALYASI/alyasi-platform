@@ -17,10 +17,11 @@ use Illuminate\View\View;
 class EventEditionController extends Controller
 {
     /**
-     * سعر صرف تقريبي ثابت لعرض الأسعار المنشورة بالدولار بالريال العُماني.
+     * أسعار صرف تقريبية ثابتة لتحويل الأسعار المنشورة إلى الريال العُماني.
      * نقرّب الناتج للأعلى حتى تكون القيمة المعروضة رقمًا صحيحًا واضحًا.
      */
     private const USD_TO_OMR = 0.3845;
+    private const AED_TO_OMR = 0.1047;
 
     public function index(Request $request): View
     {
@@ -302,6 +303,7 @@ class EventEditionController extends Controller
     /**
      * يحسب التقدير بالريال العُماني من السعر الرسمي.
      * USD: السعر × 0.3845 ثم التقريب للأعلى.
+     * AED: السعر × 0.1047 ثم التقريب للأعلى.
      * OMR: يحتفظ بالقيمة نفسها مع التقريب للأعلى.
      */
     private function estimateOmr(string|int|float|null $price, ?string $currency): ?string
@@ -318,6 +320,7 @@ class EventEditionController extends Controller
 
         $estimated = match (strtoupper(trim($currency))) {
             'USD' => ceil($amount * self::USD_TO_OMR),
+            'AED' => ceil($amount * self::AED_TO_OMR),
             'OMR' => ceil($amount),
             default => null,
         };
