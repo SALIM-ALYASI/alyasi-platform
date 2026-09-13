@@ -125,8 +125,8 @@ class AppleStorePricingService
 
         return collect($prices)
             ->map(fn (array $amounts, string $capacity) => $this->priceRow(
-                'iPhone Duo',
-                'iPhone Duo',
+                "iPhone Duo {$capacity}",
+                "iPhone Duo {$capacity}",
                 $capacity,
                 $capacity,
                 min($amounts),
@@ -162,16 +162,16 @@ class AppleStorePricingService
             }
 
             $rows[] = $this->priceRow(
-                'iPhone 18 Pro',
-                'iPhone 18 Pro',
+                "iPhone 18 Pro {$capacity}",
+                "iPhone 18 Pro {$capacity}",
                 $capacity,
                 $capacity,
                 $unique[0],
             );
 
             $rows[] = $this->priceRow(
-                'iPhone 18 Pro Max',
-                'iPhone 18 Pro Max',
+                "iPhone 18 Pro Max {$capacity}",
+                "iPhone 18 Pro Max {$capacity}",
                 $capacity,
                 $capacity,
                 $unique[count($unique) - 1],
@@ -206,8 +206,8 @@ class AppleStorePricingService
 
         if (preg_match('/AirPods\s*5\s+with\s+Wireless\s+Charging\s+Case.{0,220}?AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $segment, $match)) {
             $rows[] = $this->priceRow(
-                'AirPods 5',
-                'AirPods 5',
+                'AirPods 5 مع علبة شحن لاسلكية',
+                'AirPods 5 with Wireless Charging Case',
                 'علبة شحن لاسلكية',
                 'Wireless Charging Case',
                 $this->parseAmount($match[1]),
