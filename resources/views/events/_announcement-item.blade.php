@@ -20,6 +20,54 @@
     $formatProductDate = fn ($date) => $date
         ? $date->copy()->locale($locale)->translatedFormat('d F Y')
         : null;
+
+    /*
+     * ندمج صفوف السعر داخل بطاقة المنتج نفسها بدل تكرارها في بطاقات بيضاء
+     * مستقلة أسفل الصفحة. المطابقة تعتمد على الاسم الأساسي للمنتج، لذلك
+     * iPhone 18 Pro لا يختلط مع Pro Max، بينما AirPods 5 with ... يبقى
+     * ضمن بطاقة AirPods 5 كإصدار/خيار إضافي.
+     */
+    $itemLabelAr = isset($normalize) ? $normalize($item['label_ar'] ?? null) : mb_strtolower(trim((string) ($item['label_ar'] ?? '')));
+    $itemLabelEn = isset($normalize) ? $normalize($item['label_en'] ?? null) : mb_strtolower(trim((string) ($item['label_en'] ?? '')));
+
+    $cardPricingRows = collect($pricingRows ?? [])
+        ->filter(function ($row) use ($itemLabelAr, $itemLabelEn, $normalize, $baseNameForRow) {
+            if (!is_array($row)) {
+                return false;
+            }
+
+            $baseAr = $normalize($baseNameForRow($row, 'ar'));
+            $baseEn = $normalize($baseNameForRow($row, 'en'));
+
+            $arMatch = $itemLabelAr !== '' && (
+                $baseAr === $itemLabelAr
+                || str_starts_with($baseAr, $itemLabelAr.' مع ')
+            );
+
+            $enMatch = $itemLabelEn !== '' && (
+                $baseEn === $itemLabelEn
+                || str_starts_with($baseEn, $itemLabelEn.' with ')
+            );
+
+            return $arMatch || $enMatch;
+        })
+        ->sortBy(function (array $row) use ($variantForRow) {
+            $variant = strtoupper(preg_replace('/\s+/u', '', $variantForRow($row, 'en')) ?? '');
+            $order = [
+                '128GB' => 10,
+                '256GB' => 20,
+                '512GB' => 30,
+                '1TB' => 40,
+                '2TB' => 50,
+            ];
+
+            return $order[$variant] ?? 100;
+        })
+        ->values();
+
+    $cardLocalCurrency = $displayCurrency
+        ?? ($cardPricingRows->first()['display_currency'] ?? null)
+        ?? 'OMR';
 @endphp
 
 <div class="product-card">
@@ -82,7 +130,47 @@
             </div>
         @endif
 
-        @if (!empty($priceInfo))
+        @if ($cardPricingRows->isNotEmpty())
+            <div class="product-card__pricing-panel">
+                <div class="product-card__pricing-title">
+                    <span>{{ __('events.pricing_table_title') }}</span>
+                    <span class="product-card__pricing-currencies">USD · {{ $cardLocalCurrency }}</span>
+                </div>
+
+                <div class="product-card__pricing-head" aria-hidden="true">
+                    <span>{{ __('events.pricing_table_variant') }}</span>
+                    <span>USD</span>
+                    <span>{{ $cardLocalCurrency }}</span>
+                </div>
+
+                <div class="product-card__pricing-rows">
+                    @foreach ($cardPricingRows as $row)
+                        @php
+                            $variant = $variantForRow($row, $locale);
+                            $localPrice = trim((string) ($row['omr_price'] ?? ''));
+                            $localPriceNumber = trim(preg_replace('/\s+[A-Z]{3}$/', '', $localPrice) ?? $localPrice);
+                        @endphp
+                        <div class="product-card__pricing-row">
+                            <span class="product-card__pricing-variant">
+                                {{ $variant !== '' ? $variant : __('events.pricing_table_base_variant') }}
+                            </span>
+                            <span class="product-card__pricing-usd">
+                                <strong>{{ $row['official_price'] ?? '—' }}</strong>
+                            </span>
+                            <span class="product-card__pricing-local">
+                                @if ($localPriceNumber !== '')
+                                    <span class="product-card__pricing-approx">≈</span>
+                                    <strong>{{ $localPriceNumber }}</strong>
+                                @else
+                                    —
+                                @endif
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @elseif (!empty($priceInfo))
+            {{-- Fallback لأي بيانات قديمة لا تحتوي صفوف سعات قابلة للمطابقة. --}}
             <div class="product-card__price">
                 <div class="product-card__price-group">
                     <span class="product-card__price-tag">
