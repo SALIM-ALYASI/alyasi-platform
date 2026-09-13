@@ -18,9 +18,40 @@
         return mb_strtolower($text);
     };
 
-    $pricingRows = collect($edition->pricing_table ?? []);
+    $pricingRows = collect($edition->pricing_table ?? [])
+        ->filter(fn ($row) => is_array($row) && (filled($row['product_ar'] ?? null) || filled($row['product_en'] ?? null)))
+        ->values();
 
-    $priceInfoFor = function (array $item) use ($pricingRows, $normalize) {
+    $parsePriceAmount = function ($price): float {
+        $amount = preg_replace('/[^0-9.]/', '', (string) $price);
+
+        return is_numeric($amount) ? (float) $amount : 0.0;
+    };
+
+    // إذا ما كان التحويل إلى OMR محفوظاً في قاعدة البيانات نحسبه وقت العرض.
+    // هذا يدعم الأسعار المدخلة بالدولار أو الدرهم الإماراتي بدون الحاجة إلى
+    // تعديل يدوي لقيمة OMR لكل سعة. القيم تقريبية للعرض فقط.
+    $estimateOmrForRow = function (array $row) use ($parsePriceAmount): ?string {
+        if (filled($row['omr_price'] ?? null)) {
+            return (string) $row['omr_price'];
+        }
+
+        $amount = $parsePriceAmount($row['official_price'] ?? null);
+        if ($amount <= 0) {
+            return null;
+        }
+
+        $estimated = match (strtoupper(trim((string) ($row['official_currency'] ?? '')))) {
+            'USD' => ceil($amount * 0.3845),
+            'AED' => ceil($amount * 0.1047),
+            'OMR' => ceil($amount),
+            default => null,
+        };
+
+        return $estimated === null ? null : (string) (int) $estimated;
+    };
+
+    $priceInfoFor = function (array $item) use ($pricingRows, $normalize, $parsePriceAmount, $estimateOmrForRow) {
         $labelAr = $normalize($item['label_ar'] ?? null);
         $labelEn = $normalize($item['label_en'] ?? null);
 
@@ -51,15 +82,67 @@
             return null;
         }
 
-        $cheapest = $group->sortBy(fn ($row) => (float) preg_replace('/[^0-9.]/', '', $row['official_price'] ?? '0'))->first();
+        $cheapest = $group->sortBy(fn ($row) => $parsePriceAmount($row['official_price'] ?? null))->first();
 
         return [
             'official_price' => $cheapest['official_price'] ?? null,
             'official_currency' => $cheapest['official_currency'] ?? '',
-            'omr_price' => $cheapest['omr_price'] ?? null,
+            'omr_price' => $estimateOmrForRow($cheapest),
             'is_starting' => $group->count() > 1,
         ];
     };
+
+    $productNameForRow = function (array $row, ?string $locale = null): string {
+        $locale ??= app()->getLocale();
+
+        if ($locale === 'en') {
+            return trim((string) ($row['product_en'] ?? $row['product_ar'] ?? ''));
+        }
+
+        return trim((string) ($row['product_ar'] ?? $row['product_en'] ?? ''));
+    };
+
+    $variantForRow = function (array $row, ?string $locale = null) use ($productNameForRow): string {
+        $locale ??= app()->getLocale();
+        $explicit = $locale === 'en'
+            ? ($row['variant_en'] ?? $row['variant_ar'] ?? null)
+            : ($row['variant_ar'] ?? $row['variant_en'] ?? null);
+
+        if (filled($explicit)) {
+            return trim((string) $explicit);
+        }
+
+        $name = $productNameForRow($row, $locale);
+
+        if (preg_match('/(?:^|\s)((?:[0-9٠-٩]+(?:\.[0-9٠-٩]+)?)\s*(?:GB|TB))\b/ui', $name, $matches)) {
+            return strtoupper(preg_replace('/\s+/u', '', $matches[1]));
+        }
+
+        if (preg_match('/([0-9٠-٩]+\s*(?:جيجابايت|تيرابايت))/u', $name, $matches)) {
+            return trim($matches[1]);
+        }
+
+        return '';
+    };
+
+    $baseNameForRow = function (array $row, ?string $locale = null) use ($productNameForRow): string {
+        $name = $productNameForRow($row, $locale);
+        $name = preg_replace('/\s+(?:[0-9٠-٩]+(?:\.[0-9٠-٩]+)?)\s*(?:GB|TB)\b/ui', '', $name);
+        $name = preg_replace('/\s+[0-9٠-٩]+\s*(?:جيجابايت|تيرابايت)$/u', '', $name);
+
+        return trim((string) $name);
+    };
+
+    // نجمع كل سعات/إصدارات المنتج في بطاقة أسعار واحدة. البيانات نفسها تبقى
+    // في event_editions.pricing_table وتنعكس على الصفحة فور حفظها من لوحة التحكم.
+    $pricingGroups = $pricingRows->groupBy(function (array $row) use ($baseNameForRow, $normalize) {
+        $groupName = $baseNameForRow($row, 'en');
+        if ($groupName === '') {
+            $groupName = $baseNameForRow($row, 'ar');
+        }
+
+        return $normalize($groupName);
+    });
 @endphp
 
 @section('title', $edition->title.' — ALYASI')
@@ -206,6 +289,77 @@
                     @include('events._announcement-item', ['item' => $item, 'priceInfo' => $priceInfoFor($item)])
                 @endforeach
             </div>
+        @endif
+
+        {{-- =====================================================
+             جدول الأسعار الكامل — يُقرأ مباشرة من pricing_table
+             في قاعدة البيانات ويجمع سعات كل منتج في جدول واحد.
+        ====================================================== --}}
+        @if ($pricingRows->isNotEmpty())
+            <h2 class="event-detail__section-title">{{ __('events.pricing_table_title') }}</h2>
+
+            <div class="event-pricing-grid">
+                @foreach ($pricingGroups as $rows)
+                    @php
+                        $firstRow = $rows->first();
+                        $groupTitle = $baseNameForRow($firstRow, app()->getLocale());
+                        if ($groupTitle === '') {
+                            $groupTitle = $productNameForRow($firstRow, app()->getLocale());
+                        }
+                    @endphp
+
+                    <section class="event-pricing-card">
+                        <div class="event-pricing-card__header">
+                            <div>
+                                <span class="event-pricing-card__eyebrow">{{ __('events.pricing_table_official_price') }}</span>
+                                <h3 class="event-pricing-card__title">{{ $groupTitle }}</h3>
+                            </div>
+                            <span class="event-pricing-card__count">{{ $rows->count() }}</span>
+                        </div>
+
+                        <div class="event-pricing-table-wrap">
+                            <table class="event-pricing-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('events.pricing_table_variant') }}</th>
+                                        <th>{{ __('events.pricing_table_official_price') }}</th>
+                                        <th>{{ __('events.pricing_table_omr_price') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rows as $row)
+                                        @php
+                                            $variant = $variantForRow($row, app()->getLocale());
+                                            $omrPrice = $estimateOmrForRow($row);
+                                        @endphp
+                                        <tr>
+                                            <td class="event-pricing-table__variant">
+                                                {{ $variant !== '' ? $variant : __('events.pricing_table_base_variant') }}
+                                            </td>
+                                            <td class="event-pricing-table__official">
+                                                <strong>{{ $row['official_price'] ?? '—' }}</strong>
+                                                @if (filled($row['official_currency'] ?? null))
+                                                    <span>{{ strtoupper($row['official_currency']) }}</span>
+                                                @endif
+                                            </td>
+                                            <td class="event-pricing-table__omr">
+                                                @if ($omrPrice)
+                                                    <span class="event-pricing-table__approx">≈</span>
+                                                    <strong>{{ $omrPrice }}</strong>
+                                                    <span>{{ __('events.omr_currency_short') }}</span>
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                @endforeach
+            </div>
+
             <p class="event-detail__pricing-disclaimer">{{ __('events.pricing_table_disclaimer') }}</p>
         @endif
 
