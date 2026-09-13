@@ -6,20 +6,6 @@ use Illuminate\Http\Request;
 
 class GulfPricingService
 {
-    /**
-     * Currency units per 1 USD. These are display/conversion rates only.
-     * Local prices remain clearly marked as estimates in the public UI.
-     */
-    private const USD_RATES = [
-        'USD' => 1.0,
-        'OMR' => 0.3845,
-        'SAR' => 3.75,
-        'AED' => 3.6725,
-        'QAR' => 3.64,
-        'KWD' => 0.307,
-        'BHD' => 0.376,
-    ];
-
     /** @var array<string, string> */
     private const COUNTRY_CURRENCIES = [
         'OM' => 'OMR',
@@ -29,6 +15,11 @@ class GulfPricingService
         'KW' => 'KWD',
         'BH' => 'BHD',
     ];
+
+    public function __construct(
+        private readonly OfficialGulfExchangeRateService $exchangeRates,
+    ) {
+    }
 
     /**
      * Cloudflare exposes only the visitor country code here; no precise
@@ -62,28 +53,37 @@ class GulfPricingService
      * Database values stay unchanged. The public page receives:
      * - official_price / official_currency => USD
      * - omr_price => visitor-local estimated amount including currency code
-     *
-     * The legacy omr_price key is intentionally reused so the existing Blade
-     * templates remain backwards compatible while the label becomes generic.
+     * - exchange_rate_* => source metadata for diagnostics/transparency
      *
      * @return array<string, mixed>
      */
     public function localizeRow(array $row, string $localCurrency): array
     {
         $localCurrency = strtoupper(trim($localCurrency));
-        if (! isset(self::USD_RATES[$localCurrency]) || $localCurrency === 'USD') {
+        if (! in_array($localCurrency, ['OMR', 'SAR', 'AED', 'QAR', 'KWD', 'BHD'], true)) {
             $localCurrency = 'OMR';
         }
 
         $sourceCurrency = strtoupper(trim((string) ($row['official_currency'] ?? '')));
         $sourceAmount = $this->parseAmount($row['official_price'] ?? null);
 
-        if ($sourceAmount <= 0 || ! isset(self::USD_RATES[$sourceCurrency])) {
+        if ($sourceAmount <= 0) {
             return $row;
         }
 
-        $usdAmount = $sourceAmount / self::USD_RATES[$sourceCurrency];
-        $localAmount = $usdAmount * self::USD_RATES[$localCurrency];
+        try {
+            $sourceRate = $this->exchangeRates->rate($sourceCurrency);
+            $localInfo = $this->exchangeRates->info($localCurrency);
+        } catch (\RuntimeException) {
+            return $row;
+        }
+
+        if ($sourceRate <= 0 || $localInfo['rate'] <= 0) {
+            return $row;
+        }
+
+        $usdAmount = $sourceAmount / $sourceRate;
+        $localAmount = $usdAmount * $localInfo['rate'];
 
         // If OMR was explicitly saved, keep that value for Oman/fallback
         // visitors instead of replacing an editor-approved conversion.
@@ -94,10 +94,13 @@ class GulfPricingService
             }
         }
 
-        $row['official_price'] = $this->formatAmount($usdAmount, 'USD');
+        $row['official_price'] = $this->formatAmount($usdAmount);
         $row['official_currency'] = 'USD';
-        $row['omr_price'] = $this->formatAmount($localAmount, $localCurrency).' '.$localCurrency;
+        $row['omr_price'] = $this->formatAmount($localAmount).' '.$localCurrency;
         $row['display_currency'] = $localCurrency;
+        $row['exchange_rate_source'] = $localInfo['source'];
+        $row['exchange_rate_date'] = $localInfo['rate_date'];
+        $row['exchange_rate_status'] = $localInfo['status'];
 
         return $row;
     }
@@ -120,11 +123,8 @@ class GulfPricingService
         return is_numeric($amount) ? (float) $amount : 0.0;
     }
 
-    private function formatAmount(float $amount, string $currency): string
+    private function formatAmount(float $amount): string
     {
-        // Product prices are kept simple and readable. KWD/BHD/OMR can use
-        // three decimals in accounting, but whole-unit estimates are clearer
-        // for this comparison UI and match the existing event design.
         return number_format((int) round($amount), 0, '.', ',');
     }
 }
