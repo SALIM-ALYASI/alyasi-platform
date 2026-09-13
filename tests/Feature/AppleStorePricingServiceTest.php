@@ -17,11 +17,11 @@ class AppleStorePricingServiceTest extends TestCase
                 <html><body>
                 <h1>iPhone Duo</h1>
                 <p>Pre-order starting at 4:00 p.m.</p>
-                <div>256GB Star White AED 8,499.00</div>
-                <div>256GB Night Sky AED 8,499.00</div>
-                <div>512GB Star White AED 9,349.00</div>
-                <div>1TB Star White AED 11,049.00</div>
-                <div>2TB Star White AED 13,599.00</div>
+                <div>256GB<sup>1</sup> Star White AED 8,499.00</div>
+                <div>256GB<sup>1</sup> Night Sky AED 8,499.00</div>
+                <div>512GB<sup>1</sup> Star White AED 9,349.00</div>
+                <div>1TB<sup>1</sup> Star White AED 11,049.00</div>
+                <div>2TB<sup>1</sup> Star White AED 13,599.00</div>
                 <h2>Frequently Asked Questions</h2>
                 </body></html>
                 HTML),
@@ -29,14 +29,14 @@ class AppleStorePricingServiceTest extends TestCase
                 <html><body>
                 <h1>Shop iPhone 18 Pro</h1>
                 <p>Pre-order starting at 4:00 p.m.</p>
-                <div>256GB Glacier AED 5,099.00</div>
-                <div>256GB Burgundy AED 5,499.00</div>
-                <div>512GB Glacier AED 5,949.00</div>
-                <div>512GB Burgundy AED 6,349.00</div>
-                <div>1TB Glacier AED 7,649.00</div>
-                <div>1TB Burgundy AED 8,049.00</div>
-                <div>2TB Glacier AED 10,199.00</div>
-                <div>2TB Burgundy AED 10,599.00</div>
+                <div>256GB<sup>1</sup> Glacier AED 5,099.00</div>
+                <div>256GB<sup>1</sup> Burgundy AED 5,499.00</div>
+                <div>512GB<sup>1</sup> Glacier AED 5,949.00</div>
+                <div>512GB<sup>1</sup> Burgundy AED 6,349.00</div>
+                <div>1TB<sup>1</sup> Glacier AED 7,649.00</div>
+                <div>1TB<sup>1</sup> Burgundy AED 8,049.00</div>
+                <div>2TB<sup>1</sup> Glacier AED 10,199.00</div>
+                <div>2TB<sup>1</sup> Burgundy AED 10,599.00</div>
                 <h2>Which iPhone is right for you?</h2>
                 </body></html>
                 HTML),
@@ -135,7 +135,7 @@ class AppleStorePricingServiceTest extends TestCase
         Http::preventStrayRequests();
         Http::fake([
             'https://www.apple.com/ae/shop/buy-iphone/iphone-duo' => Http::response(
-                '<html><body><h1>iPhone Duo</h1><div>256GB Star White AED 8,499.00</div></body></html>'
+                '<html><body><h1>iPhone Duo</h1><div>256GB<sup>1</sup> Star White AED 8,499.00</div></body></html>'
             ),
         ]);
 
