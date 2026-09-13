@@ -14,7 +14,7 @@ class AppleStorePricingService
     /**
      * صفحات متجر Apple الإمارات الرسمية التي نعتمد عليها للأسعار.
      * لا يوجد API عام لأسعار Apple Store؛ لذلك نقرأ صفحات المتجر الرسمية
-     * ونحوّل البيانات الظاهرة فيها إلى صفوف موحّدة لجدول pricing_table.
+     * ونحوّل البيانات الظاهرة/المضمّنة فيها إلى صفوف موحّدة لجدول pricing_table.
      */
     private const SOURCES = [
         'iphone-duo' => [
@@ -72,7 +72,7 @@ class AppleStorePricingService
         $response = Http::withHeaders([
                 'Accept' => 'text/html,application/xhtml+xml',
                 'Accept-Language' => 'en-AE,en;q=0.9',
-                'User-Agent' => 'ALYASI-ApplePricingSync/1.0 (+https://alyasi.dev)',
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0 Safari/537.36 ALYASI/1.0',
             ])
             ->timeout(20)
             ->retry(2, 750)
@@ -80,7 +80,9 @@ class AppleStorePricingService
 
         $response->throw();
 
-        $text = $this->normalizeHtml($response->body());
+        // Apple تعرض بعض خيارات iPhone داخل بيانات JSON/JavaScript مضمّنة
+        // بدل HTML مرئي مباشر. لذلك نحافظ على نصوص <script> ونطبّعها بدل حذفها.
+        $text = $this->normalizeApplePayload($response->body());
         $parser = $source['parser'];
         $rows = $this->{$parser}($text);
 
@@ -123,6 +125,15 @@ class AppleStorePricingService
 
         $prices = $this->extractCapacityPrices($segment);
 
+        // في نسخة Apple التي تصل لبعض مراكز البيانات تكون الأسعار داخل
+        // payload مضمّن خارج الجزء المرئي، فنفحص الصفحة كاملة كخطة بديلة.
+        if (count($prices) < 4) {
+            $prices = $this->mergeCapacityPrices(
+                $prices,
+                $this->extractCapacityPrices($text),
+            );
+        }
+
         return collect($prices)
             ->map(fn (array $amounts, string $capacity) => $this->priceRow(
                 "iPhone Duo {$capacity}",
@@ -150,6 +161,14 @@ class AppleStorePricingService
         );
 
         $prices = $this->extractCapacityPrices($segment);
+
+        if (! $this->hasTwoPricesPerCapacity($prices)) {
+            $prices = $this->mergeCapacityPrices(
+                $prices,
+                $this->extractCapacityPrices($text),
+            );
+        }
+
         $rows = [];
 
         foreach ($prices as $capacity => $amounts) {
@@ -204,7 +223,7 @@ class AppleStorePricingService
             );
         }
 
-        if (preg_match('/AirPods\s*5\s+with\s+Wireless\s+Charging\s+Case.{0,220}?AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $segment, $match)) {
+        if (preg_match('/AirPods\s*5\s+with\s+Wireless\s+Charging\s+Case.{0,400}?AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $segment, $match)) {
             $rows[] = $this->priceRow(
                 'AirPods 5 مع علبة شحن لاسلكية',
                 'AirPods 5 with Wireless Charging Case',
@@ -227,7 +246,7 @@ class AppleStorePricingService
     {
         $rows = [];
 
-        if (preg_match('/Apple\s*Watch\s*Series\s*12.{0,120}?From\s+AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $text, $match)) {
+        if (preg_match('/Apple\s*Watch\s*Series\s*12.{0,240}?From\s+AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $text, $match)) {
             $rows[] = $this->priceRow(
                 'Apple Watch Series 12',
                 'Apple Watch Series 12',
@@ -237,7 +256,7 @@ class AppleStorePricingService
             );
         }
 
-        if (preg_match('/Apple\s*Watch\s*Ultra\s*4.{0,120}?From\s+AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $text, $match)) {
+        if (preg_match('/Apple\s*Watch\s*Ultra\s*4.{0,240}?From\s+AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu', $text, $match)) {
             $rows[] = $this->priceRow(
                 'Apple Watch Ultra 4',
                 'Apple Watch Ultra 4',
@@ -251,41 +270,98 @@ class AppleStorePricingService
     }
 
     /**
-     * يستخرج السعات وأسعار AED القريبة منها، مع إزالة تكرار الألوان.
+     * يستخرج السعات وأسعار AED القريبة منها من النص المرئي أو JSON/JS المضمّن.
+     * نمنع المطابقة من القفز فوق سعة أخرى حتى نربط السعر بأقرب سعة منطقية.
      *
      * @return array<string, array<int, int>>
      */
     private function extractCapacityPrices(string $text): array
     {
-        preg_match_all(
-            '/\b(256GB|512GB|1TB|2TB)\b.{0,140}?\bAED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/iu',
-            $text,
-            $matches,
-            PREG_SET_ORDER,
-        );
+        $capacityToken = '(?:256GB|512GB|1TB|2TB)';
+        $priceToken = 'AED\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)';
+
+        $patterns = [
+            '/\b(256GB|512GB|1TB|2TB)\b(?:(?!\b'.$capacityToken.'\b).){0,1500}?\b'.$priceToken.'/isu',
+            '/\b'.$priceToken.'(?:(?!\b'.$capacityToken.'\b).){0,1500}?\b(256GB|512GB|1TB|2TB)\b/isu',
+        ];
 
         $prices = [];
 
-        foreach ($matches as $match) {
-            $capacity = strtoupper($match[1]);
-            $amount = $this->parseAmount($match[2]);
+        foreach ($patterns as $index => $pattern) {
+            preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
 
-            if ($amount <= 0) {
-                continue;
+            foreach ($matches as $match) {
+                if ($index === 0) {
+                    $capacity = strtoupper($match[1]);
+                    $amount = $this->parseAmount($match[2]);
+                } else {
+                    $amount = $this->parseAmount($match[1]);
+                    $capacity = strtoupper($match[2]);
+                }
+
+                if ($amount <= 0) {
+                    continue;
+                }
+
+                $prices[$capacity] ??= [];
+                $prices[$capacity][] = $amount;
             }
-
-            $prices[$capacity] ??= [];
-            $prices[$capacity][] = $amount;
         }
 
         foreach ($prices as $capacity => $amounts) {
-            $prices[$capacity] = array_values(array_unique($amounts));
+            $prices[$capacity] = array_values(array_unique(array_map('intval', $amounts)));
+            sort($prices[$capacity], SORT_NUMERIC);
         }
 
         $order = ['256GB', '512GB', '1TB', '2TB'];
-        uksort($prices, fn (string $a, string $b) => array_search($a, $order, true) <=> array_search($b, $order, true));
+        uksort($prices, function (string $a, string $b) use ($order) {
+            $aPos = array_search($a, $order, true);
+            $bPos = array_search($b, $order, true);
+
+            return ($aPos === false ? PHP_INT_MAX : $aPos) <=> ($bPos === false ? PHP_INT_MAX : $bPos);
+        });
 
         return $prices;
+    }
+
+    /**
+     * @param  array<string, array<int, int>>  $left
+     * @param  array<string, array<int, int>>  $right
+     * @return array<string, array<int, int>>
+     */
+    private function mergeCapacityPrices(array $left, array $right): array
+    {
+        foreach ($right as $capacity => $amounts) {
+            $left[$capacity] = array_values(array_unique(array_merge(
+                $left[$capacity] ?? [],
+                array_map('intval', $amounts),
+            )));
+            sort($left[$capacity], SORT_NUMERIC);
+        }
+
+        $order = ['256GB', '512GB', '1TB', '2TB'];
+        uksort($left, function (string $a, string $b) use ($order) {
+            $aPos = array_search($a, $order, true);
+            $bPos = array_search($b, $order, true);
+
+            return ($aPos === false ? PHP_INT_MAX : $aPos) <=> ($bPos === false ? PHP_INT_MAX : $bPos);
+        });
+
+        return $left;
+    }
+
+    /**
+     * @param  array<string, array<int, int>>  $prices
+     */
+    private function hasTwoPricesPerCapacity(array $prices): bool
+    {
+        foreach (['256GB', '512GB', '1TB', '2TB'] as $capacity) {
+            if (count(array_unique($prices[$capacity] ?? [])) < 2) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -314,12 +390,28 @@ class AppleStorePricingService
         return (int) round((float) str_replace(',', '', trim($value)));
     }
 
-    private function normalizeHtml(string $html): string
+    /**
+     * يحول HTML + البيانات المضمّنة داخل script إلى نص قابل للبحث.
+     * Apple تستخدم أحيانًا JSON لتغذية configurator الخاص بالآيفون؛ حذف script
+     * كان السبب في فقدان السعات والأسعار على بعض خوادم الاستضافة.
+     */
+    private function normalizeApplePayload(string $html): string
     {
-        $html = preg_replace('/<(script|style)\b[^>]*>.*?<\/\1>/isu', ' ', $html) ?? $html;
+        // CSS لا يحمل بيانات أسعار مفيدة، بينما script قد يحملها.
+        $html = preg_replace('/<style\b[^>]*>.*?<\/style>/isu', ' ', $html) ?? $html;
         $html = preg_replace('/<[^>]+>/u', ' ', $html) ?? $html;
+
         $text = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $text = str_replace(["\u{00A0}", "\u{202F}"], ' ', $text);
+
+        $text = str_replace([
+            '\\u00a0', '\\u00A0', '\\u202f', '\\u202F',
+            '\\u0026', '\\u002F', '\\/', '\\"',
+            "\u{00A0}", "\u{202F}",
+        ], [
+            ' ', ' ', ' ', ' ',
+            '&', '/', '/', '"',
+            ' ', ' ',
+        ], $text);
 
         return trim(preg_replace('/\s+/u', ' ', $text) ?? $text);
     }
