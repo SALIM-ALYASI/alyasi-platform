@@ -152,6 +152,12 @@ class EventEditionController extends Controller
             $validated['image'] = $storedImage;
         }
 
+        $storedImageEn = null;
+        if ($request->hasFile('image_en')) {
+            $storedImageEn = $this->storeUpload($request->file('image_en'));
+            $validated['image_en'] = $storedImageEn;
+        }
+
         $validated['gallery'] = $this->mergeGallery($request, []);
 
         $slug = Str::slug($validated['title_ar']).'-'.$validated['year'];
@@ -173,6 +179,7 @@ class EventEditionController extends Controller
             });
         } catch (\Throwable $exception) {
             $this->deleteUpload($storedImage);
+            $this->deleteUpload($storedImageEn);
             throw $exception;
         }
 
@@ -198,12 +205,21 @@ class EventEditionController extends Controller
             $validated['image'] = $this->storeUpload($request->file('image'));
         }
 
+        $oldImageEn = $event->image_en;
+        if ($request->hasFile('image_en')) {
+            $validated['image_en'] = $this->storeUpload($request->file('image_en'));
+        }
+
         $validated['gallery'] = $this->mergeGallery($request, $event->gallery ?? []);
 
         $event->update($validated);
 
         if (! empty($validated['image']) && $oldImage && $oldImage !== $validated['image']) {
             $this->deleteUpload($oldImage);
+        }
+
+        if (! empty($validated['image_en']) && $oldImageEn && $oldImageEn !== $validated['image_en']) {
+            $this->deleteUpload($oldImageEn);
         }
 
         return redirect()
@@ -227,6 +243,7 @@ class EventEditionController extends Controller
             'event_end_at' => ['nullable', 'date', 'after_or_equal:event_start_at'],
             'livestream_url' => ['nullable', 'url', 'max:1000'],
             'image' => ['nullable', 'image', 'max:5120'],
+            'image_en' => ['nullable', 'image', 'max:5120'],
             'kept_gallery' => ['nullable', 'array'],
             'kept_gallery.*' => ['nullable', 'string'],
             'new_gallery_images' => ['nullable', 'array'],

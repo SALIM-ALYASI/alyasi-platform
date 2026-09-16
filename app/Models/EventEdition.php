@@ -24,6 +24,7 @@ class EventEdition extends Model
         'event_end_at',
         'livestream_url',
         'image',
+        'image_en',
         'gallery',
         'short_description_ar',
         'short_description_en',
@@ -128,6 +129,19 @@ class EventEdition extends Model
         }
 
         return $this->upgrade_verdict_text;
+    }
+
+    /**
+     * الصورة الرئيسية حسب لغة الصفحة الحالية — ترجع للصورة العربية
+     * (الحقل القديم) لو ما فيه صورة إنجليزية بعد، نفس نمط Article::displayImage().
+     */
+    public function displayImage(): ?string
+    {
+        if (app()->getLocale() === 'en' && filled($this->image_en)) {
+            return $this->image_en;
+        }
+
+        return $this->image;
     }
 
     /**

@@ -159,7 +159,7 @@
 @section('og_title', $edition->title)
 @section('og_description', $ogDescription)
 @section('og_url', $edition->permalink()?->url())
-@section('og_image', $edition->image ? media_url($edition->image) : asset('images/events/og-cover.jpg'))
+@section('og_image', $edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg'))
 @section('og_image_width', 1200)
 @section('og_image_height', 630)
 
@@ -181,7 +181,7 @@
             ? 'https://schema.org/OnlineEventAttendanceMode'
             : 'https://schema.org/OfflineEventAttendanceMode',
         'eventStatus' => 'https://schema.org/EventScheduled',
-        'image' => [$edition->image ? media_url($edition->image) : asset('images/events/og-cover.jpg')],
+        'image' => [$edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg')],
         'url' => $edition->permalink()?->url(),
         'organizer' => [
             '@type' => 'Organization',
@@ -207,7 +207,7 @@
     <section class="container community-detail__hero-wrap">
         <div class="community-detail__hero-media">
             <img
-                src="{{ $edition->image ? media_url($edition->image) : asset('images/events/og-cover.jpg') }}"
+                src="{{ $edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg') }}"
                 alt="{{ $edition->title }}"
             >
             @if ($phase !== 'concluded')

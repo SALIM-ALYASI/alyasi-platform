@@ -124,13 +124,24 @@
     <h3 class="events-form-section-title"><i class="fa-solid fa-images"></i> الصور</h3>
 
     <div class="form-grid">
-        <div class="form-group form-group-full">
-            <label for="image">الصورة الرئيسية</label>
+        <div class="form-group">
+            <label for="image">الصورة الرئيسية (عربي)</label>
             <input type="file" id="image" name="image" accept="image/*">
             @if (($edition->image ?? null))
                 <span class="form-hint">الصورة الحالية موجودة — ارفع صورة جديدة لاستبدالها فقط.</span>
             @endif
             @error('image')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="image_en">الصورة الرئيسية (إنجليزي)</label>
+            <input type="file" id="image_en" name="image_en" accept="image/*">
+            @if (($edition->image_en ?? null))
+                <span class="form-hint">الصورة الحالية موجودة — ارفع صورة جديدة لاستبدالها فقط.</span>
+            @else
+                <span class="form-hint">اختياري — لو ما رفعتها، تظهر الصورة العربية للزوار الإنجليز أيضًا.</span>
+            @endif
+            @error('image_en')<span class="form-error">{{ $message }}</span>@enderror
         </div>
     </div>
 
