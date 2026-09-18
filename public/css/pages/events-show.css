@@ -635,3 +635,15 @@
         padding-inline: 6px;
     }
 }
+
+.event-content { margin: 8px 0 32px; font-size: 16px; line-height: 2; color: rgba(20, 32, 46, .82); }
+.event-content h2 { font-size: 22px; margin: 36px 0 12px; }
+.event-content h3 { font-size: 18px; margin: 24px 0 8px; }
+.event-content ul, .event-content ol { padding-inline-start: 22px; margin: 0 0 16px; }
+.event-content li { margin-bottom: 6px; }
+.event-content table { width: 100%; border-collapse: collapse; margin: 12px 0 24px; font-size: 15px; display: block; overflow-x: auto; }
+.event-content th, .event-content td { padding: 10px 12px; border: 1px solid rgba(20, 32, 46, .12); text-align: start; vertical-align: top; }
+.event-content th { background: rgba(20, 32, 46, .05); font-weight: 700; }
+:root[data-theme="dark"] .event-content { color: rgba(255, 255, 255, .82); }
+:root[data-theme="dark"] .event-content th, :root[data-theme="dark"] .event-content td { border-color: rgba(255, 255, 255, .14); }
+:root[data-theme="dark"] .event-content th { background: rgba(255, 255, 255, .06); }

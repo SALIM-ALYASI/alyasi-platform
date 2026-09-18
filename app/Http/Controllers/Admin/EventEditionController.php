@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Mews\Purifier\Facades\Purifier;
 
 class EventEditionController extends Controller
 {
+    private const ALLOWED_CONTENT_TAGS = 'p,br,strong,em,b,i,a[href|title|target|rel],ul,ol,li,h2,h3,h4,blockquote,hr,table,thead,tbody,tr,th,td';
+
     /**
      * أسعار صرف تقريبية ثابتة لتحويل الأسعار المنشورة إلى الريال العُماني.
      * نقرّب الناتج للأعلى حتى تكون القيمة المعروضة رقمًا صحيحًا واضحًا.
@@ -250,6 +253,8 @@ class EventEditionController extends Controller
             'new_gallery_images.*' => ['nullable', 'image', 'max:5120'],
             'short_description_ar' => ['nullable', 'string', 'max:2000'],
             'short_description_en' => ['nullable', 'string', 'max:2000'],
+            'content_ar' => ['nullable', 'string', 'max:60000'],
+            'content_en' => ['nullable', 'string', 'max:60000'],
             'announcements' => ['nullable', 'array'],
             'announcements.*.label_ar' => ['nullable', 'string', 'max:255'],
             'announcements.*.label_en' => ['nullable', 'string', 'max:255'],
@@ -274,6 +279,12 @@ class EventEditionController extends Controller
         ]);
 
         $data['attended'] = $request->boolean('attended');
+
+        foreach (['content_ar', 'content_en'] as $field) {
+            $data[$field] = filled($data[$field] ?? null)
+                ? Purifier::clean($data[$field], ['HTML.Allowed' => self::ALLOWED_CONTENT_TAGS])
+                : null;
+        }
 
         // Keep the old single-language field synchronized with Arabic while
         // older code/deployments are still around. Public rendering uses the

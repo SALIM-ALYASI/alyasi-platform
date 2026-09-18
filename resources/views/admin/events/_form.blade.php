@@ -179,6 +179,23 @@
 </div>
 
 <div class="events-form-section">
+    <h3 class="events-form-section-title"><i class="fa-solid fa-file-lines"></i> المحتوى التفصيلي (HTML)</h3>
+
+    <div class="form-grid">
+        <div class="form-group form-group-full">
+            <label for="content_ar">المحتوى (عربي)</label>
+            <textarea id="content_ar" name="content_ar" rows="14" dir="rtl">{{ old('content_ar', $edition->content_ar ?? '') }}</textarea>
+            <span class="form-hint">يدعم: h2/h3، p، ul/li، table، a، strong. أي وسوم أخرى تُحذف.</span>
+        </div>
+
+        <div class="form-group form-group-full">
+            <label for="content_en">المحتوى (إنجليزي)</label>
+            <textarea id="content_en" name="content_en" rows="14" dir="ltr">{{ old('content_en', $edition->content_en ?? '') }}</textarea>
+        </div>
+    </div>
+</div>
+
+<div class="events-form-section">
     <h3 class="events-form-section-title"><i class="fa-solid fa-bullhorn"></i> المنتجات / الإعلانات</h3>
     <p class="form-hint" style="margin-bottom:16px;">اسم المنتج بلغتين + تفاصيل حتى 2000 حرف + الطلب المسبق + تاريخ التوفر + درجة التأكيد + صورة المنتج.</p>
 

@@ -276,6 +276,10 @@
             <p class="community-detail__paragraph">{{ $edition->short_description }}</p>
         @endif
 
+        @if (filled($edition->content))
+            <div class="event-content">{!! $edition->content !!}</div>
+        @endif
+
         {{-- =====================================================
              شبكة المنتجات — موحّدة لكل المراحل، السعر يظهر تلقائيًا
              فوق البطاقة أول ما يتوفّر بجدول الأسعار (بدون انتظار "انتهى").

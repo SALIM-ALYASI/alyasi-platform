@@ -28,6 +28,8 @@ class EventEdition extends Model
         'gallery',
         'short_description_ar',
         'short_description_en',
+        'content_ar',
+        'content_en',
         'announcements',
         'pricing_table',
         'upgrade_verdict',
@@ -109,6 +111,18 @@ class EventEdition extends Model
         }
 
         return $this->short_description_ar;
+    }
+
+    /**
+     * المحتوى التفصيلي (HTML منقّى) حسب لغة الصفحة، مع الرجوع للعربي.
+     */
+    public function getContentAttribute(): ?string
+    {
+        if (app()->getLocale() === 'en' && filled($this->content_en)) {
+            return $this->content_en;
+        }
+
+        return $this->content_ar;
     }
 
     /**
