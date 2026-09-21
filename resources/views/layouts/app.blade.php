@@ -359,6 +359,11 @@
         href="{{ versioned_asset('css/shared/pagination.css') }}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/shared/page-transition.css') }}"
+    >
+
 
     {{-- =====================================================
          Bing Webmaster Verification
@@ -432,7 +437,7 @@
 </head>
 
 
-<body dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
+<body class="alyasi-page-enter" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
 
     <x-header />
 

@@ -64,6 +64,11 @@
         href="{{ versioned_asset('assets/admin/css/admin-cards.css') }}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/shared/page-transition.css') }}"
+    >
+
     @stack('styles')
 
     {{-- Shared theme loads last so it can cover every admin module. --}}
@@ -73,7 +78,7 @@
     >
 </head>
 
-<body class="admin-body">
+<body class="admin-body alyasi-page-enter">
 
     <div class="admin-layout">
 
