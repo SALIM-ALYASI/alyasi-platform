@@ -1,0 +1,40 @@
+/*
+ * ALYASI global page-open action
+ * Applies a fast, subtle entrance to the page content while keeping
+ * navigation/header stable. Shared by the public site and admin panel.
+ */
+
+@keyframes alyasiPageOpen {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0) scale(0.996);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+body.alyasi-page-enter > main,
+body.admin-body.alyasi-page-enter .admin-content {
+    animation: alyasiPageOpen 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transform-origin: 50% 0;
+    will-change: opacity, transform;
+}
+
+@media (max-width: 767px) {
+    body.alyasi-page-enter > main,
+    body.admin-body.alyasi-page-enter .admin-content {
+        animation-duration: 340ms;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.alyasi-page-enter > main,
+    body.admin-body.alyasi-page-enter .admin-content {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
