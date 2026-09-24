@@ -445,7 +445,7 @@
 <body class="alyasi-page-enter" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
 
     <div id="alyasi-splash" aria-hidden="true">
-        <img src="{{ asset('images/logo/logo-white-half.png') }}" alt="">
+        <img src="{{ asset('images/logo/logo-white-trimmed.png') }}" alt="">
     </div>
 
     <x-header />
