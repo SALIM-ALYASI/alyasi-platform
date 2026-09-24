@@ -88,22 +88,6 @@
         })();
     </script>
 
-    {{-- Splash plays once per browser session — gate it before paint so
-         a repeat visit within the same session never flashes it. --}}
-    <script>
-        (function () {
-            try {
-                if (sessionStorage.getItem('alyasi-splash-shown')) {
-                    document.documentElement.classList.add('no-splash');
-                } else {
-                    sessionStorage.setItem('alyasi-splash-shown', '1');
-                }
-            } catch (error) {
-                document.documentElement.classList.add('no-splash');
-            }
-        })();
-    </script>
-
     <link
         rel="stylesheet"
         href="{{ versioned_asset('css/shared/splash.css') }}"

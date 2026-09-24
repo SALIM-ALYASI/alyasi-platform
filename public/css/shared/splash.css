@@ -1,7 +1,5 @@
 /*
- * ALYASI intro splash — plays once per browser session (see the
- * blocking gate script in layouts/app.blade.php <head>, which sets
- * html.no-splash before first paint when already shown).
+ * ALYASI intro splash — plays on every page load.
  */
 
 #alyasi-splash {
@@ -34,10 +32,6 @@
 
 @keyframes alyasiSplashOut {
     to { opacity: 0; visibility: hidden; }
-}
-
-html.no-splash #alyasi-splash {
-    display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
