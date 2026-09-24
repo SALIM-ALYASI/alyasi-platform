@@ -1,0 +1,46 @@
+/*
+ * ALYASI intro splash — plays once per browser session (see the
+ * blocking gate script in layouts/app.blade.php <head>, which sets
+ * html.no-splash before first paint when already shown).
+ */
+
+#alyasi-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #0B1F3A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: alyasiSplashOut 600ms ease forwards;
+    animation-delay: 4.4s;
+}
+
+#alyasi-splash img {
+    width: 90px;
+    height: auto;
+    opacity: 0;
+    transform-origin: center;
+    animation: alyasiSplashZoom 2400ms cubic-bezier(.4, 0, .2, 1) forwards;
+    animation-delay: 300ms;
+}
+
+@keyframes alyasiSplashZoom {
+    0%   { transform: scale(1); opacity: 0; }
+    15%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: scale(9); opacity: 0; }
+}
+
+@keyframes alyasiSplashOut {
+    to { opacity: 0; visibility: hidden; }
+}
+
+html.no-splash #alyasi-splash {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #alyasi-splash { animation-duration: 1ms; animation-delay: 0s; }
+    #alyasi-splash img { animation: none; opacity: 1; transform: scale(3); }
+}

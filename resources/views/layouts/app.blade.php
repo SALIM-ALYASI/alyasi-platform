@@ -88,6 +88,27 @@
         })();
     </script>
 
+    {{-- Splash plays once per browser session — gate it before paint so
+         a repeat visit within the same session never flashes it. --}}
+    <script>
+        (function () {
+            try {
+                if (sessionStorage.getItem('alyasi-splash-shown')) {
+                    document.documentElement.classList.add('no-splash');
+                } else {
+                    sessionStorage.setItem('alyasi-splash-shown', '1');
+                }
+            } catch (error) {
+                document.documentElement.classList.add('no-splash');
+            }
+        })();
+    </script>
+
+    <link
+        rel="stylesheet"
+        href="{{ versioned_asset('css/shared/splash.css') }}"
+    >
+
     <title>{{ $pageTitle }}</title>
 
     @hasSection('meta_author')
@@ -438,6 +459,10 @@
 
 
 <body class="alyasi-page-enter" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
+
+    <div id="alyasi-splash" aria-hidden="true">
+        <img src="{{ asset('images/logo/logo-white-half.png') }}" alt="">
+    </div>
 
     <x-header />
 
