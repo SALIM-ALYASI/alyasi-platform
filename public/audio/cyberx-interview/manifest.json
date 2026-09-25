@@ -1,0 +1,138 @@
+[
+  {
+    "id": "intro",
+    "label": "مقطع التعريف",
+    "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر. لدي صعوبة في النطق، لذلك جهزت أسئلتي بصوت مسجل. هل تسمح لي ببضع دقائق؟",
+    "en": "Hello, I'm Salem Al Hajri from ALYASI, a media partner of this conference. I have a speech difficulty, so I prepared my questions as audio. May I have a few minutes of your time?",
+    "arFile": "intro-ar.wav",
+    "enFile": "intro-en.wav"
+  },
+  {
+    "id": "general",
+    "label": "السؤال العام",
+    "ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: كيف نصحح هذه الفكرة في المجتمع؟ وما الفرق بين المبرمج والمخترق؟",
+    "en": "Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: how can we correct this idea in society, and what is the difference between a programmer and a hacker?",
+    "arFile": "general-ar.wav",
+    "enFile": "general-en.wav"
+  },
+  {
+    "id": "yahya-1",
+    "label": "يحيى العزري",
+    "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟",
+    "en": "What change will citizens feel from the Tahawul framework?",
+    "arFile": "yahya-1-ar.wav",
+    "enFile": "yahya-1-en.wav"
+  },
+  {
+    "id": "yahya-2",
+    "label": "يحيى العزري",
+    "ar": "ما أكبر تهديد يواجه الجهات الحكومية في عُمان اليوم؟",
+    "en": "What is the biggest threat facing government entities in Oman today?",
+    "arFile": "yahya-2-ar.wav",
+    "enFile": "yahya-2-en.wav"
+  },
+  {
+    "id": "yahya-3",
+    "label": "يحيى العزري",
+    "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟",
+    "en": "What is your advice for small businesses to protect themselves?",
+    "arFile": "yahya-3-ar.wav",
+    "enFile": "yahya-3-en.wav"
+  },
+  {
+    "id": "ali-1",
+    "label": "علي اللواتي",
+    "ar": "كيف تبني شركة دفع إلكتروني آمنة من البداية؟",
+    "en": "How do you build a secure payment company from day one?",
+    "arFile": "ali-1-ar.wav",
+    "enFile": "ali-1-en.wav"
+  },
+  {
+    "id": "ali-2",
+    "label": "علي اللواتي",
+    "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟",
+    "en": "What is your advice for an Omani developer who wants to enter cybersecurity?",
+    "arFile": "ali-2-ar.wav",
+    "enFile": "ali-2-en.wav"
+  },
+  {
+    "id": "ahmed-1",
+    "label": "أحمد رضا",
+    "ar": "اشرح لنا «الثقة الصفرية» بكلمات بسيطة.",
+    "en": "Can you explain Zero Trust in simple words?",
+    "arFile": "ahmed-1-ar.wav",
+    "enFile": "ahmed-1-en.wav"
+  },
+  {
+    "id": "ahmed-2",
+    "label": "أحمد رضا",
+    "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟",
+    "en": "What is the risk of machine and bot identities that nobody notices?",
+    "arFile": "ahmed-2-ar.wav",
+    "enFile": "ahmed-2-en.wav"
+  },
+  {
+    "id": "sara-1",
+    "label": "سارة الكندي",
+    "ar": "كيف تحمون أنظمة النفط والغاز من الهجمات السيبرانية؟",
+    "en": "How do you protect oil and gas systems from cyberattacks?",
+    "arFile": "sara-1-ar.wav",
+    "enFile": "sara-1-en.wav"
+  },
+  {
+    "id": "sara-2",
+    "label": "سارة الكندي",
+    "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟",
+    "en": "What is the difference between industrial system security and regular IT security?",
+    "arFile": "sara-2-ar.wav",
+    "enFile": "sara-2-en.wav"
+  },
+  {
+    "id": "fatima-1",
+    "label": "فاطمة اللواتي",
+    "ar": "أين وصلت المرأة العُمانية في مجال الأمن السيبراني؟",
+    "en": "Where do Omani women stand today in cybersecurity?",
+    "arFile": "fatima-1-ar.wav",
+    "enFile": "fatima-1-en.wav"
+  },
+  {
+    "id": "fatima-2",
+    "label": "فاطمة اللواتي",
+    "ar": "كيف تبدأ فتاة تريد التخصص في هذا المجال؟",
+    "en": "How should a young woman start if she wants to specialize in this field?",
+    "arFile": "fatima-2-ar.wav",
+    "enFile": "fatima-2-en.wav"
+  },
+  {
+    "id": "abhishek-1",
+    "label": "أبهيشيك سينغ",
+    "ar": null,
+    "en": "What is the most common way people lose their bank accounts to attackers?",
+    "arFile": null,
+    "enFile": "abhishek-1-en.wav"
+  },
+  {
+    "id": "abhishek-2",
+    "label": "أبهيشيك سينغ",
+    "ar": null,
+    "en": "How can ordinary customers protect their banking apps?",
+    "arFile": null,
+    "enFile": "abhishek-2-en.wav"
+  },
+  {
+    "id": "reels",
+    "label": "السؤال الموحد (ريلز)",
+    "ar": "في جملة واحدة: ما أهم شيء يفعله الشخص ليحمي نفسه على الإنترنت؟",
+    "en": "In one sentence: what is the most important thing a person should do to stay safe online?",
+    "arFile": "reels-ar.wav",
+    "enFile": "reels-en.wav"
+  },
+  {
+    "id": "closing",
+    "label": "مقطع الختام",
+    "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
+    "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?",
+    "arFile": "closing-ar.wav",
+    "enFile": "closing-en.wav"
+  }
+]

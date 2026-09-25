@@ -42,6 +42,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\CyberxInterviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
@@ -473,6 +474,15 @@ Route::post(
 )
     ->middleware('throttle:5,1')
     ->name('works.reviews.store');
+
+/*
+|--------------------------------------------------------------------------
+| Internal Tools (unlinked -- not part of site navigation)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
+    ->name('tools.cyberx-interview');
 
 /*
 |--------------------------------------------------------------------------
