@@ -241,6 +241,11 @@
             list.appendChild(card);
         });
 
+        // مشغّل واحد نشط بكل الصفحة -- قبل ما نشغّل أي مقطع جديد نوقف أي
+        // مقطع ثاني شغّال (بدون ما نصفّر مكانه، زي ضغط زر الإيقاف نفسه)،
+        // عشان ما تتداخل الأصوات لو ضغط المستخدم زرين بالغلط.
+        let activePlayer = null;
+
         // زر تشغيل/إيقاف مؤقت -- الإيقاف يحفظ مكان التوقف (يكمل من نفس
         // النقطة عند الضغط ثانية)، وزر الإعادة المنفصل (⟲) هو الوحيد
         // اللي يرجّع الصوت لبدايته من الصفر.
@@ -256,8 +261,18 @@
 
             let audio = null;
 
-            const setPaused = () => { playBtn.textContent = '▶ ' + label; };
-            const setPlaying = () => { playBtn.textContent = '⏸ ' + label; };
+            const setPaused = () => {
+                playBtn.textContent = '▶ ' + label;
+                if (activePlayer === pauseSelf) activePlayer = null;
+            };
+            const setPlaying = () => {
+                playBtn.textContent = '⏸ ' + label;
+                activePlayer = pauseSelf;
+            };
+            const pauseSelf = () => {
+                if (audio && !audio.paused) audio.pause();
+                setPaused();
+            };
 
             const ensureAudio = () => {
                 if (!audio) {
@@ -267,24 +282,26 @@
                 return audio;
             };
 
-            playBtn.addEventListener('click', () => {
-                ensureAudio();
-                if (!audio.paused) {
-                    audio.pause();
-                    setPaused();
-                    return;
-                }
+            const startPlayback = () => {
+                if (activePlayer && activePlayer !== pauseSelf) activePlayer();
                 audio.play().then(setPlaying).catch(() => {
                     alert('تعذّر تشغيل المقطع.');
                 });
+            };
+
+            playBtn.addEventListener('click', () => {
+                ensureAudio();
+                if (!audio.paused) {
+                    pauseSelf();
+                    return;
+                }
+                startPlayback();
             });
 
             restartBtn.addEventListener('click', () => {
                 ensureAudio();
                 audio.currentTime = 0;
-                audio.play().then(setPlaying).catch(() => {
-                    alert('تعذّر تشغيل المقطع.');
-                });
+                startPlayback();
             });
 
             actions.appendChild(playBtn);
