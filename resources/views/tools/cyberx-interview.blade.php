@@ -213,10 +213,10 @@
             actions.className = 'actions';
 
             if (q.arFile) {
-                actions.appendChild(makePlayButton('▶ عربي', baseUrl + '/' + q.arFile));
+                actions.appendChild(makePlayButton('عربي', baseUrl + '/' + q.arFile));
             }
             if (q.enFile) {
-                actions.appendChild(makePlayButton('▶ English', baseUrl + '/' + q.enFile));
+                actions.appendChild(makePlayButton('English', baseUrl + '/' + q.enFile));
             }
 
             const recordBtn = document.createElement('button');
@@ -235,18 +235,35 @@
             list.appendChild(card);
         });
 
-        function makePlayButton(text, src) {
+        function makePlayButton(label, src) {
             const btn = document.createElement('button');
             btn.className = 'play';
-            btn.textContent = text;
+            btn.textContent = '▶ ' + label;
             let audio = null;
+
+            const reset = () => { btn.textContent = '▶ ' + label; };
+
             btn.addEventListener('click', () => {
-                if (!audio) audio = new Audio(src);
+                if (!audio) {
+                    audio = new Audio(src);
+                    audio.addEventListener('ended', reset);
+                }
+
+                if (!audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    reset();
+                    return;
+                }
+
                 audio.currentTime = 0;
-                audio.play().catch(() => {
+                audio.play().then(() => {
+                    btn.textContent = '⏹ ' + label;
+                }).catch(() => {
                     alert('تعذّر تشغيل المقطع.');
                 });
             });
+
             return btn;
         }
 
