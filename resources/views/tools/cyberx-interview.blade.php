@@ -109,6 +109,12 @@
             border-color: rgba(216,181,106,.4);
         }
 
+        button.play.restart {
+            padding-inline: 10px;
+            opacity: .8;
+            font-size: 16px;
+        }
+
         button.record {
             background: rgba(220,70,70,.14);
             border-color: rgba(220,70,70,.4);
@@ -213,10 +219,10 @@
             actions.className = 'actions';
 
             if (q.arFile) {
-                actions.appendChild(makePlayButton('عربي', baseUrl + '/' + q.arFile));
+                makePlayGroup(actions, 'عربي', baseUrl + '/' + q.arFile);
             }
             if (q.enFile) {
-                actions.appendChild(makePlayButton('English', baseUrl + '/' + q.enFile));
+                makePlayGroup(actions, 'English', baseUrl + '/' + q.enFile);
             }
 
             const recordBtn = document.createElement('button');
@@ -235,36 +241,54 @@
             list.appendChild(card);
         });
 
-        function makePlayButton(label, src) {
-            const btn = document.createElement('button');
-            btn.className = 'play';
-            btn.textContent = '▶ ' + label;
+        // زر تشغيل/إيقاف مؤقت -- الإيقاف يحفظ مكان التوقف (يكمل من نفس
+        // النقطة عند الضغط ثانية)، وزر الإعادة المنفصل (⟲) هو الوحيد
+        // اللي يرجّع الصوت لبدايته من الصفر.
+        function makePlayGroup(actions, label, src) {
+            const playBtn = document.createElement('button');
+            playBtn.className = 'play';
+            playBtn.textContent = '▶ ' + label;
+
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'play restart';
+            restartBtn.textContent = '⟲';
+            restartBtn.title = 'ابدأ من الصفر';
+
             let audio = null;
 
-            const reset = () => { btn.textContent = '▶ ' + label; };
+            const setPaused = () => { playBtn.textContent = '▶ ' + label; };
+            const setPlaying = () => { playBtn.textContent = '⏸ ' + label; };
 
-            btn.addEventListener('click', () => {
+            const ensureAudio = () => {
                 if (!audio) {
                     audio = new Audio(src);
-                    audio.addEventListener('ended', reset);
+                    audio.addEventListener('ended', setPaused);
                 }
+                return audio;
+            };
 
+            playBtn.addEventListener('click', () => {
+                ensureAudio();
                 if (!audio.paused) {
                     audio.pause();
-                    audio.currentTime = 0;
-                    reset();
+                    setPaused();
                     return;
                 }
-
-                audio.currentTime = 0;
-                audio.play().then(() => {
-                    btn.textContent = '⏹ ' + label;
-                }).catch(() => {
+                audio.play().then(setPlaying).catch(() => {
                     alert('تعذّر تشغيل المقطع.');
                 });
             });
 
-            return btn;
+            restartBtn.addEventListener('click', () => {
+                ensureAudio();
+                audio.currentTime = 0;
+                audio.play().then(setPlaying).catch(() => {
+                    alert('تعذّر تشغيل المقطع.');
+                });
+            });
+
+            actions.appendChild(playBtn);
+            actions.appendChild(restartBtn);
         }
 
         function wireRecorder(button, answerRow, questionId) {
