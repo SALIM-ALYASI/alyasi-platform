@@ -8,12 +8,11 @@
     <style>
         :root {
             --navy: #0B1F3A;
-            --navy-2: #12294d;
-            --gold: #d8b56a;
             --card: #15294a;
             --border: rgba(255,255,255,.10);
             --text: #eef2f8;
             --muted: rgba(238,242,248,.62);
+            --gold: #d8b56a;
         }
 
         * { box-sizing: border-box; }
@@ -53,6 +52,27 @@
             color: var(--muted);
         }
 
+        .followups-bar {
+            background: rgba(216,181,106,.08);
+            border: 1px solid rgba(216,181,106,.3);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+        }
+
+        .followups-bar .heading {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .followups-bar .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -66,6 +86,15 @@
             font-weight: 700;
             color: var(--gold);
             margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .card .label .meta {
+            font-weight: 400;
+            color: var(--muted);
+            direction: ltr;
         }
 
         .card .q {
@@ -115,6 +144,11 @@
             font-size: 16px;
         }
 
+        button.play.small {
+            font-size: 13px;
+            padding: 8px 12px;
+        }
+
         button.record {
             background: rgba(220,70,70,.14);
             border-color: rgba(220,70,70,.4);
@@ -129,11 +163,6 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: .6; }
-        }
-
-        button:disabled {
-            opacity: .4;
-            cursor: not-allowed;
         }
 
         .answer {
@@ -160,10 +189,21 @@
             letter-spacing: .06em;
         }
 
-        .hint {
+        .guest-heading {
+            margin: 28px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .guest-heading .name {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .guest-heading .sub {
             font-size: 12px;
             color: var(--muted);
-            margin-top: 4px;
+            margin-top: 2px;
         }
     </style>
 </head>
@@ -174,31 +214,102 @@
             <p>شغّل السؤال المسجّل، وسجّل إجابة الضيف من نفس الصفحة — بدون رفع لأي سيرفر.</p>
         </header>
 
+        <div class="followups-bar">
+            <div class="heading">متابعات سريعة (أي وقت، أي ضيف)</div>
+            <div class="actions" id="followups"></div>
+        </div>
+
         <div id="list"></div>
     </div>
 
     <script>
-        const questions = @json($questions);
-        const baseUrl = @json(asset('audio/cyberx-interview/'));
+        const data = @json($data);
+        const baseUrl = @json(asset('audio/cyberx-interview-2026/'));
         const list = document.getElementById('list');
 
-        let lastLabel = null;
+        // مشغّل واحد نشط بكل الصفحة -- قبل ما نشغّل أي مقطع جديد نوقف أي
+        // مقطع ثاني شغّال (بدون ما نصفّر مكانه، زي ضغط زر الإيقاف نفسه)،
+        // عشان ما تتداخل الأصوات لو ضغط المستخدم زرين بالغلط.
+        let activePlayer = null;
 
-        questions.forEach((q) => {
-            if (q.label !== lastLabel) {
-                const divider = document.createElement('div');
-                divider.className = 'divider';
-                divider.textContent = q.label;
-                list.appendChild(divider);
-                lastLabel = q.label;
-            }
+        // -- شريط المتابعات السريعة (أعلى الصفحة، ثابت الظهور) --
+        const followupsBar = document.getElementById('followups');
+        data.shared.followups.forEach((f) => {
+            const group = document.createElement('div');
+            group.style.display = 'flex';
+            group.style.gap = '6px';
+            group.style.alignItems = 'center';
 
+            const tag = document.createElement('span');
+            tag.textContent = f.label;
+            tag.style.fontSize = '12px';
+            tag.style.color = 'var(--muted)';
+            group.appendChild(tag);
+
+            makePlayGroup(group, 'عربي', audioUrl(f.audio, 'ar'), 'small');
+            makePlayGroup(group, 'EN', audioUrl(f.audio, 'en'), 'small');
+
+            followupsBar.appendChild(group);
+        });
+
+        // -- مقطع التعريف (بدون تسجيل -- كلام سالم نفسه) --
+        addDivider('مقطع التعريف');
+        addCard({ id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
+            audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
+
+        // -- تعريف الضيف (فيها تسجيل -- كلام الضيف) --
+        addDivider('تعريف الضيف');
+        addCard({ id: 'self_intro', ar: data.shared.self_intro.ar, en: data.shared.self_intro.en },
+            audioUrl(data.shared.self_intro.audio, 'ar'), audioUrl(data.shared.self_intro.audio, 'en'), true, 'self-intro');
+
+        // -- سؤال الجلسة القيادية --
+        addDivider('سؤال الجلسة القيادية · ' + data.panel_question.session);
+        addCard({ id: 'panel_question', ar: data.panel_question.ar, en: data.panel_question.en },
+            audioUrl(data.panel_question.audio, 'ar'), audioUrl(data.panel_question.audio, 'en'), true, 'panel');
+
+        // -- كل ضيف وأسئلته --
+        data.guests.forEach((guest) => {
+            const heading = document.createElement('div');
+            heading.className = 'guest-heading';
+            heading.innerHTML =
+                '<div class="name">' + guest.name_ar + '</div>' +
+                '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>';
+            list.appendChild(heading);
+
+            guest.questions.forEach((q) => {
+                addCard({ id: q.audio, ar: q.ar, en: q.en },
+                    audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id);
+            });
+        });
+
+        // -- السؤال الموحد (ريلز) --
+        addDivider('السؤال الموحد (ريلز)');
+        addCard({ id: 'unified', ar: data.shared.unified.ar, en: data.shared.unified.en },
+            audioUrl(data.shared.unified.audio, 'ar'), audioUrl(data.shared.unified.audio, 'en'), true, 'unified');
+
+        // -- مقطع الختام (بدون تسجيل) --
+        addDivider('مقطع الختام');
+        addCard({ id: 'closing', ar: data.shared.closing.ar, en: data.shared.closing.en },
+            audioUrl(data.shared.closing.audio, 'ar'), audioUrl(data.shared.closing.audio, 'en'), false);
+
+        function audioUrl(id, lang) {
+            return baseUrl + '/' + id + '-' + lang + '.wav';
+        }
+
+        function addDivider(text) {
+            const divider = document.createElement('div');
+            divider.className = 'divider';
+            divider.textContent = text;
+            list.appendChild(divider);
+        }
+
+        function addCard(q, arSrc, enSrc, withRecord, recordPrefix) {
             const card = document.createElement('div');
             card.className = 'card';
 
             const label = document.createElement('div');
             label.className = 'label';
-            label.textContent = q.id;
+            label.innerHTML = '<span>' + q.id + '</span>';
             card.appendChild(label);
 
             if (q.ar) {
@@ -218,40 +329,35 @@
             const actions = document.createElement('div');
             actions.className = 'actions';
 
-            if (q.arFile) {
-                makePlayGroup(actions, 'عربي', baseUrl + '/' + q.arFile);
+            makePlayGroup(actions, 'عربي', arSrc);
+            makePlayGroup(actions, 'English', enSrc);
+
+            if (withRecord) {
+                const recordBtn = document.createElement('button');
+                recordBtn.className = 'record';
+                recordBtn.textContent = '🎙 تسجيل الإجابة';
+                actions.appendChild(recordBtn);
+
+                card.appendChild(actions);
+
+                const answerRow = document.createElement('div');
+                answerRow.className = 'answer';
+                card.appendChild(answerRow);
+
+                wireRecorder(recordBtn, answerRow, (recordPrefix || q.id) + '-' + q.id);
+            } else {
+                card.appendChild(actions);
             }
-            if (q.enFile) {
-                makePlayGroup(actions, 'English', baseUrl + '/' + q.enFile);
-            }
-
-            const recordBtn = document.createElement('button');
-            recordBtn.className = 'record';
-            recordBtn.textContent = '🎙 تسجيل الإجابة';
-            actions.appendChild(recordBtn);
-
-            card.appendChild(actions);
-
-            const answerRow = document.createElement('div');
-            answerRow.className = 'answer';
-            card.appendChild(answerRow);
-
-            wireRecorder(recordBtn, answerRow, q.id);
 
             list.appendChild(card);
-        });
-
-        // مشغّل واحد نشط بكل الصفحة -- قبل ما نشغّل أي مقطع جديد نوقف أي
-        // مقطع ثاني شغّال (بدون ما نصفّر مكانه، زي ضغط زر الإيقاف نفسه)،
-        // عشان ما تتداخل الأصوات لو ضغط المستخدم زرين بالغلط.
-        let activePlayer = null;
+        }
 
         // زر تشغيل/إيقاف مؤقت -- الإيقاف يحفظ مكان التوقف (يكمل من نفس
         // النقطة عند الضغط ثانية)، وزر الإعادة المنفصل (⟲) هو الوحيد
         // اللي يرجّع الصوت لبدايته من الصفر.
-        function makePlayGroup(actions, label, src) {
+        function makePlayGroup(actions, label, src, size) {
             const playBtn = document.createElement('button');
-            playBtn.className = 'play';
+            playBtn.className = 'play' + (size === 'small' ? ' small' : '');
             playBtn.textContent = '▶ ' + label;
 
             const restartBtn = document.createElement('button');

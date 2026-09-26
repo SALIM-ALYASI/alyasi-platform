@@ -13,11 +13,11 @@ class CyberxInterviewController extends Controller
      */
     public function index(): View
     {
-        $questions = json_decode(
-            file_get_contents(public_path('audio/cyberx-interview/manifest.json')),
+        $data = json_decode(
+            file_get_contents(public_path('audio/cyberx-interview-2026/data.json')),
             true
         );
 
-        return view('tools.cyberx-interview', ['questions' => $questions]);
+        return view('tools.cyberx-interview', ['data' => $data]);
     }
 }

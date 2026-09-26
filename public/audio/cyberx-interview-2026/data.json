@@ -1,0 +1,184 @@
+{
+  "event": "CyberX Oman 2026",
+  "flow": ["intro", "self_intro", "questions", "unified", "closing"],
+  "shared": {
+    "intro": {
+      "audio": "shared-intro",
+      "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر. لدي صعوبة في النطق، لذلك جهزت أسئلتي بصوت مسجل. هل تسمح لي ببضع دقائق؟",
+      "en": "Hello, I'm Salem Al Hajri from ALYASI, a media partner of this conference. I have a speech difficulty, so I prepared my questions as audio. May I have a few minutes of your time?"
+    },
+    "self_intro": {
+      "audio": "shared-self-intro",
+      "ar": "قبل أن نبدأ، هل يمكنك تعريف نفسك لجمهورنا؟",
+      "en": "Before we start, could you please introduce yourself to our audience?"
+    },
+    "unified": {
+      "audio": "shared-unified",
+      "ar": "في جملة واحدة: ما أهم شيء يفعله الشخص ليحمي نفسه على الإنترنت؟",
+      "en": "In one sentence: what is the most important thing a person should do to stay safe online?"
+    },
+    "closing": {
+      "audio": "shared-closing",
+      "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
+      "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?"
+    },
+    "followups": [
+      {
+        "audio": "followup-example",
+        "label": "الجواب قصير",
+        "ar": "هل يمكنك إعطاؤنا مثالًا؟",
+        "en": "Could you give us an example?"
+      },
+      {
+        "audio": "followup-simplify",
+        "label": "الجواب معقد",
+        "ar": "هل يمكنك تبسيطها لجمهور غير متخصص؟",
+        "en": "Could you simplify that for a non-technical audience?"
+      },
+      {
+        "audio": "followup-arabic",
+        "label": "الضيف يتكلم عربي",
+        "ar": "هل يمكنك قولها بالعربية لجمهورنا؟",
+        "en": "Could you say that in Arabic for our audience?"
+      },
+      {
+        "audio": "followup-more",
+        "label": "تبي تعمّق",
+        "ar": "هل يمكنك التوسع أكثر؟",
+        "en": "Could you tell us more about that?"
+      }
+    ]
+  },
+  "panel_question": {
+    "session": "09:45 الجلسة القيادية",
+    "audio": "panel-question",
+    "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي. كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: كيف نصحح هذه الفكرة في المجتمع؟ وما الفرق بين المبرمج والمخترق؟",
+    "en": "Hello, I'm Salem Al Hajri from ALYASI. Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: how can we correct this idea in society, and what is the difference between a programmer and a hacker?"
+  },
+  "guests": [
+    {
+      "id": "yahya",
+      "name_ar": "يحيى العزري",
+      "name_en": "Yahya Al-Azri",
+      "hint": "Oman CERT",
+      "window": "11:15",
+      "questions": [
+        {
+          "audio": "yahya-q1",
+          "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟",
+          "en": "What change will citizens feel from the Tahawul framework?"
+        },
+        {
+          "audio": "yahya-q2",
+          "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟",
+          "en": "What common mistakes do users make that make hacking easier?"
+        },
+        {
+          "audio": "yahya-q3",
+          "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟",
+          "en": "What is your advice for small businesses to protect themselves?"
+        }
+      ]
+    },
+    {
+      "id": "ali",
+      "name_ar": "علي اللواتي",
+      "name_en": "Ali Al-Lawati",
+      "hint": "Qpay Oman",
+      "window": "11:15",
+      "questions": [
+        {
+          "audio": "ali-q1",
+          "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟",
+          "en": "How do you build a payment startup that is secure from day one?"
+        },
+        {
+          "audio": "ali-q2",
+          "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟",
+          "en": "What is your advice for an Omani developer who wants to enter cybersecurity?"
+        },
+        {
+          "audio": "ali-q3",
+          "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟",
+          "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?"
+        }
+      ]
+    },
+    {
+      "id": "ahmed",
+      "name_ar": "أحمد رضا",
+      "name_en": "Ahmed Reza",
+      "hint": "PIPWISE",
+      "window": "13:15",
+      "questions": [
+        {
+          "audio": "ahmed-q1",
+          "ar": "هل يمكنك شرح «الثقة الصفرية» بكلمات بسيطة؟",
+          "en": "Can you explain Zero Trust in simple words?"
+        },
+        {
+          "audio": "ahmed-q2",
+          "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟",
+          "en": "What is the risk of machine and bot identities that nobody notices?"
+        }
+      ]
+    },
+    {
+      "id": "sara",
+      "name_ar": "سارة الكندي",
+      "name_en": "Sara Al Kindi",
+      "hint": "PDO",
+      "window": "13:15",
+      "questions": [
+        {
+          "audio": "sara-q1",
+          "ar": "ما أهم درس تعلمتيه من عملك في حماية البنية التحتية الحرجة؟",
+          "en": "What is the most important lesson you learned from protecting critical infrastructure?"
+        },
+        {
+          "audio": "sara-q2",
+          "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟",
+          "en": "What is the difference between industrial system security and regular IT security?"
+        }
+      ]
+    },
+    {
+      "id": "fatma",
+      "name_ar": "فاطمة اللواتي",
+      "name_en": "Fatma Al Lawati",
+      "hint": "تأكد من جهتها من البطاقة",
+      "window": "11:15",
+      "questions": [
+        {
+          "audio": "fatma-q1",
+          "ar": "ما أكبر عائق يمنع الفتيات من دخول الأمن السيبراني، وكيف نتجاوزه؟",
+          "en": "What is the biggest barrier stopping young women from entering cybersecurity, and how can we overcome it?"
+        },
+        {
+          "audio": "fatma-q2",
+          "ar": "كيف تبدأ فتاة تريد التخصص في هذا المجال؟",
+          "en": "How should a young woman start if she wants to specialize in this field?"
+        }
+      ]
+    },
+    {
+      "id": "abhishek",
+      "name_ar": "أبهيشيك سينغ",
+      "name_en": "Abhishek Pratap Singh",
+      "hint": "National Bank of Oman — إنجليزي",
+      "window": "13:15",
+      "questions": [
+        {
+          "audio": "abhishek-q1",
+          "ar": "ما أكثر طريقة يفقد بها الناس حساباتهم البنكية لصالح المخترقين؟",
+          "en": "What is the most common way people lose their bank accounts to attackers?"
+        },
+        {
+          "audio": "abhishek-q2",
+          "ar": "كيف يحمي العميل العادي تطبيق البنك على جواله؟",
+          "en": "How can ordinary customers protect their banking apps?"
+        }
+      ]
+    }
+  ]
+}
