@@ -234,6 +234,17 @@
             color: var(--muted);
             margin-top: 2px;
         }
+
+        .guest-heading .lang-note {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--navy);
+            background: var(--gold);
+            border-radius: 999px;
+            padding: 3px 10px;
+        }
     </style>
 </head>
 <body>
@@ -262,6 +273,10 @@
         // مقطع ثاني شغّال (بدون ما نصفّر مكانه، زي ضغط زر الإيقاف نفسه)،
         // عشان ما تتداخل الأصوات لو ضغط المستخدم زرين بالغلط.
         let activePlayer = null;
+
+        // ضيوف ما يتكلمون عربي -- نبيّن ملاحظة عند اسمهم عشان ما يُشغَّل
+        // لهم مقطع عربي بالغلط أثناء المقابلة.
+        const englishOnlyGuests = ['abhishek'];
 
         // -- شريط المتابعات السريعة (أعلى الصفحة، ثابت الظهور بكل تبويب) --
         const followupsBar = document.getElementById('followups');
@@ -311,7 +326,10 @@
                 heading.className = 'guest-heading';
                 heading.innerHTML =
                     '<div class="name">' + guest.name_ar + '</div>' +
-                    '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>';
+                    '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>' +
+                    (englishOnlyGuests.includes(guest.id)
+                        ? '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
+                        : '');
                 panel.appendChild(heading);
 
                 guest.questions.forEach((q) => {
