@@ -313,7 +313,10 @@
         //    + السؤال الموحد والختام بالنهاية (عشان تخلص معاه المقابلة كاملة
         //    من نفس التبويب بدون ما ترجع فوق). --
         data.guests.forEach((guest) => {
-            makeTab(guest.id, guest.name_ar, (panel) => {
+            const isEnglishOnly = englishOnlyGuests.includes(guest.id);
+            const tabLabel = isEnglishOnly ? guest.name_en : guest.name_ar;
+
+            makeTab(guest.id, tabLabel, (panel) => {
                 addDivider(panel, 'مقطع التعريف');
                 addCard(panel, { id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
                     audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
@@ -324,12 +327,12 @@
 
                 const heading = document.createElement('div');
                 heading.className = 'guest-heading';
-                heading.innerHTML =
-                    '<div class="name">' + guest.name_ar + '</div>' +
-                    '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>' +
-                    (englishOnlyGuests.includes(guest.id)
-                        ? '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
-                        : '');
+                heading.innerHTML = isEnglishOnly
+                    ? '<div class="name">' + guest.name_en + '</div>' +
+                      '<div class="sub">' + guest.hint + ' · ' + guest.window + '</div>' +
+                      '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
+                    : '<div class="name">' + guest.name_ar + '</div>' +
+                      '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>';
                 panel.appendChild(heading);
 
                 guest.questions.forEach((q) => {
