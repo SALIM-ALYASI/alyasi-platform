@@ -274,32 +274,42 @@
         // عشان ما تتداخل الأصوات لو ضغط المستخدم زرين بالغلط.
         let activePlayer = null;
 
-        // ضيوف ما يتكلمون عربي -- نبيّن ملاحظة عند اسمهم عشان ما يُشغَّل
-        // لهم مقطع عربي بالغلط أثناء المقابلة.
-        const englishOnlyGuests = ['abhishek'];
-
-        // -- شريط المتابعات السريعة (أعلى الصفحة، ثابت الظهور بكل تبويب) --
-        const followupsBar = document.getElementById('followups');
-        data.shared.followups.forEach((f) => {
-            const group = document.createElement('div');
-            group.style.display = 'flex';
-            group.style.gap = '6px';
-            group.style.alignItems = 'center';
-
-            const tag = document.createElement('span');
-            tag.textContent = f.label;
-            tag.style.fontSize = '12px';
-            tag.style.color = 'var(--muted)';
-            group.appendChild(tag);
-
-            makePlayGroup(group, 'عربي', audioUrl(f.audio, 'ar'), 'small');
-            makePlayGroup(group, 'EN', audioUrl(f.audio, 'en'), 'small');
-
-            followupsBar.appendChild(group);
+        // كل التيارات (streams) المفتوحة حالياً للتسجيل -- تُستخدم لقفل
+        // المايك قسراً لو المستخدم سكّر الصفحة أو بدّل تبويب المتصفح وهو
+        // لسه مسجّل، بدل ما يضل المايك شغّال للأبد.
+        const activeStreams = new Set();
+        window.addEventListener('pagehide', () => {
+            activeStreams.forEach((s) => s.getTracks().forEach((t) => t.stop()));
         });
 
+        // -- شريط المتابعات السريعة (أعلى الصفحة) -- يُعاد بناؤه بكل تبديل
+        //    تبويب عشان يجيب النسخة المؤنثة الصح لو الضيف الحالي بنت
+        //    (نفس المقاطع مخاطبة بصيغة "أنت" فتحتاج صوت مختلف حسب الجنس).
+        const followupsBar = document.getElementById('followups');
+        function renderFollowups(feminine) {
+            followupsBar.innerHTML = '';
+            data.shared.followups.forEach((f) => {
+                const group = document.createElement('div');
+                group.style.display = 'flex';
+                group.style.gap = '6px';
+                group.style.alignItems = 'center';
+
+                const tag = document.createElement('span');
+                tag.textContent = f.label;
+                tag.style.fontSize = '12px';
+                tag.style.color = 'var(--muted)';
+                group.appendChild(tag);
+
+                makePlayGroup(group, 'عربي', audioUrl(f.audio, 'ar', feminine), 'small');
+                makePlayGroup(group, 'EN', audioUrl(f.audio, 'en'), 'small');
+
+                followupsBar.appendChild(group);
+            });
+        }
+        renderFollowups(false);
+
         // -- تبويب "عام": مقطع التعريف + سؤال الجلسة القيادية فقط --
-        makeTab('general', 'عام', (panel) => {
+        makeTab('general', 'عام', false, (panel) => {
             addDivider(panel, 'مقطع التعريف');
             addCard(panel, { id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
                 audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
@@ -313,17 +323,21 @@
         //    + السؤال الموحد والختام بالنهاية (عشان تخلص معاه المقابلة كاملة
         //    من نفس التبويب بدون ما ترجع فوق). --
         data.guests.forEach((guest) => {
-            const isEnglishOnly = englishOnlyGuests.includes(guest.id);
+            // مبني على بيانات الضيف نفسه (data.json)، مو قائمة ثابتة بالكود --
+            // إضافة ضيف أجنبي أو ضيفة جديدة تحتاج تعديل الملف بس، مو الكود.
+            const isEnglishOnly = guest.language === 'en';
+            const isFeminine = guest.gender === 'f';
+            const showArabic = !isEnglishOnly;
             const tabLabel = isEnglishOnly ? guest.name_en : guest.name_ar;
 
-            makeTab(guest.id, tabLabel, (panel) => {
+            makeTab(guest.id, tabLabel, isFeminine, (panel) => {
                 addDivider(panel, 'مقطع التعريف');
                 addCard(panel, { id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
-                    audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
+                    audioUrl(data.shared.intro.audio, 'ar', isFeminine), audioUrl(data.shared.intro.audio, 'en'), false, null, showArabic);
 
                 addDivider(panel, 'تعريف الضيف');
                 addCard(panel, { id: 'self_intro', ar: data.shared.self_intro.ar, en: data.shared.self_intro.en },
-                    audioUrl(data.shared.self_intro.audio, 'ar'), audioUrl(data.shared.self_intro.audio, 'en'), true, guest.id + '-self-intro');
+                    audioUrl(data.shared.self_intro.audio, 'ar', isFeminine), audioUrl(data.shared.self_intro.audio, 'en'), true, guest.id + '-self-intro', showArabic, guest.name_ar);
 
                 const heading = document.createElement('div');
                 heading.className = 'guest-heading';
@@ -337,23 +351,23 @@
 
                 guest.questions.forEach((q) => {
                     addCard(panel, { id: q.audio, ar: q.ar, en: q.en },
-                        audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id);
+                        audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 
                 addDivider(panel, 'السؤال الموحد (ريلز)');
                 addCard(panel, { id: 'unified', ar: data.shared.unified.ar, en: data.shared.unified.en },
-                    audioUrl(data.shared.unified.audio, 'ar'), audioUrl(data.shared.unified.audio, 'en'), true, guest.id + '-unified');
+                    audioUrl(data.shared.unified.audio, 'ar'), audioUrl(data.shared.unified.audio, 'en'), true, guest.id + '-unified', showArabic, guest.name_ar);
 
                 addDivider(panel, 'مقطع الختام');
                 addCard(panel, { id: 'closing', ar: data.shared.closing.ar, en: data.shared.closing.en },
-                    audioUrl(data.shared.closing.audio, 'ar'), audioUrl(data.shared.closing.audio, 'en'), false);
+                    audioUrl(data.shared.closing.audio, 'ar', isFeminine), audioUrl(data.shared.closing.audio, 'en'), false, null, showArabic);
             });
         });
 
         // أول تبويب مفعّل تلقائياً
         if (tabsBar.firstElementChild) tabsBar.firstElementChild.click();
 
-        function makeTab(id, label, build) {
+        function makeTab(id, label, isFeminine, build) {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'tab-btn';
@@ -364,11 +378,16 @@
             panel.dataset.tab = id;
 
             btn.addEventListener('click', () => {
+                // نوقف أي مقطع شغّال بتبويب ثاني قبل ما نبدّل -- بدون هذا
+                // يضل يشتغل بالخلفية خلف تبويب مختلف تمامًا عن الضيف الحالي.
+                if (activePlayer) activePlayer();
+
                 [...tabsBar.children].forEach((b) => b.classList.remove('is-active'));
                 [...panelsWrap.children].forEach((p) => p.classList.remove('is-active'));
                 btn.classList.add('is-active');
                 panel.classList.add('is-active');
-                window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+                renderFollowups(isFeminine);
+                window.scrollTo({ top: 0, behavior: 'auto' });
             });
 
             tabsBar.appendChild(btn);
@@ -376,8 +395,13 @@
             build(panel);
         }
 
-        function audioUrl(id, lang) {
-            return baseUrl + '/' + id + '-' + lang + '.wav';
+        // المقاطع المخاطبة لشخص واحد بصيغة "أنت" (مقطع التعريف، تعريف
+        // الضيف، الختام، والمتابعات) لها نسخة مؤنثة منفصلة (لاحقة -f) عشان
+        // صيغة الخطاب تكون صحيحة نحويًا لو الضيفة بنت -- ملفات الأسئلة
+        // الخاصة بكل ضيف مكتوبة أصلًا بصيغته الصحيحة فما تحتاج هذا.
+        function audioUrl(id, lang, feminine) {
+            const suffix = (feminine && lang === 'ar') ? '-f' : '';
+            return baseUrl + '/' + id + '-' + lang + suffix + '.wav';
         }
 
         function addDivider(container, text) {
@@ -387,13 +411,19 @@
             container.appendChild(divider);
         }
 
-        function addCard(container, q, arSrc, enSrc, withRecord, recordPrefix) {
+        function addCard(container, q, arSrc, enSrc, withRecord, recordPrefix, showArabic, contextLabel) {
+            showArabic = showArabic !== false;
+
             const card = document.createElement('div');
             card.className = 'card';
 
             const label = document.createElement('div');
             label.className = 'label';
-            label.innerHTML = '<span>' + q.id + '</span>';
+            // نضيف اسم الضيف كـ"meta" للمقاطع المشتركة (تعريف الضيف/الموحد)
+            // اللي تتكرر نسخة مستقلة منها بكل تبويب -- بدون هذا يصعب تمييز
+            // تسجيل مين هو وأنت تراجع التبويبات بسرعة أثناء المقابلة.
+            label.innerHTML = '<span>' + q.id + '</span>' +
+                (contextLabel ? '<span class="meta">' + contextLabel + '</span>' : '');
             card.appendChild(label);
 
             if (q.ar) {
@@ -413,7 +443,7 @@
             const actions = document.createElement('div');
             actions.className = 'actions';
 
-            makePlayGroup(actions, 'عربي', arSrc);
+            if (showArabic) makePlayGroup(actions, 'عربي', arSrc);
             makePlayGroup(actions, 'English', enSrc);
 
             if (withRecord) {
@@ -455,10 +485,6 @@
                 playBtn.textContent = '▶ ' + label;
                 if (activePlayer === pauseSelf) activePlayer = null;
             };
-            const setPlaying = () => {
-                playBtn.textContent = '⏸ ' + label;
-                activePlayer = pauseSelf;
-            };
             const pauseSelf = () => {
                 if (audio && !audio.paused) audio.pause();
                 setPaused();
@@ -474,7 +500,14 @@
 
             const startPlayback = () => {
                 if (activePlayer && activePlayer !== pauseSelf) activePlayer();
-                audio.play().then(setPlaying).catch(() => {
+                // نحجز activePlayer فوراً (مو بعد ما ينجح play()) -- لو
+                // ضغط المستخدم زر تشغيل ثاني بالفترة القصيرة قبل ما يرجع
+                // الـ promise، لازم الزر الثاني يشوف إنه فيه شي شغّال
+                // بالفعل ويوقفه، بدل ما يشتغلون الاثنين بنفس الوقت.
+                activePlayer = pauseSelf;
+                playBtn.textContent = '⏸ ' + label;
+                audio.play().catch(() => {
+                    setPaused();
                     alert('تعذّر تشغيل المقطع.');
                 });
             };
@@ -502,6 +535,7 @@
             let mediaRecorder = null;
             let chunks = [];
             let stream = null;
+            let starting = false;
 
             button.addEventListener('click', async () => {
                 if (button.classList.contains('is-recording')) {
@@ -509,13 +543,21 @@
                     return;
                 }
 
+                // قفل فوري قبل أي await -- بدونه، ضغطة ثانية سريعة (لمس
+                // بالغلط، أو انتظار إذن المايك) تعدي هذا الفحص وتبدأ تسجيل
+                // ثاني فوق الأول قبل ما يوصل رد getUserMedia.
+                if (starting) return;
+                starting = true;
+
                 try {
                     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 } catch (err) {
+                    starting = false;
                     alert('ما قدرت أوصل للمايك. تأكد من صلاحية الوصول.');
                     return;
                 }
 
+                activeStreams.add(stream);
                 chunks = [];
                 mediaRecorder = new MediaRecorder(stream);
 
@@ -525,6 +567,7 @@
 
                 mediaRecorder.addEventListener('stop', () => {
                     stream.getTracks().forEach((t) => t.stop());
+                    activeStreams.delete(stream);
 
                     const blob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
                     const url = URL.createObjectURL(blob);
@@ -551,6 +594,7 @@
                 });
 
                 mediaRecorder.start();
+                starting = false;
                 button.textContent = '⏹ إيقاف';
                 button.classList.add('is-recording');
             });

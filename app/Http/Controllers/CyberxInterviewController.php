@@ -13,9 +13,16 @@ class CyberxInterviewController extends Controller
      */
     public function index(): View
     {
-        $data = json_decode(
-            file_get_contents(public_path('audio/cyberx-interview-2026/data.json')),
-            true
+        $path = public_path('audio/cyberx-interview-2026/data.json');
+
+        abort_unless(is_file($path), 500, 'ملف بيانات المقابلة غير موجود.');
+
+        $data = json_decode(file_get_contents($path), true);
+
+        abort_if(
+            json_last_error() !== JSON_ERROR_NONE,
+            500,
+            'ملف بيانات المقابلة تالف: '.json_last_error_msg()
         );
 
         return view('tools.cyberx-interview', ['data' => $data]);

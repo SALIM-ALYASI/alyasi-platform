@@ -128,6 +128,7 @@
       "name_ar": "سارة الكندي",
       "name_en": "Sara Al Kindi",
       "hint": "PDO",
+      "gender": "f",
       "window": "13:15",
       "questions": [
         {
@@ -147,6 +148,7 @@
       "name_ar": "فاطمة اللواتي",
       "name_en": "Fatma Al Lawati",
       "hint": "تأكد من جهتها من البطاقة",
+      "gender": "f",
       "window": "11:15",
       "questions": [
         {
@@ -166,6 +168,7 @@
       "name_ar": "أبهيشيك سينغ",
       "name_en": "Abhishek Pratap Singh",
       "hint": "National Bank of Oman — إنجليزي",
+      "language": "en",
       "window": "13:15",
       "questions": [
         {
