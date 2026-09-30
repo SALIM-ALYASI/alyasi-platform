@@ -486,6 +486,14 @@ Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'
 
 /*
 |--------------------------------------------------------------------------
+| Link-in-bio pages (unlinked -- not part of site navigation)
+|--------------------------------------------------------------------------
+*/
+
+Route::view('/alyasi_mbrmj', 'links.alyasi-mbrmj')->name('links.alyasi-mbrmj');
+
+/*
+|--------------------------------------------------------------------------
 | Admin Routes
 |--------------------------------------------------------------------------
 */
