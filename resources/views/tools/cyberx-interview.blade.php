@@ -330,11 +330,11 @@
         // -- تبويب "عام": مقطع التعريف + سؤال الجلسة القيادية فقط --
         makeTab('general', 'عام', false, (panel) => {
             addDivider(panel, 'مقطع التعريف');
-            addCard(panel, { id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
+            addCard(panel, { id: 'intro', label: 'تعريفي', ar: data.shared.intro.ar, en: data.shared.intro.en },
                 audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
 
             addDivider(panel, 'سؤال الجلسة القيادية · ' + data.panel_question.session);
-            addCard(panel, { id: 'panel_question', ar: data.panel_question.ar, en: data.panel_question.en },
+            addCard(panel, { id: 'panel_question', label: 'سؤال الجلسة', ar: data.panel_question.ar, en: data.panel_question.en },
                 audioUrl(data.panel_question.audio, 'ar'), audioUrl(data.panel_question.audio, 'en'), true, 'panel');
         });
 
@@ -385,11 +385,11 @@
 
             makeTab(guest.id, tabLabel, isFeminine, (panel) => {
                 addDivider(panel, 'مقطع التعريف');
-                addCard(panel, { id: 'intro', ar: data.shared.intro.ar, en: data.shared.intro.en },
+                addCard(panel, { id: 'intro', label: 'تعريفي', ar: data.shared.intro.ar, en: data.shared.intro.en },
                     audioUrl(data.shared.intro.audio, 'ar', isFeminine), audioUrl(data.shared.intro.audio, 'en'), false, null, showArabic);
 
                 addDivider(panel, 'تعريف الضيف');
-                addCard(panel, { id: 'self_intro', ar: data.shared.self_intro.ar, en: data.shared.self_intro.en },
+                addCard(panel, { id: 'self_intro', label: 'تعريف الضيف', ar: data.shared.self_intro.ar, en: data.shared.self_intro.en },
                     audioUrl(data.shared.self_intro.audio, 'ar', isFeminine), audioUrl(data.shared.self_intro.audio, 'en'), true, guest.id + '-self-intro', showArabic, guest.name_ar);
 
                 const heading = document.createElement('div');
@@ -402,17 +402,17 @@
                       '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>';
                 panel.appendChild(heading);
 
-                guest.questions.forEach((q) => {
-                    addCard(panel, { id: q.audio, ar: q.ar, en: q.en },
+                guest.questions.forEach((q, idx) => {
+                    addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 
                 addDivider(panel, 'السؤال الموحد (ريلز)');
-                addCard(panel, { id: 'unified', ar: data.shared.unified.ar, en: data.shared.unified.en },
+                addCard(panel, { id: 'unified', label: 'السؤال الموحد', ar: data.shared.unified.ar, en: data.shared.unified.en },
                     audioUrl(data.shared.unified.audio, 'ar'), audioUrl(data.shared.unified.audio, 'en'), true, guest.id + '-unified', showArabic, guest.name_ar);
 
                 addDivider(panel, 'مقطع الختام');
-                addCard(panel, { id: 'closing', ar: data.shared.closing.ar, en: data.shared.closing.en },
+                addCard(panel, { id: 'closing', label: 'الختام', ar: data.shared.closing.ar, en: data.shared.closing.en },
                     audioUrl(data.shared.closing.audio, 'ar', isFeminine), audioUrl(data.shared.closing.audio, 'en'), false, null, showArabic);
             });
         });
@@ -475,7 +475,7 @@
             // نضيف اسم الضيف كـ"meta" للمقاطع المشتركة (تعريف الضيف/الموحد)
             // اللي تتكرر نسخة مستقلة منها بكل تبويب -- بدون هذا يصعب تمييز
             // تسجيل مين هو وأنت تراجع التبويبات بسرعة أثناء المقابلة.
-            label.innerHTML = '<span>' + q.id + '</span>' +
+            label.innerHTML = '<span>' + (q.label || q.id) + '</span>' +
                 (contextLabel ? '<span class="meta">' + contextLabel + '</span>' : '');
             card.appendChild(label);
 
