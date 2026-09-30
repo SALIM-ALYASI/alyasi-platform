@@ -264,14 +264,41 @@
             font-size: 12px;
             padding-inline-end: 10px;
         }
+
+        .tabs-divider {
+            width: 100%;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin: 4px 0 -2px;
+        }
+
+        details.extra-questions {
+            margin: 10px 0 14px;
+        }
+
+        details.extra-questions summary {
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            padding: 8px 0;
+        }
     </style>
 </head>
 <body>
     <div class="wrap">
         <header class="top">
             <h1>أسئلة مقابلات CyberX عُمان 2026</h1>
-            <p>اختر الضيف من فوق — كل تبويب فيه مقطع التعريف وتعريفه هو وأسئلته بس.</p>
+            <p>اضغط زر سريع فوق قبل ما تبدأ، وبعدها اختر الضيف — كل تبويب فيه أهم سؤالين بس.</p>
         </header>
+
+        <div class="followups-bar">
+            <div class="heading">أزرار سريعة (تعريف · سؤال موحد · ختام)</div>
+            <div class="actions" id="quick-buttons"></div>
+        </div>
 
         <div class="followups-bar">
             <div class="heading">متابعات سريعة (أي وقت، أي ضيف)</div>
@@ -301,13 +328,40 @@
             activeStreams.forEach((s) => s.getTracks().forEach((t) => t.stop()));
         });
 
+        // -- شريط الأزرار السريعة (تعريف / سؤال موحد / ختام) -- تشغيل فوري
+        //    بدون تسجيل، متاح دايمًا فوق بغض النظر عن التبويب المفتوح.
+        //    يُعاد بناؤه بكل تبديل تبويب عشان يجيب النسخة المؤنثة الصح.
+        const quickButtonsBar = document.getElementById('quick-buttons');
+        function renderQuickButtons(feminine) {
+            quickButtonsBar.innerHTML = '';
+            (data.quick_buttons || []).forEach((qb) => {
+                const group = document.createElement('div');
+                group.style.display = 'flex';
+                group.style.gap = '6px';
+                group.style.alignItems = 'center';
+
+                const tag = document.createElement('span');
+                tag.textContent = qb.label || qb.audio;
+                tag.style.fontSize = '12px';
+                tag.style.color = 'var(--muted)';
+                group.appendChild(tag);
+
+                const isFeminineEligible = qb.audio !== 'shared-unified';
+                makePlayGroup(group, 'عربي', audioUrl(qb.audio, 'ar', feminine && isFeminineEligible), 'small');
+                makePlayGroup(group, 'EN', audioUrl(qb.audio, 'en'), 'small');
+
+                quickButtonsBar.appendChild(group);
+            });
+        }
+        renderQuickButtons(false);
+
         // -- شريط المتابعات السريعة (أعلى الصفحة) -- يُعاد بناؤه بكل تبديل
         //    تبويب عشان يجيب النسخة المؤنثة الصح لو الضيف الحالي بنت
         //    (نفس المقاطع مخاطبة بصيغة "أنت" فتحتاج صوت مختلف حسب الجنس).
         const followupsBar = document.getElementById('followups');
         function renderFollowups(feminine) {
             followupsBar.innerHTML = '';
-            data.shared.followups.forEach((f) => {
+            (data.followups || []).forEach((f) => {
                 const group = document.createElement('div');
                 group.style.display = 'flex';
                 group.style.gap = '6px';
@@ -327,12 +381,13 @@
         }
         renderFollowups(false);
 
-        // -- تبويب "عام": مقطع التعريف + سؤال الجلسة القيادية فقط --
-        makeTab('general', 'عام', false, (panel) => {
-            addDivider(panel, 'مقطع التعريف');
-            addCard(panel, { id: 'intro', label: 'تعريفي', ar: data.shared.intro.ar, en: data.shared.intro.en },
-                audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
+        // كل ضيف (أولوية أو احتياط) بمكان واحد -- تُستخدم لبحث الاسم بتبويب
+        // "الجدول" بدون ما نهتم من أي قائمة جاء الضيف.
+        const allGuests = [...(data.priority_guests || []), ...(data.additional_guests || [])];
 
+        // -- تبويب "عام": سؤال الجلسة القيادية فقط -- مقطع التعريف صار
+        //    بالشريط السريع فوق، فما نكرره هنا. --
+        makeTab('general', 'عام', false, (panel) => {
             addDivider(panel, 'سؤال الجلسة القيادية · ' + formatTimesInText(data.panel_question.session));
             addCard(panel, { id: 'panel_question', label: 'سؤال الجلسة', ar: data.panel_question.ar, en: data.panel_question.en },
                 audioUrl(data.panel_question.audio, 'ar'), audioUrl(data.panel_question.audio, 'en'), true, 'panel');
@@ -346,7 +401,7 @@
                     addDivider(panel, 'نوافذ المقابلات');
                     data.interview_windows.forEach((w) => {
                         const names = w.guests
-                            .map((gid) => (data.guests.find((g) => g.id === gid) || {}).name_ar || gid)
+                            .map((gid) => (allGuests.find((g) => g.id === gid) || {}).name_ar || gid)
                             .join('، ');
 
                         const card = document.createElement('div');
@@ -372,26 +427,65 @@
             });
         }
 
-        // -- تبويب لكل ضيف: نفس مقطع التعريف + تعريف الضيف + أسئلته هو بس
-        //    + السؤال الموحد والختام بالنهاية (عشان تخلص معاه المقابلة كاملة
-        //    من نفس التبويب بدون ما ترجع فوق). --
-        data.guests.forEach((guest) => {
-            // مبني على بيانات الضيف نفسه (data.json)، مو قائمة ثابتة بالكود --
-            // إضافة ضيف أجنبي أو ضيفة جديدة تحتاج تعديل الملف بس، مو الكود.
+        // -- تبويب لكل ضيف أولوية: سؤالين أساسيين + سؤال متابعة بس ظاهرين،
+        //    وأي أسئلة احتياطية إضافية تنطوي تحت قائمة قابلة للفتح (ما
+        //    تُحذف، بس ما تزاحم الشاشة وقت الزحمة). --
+        (data.priority_guests || []).forEach((guest) => {
+            const isFeminine = guest.gender === 'f';
+            const showArabic = guest.language !== 'en';
+
+            makeTab(guest.id, guest.name_ar, isFeminine, (panel) => {
+                const heading = document.createElement('div');
+                heading.className = 'guest-heading';
+                heading.innerHTML = '<div class="name">' + guest.name_ar + '</div>' +
+                    '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>';
+                panel.appendChild(heading);
+
+                guest.core.forEach((q, idx) => {
+                    addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
+                        audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
+                });
+
+                if (guest.followup) {
+                    addCard(panel, { id: guest.followup.audio, label: 'سؤال متابعة', ar: guest.followup.ar, en: guest.followup.en },
+                        audioUrl(guest.followup.audio, 'ar'), audioUrl(guest.followup.audio, 'en'), true, guest.id, showArabic);
+                }
+
+                if (guest.extra && guest.extra.length) {
+                    const details = document.createElement('details');
+                    details.className = 'extra-questions';
+
+                    const summary = document.createElement('summary');
+                    summary.textContent = 'أسئلة احتياطية إضافية (' + guest.extra.length + ')';
+                    details.appendChild(summary);
+
+                    guest.extra.forEach((q, idx) => {
+                        addCard(details, { id: q.audio, label: 'احتياطي ' + (idx + 1), ar: q.ar, en: q.en },
+                            audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
+                    });
+
+                    panel.appendChild(details);
+                }
+            });
+        });
+
+        // -- فاصل بصري بس بشريط التبويبات، يفصل ضيوف الأولوية عن ضيوف
+        //    الاحتياط بدون ما يكون تبويب قابل للضغط. --
+        if ((data.additional_guests || []).length) {
+            const divider = document.createElement('div');
+            divider.className = 'tabs-divider';
+            divider.textContent = 'ضيوف احتياط';
+            tabsBar.appendChild(divider);
+        }
+
+        // -- تبويب لكل ضيف احتياط: كل أسئلته زي ما هي، بدون تقليص --
+        (data.additional_guests || []).forEach((guest) => {
             const isEnglishOnly = guest.language === 'en';
             const isFeminine = guest.gender === 'f';
             const showArabic = !isEnglishOnly;
             const tabLabel = isEnglishOnly ? guest.name_en : guest.name_ar;
 
             makeTab(guest.id, tabLabel, isFeminine, (panel) => {
-                addDivider(panel, 'مقطع التعريف');
-                addCard(panel, { id: 'intro', label: 'تعريفي', ar: data.shared.intro.ar, en: data.shared.intro.en },
-                    audioUrl(data.shared.intro.audio, 'ar', isFeminine), audioUrl(data.shared.intro.audio, 'en'), false, null, showArabic);
-
-                addDivider(panel, 'تعريف الضيف');
-                addCard(panel, { id: 'self_intro', label: 'تعريف الضيف', ar: data.shared.self_intro.ar, en: data.shared.self_intro.en },
-                    audioUrl(data.shared.self_intro.audio, 'ar', isFeminine), audioUrl(data.shared.self_intro.audio, 'en'), true, guest.id + '-self-intro', showArabic, guest.name_ar);
-
                 const heading = document.createElement('div');
                 heading.className = 'guest-heading';
                 heading.innerHTML = isEnglishOnly
@@ -406,14 +500,6 @@
                     addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
-
-                addDivider(panel, 'السؤال الموحد (ريلز)');
-                addCard(panel, { id: 'unified', label: 'السؤال الموحد', ar: data.shared.unified.ar, en: data.shared.unified.en },
-                    audioUrl(data.shared.unified.audio, 'ar'), audioUrl(data.shared.unified.audio, 'en'), true, guest.id + '-unified', showArabic, guest.name_ar);
-
-                addDivider(panel, 'مقطع الختام');
-                addCard(panel, { id: 'closing', label: 'الختام', ar: data.shared.closing.ar, en: data.shared.closing.en },
-                    audioUrl(data.shared.closing.audio, 'ar', isFeminine), audioUrl(data.shared.closing.audio, 'en'), false, null, showArabic);
             });
         });
 
@@ -439,6 +525,7 @@
                 [...panelsWrap.children].forEach((p) => p.classList.remove('is-active'));
                 btn.classList.add('is-active');
                 panel.classList.add('is-active');
+                renderQuickButtons(isFeminine);
                 renderFollowups(isFeminine);
                 window.scrollTo({ top: 0, behavior: 'auto' });
             });

@@ -1,50 +1,87 @@
 {
   "event": "CyberX Oman 2026",
   "updated": "2026-09-30",
-  "flow": ["intro", "self_intro", "questions", "unified", "closing"],
-  "shared": {
-    "intro": {
+  "quick_buttons": [
+    {
       "audio": "shared-intro",
+      "label": "تعريفي",
       "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر. لدي صعوبة في النطق، لذلك جهزت أسئلتي بصوت مسجل. هل تسمح لي ببضع دقائق؟",
       "en": "Hello, I'm Salem Al Hajri from ALYASI, a media partner of this conference. I have a speech difficulty, so I prepared my questions as audio. May I have a few minutes of your time?"
     },
-    "self_intro": {
+    {
       "audio": "shared-self-intro",
+      "label": "تعريف الضيف",
       "ar": "قبل أن نبدأ، هل يمكنك تعريف نفسك لجمهورنا؟",
       "en": "Before we start, could you please introduce yourself to our audience?"
     },
-    "unified": {
+    {
       "audio": "shared-unified",
+      "label": "السؤال الموحد",
       "ar": "في جملة واحدة: ما أهم شيء يفعله الشخص ليحمي نفسه على الإنترنت؟",
       "en": "In one sentence: what is the most important thing a person should do to stay safe online?"
     },
-    "closing": {
+    {
       "audio": "shared-closing",
+      "label": "الختام",
       "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
       "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?"
-    },
-    "followups": [
-      { "audio": "followup-example", "label": "الجواب قصير", "ar": "هل يمكنك إعطاؤنا مثالًا؟", "en": "Could you give us an example?" },
-      { "audio": "followup-simplify", "label": "الجواب معقد", "ar": "هَلْ يُمْكِنُكَ تَبْسِيطُهَا لِجُمْهُورٍ غَيْرِ مُتَخَصِّصٍ؟", "en": "Could you simplify that for a non-technical audience?" },
-      { "audio": "followup-arabic", "label": "الضيف يتكلم عربي", "ar": "هل يمكنك قولها بالعربية لجمهورنا؟", "en": "Could you say that in Arabic for our audience?" },
-      { "audio": "followup-more", "label": "تبي تعمّق", "ar": "هل يمكنك التوسع أكثر؟", "en": "Could you tell us more about that?" }
-    ]
-  },
+    }
+  ],
+  "followups": [
+    { "audio": "followup-example", "label": "الجواب قصير", "ar": "هل يمكنك إعطاؤنا مثالًا؟", "en": "Could you give us an example?" },
+    { "audio": "followup-simplify", "label": "الجواب معقد", "ar": "هَلْ يُمْكِنُكَ تَبْسِيطُهَا لِجُمْهُورٍ غَيْرِ مُتَخَصِّصٍ؟", "en": "Could you simplify that for a non-technical audience?" },
+    { "audio": "followup-arabic", "label": "الضيف يتكلم عربي", "ar": "هل يمكنك قولها بالعربية لجمهورنا؟", "en": "Could you say that in Arabic for our audience?" },
+    { "audio": "followup-more", "label": "تبي تعمّق", "ar": "هل يمكنك التوسع أكثر؟", "en": "Could you tell us more about that?" }
+  ],
   "panel_question": {
     "session": "10:00 الجلسة القيادية",
     "audio": "panel-question",
-    "ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: كيف نصحح هذه الفكرة في المجتمع؟ وما الفرق بين المبرمج والمخترق؟",
-    "en": "Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: how can we correct this idea in society, and what is the difference between a programmer and a hacker?"
+    "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي. كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
+    "en": "Hello, I'm Salem Al Hajri from ALYASI. Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: what is the difference between a programmer, a cybersecurity specialist, and a penetration tester? And why does society confuse these fields?"
   },
-  "guests": [
+  "priority_guests": [
     {
       "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m",
-      "questions": [
+      "core": [
         { "audio": "yahya-q1", "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟", "en": "What change will citizens feel from the Tahawul framework?" },
-        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" },
-        { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" }
+        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" }
+      ],
+      "followup": { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" },
+      "extra": []
+    },
+    {
+      "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
+      "core": [
+        { "audio": "sara-q1", "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟", "en": "What is the most important lesson you learned from protecting critical infrastructure?" },
+        { "audio": "sara-q2", "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟", "en": "What is the difference between industrial system security and regular IT security?" }
+      ],
+      "followup": { "audio": "sara-fu", "ar": "كيف يبدأ شاب عُماني يريد العمل في أمن الأنظمة الصناعية؟", "en": "How can a young Omani start a career in industrial systems security?" },
+      "extra": []
+    },
+    {
+      "id": "haitham", "name_ar": "هيثم الحجري", "name_en": "Haitham Al Hajri", "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00", "window": "15:15", "gender": "m",
+      "core": [
+        { "audio": "haitham-q1", "ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟", "en": "How does a bank balance making digital services easy for customers while keeping them secure?" },
+        { "audio": "haitham-q2", "ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟", "en": "What is the most common fraud targeting bank customers today, and how can customers spot it?" }
+      ],
+      "followup": { "audio": "haitham-fu", "ar": "ما دور الذكاء الاصطناعي في كشف الاحتيال البنكي؟", "en": "What role does AI play in detecting banking fraud?" },
+      "extra": [
+        { "audio": "haitham-q3", "ar": "كيف تحمي المؤسسات بياناتها عند استخدام أدوات الذكاء الاصطناعي؟", "en": "How can organizations protect their data when using AI tools?" }
       ]
     },
+    {
+      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay — خيار إضافي", "window": "15:15", "gender": "m", "optional": true,
+      "core": [
+        { "audio": "ali-q1", "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟", "en": "How do you build a payment startup that is secure from day one?" },
+        { "audio": "ali-q3", "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟", "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?" }
+      ],
+      "followup": { "audio": "ali-q-ai", "ar": "كيف تستخدم الشركات الناشئة الذكاء الاصطناعي دون أن تعرّض بيانات عملائها للخطر؟", "en": "How can startups use AI without putting their customers' data at risk?" },
+      "extra": [
+        { "audio": "ali-q2", "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟", "en": "What is your advice for an Omani developer who wants to enter cybersecurity?" }
+      ]
+    }
+  ],
+  "additional_guests": [
     {
       "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f",
       "questions": [
@@ -58,22 +95,6 @@
       "questions": [
         { "audio": "ahmed-q1", "ar": "هل يمكنك شرح «الثقة الصفرية» بكلمات بسيطة؟", "en": "Can you explain Zero Trust in simple words?" },
         { "audio": "ahmed-q2", "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟", "en": "What is the risk of machine and bot identities that nobody notices?" }
-      ]
-    },
-    {
-      "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
-      "questions": [
-        { "audio": "sara-q1", "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟", "en": "What is the most important lesson you learned from protecting critical infrastructure?" },
-        { "audio": "sara-q2", "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟", "en": "What is the difference between industrial system security and regular IT security?" }
-      ]
-    },
-    {
-      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay Oman", "window": "15:15", "gender": "m",
-      "questions": [
-        { "audio": "ali-q1", "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟", "en": "How do you build a payment startup that is secure from day one?" },
-        { "audio": "ali-q2", "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟", "en": "What is your advice for an Omani developer who wants to enter cybersecurity?" },
-        { "audio": "ali-q-ai", "ar": "كيف تستخدم الشركات الناشئة الذكاء الاصطناعي دون أن تعرّض بيانات عملائها للخطر؟", "en": "How can startups use AI without putting their customers' data at risk?" },
-        { "audio": "ali-q3", "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟", "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?" }
       ]
     },
     {
@@ -94,7 +115,7 @@
   "interview_windows": [
     { "time": "11:30 – 12:00", "label": "استراحة القهوة", "guests": ["yahya", "fatma"] },
     { "time": "13:00 – 14:00", "label": "الغداء", "guests": ["ahmed", "sara"] },
-    { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["ali", "abhishek", "arfan"] }
+    { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["haitham", "ali", "abhishek", "arfan"] }
   ],
   "agenda": [
     { "time": "08:00 – 09:20", "ar": "التسجيل والتواصل", "en": "Arrival & Networking" },
