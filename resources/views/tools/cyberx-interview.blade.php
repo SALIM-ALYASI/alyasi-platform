@@ -245,6 +245,25 @@
             border-radius: 999px;
             padding: 3px 10px;
         }
+
+        .agenda-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        .agenda-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .agenda-table td.time {
+            white-space: nowrap;
+            color: var(--muted);
+            font-size: 12px;
+            padding-inline-end: 10px;
+        }
     </style>
 </head>
 <body>
@@ -318,6 +337,40 @@
             addCard(panel, { id: 'panel_question', ar: data.panel_question.ar, en: data.panel_question.en },
                 audioUrl(data.panel_question.audio, 'ar'), audioUrl(data.panel_question.audio, 'en'), true, 'panel');
         });
+
+        // -- تبويب "الجدول": مرجع سريع لسالم -- متى يمسك كل ضيف (نوافذ
+        //    المقابلات) وجدول اليوم الكامل، بدون أي تشغيل/تسجيل صوت. --
+        if ((data.interview_windows && data.interview_windows.length) || (data.agenda && data.agenda.length)) {
+            makeTab('schedule', 'الجدول', false, (panel) => {
+                if (data.interview_windows && data.interview_windows.length) {
+                    addDivider(panel, 'نوافذ المقابلات');
+                    data.interview_windows.forEach((w) => {
+                        const names = w.guests
+                            .map((gid) => (data.guests.find((g) => g.id === gid) || {}).name_ar || gid)
+                            .join('، ');
+
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = '<div class="label"><span>' + w.label + '</span><span class="meta">' + w.time + '</span></div>' +
+                            '<p class="q" style="margin:0">' + names + '</p>';
+                        panel.appendChild(card);
+                    });
+                }
+
+                if (data.agenda && data.agenda.length) {
+                    addDivider(panel, 'جدول اليوم الكامل');
+
+                    const table = document.createElement('table');
+                    table.className = 'agenda-table';
+                    data.agenda.forEach((item) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = '<td class="time">' + item.time + '</td><td>' + item.ar + '</td>';
+                        table.appendChild(tr);
+                    });
+                    panel.appendChild(table);
+                }
+            });
+        }
 
         // -- تبويب لكل ضيف: نفس مقطع التعريف + تعريف الضيف + أسئلته هو بس
         //    + السؤال الموحد والختام بالنهاية (عشان تخلص معاه المقابلة كاملة
