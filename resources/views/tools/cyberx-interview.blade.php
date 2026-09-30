@@ -333,7 +333,7 @@
             addCard(panel, { id: 'intro', label: 'تعريفي', ar: data.shared.intro.ar, en: data.shared.intro.en },
                 audioUrl(data.shared.intro.audio, 'ar'), audioUrl(data.shared.intro.audio, 'en'), false);
 
-            addDivider(panel, 'سؤال الجلسة القيادية · ' + data.panel_question.session);
+            addDivider(panel, 'سؤال الجلسة القيادية · ' + formatTimesInText(data.panel_question.session));
             addCard(panel, { id: 'panel_question', label: 'سؤال الجلسة', ar: data.panel_question.ar, en: data.panel_question.en },
                 audioUrl(data.panel_question.audio, 'ar'), audioUrl(data.panel_question.audio, 'en'), true, 'panel');
         });
@@ -351,7 +351,7 @@
 
                         const card = document.createElement('div');
                         card.className = 'card';
-                        card.innerHTML = '<div class="label"><span>' + w.label + '</span><span class="meta">' + w.time + '</span></div>' +
+                        card.innerHTML = '<div class="label"><span>' + w.label + '</span><span class="meta">' + formatTimesInText(w.time) + '</span></div>' +
                             '<p class="q" style="margin:0">' + names + '</p>';
                         panel.appendChild(card);
                     });
@@ -364,7 +364,7 @@
                     table.className = 'agenda-table';
                     data.agenda.forEach((item) => {
                         const tr = document.createElement('tr');
-                        tr.innerHTML = '<td class="time">' + item.time + '</td><td>' + item.ar + '</td>';
+                        tr.innerHTML = '<td class="time">' + formatTimesInText(item.time) + '</td><td>' + item.ar + '</td>';
                         table.appendChild(tr);
                     });
                     panel.appendChild(table);
@@ -396,10 +396,10 @@
                 heading.className = 'guest-heading';
                 heading.innerHTML = isEnglishOnly
                     ? '<div class="name">' + guest.name_en + '</div>' +
-                      '<div class="sub">' + guest.hint + ' · ' + guest.window + '</div>' +
+                      '<div class="sub">' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>' +
                       '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
                     : '<div class="name">' + guest.name_ar + '</div>' +
-                      '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + guest.window + '</div>';
+                      '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>';
                 panel.appendChild(heading);
 
                 guest.questions.forEach((q, idx) => {
@@ -455,6 +455,22 @@
         function audioUrl(id, lang, feminine) {
             const suffix = (feminine && lang === 'ar') ? '-f' : '';
             return baseUrl + '/' + id + '-' + lang + suffix + '.wav';
+        }
+
+        // يحوّل "HH:MM" من صيغة الـ24 ساعة لصيغة صباحًا/ظهرًا/مساءً، عشان
+        // سالم ما يحتاج يحسب بعقله وقت الأوقات بعد الظهر (13:00 وما فوق).
+        function formatTimeAr(hhmm) {
+            const [h, m] = hhmm.split(':').map(Number);
+            const period = h < 12 ? 'صباحًا' : (h < 13 ? 'ظهرًا' : 'مساءً');
+            let h12 = h % 12;
+            if (h12 === 0) h12 = 12;
+            return String(h12).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ' ' + period;
+        }
+
+        // يستبدل كل وقت HH:MM جوّا أي نص (وقت مفرد أو مدى "HH:MM – HH:MM"
+        // أو جملة كاملة فيها وقت) بصيغته المحوّلة، بدون ما يلمس باقي النص.
+        function formatTimesInText(str) {
+            return str.replace(/\b\d{1,2}:\d{2}\b/g, (match) => formatTimeAr(match));
         }
 
         function addDivider(container, text) {
