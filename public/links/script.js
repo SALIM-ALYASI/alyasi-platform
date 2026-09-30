@@ -62,7 +62,7 @@ function play() {
 
   $$('.link').forEach((el, i) => el.animate(
     [{ transform: 'translateX(-60px) scale(.94)', opacity: 0 }, { transform: 'none', opacity: 1 }],
-    { duration: 650, delay: 550 + i * 80, easing: spring, fill: 'backwards' }));
+    { duration: 750, delay: 550 + i * 180, easing: spring, fill: 'backwards' }));
 }
 $('#replayBtn').addEventListener('click', play);
 play();
