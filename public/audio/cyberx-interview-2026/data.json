@@ -1,5 +1,6 @@
 {
   "event": "CyberX Oman 2026",
+  "updated": "2026-09-30",
   "flow": ["intro", "self_intro", "questions", "unified", "closing"],
   "shared": {
     "intro": {
@@ -23,165 +24,94 @@
       "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?"
     },
     "followups": [
-      {
-        "audio": "followup-example",
-        "label": "الجواب قصير",
-        "ar": "هل يمكنك إعطاؤنا مثالًا؟",
-        "en": "Could you give us an example?"
-      },
-      {
-        "audio": "followup-simplify",
-        "label": "الجواب معقد",
-        "ar": "هل يمكنك تبسيطها لجمهور غير متخصص؟",
-        "en": "Could you simplify that for a non-technical audience?"
-      },
-      {
-        "audio": "followup-arabic",
-        "label": "الضيف يتكلم عربي",
-        "ar": "هل يمكنك قولها بالعربية لجمهورنا؟",
-        "en": "Could you say that in Arabic for our audience?"
-      },
-      {
-        "audio": "followup-more",
-        "label": "تبي تعمّق",
-        "ar": "هل يمكنك التوسع أكثر؟",
-        "en": "Could you tell us more about that?"
-      }
+      { "audio": "followup-example", "label": "الجواب قصير", "ar": "هل يمكنك إعطاؤنا مثالًا؟", "en": "Could you give us an example?" },
+      { "audio": "followup-simplify", "label": "الجواب معقد", "ar": "هَلْ يُمْكِنُكَ تَبْسِيطُهَا لِجُمْهُورٍ غَيْرِ مُتَخَصِّصٍ؟", "en": "Could you simplify that for a non-technical audience?" },
+      { "audio": "followup-arabic", "label": "الضيف يتكلم عربي", "ar": "هل يمكنك قولها بالعربية لجمهورنا؟", "en": "Could you say that in Arabic for our audience?" },
+      { "audio": "followup-more", "label": "تبي تعمّق", "ar": "هل يمكنك التوسع أكثر؟", "en": "Could you tell us more about that?" }
     ]
   },
   "panel_question": {
-    "session": "09:45 الجلسة القيادية",
+    "session": "10:00 الجلسة القيادية",
     "audio": "panel-question",
-    "ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: كيف نصحح هذه الفكرة في المجتمع؟ وما الفرق بين المبرمج والمخترق؟",
-    "en": "Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: how can we correct this idea in society, and what is the difference between a programmer and a hacker?"
+    "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي. كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: كيف نصحح هذه الفكرة في المجتمع؟ وما الفرق بين المبرمج والمخترق؟",
+    "en": "Hello, I'm Salem Al Hajri from ALYASI. Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: how can we correct this idea in society, and what is the difference between a programmer and a hacker?"
   },
   "guests": [
     {
-      "id": "yahya",
-      "name_ar": "يحيى العزري",
-      "name_en": "Yahya Al-Azri",
-      "hint": "Oman CERT",
-      "window": "11:15",
+      "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m",
       "questions": [
-        {
-          "audio": "yahya-q1",
-          "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟",
-          "en": "What change will citizens feel from the Tahawul framework?"
-        },
-        {
-          "audio": "yahya-q2",
-          "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟",
-          "en": "What common mistakes do users make that make hacking easier?"
-        },
-        {
-          "audio": "yahya-q3",
-          "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟",
-          "en": "What is your advice for small businesses to protect themselves?"
-        }
+        { "audio": "yahya-q1", "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟", "en": "What change will citizens feel from the Tahawul framework?" },
+        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" },
+        { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" }
       ]
     },
     {
-      "id": "ali",
-      "name_ar": "علي اللواتي",
-      "name_en": "Ali Al-Lawati",
-      "hint": "Qpay Oman",
-      "window": "11:15",
+      "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f",
       "questions": [
-        {
-          "audio": "ali-q1",
-          "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟",
-          "en": "How do you build a payment startup that is secure from day one?"
-        },
-        {
-          "audio": "ali-q2",
-          "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟",
-          "en": "What is your advice for an Omani developer who wants to enter cybersecurity?"
-        },
-        {
-          "audio": "ali-q3",
-          "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟",
-          "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?"
-        }
+        { "audio": "fatma-q0", "ar": "ماذا يعني «ما بعد الامتثال» بشكل عملي لشركة صغيرة؟", "en": "What does going beyond compliance mean in practice for a small company?" },
+        { "audio": "fatma-q1", "ar": "ما أكبر عائق يمنع الفتيات من دخول الأمن السيبراني، وكيف نتجاوزه؟", "en": "What is the biggest barrier stopping young women from entering cybersecurity, and how can we overcome it?" },
+        { "audio": "fatma-q2", "ar": "بماذا تنصحين فتاة تريد التخصص في هذا المجال؟", "en": "What would you advise a young woman who wants to specialize in this field?" }
       ]
     },
     {
-      "id": "ahmed",
-      "name_ar": "أحمد رضا",
-      "name_en": "Ahmed Reza",
-      "hint": "PIPWISE",
-      "window": "13:15",
+      "id": "ahmed", "name_ar": "أحمد رضا", "name_en": "Ahmed Reza", "hint": "PIPWISE", "window": "13:00", "gender": "m",
       "questions": [
-        {
-          "audio": "ahmed-q1",
-          "ar": "هل يمكنك شرح «الثقة الصفرية» بكلمات بسيطة؟",
-          "en": "Can you explain Zero Trust in simple words?"
-        },
-        {
-          "audio": "ahmed-q2",
-          "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟",
-          "en": "What is the risk of machine and bot identities that nobody notices?"
-        }
+        { "audio": "ahmed-q1", "ar": "هل يمكنك شرح «الثقة الصفرية» بكلمات بسيطة؟", "en": "Can you explain Zero Trust in simple words?" },
+        { "audio": "ahmed-q2", "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟", "en": "What is the risk of machine and bot identities that nobody notices?" }
       ]
     },
     {
-      "id": "sara",
-      "name_ar": "سارة الكندي",
-      "name_en": "Sara Al Kindi",
-      "hint": "PDO",
-      "gender": "f",
-      "window": "13:15",
+      "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
       "questions": [
-        {
-          "audio": "sara-q1",
-          "ar": "ما أهم درس تعلمتيه من عملك في حماية البنية التحتية الحرجة؟",
-          "en": "What is the most important lesson you learned from protecting critical infrastructure?"
-        },
-        {
-          "audio": "sara-q2",
-          "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟",
-          "en": "What is the difference between industrial system security and regular IT security?"
-        }
+        { "audio": "sara-q1", "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟", "en": "What is the most important lesson you learned from protecting critical infrastructure?" },
+        { "audio": "sara-q2", "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟", "en": "What is the difference between industrial system security and regular IT security?" }
       ]
     },
     {
-      "id": "fatma",
-      "name_ar": "فاطمة اللواتي",
-      "name_en": "Fatma Al Lawati",
-      "hint": "تأكد من جهتها من البطاقة",
-      "gender": "f",
-      "window": "11:15",
+      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay Oman", "window": "15:15", "gender": "m",
       "questions": [
-        {
-          "audio": "fatma-q1",
-          "ar": "ما أكبر عائق يمنع الفتيات من دخول الأمن السيبراني، وكيف نتجاوزه؟",
-          "en": "What is the biggest barrier stopping young women from entering cybersecurity, and how can we overcome it?"
-        },
-        {
-          "audio": "fatma-q2",
-          "ar": "كيف تبدأ فتاة تريد التخصص في هذا المجال؟",
-          "en": "How should a young woman start if she wants to specialize in this field?"
-        }
+        { "audio": "ali-q1", "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟", "en": "How do you build a payment startup that is secure from day one?" },
+        { "audio": "ali-q2", "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟", "en": "What is your advice for an Omani developer who wants to enter cybersecurity?" },
+        { "audio": "ali-q-ai", "ar": "كيف تستخدم الشركات الناشئة الذكاء الاصطناعي دون أن تعرّض بيانات عملائها للخطر؟", "en": "How can startups use AI without putting their customers' data at risk?" },
+        { "audio": "ali-q3", "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟", "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?" }
       ]
     },
     {
-      "id": "abhishek",
-      "name_ar": "أبهيشيك سينغ",
-      "name_en": "Abhishek Pratap Singh",
-      "hint": "National Bank of Oman — إنجليزي",
-      "language": "en",
-      "window": "13:15",
+      "id": "abhishek", "name_ar": "أبهيشيك سينغ", "name_en": "Abhishek Pratap Singh", "hint": "National Bank of Oman — إنجليزي", "language": "en", "window": "15:15", "gender": "m",
       "questions": [
-        {
-          "audio": "abhishek-q1",
-          "ar": "ما أكثر طريقة يفقد بها الناس حساباتهم البنكية لصالح المخترقين؟",
-          "en": "What is the most common way people lose their bank accounts to attackers?"
-        },
-        {
-          "audio": "abhishek-q2",
-          "ar": "كيف يحمي العميل العادي تطبيق البنك على جواله؟",
-          "en": "How can ordinary customers protect their banking apps?"
-        }
+        { "audio": "abhishek-q1", "ar": "ما أكثر طريقة يفقد بها الناس حساباتهم البنكية لصالح المخترقين؟", "en": "What is the most common way people lose their bank accounts to attackers?" },
+        { "audio": "abhishek-q2", "ar": "كيف يحمي العميل العادي تطبيق البنك على جواله؟", "en": "How can ordinary customers protect their banking apps?" }
+      ]
+    },
+    {
+      "id": "arfan", "name_ar": "عرفان الصائغ", "name_en": "Arfan Al Saigh", "hint": "صندوق الحماية الاجتماعية — اختياري", "window": "15:15", "gender": "m",
+      "questions": [
+        { "audio": "arfan-q1", "ar": "كيف تجعل الموظف العادي يهتم بالأمن السيبراني؟", "en": "How do you make ordinary employees care about cybersecurity?" },
+        { "audio": "arfan-q2", "ar": "ما الخطأ الأكثر تكرارًا من الموظفين الذي يسبب الاختراق؟", "en": "What is the most frequent employee mistake that leads to a breach?" }
       ]
     }
+  ],
+  "interview_windows": [
+    { "time": "11:30 – 12:00", "label": "استراحة القهوة", "guests": ["yahya", "fatma"] },
+    { "time": "13:00 – 14:00", "label": "الغداء", "guests": ["ahmed", "sara"] },
+    { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["ali", "abhishek", "arfan"] }
+  ],
+  "agenda": [
+    { "time": "08:00 – 09:20", "ar": "التسجيل والتواصل", "en": "Arrival & Networking" },
+    { "time": "09:20 – 09:30", "ar": "كلمة المنظّم — برويز شريف، BConnect", "en": "Welcome Note — Parvez Shariff, Bconnect" },
+    { "time": "09:30 – 09:45", "ar": "الكلمة الافتتاحية: مستقبل المرونة السيبرانية في عُمان — يحيى العزري", "en": "Grand Opening Keynote: Shaping the Future of Cyber Resilience in Oman — Yahya Al-Azri" },
+    { "time": "09:45 – 10:00", "ar": "كلمة: ما بعد الامتثال، بناء مؤسسات تصمد أمام الاضطرابات السيبرانية — فاطمة اللواتي", "en": "Keynote: Beyond Compliance — Fatma Al Lawati" },
+    { "time": "10:00 – 10:45", "ar": "الجلسة القيادية: الابتكار في الأمن السيبراني ضمن الاقتصاد الرقمي — تديرها أسماء حبيب، بمشاركة أبهيشيك سينغ، يحيى العزري، فاطمة اللواتي، أحمد سعيد البحدور، علي باوزير", "en": "Leadership Panel: Innovation in Cybersecurity with the Digital Economy" },
+    { "time": "10:45 – 11:00", "ar": "عرض تقني — Bulwark", "en": "Industry Presentation — Bulwark" },
+    { "time": "11:00 – 11:15", "ar": "عرض تقني — ESET", "en": "Industry Presentation — ESET" },
+    { "time": "11:15 – 11:30", "ar": "كلمة: خارطة طريق الأمن السيبراني للقطاع الصحي — رينيل واحد", "en": "Keynote: Cybersecurity Roadmap for Healthcare — Rineel Wahid" },
+    { "time": "11:30 – 12:00", "ar": "استراحة قهوة وتواصل", "en": "Networking Break" },
+    { "time": "12:00 – 12:15", "ar": "كلمة: هوية الآلات والثقة الصفرية — أحمد رضا", "en": "Keynote: Machine Identity & Zero Trust — Ahmed Reza" },
+    { "time": "12:15 – 13:00", "ar": "جلسة أمن ICS/OT والبنية الحرجة — يديرها خالد العمراني، بمشاركة مرشد الهنائي، سارة الكندي، علي البحدور، رينيل واحد", "en": "ICS & OT Security Panel" },
+    { "time": "13:00 – 14:00", "ar": "الغداء وعروض الشركاء", "en": "Power Lunch & Partner Demos" },
+    { "time": "14:00 – 14:45", "ar": "جلسة: تأمين مؤسسات الذكاء الاصطناعي — تديرها راميا سانكاري كارثيك، بمشاركة علي اللواتي، فيفيك بانيا، د. هيثم الحجري", "en": "Panel: Securing the AI Enterprise" },
+    { "time": "14:45 – 15:00", "ar": "كلمة: المؤسسات الواعية سيبرانيًا — عرفان الصائغ، صندوق الحماية الاجتماعية", "en": "Keynote: Cyber-Aware Organizations — Arfan Al Saigh" },
+    { "time": "15:00 – 15:15", "ar": "حفل جوائز CyberX — نسخة عُمان", "en": "CyberX Forum Awards Ceremony" },
+    { "time": "15:15 – 16:30", "ar": "الختام والتواصل", "en": "Official Closing & Networking" }
   ]
 }
