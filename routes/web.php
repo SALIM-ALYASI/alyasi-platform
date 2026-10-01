@@ -493,6 +493,8 @@ Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'
 
 Route::view('/alyasi_mbrmj', 'links.alyasi-mbrmj')->name('links.alyasi-mbrmj');
 
+Route::view('/bidiyah', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah');
+
 Route::get('/setup-meta-whatsapp-token', [MetaWhatsAppSetupController::class, 'index'])
     ->name('tools.meta-whatsapp-setup');
 
