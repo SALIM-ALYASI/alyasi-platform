@@ -378,7 +378,7 @@
         $article->analysis_status === 'ready'
         && filled($article->analysis_ar)
     )
-        <aside class="news-detail__analysis">
+        <aside class="news-detail__analysis" id="analysis">
             <div class="news-detail__analysis-badge">
                 تحليل ALYASI
             </div>

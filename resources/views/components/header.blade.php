@@ -9,6 +9,7 @@
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
         'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*')],
+        'analysis' => ['route' => 'analysis.index', 'active' => request()->routeIs('analysis.*')],
     ];
 
     if ($showArticlesNav) {

@@ -7,6 +7,7 @@ return [
         'services' => 'الخدمات',
         'works' => 'أعمالنا',
         'news' => 'الأخبار',
+        'analysis' => 'تحليل',
         'articles' => 'مقالاتي',
         'events' => 'المؤتمرات',
         'community' => 'فعاليات المجتمع',
