@@ -7,7 +7,6 @@ return [
         'services' => 'الخدمات',
         'works' => 'أعمالنا',
         'news' => 'الأخبار',
-        'analysis' => 'تحليل',
         'product_launches' => 'إطلاقات المنتجات',
         'origin_stories' => 'من البداية',
         'articles' => 'مقالاتي',

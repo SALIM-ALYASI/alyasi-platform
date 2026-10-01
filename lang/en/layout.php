@@ -7,7 +7,6 @@ return [
         'services' => 'Services',
         'works' => 'Our Work',
         'news' => 'News',
-        'analysis' => 'Analysis',
         'product_launches' => 'Product Launches',
         'origin_stories' => 'From the Beginning',
         'articles' => 'My Articles',

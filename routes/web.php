@@ -38,7 +38,6 @@ use App\Http\Controllers\Admin\VoiceStudioController;
 use App\Http\Controllers\Admin\WhatsAppController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\Admin\YoutubeAuthController;
-use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
@@ -236,21 +235,9 @@ Route::middleware('force.locale:en')
             ->name('show.en');
     });
 
-/*
-|--------------------------------------------------------------------------
-| ALYASI Analysis
-|--------------------------------------------------------------------------
-| محتوى تحليل ALYASI عربي فقط (حقول analysis_* بلا نسخة _en)، فما فيه
-| مسار /en مقابل، بنفس نمط باقي المحتوى العربي-فقط بالموقع.
-*/
-Route::middleware('force.locale:ar')
-    ->prefix('analysis')
-    ->name('analysis.')
-    ->controller(AnalysisController::class)
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
-    });
+// قسم /analysis المستقل أُزيل (دُمج الخبر والتحليل بصفحة واحدة -- التحليل
+// أصلاً معروض داخل صفحة كل خبر). تحويل 301 لأي رابط قديم بدل 404 مفاجئ.
+Route::redirect('/analysis', '/news', 301);
 
 /*
 |--------------------------------------------------------------------------
