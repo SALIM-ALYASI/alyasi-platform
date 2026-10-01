@@ -39,8 +39,9 @@ class ReclassifyBigTechArticles extends Command
         ],
         'gadgets' => [
             'هاتف ذكي', 'آيفون', 'آيباد', 'ساعة ذكية', 'سماعة لاسلكية', 'لابتوب',
-            'تابلت', 'سيارة كهربائية', 'smartphone', 'iPhone', 'wearable',
-            'tablet', 'headphone', 'earbuds', 'smartwatch',
+            'تابلت', 'سيارة كهربائية', 'نظارات ذكية', 'نظارات', 'واقع افتراضي',
+            'واقع معزز', 'smartphone', 'iPhone', 'wearable', 'tablet', 'headphone',
+            'earbuds', 'smartwatch', 'virtual reality', 'augmented reality',
         ],
         'programming' => [
             'Laravel', 'GitHub', 'مطورين', 'لغة برمجة', 'مكتبة برمجية', 'إطار عمل',
