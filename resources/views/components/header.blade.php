@@ -9,8 +9,9 @@
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
         'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*')],
-        'product_launches' => ['route' => 'product-launches.index', 'active' => request()->routeIs('product-launches.*')],
-        'origin_stories' => ['route' => 'origin-stories.index', 'active' => request()->routeIs('origin-stories.*')],
+        // إطلاقات المنتجات و"من البداية" مخفيّين مؤقتًا من القائمة (طلب
+        // صريح) لحين إعادة صياغتهم ودمجهم بالمنصة -- الكود والبيانات باقية
+        // كما هي، بس الروابط نفسها رجعت لصفحة البداية مؤقتًا (routes/web.php).
     ];
 
     if ($showArticlesNav) {

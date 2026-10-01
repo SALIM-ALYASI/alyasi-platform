@@ -241,37 +241,41 @@ Route::redirect('/analysis', '/news', 301);
 
 /*
 |--------------------------------------------------------------------------
-| Product Launches
+| Product Launches -- مخفي مؤقتًا (طلب صريح: إعادة صياغة ودمج بالمنصة لاحقًا)
 |--------------------------------------------------------------------------
-| محتوى عربي فقط، بدون نسخة /en -- نفس نمط تحليل ALYASI أعلاه.
+| الكنترولر والموديل والبيانات باقية كما هي، بس الروابط العامة معطّلة مؤقتًا.
+| لإعادة التفعيل: احذف التحويل تحت، وفك التعليق عن المجموعة.
 */
-Route::middleware('force.locale:ar')
-    ->prefix('product-launches')
-    ->name('product-launches.')
-    ->controller(ProductLaunchController::class)
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
-    });
+Route::redirect('/product-launches', '/', 302);
+
+// Route::middleware('force.locale:ar')
+//     ->prefix('product-launches')
+//     ->name('product-launches.')
+//     ->controller(ProductLaunchController::class)
+//     ->group(function () {
+//         Route::get('/', 'index')
+//             ->name('index');
+//     });
 
 /*
 |--------------------------------------------------------------------------
-| Origin Stories (من البداية)
+| Origin Stories (من البداية) -- مخفي مؤقتًا (نفس سبب إطلاقات المنتجات أعلاه)
 |--------------------------------------------------------------------------
-| عربي فقط، هوية بصرية مستقلة عن articles.* رغم بنائه فوق نفس Article model.
 */
-Route::middleware('force.locale:ar')
-    ->prefix('origin-stories')
-    ->name('origin-stories.')
-    ->controller(OriginStoryController::class)
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
+Route::redirect('/origin-stories', '/', 302);
 
-        Route::get('/{slug}', 'show')
-            ->where('slug', '[^/]+')
-            ->name('show');
-    });
+// Route::middleware('force.locale:ar')
+//     ->prefix('origin-stories')
+//     ->name('origin-stories.')
+//     ->controller(OriginStoryController::class)
+//     ->group(function () {
+//         Route::get('/', 'index')
+//             ->name('index');
+//
+//         Route::get('/{slug}', 'show')
+//             ->where('slug', '[^/]+')
+//             ->name('show');
+//     });
 
 /*
 |--------------------------------------------------------------------------
