@@ -347,17 +347,36 @@ class NewsIngestController extends Controller
     }
 
     /**
-     * تنبيه واتساب عام يستدعيه بوت الأخبار (مثلاً بعد نشر نشرة الفيديو
-     * اليومية ليوتيوب) — يمرّ عبر Laravel عشان مفاتيح واتساب تبقى بمكان
-     * واحد فقط، بدل تكرارها بأنظمة ثانية.
+     * تنبيه واتساب لنشرة الفيديو اليومية (بوت الأخبار، run_daily_digest_cycle)
+     * — يمرّ عبر Laravel عشان مفاتيح واتساب تبقى بمكان واحد فقط. نفس تنسيق
+     * خبر CTA العادي (صورة + عنوان بارز + نقاط + زر)، بس الزر يفتح الفيديو
+     * بيوتيوب بدل رابط مقال، وتحته أهم عناوين النشرة.
      */
     public function notifyWhatsAppEndpoint(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'message' => ['required', 'string', 'max:2000'],
+            'published_url' => ['required', 'url', 'max:2000'],
+            'image_url' => ['nullable', 'url', 'max:2000'],
+            'stories' => ['nullable', 'array'],
+            'stories.*.title' => ['required_with:stories', 'string'],
         ]);
 
-        $this->notifyWhatsApp($validated['message']);
+        $bodyLines = ['📺 *ملخص أخبار ALYASI اليومية جاهز*', ''];
+
+        foreach (array_slice($validated['stories'] ?? [], 0, 8) as $story) {
+            $bodyLines[] = "• {$story['title']}";
+        }
+
+        $bodyText = implode("\n", $bodyLines);
+        $fallbackMessage = $bodyText."\n\n{$validated['published_url']}";
+
+        $this->notifyWhatsAppNewsCta(
+            bodyText: $bodyText,
+            imageUrl: $validated['image_url'] ?? null,
+            articleUrl: $validated['published_url'],
+            fallbackMessage: $fallbackMessage,
+            buttonText: 'شاهد الفيديو',
+        );
 
         return response()->json(['success' => true]);
     }

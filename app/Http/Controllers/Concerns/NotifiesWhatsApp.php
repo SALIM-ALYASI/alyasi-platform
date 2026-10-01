@@ -48,6 +48,7 @@ trait NotifiesWhatsApp
         ?string $imageUrl,
         string $articleUrl,
         string $fallbackMessage,
+        string $buttonText = 'اقرأ الخبر',
     ): void {
         $phoneId = config('services.meta_whatsapp.phone_id');
         $token = config('services.meta_whatsapp.token');
@@ -65,7 +66,7 @@ trait NotifiesWhatsApp
             'action' => [
                 'name' => 'cta_url',
                 'parameters' => [
-                    'display_text' => 'اقرأ الخبر',
+                    'display_text' => $buttonText,
                     'url' => $articleUrl,
                 ],
             ],
