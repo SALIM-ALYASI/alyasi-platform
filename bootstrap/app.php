@@ -11,10 +11,13 @@ use App\Http\Middleware\ForceLocale;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackVisit;
+use App\Support\WhatsAppAlerts;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -49,6 +52,25 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+
+        // تنبيه واتساب لأخطاء Laravel الحرجة (500 غير متوقعة فقط -- Laravel
+        // أصلاً يستثني 4xx المعتادة مثل 404/422/419 من report() افتراضيًا).
+        // throttle بمفتاح نوع الخطأ+الموقع عشان خطأ متكرر بحلقة ما يغرقنا
+        // برسائل كل ثانية.
+        $exceptions->report(function (\Throwable $e): void {
+            $key = 'whatsapp_critical_error:'.md5($e::class.$e->getFile().$e->getLine());
+
+            if (Cache::has($key)) {
+                return;
+            }
+
+            Cache::put($key, true, now()->addMinutes(30));
+
+            WhatsAppAlerts::send(
+                "خطأ حرج بموقع alyasi.dev\n".$e::class.': '.Str::limit($e->getMessage(), 200)
+                ."\n".basename($e->getFile()).':'.$e->getLine()
+            );
+        });
 
     })
     ->create();

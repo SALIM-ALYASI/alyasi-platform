@@ -93,11 +93,27 @@ trait NotifiesWhatsApp
                     'status' => $response->status(),
                     'body' => $response->body(),
                 ]);
+
+                if ((int) $response->json('error.code') === 190) {
+                    $this->notifyWhatsAppAlert('توكن رقم الأخبار (94443706) منتهي أو غير صالح -- حدّثه من /setup-meta-whatsapp-token?target=news.');
+                }
+
                 $this->notifyWhatsApp($fallbackMessage);
             }
         } catch (\Throwable $e) {
             Log::warning('تعذّر الاتصال بواتساب الرسمي لإرسال خبر بزر CTA.', ['error' => $e->getMessage()]);
             $this->notifyWhatsApp($fallbackMessage);
         }
+    }
+
+    /**
+     * رسالة تنبيه (توكن منتهي، بوت متوقف، خدمة سيرفر واقعة...) عبر رقم
+     * التنبيهات الرسمي (92378452) -- منطق الإرسال والرجوع للجسر موحّد
+     * بـ WhatsAppAlerts عشان يُستخدم أيضًا من خارج Controllers (معالج
+     * الأخطاء الحرجة بـ bootstrap/app.php).
+     */
+    protected function notifyWhatsAppAlert(string $message): void
+    {
+        \App\Support\WhatsAppAlerts::send($message);
     }
 }

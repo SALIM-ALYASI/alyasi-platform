@@ -103,6 +103,13 @@ return [
     'token' => env('META_WHATSAPP_TOKEN'),
     ],
 
+    // رقم التنبيهات (92378452) -- توكن منتهي، بوت أخبار متوقف، خدمات سيرفر
+    // البيت متوقفة، أخطاء Laravel حرجة. منفصل عن meta_whatsapp (رقم الأخبار).
+    'meta_whatsapp_alerts' => [
+    'phone_id' => env('META_WHATSAPP_ALERTS_PHONE_ID'),
+    'token' => env('META_WHATSAPP_ALERTS_TOKEN'),
+    ],
+
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),

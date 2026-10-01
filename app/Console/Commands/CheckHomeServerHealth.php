@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\Concerns\NotifiesManagerBot;
 use App\Models\Setting;
+use App\Support\WhatsAppAlerts;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -41,7 +42,9 @@ class CheckHomeServerHealth extends Command
             // فشلان متتاليان (~10 دقايق بفحص كل 5 دقايق) قبل التنبيه -- يتجنب
             // إنذار كاذب من عطل شبكة أو تجاوز مهلة لحظي.
             if ($failCount >= 2 && ! $wasDown) {
-                $this->notifyManagerBot('🔴 السيرفر المنزلي غير متاح (تعذّر الوصول لـ n8n.alyasi.dev لمحاولتين متتاليتين). هذا يعني توقف n8n وSoundInk وبوت الأخبار جميعًا.');
+                $message = '🔴 السيرفر المنزلي غير متاح (تعذّر الوصول لـ n8n.alyasi.dev لمحاولتين متتاليتين). هذا يعني توقف n8n وSoundInk وبوت الأخبار جميعًا.';
+                $this->notifyManagerBot($message);
+                WhatsAppAlerts::send($message);
                 Setting::set('home_server_down_alerted', '1');
                 Setting::set('home_server_down_since', now()->toDateTimeString());
             }
@@ -53,9 +56,9 @@ class CheckHomeServerHealth extends Command
 
         if ($wasDown) {
             $downSince = Setting::get('home_server_down_since');
-            $this->notifyManagerBot(
-                '🟢 السيرفر المنزلي رجع يشتغل'.($downSince ? " (كان متوقف منذ {$downSince})" : '').'.'
-            );
+            $recoveryMessage = '🟢 السيرفر المنزلي رجع يشتغل'.($downSince ? " (كان متوقف منذ {$downSince})" : '').'.';
+            $this->notifyManagerBot($recoveryMessage);
+            WhatsAppAlerts::send($recoveryMessage);
             Setting::set('home_server_down_alerted', '0');
             Setting::set('home_server_down_since', null);
         }

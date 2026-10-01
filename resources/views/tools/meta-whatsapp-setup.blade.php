@@ -64,16 +64,16 @@ button {
 </head>
 <body>
 <div class="box">
-<h2>توكن واتساب — الياسي للبرمجيات</h2>
+<h2>توكن واتساب — {{ $target === 'alerts' ? 'رقم التنبيهات (92378452)' : 'رقم الأخبار (94443706)' }}</h2>
 
 @if (session('success'))
 <div class="success">{{ session('success') }}</div>
 @endif
 
-<form method="POST" action="{{ route('tools.meta-whatsapp-setup.store') }}">
+<form method="POST" action="{{ route('tools.meta-whatsapp-setup.store', ['target' => $target]) }}">
 @csrf
 <label>Phone Number ID</label>
-<input type="text" name="phone_id" placeholder="623727094163898" required autocomplete="off">
+<input type="text" name="phone_id" placeholder="{{ $target === 'alerts' ? '623727094163898' : '671057126088016' }}" required autocomplete="off">
 <label>Access Token</label>
 <input type="password" name="meta_token" placeholder="META_TOKEN" required autocomplete="off">
 <button type="submit">حفظ</button>
