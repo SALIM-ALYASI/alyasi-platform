@@ -33,16 +33,16 @@
     <span class="city">بدية</span>
   </div>
   <h1>منصة الياسي</h1>
-  <a class="photo" href="https://www.google.com/maps/place/%D8%A7%D9%84%D9%8A%D8%A7%D8%B3%D9%8A+%D9%84%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%8A%D8%A7%D8%AA%E2%80%AD/@22.4464444,58.8101003,17.56z/data=!4m6!3m5!1s0x3e90730025dcdc0f:0xba948d129186c281!8m2!3d22.4493693!4d58.810725!16s%2Fg%2F11wbm1k4tp" target="_blank" rel="noopener">
+  <a class="photo" href="https://maps.app.goo.gl/sars1AV3BdRk4ioM6" target="_blank" rel="noopener">
     <img src="{{ asset('images/alyasi-bidiyah-cover.png') }}" alt="منصة الياسي">
   </a>
-  <a class="btn btn-primary" href="https://www.google.com/maps/place/%D8%A7%D9%84%D9%8A%D8%A7%D8%B3%D9%8A+%D9%84%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%8A%D8%A7%D8%AA%E2%80%AD/@22.4464444,58.8101003,17.56z/data=!4m6!3m5!1s0x3e90730025dcdc0f:0xba948d129186c281!8m2!3d22.4493693!4d58.810725!16s%2Fg%2F11wbm1k4tp" target="_blank" rel="noopener">
+  <a class="btn btn-primary" href="https://maps.app.goo.gl/sars1AV3BdRk4ioM6" target="_blank" rel="noopener">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
     موقعي
   </a>
-  <a class="btn btn-secondary" href="tel:+96898881054">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
-    اتصل بنا
+  <a class="btn btn-secondary" href="https://wa.me/96898881054" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-1.4-.7-2.3-1.2-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3 1 2.5c.1.1 1.7 2.6 4.1 3.6.6.2 1 .4 1.4.5.6.2 1.1.1 1.5-.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-.9.1-1.1 0-.1-.2-.2-.4-.3z"/></svg>
+    واتساب
   </a>
 </main>
 </body>
