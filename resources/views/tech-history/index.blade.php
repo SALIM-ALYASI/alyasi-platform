@@ -8,7 +8,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
-    <link rel="stylesheet" href="{{ versioned_asset('css/pages/news-index.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/articles-index.css') }}">
 @endpush
 
 @section('content')
@@ -23,33 +23,36 @@
         :image-height="941"
     />
 
-    <section class="container news-section">
+    <section class="container articles-section">
         @if ($stories->isNotEmpty())
             <div class="grid-3">
                 @foreach ($stories as $story)
                     @php $slug = $story->slug('ar'); @endphp
-                    <a href="{{ $slug ? route('tech-history.show', ['slug' => $slug]) : route('tech-history.index') }}" class="card card--hover news-card" data-reveal>
+                    <a href="{{ $slug ? route('tech-history.show', ['slug' => $slug]) : route('tech-history.index') }}" class="card card--hover articles-card" data-reveal>
                         @if ($story->featured_image_ar)
-                            <div class="news-card__media">
+                            <div class="articles-card__media">
                                 <img src="{{ media_url($story->featured_image_ar) }}" alt="{{ $story->title }}" loading="lazy">
                             </div>
                         @endif
-                        <div class="news-card__body">
-                            <div class="news-card__meta">
+                        <div class="articles-card__body">
+                            <div class="articles-card__meta">
                                 <span class="badge">{{ __('tech_history.hero_badge') }}</span>
                                 <span>{{ optional($story->published_at)->translatedFormat('d.m.Y') }}</span>
+                                @if ($story->reading_time)
+                                    <span>· {{ __('tech_history.read_time', ['minutes' => $story->reading_time]) }}</span>
+                                @endif
                             </div>
-                            <h3 class="news-card__title">{{ $story->title }}</h3>
+                            <h3 class="articles-card__title">{{ $story->title }}</h3>
                             @if ($story->excerpt)
-                                <p class="news-card__excerpt">{{ $story->excerpt }}</p>
+                                <p class="articles-card__excerpt">{{ $story->excerpt }}</p>
                             @endif
-                            <span class="news-card__link">{{ __('tech_history.read_more') }} ←</span>
+                            <span class="articles-card__link">{{ __('tech_history.read_more') }} ←</span>
                         </div>
                     </a>
                 @endforeach
             </div>
 
-            <div class="news-pagination">
+            <div class="articles-pagination">
                 {{ $stories->links() }}
             </div>
         @else
