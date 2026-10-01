@@ -101,6 +101,9 @@ return [
     'webhook_verify_token' => env('META_WHATSAPP_WEBHOOK_VERIFY_TOKEN'),
     'phone_id' => env('META_WHATSAPP_PHONE_ID'),
     'token' => env('META_WHATSAPP_TOKEN'),
+    'relay_phone_id' => env('META_WHATSAPP_RELAY_PHONE_ID'),
+    'relay_token' => env('META_WHATSAPP_RELAY_TOKEN'),
+    'relay_to' => env('META_WHATSAPP_RELAY_TO', '96898881054'),
     ],
 
     'google' => [

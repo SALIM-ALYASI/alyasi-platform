@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -70,6 +71,8 @@ class MetaWhatsAppWebhookController extends Controller
             foreach ($entry['changes'] ?? [] as $change) {
                 $value = $change['value'] ?? [];
 
+                $receivingNumber = $value['metadata']['display_phone_number'] ?? 'غير معروف';
+
                 foreach ($value['messages'] ?? [] as $message) {
                     $safeId = preg_replace('/[^A-Za-z0-9_-]/', '_', (string) ($message['id'] ?? uniqid()));
 
@@ -83,10 +86,54 @@ class MetaWhatsAppWebhookController extends Controller
                             'raw' => $message,
                         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
                     );
+
+                    $this->relayIncomingMessage($receivingNumber, $message);
                 }
             }
         }
 
         return response()->json(['status' => 'EVENT_RECEIVED'], 200);
+    }
+
+    /**
+     * يعيد توجيه أي رسالة واردة لأرقام "الياسي للبرمجيات" إلى سالم شخصيًا
+     * عبر رقم "باب" -- لأن الأرقام التجارية الجديدة ما فيها واجهة رد عادية
+     * يشوفها سالم بسهولة. فشل إعادة التوجيه ما يوقف استقبال الـwebhook
+     * نفسه (Meta محتاجة رد 200 سريع بغض النظر).
+     */
+    private function relayIncomingMessage(string $receivingNumber, array $message): void
+    {
+        $relayPhoneId = (string) config('services.meta_whatsapp.relay_phone_id');
+        $relayToken = (string) config('services.meta_whatsapp.relay_token');
+        $relayTo = (string) config('services.meta_whatsapp.relay_to');
+
+        if ($relayPhoneId === '' || $relayToken === '' || $relayTo === '') {
+            Log::warning('Meta WhatsApp relay skipped: missing relay config.');
+
+            return;
+        }
+
+        $sender = (string) ($message['from'] ?? 'غير معروف');
+        $text = (string) ($message['text']['body'] ?? ('['.($message['type'] ?? 'رسالة').']'));
+
+        $body = "📩 رسالة جديدة لرقم {$receivingNumber}\nمن: {$sender}\n\n{$text}";
+
+        try {
+            $response = Http::withToken($relayToken)
+                ->timeout(10)
+                ->post("https://graph.facebook.com/v24.0/{$relayPhoneId}/messages", [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $relayTo,
+                    'type' => 'text',
+                    'text' => ['body' => $body],
+                ]);
+
+            Log::info('Meta WhatsApp relay sent.', [
+                'ok' => $response->successful(),
+                'status' => $response->status(),
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Meta WhatsApp relay failed.', ['error' => $e->getMessage()]);
+        }
     }
 }
