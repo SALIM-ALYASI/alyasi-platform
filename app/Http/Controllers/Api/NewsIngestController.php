@@ -363,12 +363,15 @@ class NewsIngestController extends Controller
         ]);
 
         // يخزّن رابط فيديو النشرة على كل خبر مضمّن فيها -- زر "شاهد الفيديو"
-        // بصفحة الخبر (news/show.blade.php) يعتمد عليه.
+        // بصفحة الخبر (news/show.blade.php) يعتمد عليه. whereNull تحديدًا:
+        // لو الخبر عنده أصلاً رابط فيديو خاص فيه لوحده (news:sync-youtube-links)
+        // ما نستبدله برابط نشرة جامعة أعم -- الأدق يبقى.
         $storyIds = array_filter(array_column($validated['stories'] ?? [], 'id'));
 
         if ($storyIds !== []) {
             NewsArticle::query()
                 ->whereIn('id', $storyIds)
+                ->whereNull('youtube_video_url')
                 ->update(['youtube_video_url' => $validated['published_url']]);
         }
 

@@ -75,6 +75,10 @@ return [
     'smart_content' => [
         'url' => env('SMART_CONTENT_API_URL', 'https://smart-content.alyasi.dev/api'),
         'key' => env('SMART_CONTENT_API_KEY'),
+        // مفتاح منفصل بصلاحية قراءة /jobs/{id}/platforms -- نفس المفتاح
+        // المستخدم أصلاً بعقدة n8n "Forward — Smart Content"، مفتاح
+        // smart_content.key أعلاه ما له صلاحية هذا المسار.
+        'jobs_api_key' => env('SMART_CONTENT_JOBS_API_KEY'),
     ],
 
     'whatsapp_cloud' => [
