@@ -13,6 +13,13 @@ use Illuminate\View\View;
 class ArticleController extends Controller
 {
     /**
+     * تصنيف "تاريخ التقنية" له قسمه العام المستقل (tech-history.*) بهويته
+     * الخاصة -- يُستثنى من هنا دائمًا حتى لا تظهر حلقاته كمقال عادي مختلط
+     * بآراء/تجارب سالم الشخصية، رغم إنهم نفس Article model تحت الغطاء.
+     */
+    private const EXCLUDED_CATEGORY_SLUG = 'tech-history';
+
+    /**
      * صفحة مقالاتي الرئيسية.
      */
     public function index(Request $request): View
@@ -27,7 +34,11 @@ class ArticleController extends Controller
         $articlesQuery = Article::query()
             ->with(['category', 'permalinks'])
             ->published()
-            ->availableIn($locale);
+            ->availableIn($locale)
+            ->whereDoesntHave(
+                'category',
+                fn ($query) => $query->where('slug', self::EXCLUDED_CATEGORY_SLUG)
+            );
 
         if ($request->filled('category')) {
             $articlesQuery->whereHas(
@@ -43,6 +54,10 @@ class ArticleController extends Controller
             ->with(['category', 'permalinks'])
             ->published()
             ->availableIn($locale)
+            ->whereDoesntHave(
+                'category',
+                fn ($query) => $query->where('slug', self::EXCLUDED_CATEGORY_SLUG)
+            )
             ->featured()
             ->ordered()
             ->limit(3)
@@ -83,6 +98,12 @@ class ArticleController extends Controller
         $article = $permalink->linkable;
 
         abort_unless($article instanceof Article, 404);
+
+        // رابط قديم/مباشر لحلقة "تاريخ التقنية" عبر /articles -- يحوّل
+        // لمسارها الرسمي بدل عرضها هنا (قسم مستقل، ما له رابط ثاني صحيح).
+        if ($article->category?->slug === self::EXCLUDED_CATEGORY_SLUG) {
+            return redirect()->to(route('tech-history.show', ['slug' => $slug]), 301);
+        }
 
         $isPublished = Article::query()
             ->published()
