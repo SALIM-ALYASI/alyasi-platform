@@ -28,6 +28,7 @@ class ArticleController extends Controller
 
         $categories = ArticleCategory::query()
             ->active()
+            ->where('slug', '!=', self::EXCLUDED_CATEGORY_SLUG)
             ->ordered()
             ->get();
 
