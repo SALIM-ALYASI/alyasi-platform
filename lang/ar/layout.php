@@ -8,7 +8,7 @@ return [
         'works' => 'أعمالنا',
         'news' => 'الأخبار',
         'product_launches' => 'إطلاقات المنتجات',
-        'origin_stories' => 'من البداية',
+        'tech_history' => 'تاريخ التقنية',
         'articles' => 'مقالاتي',
         'events' => 'المؤتمرات',
         'community' => 'فعاليات المجتمع',

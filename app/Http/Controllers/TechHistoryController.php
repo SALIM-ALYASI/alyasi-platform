@@ -10,15 +10,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 /**
- * "من البداية" -- حلقة شهرية تتبع تطور جهاز واحد، بصوت سالم الشخصي. مبني
+ * "تاريخ التقنية" -- حلقة شهرية تتبع تطور جهاز واحد، بصوت سالم الشخصي. مبني
  * فوق نفس نظام Article/ArticleCategory (نفس لوحة كتابة "مقالاتي" اللي
- * يعرفها الكاتب أصلاً، يكفي يختار تصنيف "من البداية")، بمسار/واجهة عامة
+ * يعرفها الكاتب أصلاً، يكفي يختار تصنيف "تاريخ التقنية")، بمسار/واجهة عامة
  * مستقلة عن articles.* (ما يظهر مختلطًا بمقالاته الشخصية) لكن بنفس تصميم
  * وألوان باقي الموقع -- لا هوية بصرية منفصلة.
  */
-class OriginStoryController extends Controller
+class TechHistoryController extends Controller
 {
-    private const CATEGORY_SLUG = 'origin-stories';
+    private const CATEGORY_SLUG = 'tech-history';
 
     public function index(): View
     {
@@ -32,7 +32,7 @@ class OriginStoryController extends Controller
 
         abort_if_page_out_of_range($stories);
 
-        return view('origin-stories.index', compact('stories'));
+        return view('tech-history.index', compact('stories'));
     }
 
     public function show(string $slug): View|RedirectResponse
@@ -69,7 +69,7 @@ class OriginStoryController extends Controller
             ->limit(3)
             ->get();
 
-        return view('origin-stories.show', compact('article', 'otherStories'));
+        return view('tech-history.show', compact('article', 'otherStories'));
     }
 
     private function redirectFromOldSlug(string $slug): RedirectResponse
@@ -90,7 +90,7 @@ class OriginStoryController extends Controller
         );
 
         return redirect()->to(
-            route('origin-stories.show', ['slug' => $redirect->permalink->slug]),
+            route('tech-history.show', ['slug' => $redirect->permalink->slug]),
             301
         );
     }

@@ -32,15 +32,15 @@
 
     <section class="container news-detail__header-after-image">
         <div class="news-detail__breadcrumb">
-            <a href="{{ route('origin-stories.index') }}">{{ __('origin_stories.hero_badge') }}</a>
+            <a href="{{ route('tech-history.index') }}">{{ __('tech_history.hero_badge') }}</a>
         </div>
 
         <div class="news-detail__meta">
-            <span class="badge">{{ __('origin_stories.hero_badge') }}</span>
+            <span class="badge">{{ __('tech_history.hero_badge') }}</span>
             <span class="news-detail__date">
                 {{ optional($article->published_at)->translatedFormat('d.m.Y') }}
                 @if ($article->reading_time)
-                    &middot; {{ __('origin_stories.read_time', ['minutes' => $article->reading_time]) }}
+                    &middot; {{ __('tech_history.read_time', ['minutes' => $article->reading_time]) }}
                 @endif
             </span>
         </div>
@@ -56,11 +56,11 @@
 
     @if ($otherStories->isNotEmpty())
         <section class="container news-section">
-            <h2 class="section-head__title">{{ __('origin_stories.other_stories') }}</h2>
+            <h2 class="section-head__title">{{ __('tech_history.other_stories') }}</h2>
             <div class="grid-3">
                 @foreach ($otherStories as $other)
                     @php $otherSlug = $other->slug('ar'); @endphp
-                    <a href="{{ $otherSlug ? route('origin-stories.show', ['slug' => $otherSlug]) : route('origin-stories.index') }}" class="card card--hover news-card" data-reveal>
+                    <a href="{{ $otherSlug ? route('tech-history.show', ['slug' => $otherSlug]) : route('tech-history.index') }}" class="card card--hover news-card" data-reveal>
                         @if ($other->featured_image_ar)
                             <div class="news-card__media">
                                 <img src="{{ media_url($other->featured_image_ar) }}" alt="{{ $other->title }}" loading="lazy">
@@ -71,7 +71,7 @@
                                 <span>{{ optional($other->published_at)->translatedFormat('d.m.Y') }}</span>
                             </div>
                             <h3 class="news-card__title">{{ $other->title }}</h3>
-                            <span class="news-card__link">{{ __('origin_stories.read_more') }} ←</span>
+                            <span class="news-card__link">{{ __('tech_history.read_more') }} ←</span>
                         </div>
                     </a>
                 @endforeach

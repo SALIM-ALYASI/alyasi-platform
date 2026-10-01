@@ -48,7 +48,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\OriginStoryController;
+use App\Http\Controllers\TechHistoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductLaunchController;
 use App\Http\Controllers\ReviewController;
@@ -259,15 +259,16 @@ Route::redirect('/product-launches', '/', 302);
 
 /*
 |--------------------------------------------------------------------------
-| Origin Stories (من البداية) -- مخفي مؤقتًا (نفس سبب إطلاقات المنتجات أعلاه)
+| Tech History (تاريخ التقنية) -- مخفي مؤقتًا (نفس سبب إطلاقات المنتجات أعلاه)
 |--------------------------------------------------------------------------
 */
-Route::redirect('/origin-stories', '/', 302);
+Route::redirect('/tech-history', '/', 302);
+Route::redirect('/origin-stories', '/tech-history', 301);
 
 // Route::middleware('force.locale:ar')
-//     ->prefix('origin-stories')
-//     ->name('origin-stories.')
-//     ->controller(OriginStoryController::class)
+//     ->prefix('tech-history')
+//     ->name('tech-history.')
+//     ->controller(TechHistoryController::class)
 //     ->group(function () {
 //         Route::get('/', 'index')
 //             ->name('index');

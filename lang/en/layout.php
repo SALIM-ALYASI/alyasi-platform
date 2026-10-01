@@ -8,7 +8,7 @@ return [
         'works' => 'Our Work',
         'news' => 'News',
         'product_launches' => 'Product Launches',
-        'origin_stories' => 'From the Beginning',
+        'tech_history' => 'Tech History',
         'articles' => 'My Articles',
         'events' => 'Events',
         'community' => 'Community Events',
