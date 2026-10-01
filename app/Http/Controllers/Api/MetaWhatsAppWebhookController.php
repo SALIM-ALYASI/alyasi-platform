@@ -97,18 +97,19 @@ class MetaWhatsAppWebhookController extends Controller
 
     /**
      * يعيد توجيه أي رسالة واردة لأرقام "الياسي للبرمجيات" إلى سالم شخصيًا
-     * عبر رقم "باب" -- لأن الأرقام التجارية الجديدة ما فيها واجهة رد عادية
-     * يشوفها سالم بسهولة. فشل إعادة التوجيه ما يوقف استقبال الـwebhook
-     * نفسه (Meta محتاجة رد 200 سريع بغض النظر).
+     * عبر جسر واتساب غير الرسمي (whatsapp_notify) -- مجاني بالكامل، وما يلمس
+     * رقم "باب" إطلاقًا (شغلته مستقلة تمامًا عن التحكم بالباب). فشل إعادة
+     * التوجيه ما يوقف استقبال الـwebhook نفسه (Meta محتاجة رد 200 سريع
+     * بغض النظر).
      */
     private function relayIncomingMessage(string $receivingNumber, array $message): void
     {
-        $relayPhoneId = (string) config('services.meta_whatsapp.relay_phone_id');
-        $relayToken = (string) config('services.meta_whatsapp.relay_token');
-        $relayTo = (string) config('services.meta_whatsapp.relay_to');
+        $baseUrl = rtrim((string) config('services.whatsapp_notify.base_url'), '/');
+        $apiKey = (string) config('services.whatsapp_notify.api_key');
+        $relayTo = (string) config('services.whatsapp_notify.number', '96898881054');
 
-        if ($relayPhoneId === '' || $relayToken === '' || $relayTo === '') {
-            Log::warning('Meta WhatsApp relay skipped: missing relay config.');
+        if ($baseUrl === '' || $apiKey === '') {
+            Log::warning('Meta WhatsApp relay skipped: whatsapp_notify not configured.');
 
             return;
         }
@@ -119,16 +120,14 @@ class MetaWhatsAppWebhookController extends Controller
         $body = "📩 رسالة جديدة لرقم {$receivingNumber}\nمن: {$sender}\n\n{$text}";
 
         try {
-            $response = Http::withToken($relayToken)
+            $response = Http::withHeaders(['x-api-key' => $apiKey])
                 ->timeout(10)
-                ->post("https://graph.facebook.com/v24.0/{$relayPhoneId}/messages", [
-                    'messaging_product' => 'whatsapp',
-                    'to' => $relayTo,
-                    'type' => 'text',
-                    'text' => ['body' => $body],
+                ->post($baseUrl.'/send-message', [
+                    'number' => $relayTo,
+                    'message' => $body,
                 ]);
 
-            Log::info('Meta WhatsApp relay sent.', [
+            Log::info('Meta WhatsApp relay sent via bridge.', [
                 'ok' => $response->successful(),
                 'status' => $response->status(),
             ]);
