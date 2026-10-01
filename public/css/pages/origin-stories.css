@@ -1,0 +1,137 @@
+/* "من البداية" -- هوية بصرية مستقلة (ورقي/ذهبي، طابع أرشيفي) عن باقي الموقع عمدًا. */
+
+.origin-page {
+    --os-ink: #0b1420;
+    --os-paper: #f6f1e7;
+    --os-paper-2: #efe6d3;
+    --os-line: #d9cbae;
+    --os-gold: #b8863b;
+    --os-gold-ink: #7a5420;
+    --os-muted: #5b5143;
+    --os-font-display: 'Tajawal', 'Segoe UI', sans-serif;
+
+    background: var(--os-paper);
+    color: var(--os-ink);
+    padding-block: 60px 90px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .origin-page {
+        --os-ink: #f3ece0;
+        --os-paper: #14110c;
+        --os-paper-2: #1c1811;
+        --os-line: #3a3225;
+        --os-gold: #d7a85a;
+        --os-gold-ink: #e8c488;
+        --os-muted: #b8ab93;
+    }
+}
+
+.origin-page .container { max-width: 760px; }
+
+.origin-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--os-font-display);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: var(--os-gold-ink);
+    border: 1px solid var(--os-line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: var(--os-paper-2);
+}
+.origin-eyebrow::before { content: "●"; font-size: 8px; color: var(--os-gold); }
+
+.origin-title {
+    font-family: var(--os-font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 7vw, 52px);
+    line-height: 1.25;
+    margin: 18px 0 6px;
+}
+.origin-title em { color: var(--os-gold-ink); font-style: normal; }
+
+.origin-desc { font-size: 17px; color: var(--os-muted); max-width: 54ch; margin: 0 0 44px; }
+
+.origin-card {
+    border: 1px solid var(--os-line);
+    background: var(--os-paper-2);
+    border-radius: 16px;
+    overflow: hidden;
+    display: block;
+    margin-bottom: 20px;
+}
+.origin-card__media { aspect-ratio: 16 / 8; overflow: hidden; background: var(--os-paper); }
+.origin-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.origin-card__body { padding: 22px 24px; }
+.origin-card__cat {
+    font-family: var(--os-font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--os-gold-ink);
+    letter-spacing: .04em;
+}
+.origin-card__title {
+    font-family: var(--os-font-display);
+    font-weight: 800;
+    font-size: 22px;
+    margin: 8px 0 10px;
+    color: var(--os-ink);
+}
+.origin-card__excerpt { font-size: 15px; color: var(--os-muted); margin: 0 0 14px; line-height: 1.8; }
+.origin-card__link { font-family: var(--os-font-display); font-weight: 700; font-size: 14px; color: var(--os-gold-ink); }
+
+.origin-show__title {
+    font-family: var(--os-font-display);
+    font-weight: 800;
+    font-size: clamp(28px, 6vw, 44px);
+    line-height: 1.3;
+    margin: 18px 0 14px;
+}
+.origin-show__meta { font-size: 13px; color: var(--os-muted); margin-bottom: 28px; }
+.origin-show__media { border-radius: 16px; overflow: hidden; aspect-ratio: 16 / 8; margin-bottom: 36px; }
+.origin-show__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.origin-content { font-size: 17px; line-height: 2; color: var(--os-ink); }
+.origin-content p { margin: 0 0 26px; }
+.origin-content h2, .origin-content h3 {
+    font-family: var(--os-font-display);
+    font-weight: 800;
+    margin: 44px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.origin-content h2::before, .origin-content h3::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--os-gold);
+    flex-shrink: 0;
+}
+.origin-content blockquote {
+    margin: 0 0 26px;
+    padding: 16px 20px;
+    border-inline-start: 3px solid var(--os-gold);
+    background: var(--os-paper-2);
+    border-radius: 10px;
+    color: var(--os-muted);
+}
+.origin-content img { max-width: 100%; border-radius: 12px; margin: 20px 0; }
+
+.origin-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--os-font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--os-gold-ink);
+    margin-bottom: 30px;
+}
+
+.origin-others { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--os-line); }
+.origin-others h3 { font-family: var(--os-font-display); font-weight: 800; font-size: 18px; margin: 0 0 18px; }

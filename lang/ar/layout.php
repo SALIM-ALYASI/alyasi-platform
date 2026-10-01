@@ -9,6 +9,7 @@ return [
         'news' => 'الأخبار',
         'analysis' => 'تحليل',
         'product_launches' => 'إطلاقات المنتجات',
+        'origin_stories' => 'من البداية',
         'articles' => 'مقالاتي',
         'events' => 'المؤتمرات',
         'community' => 'فعاليات المجتمع',

@@ -49,6 +49,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\OriginStoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductLaunchController;
 use App\Http\Controllers\ReviewController;
@@ -264,6 +265,25 @@ Route::middleware('force.locale:ar')
     ->group(function () {
         Route::get('/', 'index')
             ->name('index');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Origin Stories (من البداية)
+|--------------------------------------------------------------------------
+| عربي فقط، هوية بصرية مستقلة عن articles.* رغم بنائه فوق نفس Article model.
+*/
+Route::middleware('force.locale:ar')
+    ->prefix('origin-stories')
+    ->name('origin-stories.')
+    ->controller(OriginStoryController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show');
     });
 
 /*
