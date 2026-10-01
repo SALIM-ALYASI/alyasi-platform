@@ -26,9 +26,11 @@ class ReclassifyBigTechArticles extends Command
      */
     private const KEYWORDS = [
         'cybersecurity' => [
-            'اختراق', 'ثغرة', 'هجوم سيبراني', 'برمجية خبيثة', 'تسريب بيانات',
-            'خرق بيانات', 'فدية', 'تصيد احتيالي', 'hack', 'breach', 'vulnerability',
-            'malware', 'ransomware', 'phishing', 'exploit', 'cyberattack',
+            // "ثغرة" وحدها غامضة (تُستخدم لمجرد bug برمجي عادي مو بالضرورة
+            // أمني) -- "ثغرة أمنية"/"اختبار الاختراق" أدق وتتجنب false positive.
+            'اختراق', 'ثغرة أمنية', 'اختبار الاختراق', 'هجوم سيبراني', 'برمجية خبيثة',
+            'تسريب بيانات', 'خرق بيانات', 'فدية', 'تصيد احتيالي', 'hack', 'breach',
+            'vulnerability', 'malware', 'ransomware', 'phishing', 'exploit', 'cyberattack',
         ],
         'artificial-intelligence' => [
             'ذكاء اصطناعي', 'نموذج لغوي', 'تعلم آلي', 'روبوت محادثة', 'نموذج توليدي',
