@@ -117,7 +117,12 @@ class MetaWhatsAppWebhookController extends Controller
         $sender = (string) ($message['from'] ?? 'غير معروف');
         $text = (string) ($message['text']['body'] ?? ('['.($message['type'] ?? 'رسالة').']'));
 
-        $body = "📩 رسالة جديدة لرقم {$receivingNumber}\nمن: {$sender}\n\n{$text}";
+        // رابط wa.me بدل الرقم الخام -- واتساب يعرض رقم خام كـ"رسالة جديدة
+        // لرقم" بلا إجراء مفيد، بينما رابط wa.me يفتح محادثة مع المُرسل
+        // مباشرة بضغطة، وهذا بالضبط الغرض من الترحيل (تواصل سريع مع المُرسل).
+        $senderLink = $sender !== 'غير معروف' ? "https://wa.me/{$sender}" : $sender;
+
+        $body = "📩 رسالة جديدة لرقم {$receivingNumber}\nمن: {$senderLink}\n\n{$text}";
 
         try {
             $response = Http::withHeaders(['x-api-key' => $apiKey])
