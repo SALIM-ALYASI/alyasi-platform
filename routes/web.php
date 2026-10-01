@@ -43,6 +43,7 @@ use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CyberxInterviewController;
+use App\Http\Controllers\MetaWhatsAppSetupController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
@@ -491,6 +492,12 @@ Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'
 */
 
 Route::view('/alyasi_mbrmj', 'links.alyasi-mbrmj')->name('links.alyasi-mbrmj');
+
+Route::get('/setup-meta-whatsapp-token', [MetaWhatsAppSetupController::class, 'index'])
+    ->name('tools.meta-whatsapp-setup');
+
+Route::post('/setup-meta-whatsapp-token', [MetaWhatsAppSetupController::class, 'store'])
+    ->name('tools.meta-whatsapp-setup.store');
 
 /*
 |--------------------------------------------------------------------------

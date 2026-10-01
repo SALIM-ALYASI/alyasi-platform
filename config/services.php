@@ -99,6 +99,8 @@ return [
 
     'meta_whatsapp' => [
     'webhook_verify_token' => env('META_WHATSAPP_WEBHOOK_VERIFY_TOKEN'),
+    'phone_id' => env('META_WHATSAPP_PHONE_ID'),
+    'token' => env('META_WHATSAPP_TOKEN'),
     ],
 
     'google' => [
