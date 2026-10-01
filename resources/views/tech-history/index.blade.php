@@ -18,6 +18,9 @@
         :title="__('tech_history.hero_title')"
         :highlight="__('tech_history.hero_title_highlight')"
         :description="__('tech_history.hero_description')"
+        :image="asset('images/tech-history/hero.webp')"
+        :image-width="1672"
+        :image-height="941"
     />
 
     <section class="container news-section">
