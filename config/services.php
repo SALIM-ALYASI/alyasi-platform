@@ -41,6 +41,11 @@ return [
 
     'n8n' => [
         'news_webhook_url' => env('N8N_NEWS_WEBHOOK_URL'),
+        // نفس workflow "ALYASI — Gmail Send" اللي يستخدمه بوت الأخبار (نفس
+        // N8N_GMAIL_WEBHOOK_SECRET = PUBLISHER_INTERNAL_SECRET بـnews-bot-v2).
+        'gmail_webhook_url' => env('N8N_GMAIL_WEBHOOK_URL', 'https://n8n.alyasi.dev/webhook/alyasi-gmail-send'),
+        'gmail_webhook_secret' => env('N8N_GMAIL_WEBHOOK_SECRET'),
+        'analysis_digest_recipients' => env('ANALYSIS_DIGEST_RECIPIENTS', 'r.m.alyasi@gmail.com,alyasi8blus256@gmail.com'),
     ],
 
     'event_bot' => [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AnalysisIngestController;
 use App\Http\Controllers\Api\ArticleIngestController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
@@ -49,6 +50,16 @@ Route::post('news/digest-video', [NewsIngestController::class, 'storeDigestVideo
 Route::post('news/notify-whatsapp', [NewsIngestController::class, 'notifyWhatsAppEndpoint'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.notify-whatsapp');
+
+/*
+|--------------------------------------------------------------------------
+| ALYASI Analysis -- Human reply ingestion (n8n Gmail watcher)
+|--------------------------------------------------------------------------
+*/
+
+Route::post('analysis/ingest-reply', [AnalysisIngestController::class, 'ingestReply'])
+    ->middleware(['n8n-gmail.auth', 'throttle:30,1'])
+    ->name('api.analysis.ingest-reply');
 
 /*
 |--------------------------------------------------------------------------
