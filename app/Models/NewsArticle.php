@@ -35,6 +35,7 @@ class NewsArticle extends Model
         'analysis_ar',
         'analysis_regional_angle_ar',
         'angle',
+        'youtube_video_url',
         'image',
         'image_alt_ar',
         'image_alt_en',

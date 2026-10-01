@@ -358,8 +358,19 @@ class NewsIngestController extends Controller
             'published_url' => ['required', 'url', 'max:2000'],
             'image_url' => ['nullable', 'url', 'max:2000'],
             'stories' => ['nullable', 'array'],
+            'stories.*.id' => ['nullable', 'integer'],
             'stories.*.title' => ['required_with:stories', 'string'],
         ]);
+
+        // يخزّن رابط فيديو النشرة على كل خبر مضمّن فيها -- زر "شاهد الفيديو"
+        // بصفحة الخبر (news/show.blade.php) يعتمد عليه.
+        $storyIds = array_filter(array_column($validated['stories'] ?? [], 'id'));
+
+        if ($storyIds !== []) {
+            NewsArticle::query()
+                ->whereIn('id', $storyIds)
+                ->update(['youtube_video_url' => $validated['published_url']]);
+        }
 
         $bodyLines = ['📺 *ملخص أخبار ALYASI اليومية جاهز*', ''];
 

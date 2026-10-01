@@ -32,6 +32,8 @@
 .news-detail__content a { color: var(--color-accent-600); text-decoration: underline; }
 .news-detail__content strong { font-weight: 700; }
 
+.news-detail__youtube { max-width: 760px; margin: 0 auto 30px; }
+
 .news-detail__share { display: flex; align-items: center; gap: 14px; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--color-divider); flex-wrap: wrap; }
 .news-detail__share-label { font-weight: 700; font-size: 14px; }
 .news-detail__share-btn {
