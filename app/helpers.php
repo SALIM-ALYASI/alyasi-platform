@@ -31,7 +31,9 @@ if (! function_exists('media_url')) {
             return asset($normalized);
         }
 
-        return Storage::url($normalized);
+        // لازم رابط مطلق، لا نسبي -- زاحف Open Graph (واتساب، فيسبوك،
+        // لينكدإن) ما يقدر يحل رابط نسبي مثل /storage/news/x.jpg بنفسه.
+        return url(Storage::url($normalized));
     }
 }
 
