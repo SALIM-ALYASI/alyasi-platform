@@ -90,11 +90,7 @@ class NewsIngestController extends Controller
                 $extension
             );
 
-            $validated['image'] = $file->storeAs(
-                'news',
-                $fileName,
-                'public'
-            );
+            $validated['image'] = $this->storeCleanImage($file, 'news', $fileName);
         }
 
         $isPublished = $request->boolean('is_published');
@@ -429,6 +425,36 @@ class NewsIngestController extends Controller
             'count' => $articles->count(),
             'data' => $articles,
         ]);
+    }
+
+    /**
+     * يعيد ترميز الصورة المرفوعة عبر GD قبل حفظها -- يتخلص من أي EXIF/ICC
+     * profile مضمّن. بدون هذا، ميتا ترفض بعض صور الأخبار برسالة مضللة
+     * "WebP image uploads are not currently supported" رغم كونها JPEG سليم
+     * فعليًا (تأكدنا باختبار مباشر: نفس الملف بعد إعادة الترميز قُبل فورًا)،
+     * فيكسر زر CTA لرسائل واتساب الإخبارية (notifyWhatsAppNewsCta).
+     */
+    private function storeCleanImage(\Illuminate\Http\UploadedFile $file, string $directory, string $fileName): string
+    {
+        $image = @imagecreatefromstring((string) file_get_contents($file->getRealPath()));
+
+        if ($image === false) {
+            return $file->storeAs($directory, $fileName, 'public');
+        }
+
+        ob_start();
+        match (true) {
+            str_ends_with($fileName, '.png') => imagepng($image, null, 6),
+            str_ends_with($fileName, '.webp') => imagewebp($image, null, 85),
+            default => imagejpeg($image, null, 90),
+        };
+        $clean = (string) ob_get_clean();
+        imagedestroy($image);
+
+        $path = "{$directory}/{$fileName}";
+        Storage::disk('public')->put($path, $clean);
+
+        return $path;
     }
 
     /**
