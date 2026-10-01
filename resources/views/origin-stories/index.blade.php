@@ -7,49 +7,54 @@
 @section('og_url', route('origin-stories.index'))
 
 @push('styles')
-    <link rel="stylesheet" href="{{ versioned_asset('css/pages/origin-stories.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/news-index.css') }}">
 @endpush
 
 @section('content')
-    <div class="origin-page">
-        <div class="container">
-            <span class="origin-eyebrow">{{ __('origin_stories.hero_badge') }}</span>
 
-            <h1 class="origin-title">
-                {{ __('origin_stories.hero_title') }}
-                <em>{{ __('origin_stories.hero_title_highlight') }}</em>
-            </h1>
-            <p class="origin-desc">{{ __('origin_stories.hero_description') }}</p>
+    <x-page-hero
+        :badge="__('origin_stories.hero_badge')"
+        :title="__('origin_stories.hero_title')"
+        :highlight="__('origin_stories.hero_title_highlight')"
+        :description="__('origin_stories.hero_description')"
+    />
 
-            @if ($stories->isNotEmpty())
+    <section class="container news-section">
+        @if ($stories->isNotEmpty())
+            <div class="grid-3">
                 @foreach ($stories as $story)
                     @php $slug = $story->slug('ar'); @endphp
-                    <a href="{{ $slug ? route('origin-stories.show', ['slug' => $slug]) : route('origin-stories.index') }}" class="origin-card" data-reveal>
+                    <a href="{{ $slug ? route('origin-stories.show', ['slug' => $slug]) : route('origin-stories.index') }}" class="card card--hover news-card" data-reveal>
                         @if ($story->featured_image_ar)
-                            <div class="origin-card__media">
+                            <div class="news-card__media">
                                 <img src="{{ media_url($story->featured_image_ar) }}" alt="{{ $story->title }}" loading="lazy">
                             </div>
                         @endif
-                        <div class="origin-card__body">
-                            <div class="origin-card__cat">{{ optional($story->published_at)->translatedFormat('d.m.Y') }}</div>
-                            <h2 class="origin-card__title">{{ $story->title }}</h2>
+                        <div class="news-card__body">
+                            <div class="news-card__meta">
+                                <span class="badge">{{ __('origin_stories.hero_badge') }}</span>
+                                <span>{{ optional($story->published_at)->translatedFormat('d.m.Y') }}</span>
+                            </div>
+                            <h3 class="news-card__title">{{ $story->title }}</h3>
                             @if ($story->excerpt)
-                                <p class="origin-card__excerpt">{{ $story->excerpt }}</p>
+                                <p class="news-card__excerpt">{{ $story->excerpt }}</p>
                             @endif
-                            <span class="origin-card__link">{{ __('origin_stories.read_more') }} ←</span>
+                            <span class="news-card__link">{{ __('origin_stories.read_more') }} ←</span>
                         </div>
                     </a>
                 @endforeach
+            </div>
 
-                <div class="news-pagination">
-                    {{ $stories->links() }}
-                </div>
-            @else
-                <div class="empty-state">
-                    <div class="empty-state__title">{{ __('origin_stories.empty_title') }}</div>
-                    <p class="empty-state__desc">{{ __('origin_stories.empty_description') }}</p>
-                </div>
-            @endif
-        </div>
-    </div>
+            <div class="news-pagination">
+                {{ $stories->links() }}
+            </div>
+        @else
+            <div class="empty-state">
+                <div class="empty-state__title">{{ __('origin_stories.empty_title') }}</div>
+                <p class="empty-state__desc">{{ __('origin_stories.empty_description') }}</p>
+            </div>
+        @endif
+    </section>
+
 @endsection
