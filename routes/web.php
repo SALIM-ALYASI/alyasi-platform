@@ -259,24 +259,23 @@ Route::redirect('/product-launches', '/', 302);
 
 /*
 |--------------------------------------------------------------------------
-| Tech History (تاريخ التقنية) -- مخفي مؤقتًا (نفس سبب إطلاقات المنتجات أعلاه)
+| Tech History (تاريخ التقنية)
 |--------------------------------------------------------------------------
 */
-Route::redirect('/tech-history', '/', 302);
 Route::redirect('/origin-stories', '/tech-history', 301);
 
-// Route::middleware('force.locale:ar')
-//     ->prefix('tech-history')
-//     ->name('tech-history.')
-//     ->controller(TechHistoryController::class)
-//     ->group(function () {
-//         Route::get('/', 'index')
-//             ->name('index');
-//
-//         Route::get('/{slug}', 'show')
-//             ->where('slug', '[^/]+')
-//             ->name('show');
-//     });
+Route::middleware('force.locale:ar')
+    ->prefix('tech-history')
+    ->name('tech-history.')
+    ->controller(TechHistoryController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show');
+    });
 
 /*
 |--------------------------------------------------------------------------

@@ -9,9 +9,10 @@
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
         'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*')],
-        // إطلاقات المنتجات و"من البداية" مخفيّين مؤقتًا من القائمة (طلب
-        // صريح) لحين إعادة صياغتهم ودمجهم بالمنصة -- الكود والبيانات باقية
-        // كما هي، بس الروابط نفسها رجعت لصفحة البداية مؤقتًا (routes/web.php).
+        'tech_history' => ['route' => 'tech-history.index', 'active' => request()->routeIs('tech-history.*')],
+        // إطلاقات المنتجات مخفي مؤقتًا من القائمة (طلب صريح) لحين إعادة
+        // صياغته -- الكود والبيانات باقية كما هي، بس الرابط يرجع لصفحة
+        // البداية مؤقتًا (routes/web.php).
     ];
 
     if ($showArticlesNav) {
