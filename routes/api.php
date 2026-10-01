@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FacebookWebhookController;
 use App\Http\Controllers\Api\InstagramWebhookController;
+use App\Http\Controllers\Api\MetaWhatsAppWebhookController;
 /*
 |--------------------------------------------------------------------------
 | News Bot Ingest
@@ -158,3 +159,9 @@ Route::get('webhooks/instagram', [InstagramWebhookController::class, 'verify'])
 
 Route::post('webhooks/instagram', [InstagramWebhookController::class, 'handle'])
     ->name('api.webhooks.instagram.handle');
+
+Route::get('webhooks/meta', [MetaWhatsAppWebhookController::class, 'verify'])
+    ->name('api.webhooks.meta.verify');
+
+Route::post('webhooks/meta', [MetaWhatsAppWebhookController::class, 'handle'])
+    ->name('api.webhooks.meta.handle');
