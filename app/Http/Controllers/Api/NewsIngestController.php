@@ -193,34 +193,41 @@ class NewsIngestController extends Controller
             ?? $article->permalinks()->first();
 
         if ($isPublished) {
-            // تنسيق أقرب لمنشور قناة واتساب: عنوان بارز، وصف، نقاط سريعة، ثم
-            // الرابط أخيرًا -- واتساب يبني معاينة الصورة تلقائيًا من OG tags
-            // بصفحة الخبر (layouts/app.blade.php) بمجرد وجود رابط بآخر الرسالة.
-            // الهاشتاقات نفسها المستخدمة ببقية قنوات النشر (بوت الأخبار)، عشان لو المستخدم
-            // نسخ النص من واتساب ولصقه يدويًا بتويتر/X (ما فيه ربط API آلي هناك حاليًا)
-            // يطلع جاهز بنفس هوية الهاشتاقات بلا ما يكتبها من جديد.
-            $lines = [
+            // جسم الرسالة: عنوان بارز، وصف، نقاط سريعة (بدون الرابط -- بزر
+            // CTA لو توفرت نافذة محادثة مفتوحة على رقم الأخبار الرسمي).
+            $bodyLines = [
                 "📰 *{$article->title_ar}*",
                 '',
             ];
 
             if (filled($article->excerpt_ar)) {
-                $lines[] = Str::limit($article->excerpt_ar, 220);
-                $lines[] = '';
+                $bodyLines[] = Str::limit($article->excerpt_ar, 220);
+                $bodyLines[] = '';
             }
 
-            $lines[] = "• التصنيف: {$category->name_ar}";
-            $lines[] = "• المصدر: {$article->source_name}";
-            $lines[] = '';
+            $bodyLines[] = "• التصنيف: {$category->name_ar}";
+            $bodyLines[] = "• المصدر: {$article->source_name}";
+
+            $bodyText = implode("\n", $bodyLines);
+
+            // الاحتياطي: نفس المحتوى كنص عادي + الرابط آخر شي (معاينة صورة
+            // تلقائية عبر OG tags)، بنفس الهاشتاقات المستخدمة ببقية قنوات
+            // النشر (بوت الأخبار) عشان لو المستخدم نسخ النص ولصقه يدويًا
+            // بتويتر/X يطلع جاهز بلا ما يكتبها من جديد.
+            $fallbackMessage = $bodyText
+                .($permalink ? "\n\n{$permalink->url()}" : '')
+                ."\n\n#AlyasiMagazine #الياسي #تقنية #أخبار_تقنية #عمان";
 
             if ($permalink) {
-                $lines[] = $permalink->url();
-                $lines[] = '';
+                $this->notifyWhatsAppNewsCta(
+                    bodyText: $bodyText,
+                    imageUrl: media_url($article->image),
+                    articleUrl: $permalink->url(),
+                    fallbackMessage: $fallbackMessage,
+                );
+            } else {
+                $this->notifyWhatsApp($fallbackMessage);
             }
-
-            $lines[] = '#AlyasiMagazine #الياسي #تقنية #أخبار_تقنية #عمان';
-
-            $this->notifyWhatsApp(implode("\n", $lines));
         }
 
         return response()->json([
