@@ -50,6 +50,7 @@ use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProductLaunchController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLinkController;
@@ -245,6 +246,21 @@ Route::middleware('force.locale:ar')
     ->prefix('analysis')
     ->name('analysis.')
     ->controller(AnalysisController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Product Launches
+|--------------------------------------------------------------------------
+| محتوى عربي فقط، بدون نسخة /en -- نفس نمط تحليل ALYASI أعلاه.
+*/
+Route::middleware('force.locale:ar')
+    ->prefix('product-launches')
+    ->name('product-launches.')
+    ->controller(ProductLaunchController::class)
     ->group(function () {
         Route::get('/', 'index')
             ->name('index');

@@ -52,6 +52,10 @@ return [
         'token' => env('EVENT_BOT_TOKEN'),
     ],
 
+    'product_watch' => [
+        'token' => env('PRODUCT_WATCH_TOKEN'),
+    ],
+
     'article_bot' => [
         'token' => env('ARTICLE_BOT_TOKEN'),
     ],

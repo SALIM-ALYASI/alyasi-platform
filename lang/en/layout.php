@@ -8,6 +8,7 @@ return [
         'works' => 'Our Work',
         'news' => 'News',
         'analysis' => 'Analysis',
+        'product_launches' => 'Product Launches',
         'articles' => 'My Articles',
         'events' => 'Events',
         'community' => 'Community Events',

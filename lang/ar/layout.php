@@ -8,6 +8,7 @@ return [
         'works' => 'أعمالنا',
         'news' => 'الأخبار',
         'analysis' => 'تحليل',
+        'product_launches' => 'إطلاقات المنتجات',
         'articles' => 'مقالاتي',
         'events' => 'المؤتمرات',
         'community' => 'فعاليات المجتمع',

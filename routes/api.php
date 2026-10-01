@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ArticleIngestController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
+use App\Http\Controllers\Api\ProductLaunchIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\WhatsAppWebhookController;
@@ -60,6 +61,16 @@ Route::post('news/notify-whatsapp', [NewsIngestController::class, 'notifyWhatsAp
 Route::post('analysis/ingest-reply', [AnalysisIngestController::class, 'ingestReply'])
     ->middleware(['n8n-gmail.auth', 'throttle:30,1'])
     ->name('api.analysis.ingest-reply');
+
+/*
+|--------------------------------------------------------------------------
+| Product Watch Ingest (product_watch.py, home server)
+|--------------------------------------------------------------------------
+*/
+
+Route::post('product-launches', [ProductLaunchIngestController::class, 'store'])
+    ->middleware(['product-watch.auth', 'throttle:30,1'])
+    ->name('api.product-launches.store');
 
 /*
 |--------------------------------------------------------------------------
