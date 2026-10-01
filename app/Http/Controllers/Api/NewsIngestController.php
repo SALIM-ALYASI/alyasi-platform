@@ -193,14 +193,34 @@ class NewsIngestController extends Controller
             ?? $article->permalinks()->first();
 
         if ($isPublished) {
+            // تنسيق أقرب لمنشور قناة واتساب: عنوان بارز، وصف، نقاط سريعة، ثم
+            // الرابط أخيرًا -- واتساب يبني معاينة الصورة تلقائيًا من OG tags
+            // بصفحة الخبر (layouts/app.blade.php) بمجرد وجود رابط بآخر الرسالة.
             // الهاشتاقات نفسها المستخدمة ببقية قنوات النشر (بوت الأخبار)، عشان لو المستخدم
             // نسخ النص من واتساب ولصقه يدويًا بتويتر/X (ما فيه ربط API آلي هناك حاليًا)
             // يطلع جاهز بنفس هوية الهاشتاقات بلا ما يكتبها من جديد.
-            $this->notifyWhatsApp(
-                "📰 خبر جديد على ALYASI:\n{$article->title_ar}"
-                .($permalink ? "\n{$permalink->url()}" : '')
-                ."\n\n#AlyasiMagazine #الياسي #تقنية #أخبار_تقنية #عمان"
-            );
+            $lines = [
+                "📰 *{$article->title_ar}*",
+                '',
+            ];
+
+            if (filled($article->excerpt_ar)) {
+                $lines[] = Str::limit($article->excerpt_ar, 220);
+                $lines[] = '';
+            }
+
+            $lines[] = "• التصنيف: {$category->name_ar}";
+            $lines[] = "• المصدر: {$article->source_name}";
+            $lines[] = '';
+
+            if ($permalink) {
+                $lines[] = $permalink->url();
+                $lines[] = '';
+            }
+
+            $lines[] = '#AlyasiMagazine #الياسي #تقنية #أخبار_تقنية #عمان';
+
+            $this->notifyWhatsApp(implode("\n", $lines));
         }
 
         return response()->json([
