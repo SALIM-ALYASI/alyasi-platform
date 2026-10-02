@@ -17,7 +17,7 @@ class ArticleController extends Controller
      * الخاصة -- يُستثنى من هنا دائمًا حتى لا تظهر حلقاته كمقال عادي مختلط
      * بآراء/تجارب سالم الشخصية، رغم إنهم نفس Article model تحت الغطاء.
      */
-    private const EXCLUDED_CATEGORY_SLUG = 'tech-history';
+    private const EXCLUDED_CATEGORY_SLUG = Article::TECH_HISTORY_CATEGORY_SLUG;
 
     /**
      * صفحة مقالاتي الرئيسية.
@@ -36,10 +36,7 @@ class ArticleController extends Controller
             ->with(['category', 'permalinks'])
             ->published()
             ->availableIn($locale)
-            ->whereDoesntHave(
-                'category',
-                fn ($query) => $query->where('slug', self::EXCLUDED_CATEGORY_SLUG)
-            );
+            ->excludingTechHistory();
 
         if ($request->filled('category')) {
             $articlesQuery->whereHas(
@@ -55,10 +52,7 @@ class ArticleController extends Controller
             ->with(['category', 'permalinks'])
             ->published()
             ->availableIn($locale)
-            ->whereDoesntHave(
-                'category',
-                fn ($query) => $query->where('slug', self::EXCLUDED_CATEGORY_SLUG)
-            )
+            ->excludingTechHistory()
             ->featured()
             ->ordered()
             ->limit(3)
@@ -123,6 +117,7 @@ class ArticleController extends Controller
             ->published()
             ->availableIn($locale)
             ->whereKeyNot($article->getKey())
+            ->excludingTechHistory()
             ->when(
                 $article->article_category_id,
                 fn ($query) => $query->where(

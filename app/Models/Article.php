@@ -19,6 +19,12 @@ class Article extends Model
     public const STATUS_ARCHIVED = 'archived';
 
     /**
+     * تصنيف قسم "تاريخ التقنية" -- قسم مستقل له صفحاته الخاصة، فمقالاته
+     * لا تظهر في أي مكان من مقالاتي (الفهرس، المشابهة، الرئيسية، sitemap).
+     */
+    public const TECH_HISTORY_CATEGORY_SLUG = 'tech-history';
+
+    /**
      * متوسط عدد الكلمات المقروءة بالدقيقة، لحساب مدة القراءة تلقائيًا.
      */
     private const WORDS_PER_MINUTE = 200;
@@ -130,6 +136,14 @@ class Article extends Model
             ->where('status', self::STATUS_PUBLISHED)
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now());
+    }
+
+    public function scopeExcludingTechHistory(Builder $query): Builder
+    {
+        return $query->whereDoesntHave(
+            'category',
+            fn (Builder $query) => $query->where('slug', self::TECH_HISTORY_CATEGORY_SLUG)
+        );
     }
 
     public function scopeFeatured(Builder $query): Builder

@@ -148,6 +148,7 @@ class GenerateSitemap extends Command
             ->published()
             ->with('permalinks')
             ->availableIn('ar')
+            ->excludingTechHistory()
             ->orderBy('id')
             ->chunk(100, function ($articles) use ($sitemap) {
                 foreach ($articles as $article) {

@@ -60,6 +60,7 @@ class HomeController extends Controller
                 ->with(['category', 'permalinks'])
                 ->published()
                 ->availableIn(app()->getLocale())
+                ->excludingTechHistory()
                 ->ordered()
                 ->take(2)
                 ->get()
