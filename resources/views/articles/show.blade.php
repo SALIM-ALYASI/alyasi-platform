@@ -382,7 +382,7 @@
                     <div class="articles-detail__related-media">
 
                         <img
-                            src="{{ media_url($related->featured_image_ar) }}"
+                            src="{{ media_url($related->displayImage()) }}"
                             alt="{{ $related->title }}"
                             loading="lazy"
                         >

@@ -322,7 +322,7 @@
                         @foreach ($latestArticles as $article)
                             <a href="{{ article_route('show', [$article->slug()]) }}" class="home-updates-card">
                                 <div class="home-updates-card__media">
-                                    <img src="{{ media_url($article->featured_image_ar) }}" alt="{{ $article->title }}" loading="lazy">
+                                    <img src="{{ media_url($article->displayImage()) }}" alt="{{ $article->title }}" loading="lazy">
                                 </div>
                                 <div class="home-updates-card__body">
                                     <div class="home-updates-card__date">{{ optional($article->published_at)->translatedFormat('d.m.Y') }}</div>
