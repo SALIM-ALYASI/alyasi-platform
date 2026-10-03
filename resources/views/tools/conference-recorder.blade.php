@@ -155,9 +155,14 @@ async function startRecording() {
     return;
   }
 
-  stream = await navigator.mediaDevices.getUserMedia({
-    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
-  });
+  // الميكروفون يبقى مفتوح طول ما الصفحة مفتوحة -- Safari يطلب الإذن من جديد
+  // كل مرة ينقفل. فلاتر المكالمات (إلغاء الصدى وكتم الضوضاء) تقطّع كلام
+  // المتحدث البعيد على iOS، والتنقية تصير على السيرفر بـ FFmpeg.
+  if (!stream || !stream.getAudioTracks().some(t => t.readyState === 'live')) {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true }
+    });
+  }
 
   const mimeType = chooseMimeType();
   recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
@@ -183,7 +188,6 @@ async function startRecording() {
 function stopRecording() {
   if (!recorder || recorder.state === 'inactive') return;
   recorder.stop();
-  if (stream) stream.getTracks().forEach(t => t.stop());
   clearInterval(timerHandle);
   releaseScreen();
   recordButton.disabled = true;
