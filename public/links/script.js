@@ -6,7 +6,7 @@ const LINKS = [
   { name: 'إنستغرام',    en: 'Instagram',       handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-instagram',   url: 'https://www.instagram.com/alyasi_mbrmj',           b: 'linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)', f: '#fff' },
   { name: 'فيسبوك',      en: 'Facebook',        handle: 'ALYASI',                                         icon: 'fa-brands fa-facebook-f',  url: 'https://www.facebook.com/share/1MEuuTpQD4/',       b: '#1877F2', f: '#fff' },
   { name: 'لينكدإن',     en: 'LinkedIn',        handle: 'سالم الحجري',          enHandle: 'Salem Al Hajri', icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/سالم-الحجري-b735a721b', b: '#0A66C2', f: '#fff' },
-  { name: 'يوتيوب',      en: 'YouTube',         handle: '@alyasiforchargers',                             icon: 'fa-brands fa-youtube',     url: 'https://youtube.com/@alyasiforchargers',           b: '#FF0000', f: '#fff' },
+  { name: 'يوتيوب',      en: 'YouTube',         handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-youtube',     url: 'https://youtube.com/@alyasi_mbrmj',                b: '#FF0000', f: '#fff' },
   { name: 'تيك توك',     en: 'TikTok',          handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-tiktok',      url: 'https://www.tiktok.com/@alyasi_mbrmj',             b: '#010101', f: '#fff' },
   { name: 'سناب شات',    en: 'Snapchat',        handle: 'ALYASI',                                         icon: 'fa-brands fa-snapchat',    url: 'https://snapchat.com/t/pyHBRyl9',                  b: '#FFFC00', f: '#000' },
 ];
