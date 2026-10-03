@@ -1,24 +1,22 @@
 const LINKS = [
-  { name: 'واتساب',   handle: 'تواصل مباشر',        icon: 'fa-brands fa-whatsapp',    url: 'https://wa.me/qr/2CWYHXAZ25JYO1',                        b: '#25D366', f: '#fff' },
-  { name: 'إكس',      handle: '@ALYASI_MBRMJ',       icon: 'fa-brands fa-x-twitter',   url: 'https://x.com/ALYASI_MBRMJ',                             b: '#000',    f: '#fff' },
-  { name: 'إنستغرام', handle: '@alyasi_mbrmj',       icon: 'fa-brands fa-instagram',   url: 'https://www.instagram.com/alyasi_mbrmj',                 b: 'linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)', f: '#fff' },
-  { name: 'فيسبوك',   handle: 'ALYASI',              icon: 'fa-brands fa-facebook-f',  url: 'https://www.facebook.com/share/1MEuuTpQD4/',             b: '#1877F2', f: '#fff' },
-  { name: 'لينكدإن',  handle: 'سالم الحجري',         icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/سالم-الحجري-b735a721b',       b: '#0A66C2', f: '#fff' },
-  { name: 'يوتيوب',   handle: '@alyasiforchargers',  icon: 'fa-brands fa-youtube',     url: 'https://youtube.com/@alyasiforchargers',                 b: '#FF0000', f: '#fff' },
-  { name: 'تيك توك',  handle: '@alyasi_mbrmj',       icon: 'fa-brands fa-tiktok',      url: 'https://www.tiktok.com/@alyasi_mbrmj',                   b: '#010101', f: '#fff' },
-  { name: 'سناب شات', handle: 'ALYASI',              icon: 'fa-brands fa-snapchat',    url: 'https://snapchat.com/t/pyHBRyl9',                        b: '#FFFC00', f: '#000' },
+  { name: 'واتساب',      en: 'WhatsApp',        handle: 'تواصل مباشر',        enHandle: 'Direct chat',    icon: 'fa-brands fa-whatsapp',    url: 'https://wa.me/qr/2CWYHXAZ25JYO1',                  b: '#25D366', f: '#fff' },
+  { name: 'منصة الياسي', en: 'ALYASI Platform', handle: 'alyasi.dev',                                     icon: 'fa-solid fa-globe',        url: 'https://alyasi.dev',                              b: '#1F6FD1', f: '#fff' },
+  { name: 'موقعنا',      en: 'Our Location',    handle: 'بدية، عُمان',          enHandle: 'Bidiyah, Oman',  icon: 'fa-solid fa-location-dot', url: 'https://alyasi.dev/Mylocation',                   b: '#EA4335', f: '#fff' },
+  { name: 'إكس',         en: 'X',               handle: '@ALYASI_MBRMJ',                                  icon: 'fa-brands fa-x-twitter',   url: 'https://x.com/ALYASI_MBRMJ',                       b: '#000',    f: '#fff' },
+  { name: 'إنستغرام',    en: 'Instagram',       handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-instagram',   url: 'https://www.instagram.com/alyasi_mbrmj',           b: 'linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)', f: '#fff' },
+  { name: 'فيسبوك',      en: 'Facebook',        handle: 'ALYASI',                                         icon: 'fa-brands fa-facebook-f',  url: 'https://www.facebook.com/share/1MEuuTpQD4/',       b: '#1877F2', f: '#fff' },
+  { name: 'لينكدإن',     en: 'LinkedIn',        handle: 'سالم الحجري',          enHandle: 'Salem Al Hajri', icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/سالم-الحجري-b735a721b', b: '#0A66C2', f: '#fff' },
+  { name: 'يوتيوب',      en: 'YouTube',         handle: '@alyasiforchargers',                             icon: 'fa-brands fa-youtube',     url: 'https://youtube.com/@alyasiforchargers',           b: '#FF0000', f: '#fff' },
+  { name: 'تيك توك',     en: 'TikTok',          handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-tiktok',      url: 'https://www.tiktok.com/@alyasi_mbrmj',             b: '#010101', f: '#fff' },
+  { name: 'سناب شات',    en: 'Snapchat',        handle: 'ALYASI',                                         icon: 'fa-brands fa-snapchat',    url: 'https://snapchat.com/t/pyHBRyl9',                  b: '#FFFC00', f: '#000' },
 ];
 
 // الترجمة حسب لغة الجهاز (html[lang] يتحدد بسكربت الـhead قبل الرسم).
 const IS_EN = document.documentElement.lang === 'en';
-const EN = {
-  names: ['WhatsApp', 'X', 'Instagram', 'Facebook', 'LinkedIn', 'YouTube', 'TikTok', 'Snapchat'],
-  handles: { 'تواصل مباشر': 'Direct chat', 'سالم الحجري': 'Salem Al Hajri' },
-};
 if (IS_EN) {
-  LINKS.forEach((l, i) => {
-    l.name = EN.names[i];
-    l.handle = EN.handles[l.handle] || l.handle;
+  LINKS.forEach((l) => {
+    l.name = l.en;
+    l.handle = l.enHandle || l.handle;
   });
 }
 
