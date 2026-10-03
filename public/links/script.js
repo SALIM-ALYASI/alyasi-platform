@@ -1,7 +1,7 @@
 const LINKS = [
   { name: 'واتساب',      en: 'WhatsApp',        handle: 'تواصل مباشر',        enHandle: 'Direct chat',    icon: 'fa-brands fa-whatsapp',    url: 'https://wa.me/qr/2CWYHXAZ25JYO1',                  b: '#25D366', f: '#fff' },
-  { name: 'منصة الياسي', en: 'ALYASI Platform', handle: 'alyasi.dev',                                     icon: 'fa-solid fa-globe',        url: 'https://alyasi.dev',                              b: '#1F6FD1', f: '#fff' },
-  { name: 'موقعنا',      en: 'Our Location',    handle: 'بدية، عُمان',          enHandle: 'Bidiyah, Oman',  icon: 'fa-solid fa-map-location-dot', url: 'https://alyasi.dev/Mylocation',                   b: '#EA4335', f: '#fff' },
+  { name: 'منصة الياسي', en: 'ALYASI Platform', handle: 'alyasi.dev',                                     logo: true,                       url: 'https://alyasi.dev',                              b: '#1F6FD1', f: '#fff' },
+  { name: 'موقعنا',      en: 'Our Location',    handle: 'بدية، عُمان',          enHandle: 'Bidiyah, Oman',  icon: 'fa-solid fa-location-dot', url: 'https://alyasi.dev/Mylocation',                   b: '#EA4335', f: '#fff' },
   { name: 'إكس',         en: 'X',               handle: '@ALYASI_MBRMJ',                                  icon: 'fa-brands fa-x-twitter',   url: 'https://x.com/ALYASI_MBRMJ',                       b: '#000',    f: '#fff' },
   { name: 'إنستغرام',    en: 'Instagram',       handle: '@alyasi_mbrmj',                                  icon: 'fa-brands fa-instagram',   url: 'https://www.instagram.com/alyasi_mbrmj',           b: 'linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)', f: '#fff' },
   { name: 'فيسبوك',      en: 'Facebook',        handle: 'ALYASI',                                         icon: 'fa-brands fa-facebook-f',  url: 'https://www.facebook.com/share/1MEuuTpQD4/',       b: '#1877F2', f: '#fff' },
@@ -27,7 +27,9 @@ const root = document.documentElement;
 // بناء الروابط
 $('#links').innerHTML = LINKS.map((l) => `
   <a class="link" href="${l.url}" target="_blank" rel="noopener" style="--b:${l.b};--f:${l.f}">
-    <span class="ic"><i class="${l.icon}"></i></span>
+    <span class="ic">${l.logo
+      ? '<img class="ic-logo ic-logo--light" src="/images/logo/logo-navy-icon.png" alt=""><img class="ic-logo ic-logo--dark" src="/images/logo/logo-white-trimmed.png" alt="">'
+      : `<i class="${l.icon}"></i>`}</span>
     <span class="txt">
       <span class="name">${l.name}</span>
       <span class="handle" dir="ltr">${l.handle}</span>

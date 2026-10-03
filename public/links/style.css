@@ -84,3 +84,9 @@ html[lang="en"] .link .name { font-family: Figtree, sans-serif; }
 html[dir="ltr"] .link .handle { text-align: left; }
 html[dir="ltr"] .link:hover { transform: translateX(6px); }
 html[dir="ltr"] .link:hover .arr { transform: translateX(4px); }
+
+/* ALYASI mark instead of a generic icon -- navy on light, white on dark */
+.link .ic-logo { width: 24px; height: auto; display: block; }
+.link .ic-logo--dark,
+html[data-theme="dark"] .link .ic-logo--light { display: none; }
+html[data-theme="dark"] .link .ic-logo--dark { display: block; }
