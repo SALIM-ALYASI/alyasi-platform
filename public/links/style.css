@@ -39,7 +39,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ac); outline-of
   background: var(--card); color: var(--tx); font-size: 16px; box-shadow: var(--sh);
   display: flex; align-items: center; justify-content: center; transition: background .25s, transform .2s;
 }
-.theme-btn { position: absolute; top: 24px; left: 22px; z-index: 2; }
+.theme-btn { position: absolute; top: 24px; inset-inline-end: 22px; z-index: 2; }
 .icon-btn { width: 40px; height: 40px; font-size: 14px; }
 .theme-btn:hover, .icon-btn:hover { background: var(--hv); }
 .theme-btn:active, .icon-btn:active { background: var(--pr); transform: scale(.94); }
@@ -77,3 +77,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ac); outline-of
 .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 8px; font-size: 12px; font-weight: 600; color: var(--sub); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* English (device language not Arabic) -- mirrors the RTL layout */
+html[lang="en"] .title,
+html[lang="en"] .link .name { font-family: Figtree, sans-serif; }
+html[dir="ltr"] .link .handle { text-align: left; }
+html[dir="ltr"] .link:hover { transform: translateX(6px); }
+html[dir="ltr"] .link:hover .arr { transform: translateX(4px); }

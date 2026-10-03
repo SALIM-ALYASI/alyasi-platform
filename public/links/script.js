@@ -9,6 +9,19 @@ const LINKS = [
   { name: 'سناب شات', handle: 'ALYASI',              icon: 'fa-brands fa-snapchat',    url: 'https://snapchat.com/t/pyHBRyl9',                        b: '#FFFC00', f: '#000' },
 ];
 
+// الترجمة حسب لغة الجهاز (html[lang] يتحدد بسكربت الـhead قبل الرسم).
+const IS_EN = document.documentElement.lang === 'en';
+const EN = {
+  names: ['WhatsApp', 'X', 'Instagram', 'Facebook', 'LinkedIn', 'YouTube', 'TikTok', 'Snapchat'],
+  handles: { 'تواصل مباشر': 'Direct chat', 'سالم الحجري': 'Salem Al Hajri' },
+};
+if (IS_EN) {
+  LINKS.forEach((l, i) => {
+    l.name = EN.names[i];
+    l.handle = EN.handles[l.handle] || l.handle;
+  });
+}
+
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const root = document.documentElement;
@@ -21,8 +34,15 @@ $('#links').innerHTML = LINKS.map((l) => `
       <span class="name">${l.name}</span>
       <span class="handle" dir="ltr">${l.handle}</span>
     </span>
-    <span class="arr"><i class="fa-solid fa-arrow-left"></i></span>
+    <span class="arr"><i class="fa-solid ${IS_EN ? 'fa-arrow-right' : 'fa-arrow-left'}"></i></span>
   </a>`).join('');
+
+if (IS_EN) {
+  document.title = 'ALYASI — My Links';
+  $('#pageTitle').innerHTML = 'Salem Al Hajri <span>· Follow me everywhere</span>';
+  $('#themeBtn').setAttribute('aria-label', 'Toggle light and dark mode');
+  $('#replayBtn').setAttribute('aria-label', 'Replay animation');
+}
 
 // الوضع الفاتح / الغامق
 function applyTheme(t) {
@@ -61,7 +81,7 @@ function play() {
     { duration: 600, delay: 350 + i * 450, easing: out, fill: 'backwards' }));
 
   $$('.link').forEach((el, i) => el.animate(
-    [{ transform: 'translateX(-60px) scale(.94)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+    [{ transform: `translateX(${IS_EN ? 60 : -60}px) scale(.94)`, opacity: 0 }, { transform: 'none', opacity: 1 }],
     { duration: 750, delay: 550 + i * 180, easing: spring, fill: 'backwards' }));
 }
 $('#replayBtn').addEventListener('click', play);

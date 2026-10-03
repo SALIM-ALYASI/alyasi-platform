@@ -8,8 +8,17 @@
 <meta name="theme-color" content="#0B1F3A">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="{{ asset('links/style.css') }}">
+<link rel="stylesheet" href="{{ versioned_asset('links/style.css') }}">
 <script>
+  // اللغة حسب لغة الجهاز بدون أي زر: أي لغة غير العربية = إنجليزي.
+  // تُحدد هنا قبل الرسم عشان الصفحة ما ترمش من RTL لـLTR.
+  (function () {
+    var l = (navigator.languages && navigator.languages[0]) || navigator.language || 'ar';
+    if (!/^ar\b/i.test(l)) {
+      document.documentElement.lang = 'en';
+      document.documentElement.dir = 'ltr';
+    }
+  })();
   (function () {
     var t = null;
     try { t = localStorage.getItem('alyasi-theme'); } catch (e) {}
@@ -36,7 +45,7 @@
             <img id="logoImg" src="{{ asset('links/logo-light.png') }}" alt="ALYASI — Create · Connect · Innovate">
           </div>
         </div>
-        <h1 class="title anim-up">سالم الحجري <span>· تابعني على منصاتي</span></h1>
+        <h1 class="title anim-up" id="pageTitle">سالم الحجري <span>· تابعني على منصاتي</span></h1>
       </header>
 
       <nav class="links" id="links"></nav>
@@ -47,6 +56,6 @@
       </footer>
     </main>
   </div>
-  <script src="{{ asset('links/script.js') }}"></script>
+  <script src="{{ versioned_asset('links/script.js') }}"></script>
 </body>
 </html>
