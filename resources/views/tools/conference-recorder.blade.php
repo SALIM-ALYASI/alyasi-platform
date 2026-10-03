@@ -212,9 +212,10 @@ async function pollStatus(relayId) {
     failed: '❌ فشلت معالجة التسجيل'
   };
 
-  // حتى ساعتين -- تسجيل مؤتمر طويل ياخذ وقت في التحويل.
-  for (let i = 0; i < 1440; i++) {
-    await new Promise(r => setTimeout(r, 5000));
+  // كل 10 ثواني لمدة ساعتين -- الاستضافة تحظر الـ IP عند كثرة الطلبات،
+  // وتسجيل مؤتمر طويل ياخذ وقت في التحويل.
+  for (let i = 0; i < 720; i++) {
+    await new Promise(r => setTimeout(r, 10000));
     try {
       const response = await fetch('/api/cj/recordings/' + relayId + '/status', {
         headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
