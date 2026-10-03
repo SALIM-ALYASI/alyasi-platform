@@ -26,6 +26,8 @@
     .progress { height:8px; background:#071426; border-radius:8px; overflow:hidden; margin-top:14px; display:none; }
     .progress > div { height:100%; width:0; background:#4fa3ff; transition:width .2s; }
     .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:#071426; border:1px solid #263a56; min-height:52px; line-height:1.6; word-break:break-word; }
+    .session { display:none; margin-top:18px; font-size:14px; color:#9fd8a8; }
+    .session a { color:#8fa1b8; margin-inline-start:8px; }
     .hint { font-size:13px; color:#8fa1b8; text-align:center; margin-top:14px; line-height:1.6; }
   </style>
 </head>
@@ -34,8 +36,11 @@
     <h1>🎙️ صحفي المؤتمر</h1>
     <p>سجّل الجلسة أو المقابلة. بعد الإيقاف يرتفع الصوت تلقائيًا ويتحول إلى نص على الماك.</p>
 
-    <label for="token">رمز الدخول</label>
-    <input id="token" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••••">
+    <div id="login">
+      <label for="token">رمز الدخول</label>
+      <input id="token" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••••">
+    </div>
+    <div id="session" class="session"><span id="session-text"></span><a href="#" id="logout">تسجيل خروج</a></div>
 
     <div id="timer" class="timer">00:00</div>
     <button id="record">ابدأ التسجيل</button>
@@ -54,7 +59,48 @@ const timerBox = document.getElementById('timer');
 const progressBox = document.getElementById('progress');
 const progressBar = progressBox.firstElementChild;
 
-try { tokenInput.value = localStorage.getItem('cj_user_token') || ''; } catch (_) {}
+const loginBox = document.getElementById('login');
+const sessionBox = document.getElementById('session');
+const SESSION_KEY = 'cj_session';
+const SESSION_HOURS = 24;
+
+// الدخول يبقى 24 ساعة من أول تسجيل ناجح للرمز، بعدها تطلب الصفحة الرمز من جديد.
+function loadSession() {
+  try {
+    localStorage.removeItem('cj_user_token');
+    const session = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if (session && session.token && session.expires > Date.now()) return session;
+    localStorage.removeItem(SESSION_KEY);
+  } catch (_) {}
+  return null;
+}
+
+function showSession(session) {
+  if (session) {
+    tokenInput.value = session.token;
+    const until = new Date(session.expires).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('session-text').textContent = '✅ مسجّل الدخول حتى ' + until + ' غدًا';
+  }
+  loginBox.style.display = session ? 'none' : 'block';
+  sessionBox.style.display = session ? 'block' : 'none';
+}
+
+function saveSession(token) {
+  const current = loadSession();
+  if (current && current.token === token) return;
+  const session = { token, expires: Date.now() + SESSION_HOURS * 3600 * 1000 };
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (_) {}
+  showSession(session);
+}
+
+function endSession() {
+  try { localStorage.removeItem(SESSION_KEY); } catch (_) {}
+  tokenInput.value = '';
+  showSession(null);
+}
+
+document.getElementById('logout').addEventListener('click', e => { e.preventDefault(); endSession(); });
+showSession(loadSession());
 
 let recorder = null;
 let stream = null;
@@ -103,7 +149,6 @@ async function startRecording() {
     setStatus('أدخل رمز الدخول أولًا.');
     return;
   }
-  try { localStorage.setItem('cj_user_token', token); } catch (_) {}
 
   if (!navigator.mediaDevices || !window.MediaRecorder) {
     setStatus('❌ هذا المتصفح لا يدعم التسجيل. استخدم Safari أو Chrome بإصدار حديث.');
@@ -168,7 +213,10 @@ function sendForm(form, token) {
       let data = {};
       try { data = JSON.parse(xhr.responseText); } catch (_) {}
       if (xhr.status >= 200 && xhr.status < 300) resolve(data);
-      else reject(new Error(data.message || ('HTTP ' + xhr.status)));
+      else {
+        if (xhr.status === 401) endSession();
+        reject(new Error(xhr.status === 401 ? 'رمز الدخول غير صحيح — أدخله من جديد' : (data.message || ('HTTP ' + xhr.status))));
+      }
     };
     xhr.onerror = () => reject(new Error('تعذر الاتصال بالسيرفر'));
     xhr.send(form);
@@ -186,7 +234,9 @@ async function uploadRecording() {
   try {
     const form = new FormData();
     form.append('audio', pendingUpload.blob, pendingUpload.name);
-    const data = await sendForm(form, tokenInput.value.trim());
+    const token = tokenInput.value.trim();
+    const data = await sendForm(form, token);
+    saveSession(token);
 
     pendingUpload = null;
     setStatus('✅ تم حفظ التسجيل: ' + data.relay_id);
