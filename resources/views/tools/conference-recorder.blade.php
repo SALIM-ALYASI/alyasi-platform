@@ -35,7 +35,7 @@
     <p>سجّل الجلسة أو المقابلة. بعد الإيقاف يرتفع الصوت تلقائيًا ويتحول إلى نص على الماك.</p>
 
     <label for="token">رمز الدخول</label>
-    <input id="token" type="password" autocomplete="off" placeholder="USER_API_TOKEN">
+    <input id="token" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••••">
 
     <div id="timer" class="timer">00:00</div>
     <button id="record">ابدأ التسجيل</button>
