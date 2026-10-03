@@ -121,7 +121,9 @@ function formatTime(ms) {
 }
 
 function chooseMimeType() {
-  const candidates = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg;codecs=opus'];
+  // MP4/AAC أولًا: WebM من Safari على iOS يطلع بتوقيتات مكسورة والصوت يتقطع
+  // عند فكّه، فيتحول إلى كلام بلا معنى.
+  const candidates = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
   return candidates.find(type => MediaRecorder.isTypeSupported(type)) || '';
 }
 
