@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AuthenticateArticleBot;
+use App\Http\Middleware\AuthenticateConferenceJournalist;
 use App\Http\Middleware\AuthenticateEventBot;
 use App\Http\Middleware\AuthenticateManagerBot;
 use App\Http\Middleware\AuthenticateN8nGmail;
@@ -39,6 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'manager-bot.auth' => AuthenticateManagerBot::class,
             'article-bot.auth' => AuthenticateArticleBot::class,
             'publish-webhook.auth' => AuthenticatePublishWebhook::class,
+            'cj.auth' => AuthenticateConferenceJournalist::class,
             'force.locale' => ForceLocale::class,
         ]);
 

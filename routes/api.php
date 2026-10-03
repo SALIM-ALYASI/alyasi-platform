@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AnalysisIngestController;
 use App\Http\Controllers\Api\ArticleIngestController;
+use App\Http\Controllers\Api\ConferenceRecordingController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
@@ -72,6 +73,40 @@ Route::post('analysis/ingest-reply', [AnalysisIngestController::class, 'ingestRe
 Route::post('alerts/pipeline-failure', [PipelineAlertController::class, 'store'])
     ->middleware(['n8n-gmail.auth', 'throttle:30,1'])
     ->name('api.alerts.pipeline-failure');
+
+/*
+|--------------------------------------------------------------------------
+| Conference Journalist (/cj recorder + home-server relay)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('cj')
+    ->name('api.cj.')
+    ->group(function () {
+        Route::post('recordings', [ConferenceRecordingController::class, 'store'])
+            ->middleware(['cj.auth:user', 'throttle:20,1'])
+            ->name('recordings.store');
+
+        Route::get('recordings/{relayId}/status', [ConferenceRecordingController::class, 'status'])
+            ->middleware(['cj.auth:user', 'throttle:120,1'])
+            ->name('recordings.status');
+
+        Route::get('relay/pending', [ConferenceRecordingController::class, 'pending'])
+            ->middleware(['cj.auth:relay', 'throttle:120,1'])
+            ->name('relay.pending');
+
+        Route::get('relay/{relayId}/audio', [ConferenceRecordingController::class, 'audio'])
+            ->middleware(['cj.auth:relay', 'throttle:60,1'])
+            ->name('relay.audio');
+
+        Route::post('relay/{relayId}/forwarded', [ConferenceRecordingController::class, 'forwarded'])
+            ->middleware(['cj.auth:relay', 'throttle:60,1'])
+            ->name('relay.forwarded');
+
+        Route::post('relay/status', [ConferenceRecordingController::class, 'syncStatus'])
+            ->middleware(['cj.auth:relay', 'throttle:120,1'])
+            ->name('relay.status');
+    });
 
 /*
 |--------------------------------------------------------------------------

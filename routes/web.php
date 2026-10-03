@@ -529,6 +529,9 @@ Route::post(
 Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
     ->name('tools.cyberx-interview');
 
+// صحفي المؤتمر -- مسجّل صوت للآيفون/الآيباد (ConferenceJournalist)
+Route::view('/cj', 'tools.conference-recorder')->name('tools.conference-recorder');
+
 /*
 |--------------------------------------------------------------------------
 | Link-in-bio pages (unlinked -- not part of site navigation)
