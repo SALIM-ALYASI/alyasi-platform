@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ArticleIngestController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
+use App\Http\Controllers\Api\PipelineAlertController;
 use App\Http\Controllers\Api\ProductLaunchIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
@@ -61,6 +62,16 @@ Route::post('news/notify-whatsapp', [NewsIngestController::class, 'notifyWhatsAp
 Route::post('analysis/ingest-reply', [AnalysisIngestController::class, 'ingestReply'])
     ->middleware(['n8n-gmail.auth', 'throttle:30,1'])
     ->name('api.analysis.ingest-reply');
+
+/*
+|--------------------------------------------------------------------------
+| n8n Pipeline Failure Alerts (WhatsApp via free bridge)
+|--------------------------------------------------------------------------
+*/
+
+Route::post('alerts/pipeline-failure', [PipelineAlertController::class, 'store'])
+    ->middleware(['n8n-gmail.auth', 'throttle:30,1'])
+    ->name('api.alerts.pipeline-failure');
 
 /*
 |--------------------------------------------------------------------------
