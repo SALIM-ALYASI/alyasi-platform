@@ -99,6 +99,27 @@
             color: var(--navy);
         }
 
+        .window-guests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .guest-jump {
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 8px 14px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .guest-jump:active { background: var(--gold); color: var(--navy); }
+
         .tab-panel { display: none; }
         .tab-panel.is-active { display: block; }
 
@@ -400,14 +421,27 @@
                 if (data.interview_windows && data.interview_windows.length) {
                     addDivider(panel, 'نوافذ المقابلات');
                     data.interview_windows.forEach((w) => {
-                        const names = w.guests
-                            .map((gid) => (allGuests.find((g) => g.id === gid) || {}).name_ar || gid)
-                            .join('، ');
-
                         const card = document.createElement('div');
                         card.className = 'card';
-                        card.innerHTML = '<div class="label"><span>' + w.label + '</span><span class="meta">' + formatTimesInText(w.time) + '</span></div>' +
-                            '<p class="q" style="margin:0">' + names + '</p>';
+                        card.innerHTML = '<div class="label"><span>' + w.label + '</span><span class="meta">' + formatTimesInText(w.time) + '</span></div>';
+
+                        // زر لكل ضيف بالنافذة يفتح تبويب أسئلته مباشرة -- وقت
+                        // الزحمة بالاستراحة ما فيه وقت تدور اسمه بشريط التبويبات.
+                        const guestsRow = document.createElement('div');
+                        guestsRow.className = 'window-guests';
+                        w.guests.forEach((gid) => {
+                            const guest = allGuests.find((g) => g.id === gid) || {};
+                            const jump = document.createElement('button');
+                            jump.type = 'button';
+                            jump.className = 'guest-jump';
+                            jump.textContent = '❓ ' + (guest.language === 'en' ? (guest.name_en || gid) : (guest.name_ar || gid));
+                            jump.addEventListener('click', () => {
+                                const tab = tabsBar.querySelector('[data-tab="' + gid + '"]');
+                                if (tab) tab.click();
+                            });
+                            guestsRow.appendChild(jump);
+                        });
+                        card.appendChild(guestsRow);
                         panel.appendChild(card);
                     });
                 }
@@ -510,6 +544,7 @@
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'tab-btn';
+            btn.dataset.tab = id;
             btn.textContent = label;
 
             const panel = document.createElement('div');
