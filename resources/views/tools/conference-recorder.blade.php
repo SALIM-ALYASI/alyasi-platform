@@ -18,6 +18,10 @@
     label { display:block; margin:18px 0 8px; color:#d7dfeb; font-size:14px; }
     input { width:100%; border:1px solid #344b6c; background:#071426; color:#fff; padding:14px 16px; border-radius:14px; font-size:16px; }
     .timer { font-variant-numeric:tabular-nums; text-align:center; font-size:42px; margin:28px 0 14px; letter-spacing:2px; }
+    .meter { display:none; margin:0 0 14px; }
+    .meter canvas { display:block; width:100%; height:56px; border-radius:12px; background:#071426; }
+    .meter-note { min-height:22px; margin-top:6px; text-align:center; font-size:14px; color:#8fa1b8; }
+    .meter-note.warn { color:#f0b429; }
     button { width:100%; min-height:64px; border:0; border-radius:18px; font-size:20px; font-weight:700; cursor:pointer; }
     #record { background:#fff; color:#0B1F3A; }
     #record.recording { background:#d93434; color:#fff; }
@@ -43,6 +47,10 @@
     <div id="session" class="session"><span id="session-text"></span><a href="#" id="logout">تسجيل خروج</a></div>
 
     <div id="timer" class="timer">00:00</div>
+    <div id="meter" class="meter">
+      <canvas id="meter-canvas" width="560" height="56"></canvas>
+      <div id="meter-note" class="meter-note"></div>
+    </div>
     <button id="record">ابدأ التسجيل</button>
     <button id="retry">إعادة محاولة الرفع</button>
     <div id="progress" class="progress"><div></div></div>
@@ -56,6 +64,9 @@ const recordButton = document.getElementById('record');
 const retryButton = document.getElementById('retry');
 const statusBox = document.getElementById('status');
 const timerBox = document.getElementById('timer');
+const meterBox = document.getElementById('meter');
+const meterCanvas = document.getElementById('meter-canvas');
+const meterNote = document.getElementById('meter-note');
 const progressBox = document.getElementById('progress');
 const progressBar = progressBox.firstElementChild;
 
@@ -107,6 +118,67 @@ let stream = null;
 let chunks = [];
 let startedAt = null;
 let timerHandle = null;
+let audioContext = null;
+let meterFrame = null;
+
+// مؤشر الصوت: أعمدة تتحرك مع مستوى الميكروفون، وتنبيه إذا ما وصل صوت.
+function startMeter() {
+  try {
+    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+    audioContext.resume();
+  } catch (_) { return; }
+
+  const analyser = audioContext.createAnalyser();
+  analyser.fftSize = 1024;
+  audioContext.createMediaStreamSource(stream).connect(analyser);
+  const samples = new Float32Array(analyser.fftSize);
+  const ctx = meterCanvas.getContext('2d');
+  const bars = [];
+  const barCount = 70;
+  let quietSince = Date.now();
+
+  meterBox.style.display = 'block';
+
+  const draw = () => {
+    analyser.getFloatTimeDomainData(samples);
+    let sum = 0;
+    for (const v of samples) sum += v * v;
+    const rms = Math.sqrt(sum / samples.length);
+    // من حوالي -60 dB (صمت) إلى -10 dB (كلام قريب).
+    const db = 20 * Math.log10(rms || 1e-8);
+    const level = Math.min(1, Math.max(0, (db + 60) / 50));
+
+    bars.push(level);
+    if (bars.length > barCount) bars.shift();
+
+    const w = meterCanvas.width, h = meterCanvas.height, step = w / barCount;
+    ctx.clearRect(0, 0, w, h);
+    bars.forEach((v, i) => {
+      const bh = Math.max(2, v * (h - 8));
+      ctx.fillStyle = v > 0.85 ? '#d93434' : v > 0.25 ? '#4fd18b' : '#4fa3ff';
+      ctx.fillRect(w - (bars.length - i) * step + 1, (h - bh) / 2, step - 2, bh);
+    });
+
+    if (level > 0.25) quietSince = Date.now();
+    const quietFor = (Date.now() - quietSince) / 1000;
+    if (quietFor > 4) {
+      meterNote.textContent = '⚠️ لا يصل صوت واضح — قرّب الجوال من المتحدث';
+      meterNote.className = 'meter-note warn';
+    } else {
+      meterNote.textContent = level > 0.85 ? 'الصوت عالٍ جدًا' : '🎙️ الصوت يصل';
+      meterNote.className = 'meter-note';
+    }
+
+    meterFrame = requestAnimationFrame(draw);
+  };
+  draw();
+}
+
+function stopMeter() {
+  if (meterFrame) cancelAnimationFrame(meterFrame);
+  meterFrame = null;
+  meterBox.style.display = 'none';
+}
 let wakeLock = null;
 let pendingUpload = null;
 
@@ -185,12 +257,14 @@ async function startRecording() {
   recordButton.textContent = 'إيقاف وإرسال';
   recordButton.classList.add('recording');
   setStatus('🔴 جارٍ التسجيل...');
+  startMeter();
 }
 
 function stopRecording() {
   if (!recorder || recorder.state === 'inactive') return;
   recorder.stop();
   clearInterval(timerHandle);
+  stopMeter();
   releaseScreen();
   recordButton.disabled = true;
 }
