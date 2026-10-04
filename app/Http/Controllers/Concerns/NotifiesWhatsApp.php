@@ -92,7 +92,11 @@ trait NotifiesWhatsApp
             if ($response->successful()) {
                 // القبول هنا مو ضمان وصول -- لو نافذة الـ24 ساعة مقفلة، ميتا
                 // ترفضها بعدين عبر webhook الحالات، ونرسل نص الرجوع ساعتها.
-                \App\Support\WhatsAppAlerts::rememberFallback($response->json('messages.0.id'), $fallbackMessage);
+                \App\Support\WhatsAppAlerts::rememberFallback(
+                    $response->json('messages.0.id'),
+                    $fallbackMessage,
+                    '🔄 لتفعيل الأخبار بالصور والأزرار: https://wa.me/96894443706?text='.rawurlencode('تم'),
+                );
             } else {
                 Log::warning('فشل إرسال رسالة الخبر بزر CTA عبر واتساب الرسمي.', [
                     'status' => $response->status(),

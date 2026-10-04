@@ -45,4 +45,20 @@ class WhatsAppAlertsFallbackTest extends TestCase
 
         Http::assertNothingSent();
     }
+
+    public function test_reactivate_hint_is_appended_once_per_day_on_closed_window(): void
+    {
+        $hint = '🔄 لتفعيل الأخبار بالصور والأزرار: https://wa.me/96894443706?text=%D8%AA%D9%85';
+        $closed = fn (string $id) => ['id' => $id, 'status' => 'failed', 'errors' => [['code' => 131047]]];
+
+        WhatsAppAlerts::rememberFallback('wamid.1', 'خبر 1', $hint);
+        WhatsAppAlerts::rememberFallback('wamid.2', 'خبر 2', $hint);
+
+        WhatsAppAlerts::handleStatus($closed('wamid.1'));
+        WhatsAppAlerts::handleStatus($closed('wamid.2'));
+
+        $messages = Http::recorded()->map(fn ($pair) => $pair[0]['message'])->all();
+
+        $this->assertSame(["خبر 1\n\n".$hint, 'خبر 2'], $messages);
+    }
 }

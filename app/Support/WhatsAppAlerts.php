@@ -56,13 +56,16 @@ class WhatsAppAlerts
      * يتفعّل أبدًا بهذي الحالة. نحفظ نص الرجوع بمعرّف الرسالة، وwebhook
      * الحالات (MetaWhatsAppWebhookController) يرسله عبر الجسر لو فشلت.
      */
-    public static function rememberFallback(?string $messageId, string $fallbackText): void
+    public static function rememberFallback(?string $messageId, string $fallbackText, ?string $reactivateHint = null): void
     {
         if (blank($messageId)) {
             return;
         }
 
-        Cache::put(self::fallbackKey($messageId), $fallbackText, now()->addDay());
+        Cache::put(self::fallbackKey($messageId), [
+            'text' => $fallbackText,
+            'hint' => $reactivateHint,
+        ], now()->addDay());
     }
 
     /**
@@ -75,17 +78,30 @@ class WhatsAppAlerts
             return false;
         }
 
-        $fallbackText = Cache::pull(self::fallbackKey($status['id']));
+        $fallback = Cache::pull(self::fallbackKey($status['id']));
 
-        if (blank($fallbackText)) {
+        if (blank($fallback['text'] ?? null)) {
             return false;
         }
 
+        $errorCode = $status['errors'][0]['code'] ?? null;
+        $text = $fallback['text'];
+
+        // نافذة الـ24 ساعة مقفلة: سطر بضغطة وحدة يفتحها من جديد (رسالة
+        // "تم" لرقم الأخبار) -- مرة وحدة باليوم بس، مو مع كل خبر.
+        if (
+            (int) $errorCode === 131047
+            && filled($fallback['hint'] ?? null)
+            && Cache::add('wa-reactivate-hint:'.md5($fallback['hint']), true, now('Asia/Muscat')->endOfDay())
+        ) {
+            $text .= "\n\n".$fallback['hint'];
+        }
+
         Log::info('رسالة واتساب رسمية فشلت بعد القبول -- أُرسلت عبر الجسر بدلها.', [
-            'error_code' => $status['errors'][0]['code'] ?? null,
+            'error_code' => $errorCode,
         ]);
 
-        self::sendViaBridge($fallbackText);
+        self::sendViaBridge($text);
 
         return true;
     }
