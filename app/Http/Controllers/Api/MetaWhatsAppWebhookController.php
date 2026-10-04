@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Support\WhatsAppAlerts;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -72,6 +73,12 @@ class MetaWhatsAppWebhookController extends Controller
                 $value = $change['value'] ?? [];
 
                 $receivingNumber = $value['metadata']['display_phone_number'] ?? 'غير معروف';
+
+                // رسالة أرسلناها (خبر/تنبيه) وفشلت بعد ما قبلتها ميتا -- غالبًا
+                // نافذة الـ24 ساعة مقفلة (131047). نرسلها عبر الجسر المجاني.
+                foreach ($value['statuses'] ?? [] as $status) {
+                    WhatsAppAlerts::handleStatus($status);
+                }
 
                 foreach ($value['messages'] ?? [] as $message) {
                     $safeId = preg_replace('/[^A-Za-z0-9_-]/', '_', (string) ($message['id'] ?? uniqid()));

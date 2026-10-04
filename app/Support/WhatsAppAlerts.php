@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -32,6 +33,8 @@ class WhatsAppAlerts
                     ]);
 
                 if ($response->successful()) {
+                    self::rememberFallback($response->json('messages.0.id'), $text);
+
                     return;
                 }
 
@@ -47,7 +50,52 @@ class WhatsAppAlerts
         self::sendViaBridge($text);
     }
 
-    private static function sendViaBridge(string $text): void
+    /**
+     * ميتا تقبل الرسالة فورًا (200) وترفضها بعدين عبر webhook الحالات لو
+     * نافذة الـ24 ساعة مقفلة (خطأ 131047) -- فالرجوع المتزامن للجسر ما
+     * يتفعّل أبدًا بهذي الحالة. نحفظ نص الرجوع بمعرّف الرسالة، وwebhook
+     * الحالات (MetaWhatsAppWebhookController) يرسله عبر الجسر لو فشلت.
+     */
+    public static function rememberFallback(?string $messageId, string $fallbackText): void
+    {
+        if (blank($messageId)) {
+            return;
+        }
+
+        Cache::put(self::fallbackKey($messageId), $fallbackText, now()->addDay());
+    }
+
+    /**
+     * يُستدعى لكل حالة رسالة واردة من webhook ميتا. يرجع true لو كانت
+     * رسالة فاشلة لها نص رجوع محفوظ وأُرسل عبر الجسر.
+     */
+    public static function handleStatus(array $status): bool
+    {
+        if (($status['status'] ?? null) !== 'failed' || blank($status['id'] ?? null)) {
+            return false;
+        }
+
+        $fallbackText = Cache::pull(self::fallbackKey($status['id']));
+
+        if (blank($fallbackText)) {
+            return false;
+        }
+
+        Log::info('رسالة واتساب رسمية فشلت بعد القبول -- أُرسلت عبر الجسر بدلها.', [
+            'error_code' => $status['errors'][0]['code'] ?? null,
+        ]);
+
+        self::sendViaBridge($fallbackText);
+
+        return true;
+    }
+
+    private static function fallbackKey(string $messageId): string
+    {
+        return 'wa-fallback:'.$messageId;
+    }
+
+    public static function sendViaBridge(string $text): void
     {
         $baseUrl = config('services.whatsapp_notify.base_url');
         $apiKey = config('services.whatsapp_notify.api_key');
