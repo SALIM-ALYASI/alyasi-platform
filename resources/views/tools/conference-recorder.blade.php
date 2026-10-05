@@ -30,8 +30,6 @@
     .progress { height:8px; background:#071426; border-radius:8px; overflow:hidden; margin-top:14px; display:none; }
     .progress > div { height:100%; width:0; background:#4fa3ff; transition:width .2s; }
     .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:#071426; border:1px solid #263a56; min-height:52px; line-height:1.6; word-break:break-word; }
-    .session { display:none; margin-top:18px; font-size:14px; color:#9fd8a8; }
-    .session a { color:#8fa1b8; margin-inline-start:8px; }
     .hint { font-size:13px; color:#8fa1b8; text-align:center; margin-top:14px; line-height:1.6; }
   </style>
 </head>
@@ -40,11 +38,6 @@
     <h1>🎙️ صحفي المؤتمر</h1>
     <p>سجّل الجلسة أو المقابلة. بعد الإيقاف يرتفع الصوت تلقائيًا ويتحول إلى نص على الماك.</p>
 
-    <div id="login">
-      <label for="token">رمز الدخول</label>
-      <input id="token" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••••">
-    </div>
-    <div id="session" class="session"><span id="session-text"></span><a href="#" id="logout">تسجيل خروج</a></div>
 
     <div id="timer" class="timer">00:00</div>
     <div id="meter" class="meter">
@@ -59,7 +52,6 @@
   </main>
 
 <script>
-const tokenInput = document.getElementById('token');
 const recordButton = document.getElementById('record');
 const retryButton = document.getElementById('retry');
 const statusBox = document.getElementById('status');
@@ -70,48 +62,6 @@ const meterNote = document.getElementById('meter-note');
 const progressBox = document.getElementById('progress');
 const progressBar = progressBox.firstElementChild;
 
-const loginBox = document.getElementById('login');
-const sessionBox = document.getElementById('session');
-const SESSION_KEY = 'cj_session';
-const SESSION_HOURS = 24;
-
-// الدخول يبقى 24 ساعة من أول تسجيل ناجح للرمز، بعدها تطلب الصفحة الرمز من جديد.
-function loadSession() {
-  try {
-    localStorage.removeItem('cj_user_token');
-    const session = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    if (session && session.token && session.expires > Date.now()) return session;
-    localStorage.removeItem(SESSION_KEY);
-  } catch (_) {}
-  return null;
-}
-
-function showSession(session) {
-  if (session) {
-    tokenInput.value = session.token;
-    const until = new Date(session.expires).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('session-text').textContent = '✅ مسجّل الدخول حتى ' + until + ' غدًا';
-  }
-  loginBox.style.display = session ? 'none' : 'block';
-  sessionBox.style.display = session ? 'block' : 'none';
-}
-
-function saveSession(token) {
-  const current = loadSession();
-  if (current && current.token === token) return;
-  const session = { token, expires: Date.now() + SESSION_HOURS * 3600 * 1000 };
-  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (_) {}
-  showSession(session);
-}
-
-function endSession() {
-  try { localStorage.removeItem(SESSION_KEY); } catch (_) {}
-  tokenInput.value = '';
-  showSession(null);
-}
-
-document.getElementById('logout').addEventListener('click', e => { e.preventDefault(); endSession(); });
-showSession(loadSession());
 
 let recorder = null;
 let stream = null;
@@ -218,11 +168,8 @@ document.addEventListener('visibilitychange', () => {
 });
 
 async function startRecording() {
-  const token = tokenInput.value.trim();
-  if (!token) {
-    setStatus('أدخل رمز الدخول أولًا.');
-    return;
-  }
+  // يمسح بقايا رمز الدخول القديم (الصفحة صارت بدون رمز).
+  try { localStorage.removeItem('cj_session'); localStorage.removeItem('cj_user_token'); } catch (_) {}
 
   if (!navigator.mediaDevices || !window.MediaRecorder) {
     setStatus('❌ هذا المتصفح لا يدعم التسجيل. استخدم Safari أو Chrome بإصدار حديث.');
@@ -280,11 +227,10 @@ function finishRecording() {
   uploadRecording();
 }
 
-function sendForm(form, token) {
+function sendForm(form) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/cj/recordings');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.upload.onprogress = e => {
       if (e.lengthComputable) progressBar.style.width = Math.round(e.loaded / e.total * 100) + '%';
@@ -293,10 +239,7 @@ function sendForm(form, token) {
       let data = {};
       try { data = JSON.parse(xhr.responseText); } catch (_) {}
       if (xhr.status >= 200 && xhr.status < 300) resolve(data);
-      else {
-        if (xhr.status === 401) endSession();
-        reject(new Error(xhr.status === 401 ? 'رمز الدخول غير صحيح — أدخله من جديد' : (data.message || ('HTTP ' + xhr.status))));
-      }
+      else reject(new Error(data.message || ('HTTP ' + xhr.status)));
     };
     xhr.onerror = () => reject(new Error('تعذر الاتصال بالسيرفر'));
     xhr.send(form);
@@ -314,9 +257,7 @@ async function uploadRecording() {
   try {
     const form = new FormData();
     form.append('audio', pendingUpload.blob, pendingUpload.name);
-    const token = tokenInput.value.trim();
-    const data = await sendForm(form, token);
-    saveSession(token);
+    const data = await sendForm(form);
 
     pendingUpload = null;
     setStatus('✅ تم حفظ التسجيل: ' + data.relay_id);
@@ -333,7 +274,6 @@ async function uploadRecording() {
 }
 
 async function pollStatus(relayId) {
-  const token = tokenInput.value.trim();
   const labels = {
     processing: '🔵 جارٍ تنقية وتجهيز الصوت على سيرفر البيت',
     ready: '🟡 التسجيل جاهز وبانتظار الماك',
@@ -348,7 +288,7 @@ async function pollStatus(relayId) {
     await new Promise(r => setTimeout(r, 10000));
     try {
       const response = await fetch('/api/cj/recordings/' + relayId + '/status', {
-        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json' }
       });
       if (!response.ok) continue;
       const data = await response.json();

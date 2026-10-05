@@ -84,12 +84,13 @@ Route::post('alerts/pipeline-failure', [PipelineAlertController::class, 'store']
 Route::prefix('cj')
     ->name('api.cj.')
     ->group(function () {
+        // Open recorder (no access code, by request); throttled per IP.
         Route::post('recordings', [ConferenceRecordingController::class, 'store'])
-            ->middleware(['cj.auth:user', 'throttle:20,1'])
+            ->middleware('throttle:20,1')
             ->name('recordings.store');
 
         Route::get('recordings/{relayId}/status', [ConferenceRecordingController::class, 'status'])
-            ->middleware(['cj.auth:user', 'throttle:120,1'])
+            ->middleware('throttle:120,1')
             ->name('recordings.status');
 
         Route::get('relay/pending', [ConferenceRecordingController::class, 'pending'])

@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthenticateConferenceJournalist
 {
     /**
-     * صحفي المؤتمر: "user" لصفحة التسجيل، "relay" لمرحّل سيرفر البيت، "agent" لبوت الماك.
+     * صحفي المؤتمر: "relay" لمرحّل سيرفر البيت، "agent" لبوت الماك.
      */
     public function handle(
         Request $request,
         Closure $next,
-        string $role = 'user'
+        string $role
     ): Response|JsonResponse {
         $token = config("services.conference_journalist.{$role}_token");
 
