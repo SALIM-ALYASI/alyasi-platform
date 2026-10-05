@@ -63,6 +63,7 @@ return [
     'conference_journalist' => [
         'user_token' => env('CJ_USER_TOKEN'),
         'relay_token' => env('CJ_RELAY_TOKEN'),
+        'agent_token' => env('CJ_AGENT_TOKEN'),
     ],
 
     'manager_bot' => [

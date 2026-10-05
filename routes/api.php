@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AnalysisIngestController;
 use App\Http\Controllers\Api\ArticleIngestController;
+use App\Http\Controllers\Api\ConferenceAgentController;
 use App\Http\Controllers\Api\ConferenceRecordingController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
@@ -106,6 +107,36 @@ Route::prefix('cj')
         Route::post('relay/status', [ConferenceRecordingController::class, 'syncStatus'])
             ->middleware(['cj.auth:relay', 'throttle:120,1'])
             ->name('relay.status');
+
+        Route::post('relay/{relayId}/prepared', [ConferenceRecordingController::class, 'prepared'])
+            ->middleware(['cj.auth:relay', 'throttle:60,1'])
+            ->name('relay.prepared');
+
+        Route::post('relay/{relayId}/transcript-synced', [ConferenceRecordingController::class, 'transcriptSynced'])
+            ->middleware(['cj.auth:relay', 'throttle:60,1'])
+            ->name('relay.transcript-synced');
+
+        // Mac Bot: same contract as the Server Bot, with SERVER_URL=https://alyasi.dev/api/cj/agent
+        Route::prefix('agent/api/jobs')
+            ->name('agent.')
+            ->middleware('cj.auth:agent')
+            ->group(function () {
+                Route::get('next', [ConferenceAgentController::class, 'next'])
+                    ->middleware('throttle:60,1')
+                    ->name('next');
+
+                Route::get('{jobId}/audio', [ConferenceAgentController::class, 'audio'])
+                    ->middleware('throttle:30,1')
+                    ->name('audio');
+
+                Route::post('{jobId}/complete', [ConferenceAgentController::class, 'complete'])
+                    ->middleware('throttle:30,1')
+                    ->name('complete');
+
+                Route::post('{jobId}/fail', [ConferenceAgentController::class, 'fail'])
+                    ->middleware('throttle:30,1')
+                    ->name('fail');
+            });
     });
 
 /*

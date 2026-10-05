@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthenticateConferenceJournalist
 {
     /**
-     * صحفي المؤتمر: "user" لصفحة التسجيل، "relay" لمرحّل سيرفر البيت.
+     * صحفي المؤتمر: "user" لصفحة التسجيل، "relay" لمرحّل سيرفر البيت، "agent" لبوت الماك.
      */
     public function handle(
         Request $request,

@@ -21,6 +21,8 @@ class ConferenceRecordingController extends Controller
 
     private const DIRECTORY = 'conference-journalist/original';
 
+    private const PREPARED_DIRECTORY = 'conference-journalist/prepared';
+
     private const ALLOWED_EXTENSIONS = ['webm', 'm4a', 'mp4', 'wav', 'mp3', 'ogg', 'aac', 'caf'];
 
     private const MAX_UPLOAD_KB = 500 * 1024;
@@ -66,7 +68,7 @@ class ConferenceRecordingController extends Controller
             'relay_id' => $recording->relay_id,
             'status' => $recording->status,
             'job_id' => $recording->home_job_id,
-            'job_status' => $recording->job_status,
+            'job_status' => $recording->displayStatus(),
             'error' => $recording->job_error,
         ]);
     }
@@ -96,7 +98,25 @@ class ConferenceRecordingController extends Controller
                 'job_id' => $recording->home_job_id,
             ]);
 
-        return response()->json(['pending' => $pending, 'tracking' => $tracking]);
+        // نصوص خلّصها الماك وما وصلت لسيرفر البيت بعد.
+        $transcripts = ConferenceRecording::where('agent_status', ConferenceRecording::AGENT_COMPLETED)
+            ->where('transcript_synced', false)
+            ->limit(10)
+            ->get()
+            ->map(fn (ConferenceRecording $recording) => [
+                'id' => $recording->relay_id,
+                'job_id' => $recording->home_job_id,
+                'transcript' => $recording->transcript,
+                'language' => $recording->transcript_language,
+                'model' => $recording->transcript_model,
+                'duration_seconds' => $recording->duration_seconds,
+            ]);
+
+        return response()->json([
+            'pending' => $pending,
+            'tracking' => $tracking,
+            'transcripts' => $transcripts,
+        ]);
     }
 
     public function audio(string $relayId): StreamedResponse
@@ -126,6 +146,37 @@ class ConferenceRecordingController extends Controller
             'job_status' => $recording->job_status ?? 'processing',
             'forwarded_at' => $recording->forwarded_at ?? now(),
         ]);
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function prepared(Request $request, string $relayId): JsonResponse
+    {
+        $request->validate([
+            'audio' => ['required', 'file', 'max:'.(1024 * 1024)],
+        ]);
+
+        $recording = ConferenceRecording::where('relay_id', $relayId)->firstOrFail();
+        abort_if(blank($recording->home_job_id), 409, 'Recording has not been forwarded yet');
+
+        $path = $request->file('audio')->storeAs(
+            self::PREPARED_DIRECTORY,
+            "{$recording->home_job_id}.wav",
+            self::DISK,
+        );
+
+        $recording->update([
+            'prepared_path' => $path,
+            'agent_status' => $recording->agent_status ?? ConferenceRecording::AGENT_READY,
+        ]);
+
+        return response()->json(['ok' => true, 'agent_status' => $recording->agent_status]);
+    }
+
+    public function transcriptSynced(string $relayId): JsonResponse
+    {
+        ConferenceRecording::where('relay_id', $relayId)->firstOrFail()
+            ->update(['transcript_synced' => true]);
 
         return response()->json(['ok' => true]);
     }
