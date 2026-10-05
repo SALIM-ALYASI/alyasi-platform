@@ -179,11 +179,23 @@ async function startRecording() {
   // الميكروفون يبقى مفتوح طول ما الصفحة مفتوحة -- Safari يطلب الإذن من جديد
   // كل مرة ينقفل. فلاتر المكالمات (إلغاء الصدى وكتم الضوضاء) تقطّع كلام
   // المتحدث البعيد على iOS، والتنقية تصير على السيرفر بـ FFmpeg.
-  if (!stream || !stream.getAudioTracks().some(t => t.readyState === 'live')) {
+  // iOS يكتم المسار بصمت بعد الرجوع من الخلفية أو مكالمة، ويبقى "live" لكنه
+  // يسجّل صمت -- نعيد فتح الميكروفون إذا كان مكتوم.
+  const usable = stream && stream.getAudioTracks().some(t => t.readyState === 'live' && !t.muted && t.enabled);
+  if (!usable) {
+    if (stream) stream.getTracks().forEach(t => t.stop());
     stream = await navigator.mediaDevices.getUserMedia({
       audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true }
     });
   }
+  stream.getAudioTracks().forEach(track => {
+    track.onmute = () => {
+      if (recorder && recorder.state === 'recording') {
+        setStatus('⚠️ النظام أوقف الميكروفون — أوقف التسجيل وابدأ من جديد');
+      }
+    };
+    track.onended = track.onmute;
+  });
 
   const mimeType = chooseMimeType();
   recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
