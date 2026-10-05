@@ -26,9 +26,6 @@
     #record { background:#fff; color:#0B1F3A; }
     #record.recording { background:#d93434; color:#fff; }
     #record:disabled { opacity:.55; cursor:not-allowed; }
-    #retry { display:none; margin-top:12px; background:#f0b429; color:#0B1F3A; min-height:52px; font-size:17px; }
-    .progress { height:8px; background:#071426; border-radius:8px; overflow:hidden; margin-top:14px; display:none; }
-    .progress > div { height:100%; width:0; background:#4fa3ff; transition:width .2s; }
     .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:#071426; border:1px solid #263a56; min-height:52px; line-height:1.6; word-break:break-word; }
     .hint { font-size:13px; color:#8fa1b8; text-align:center; margin-top:14px; line-height:1.6; }
   </style>
@@ -45,27 +42,25 @@
       <div id="meter-note" class="meter-note"></div>
     </div>
     <button id="record">ابدأ التسجيل</button>
-    <button id="retry">إعادة محاولة الرفع</button>
-    <div id="progress" class="progress"><div></div></div>
     <div id="status" class="status">جاهز للتسجيل.</div>
     <div class="hint">لا تقفل الشاشة أثناء التسجيل، واترك الصفحة مفتوحة حتى تظهر رسالة نجاح الرفع.</div>
   </main>
 
 <script>
 const recordButton = document.getElementById('record');
-const retryButton = document.getElementById('retry');
 const statusBox = document.getElementById('status');
 const timerBox = document.getElementById('timer');
 const meterBox = document.getElementById('meter');
 const meterCanvas = document.getElementById('meter-canvas');
 const meterNote = document.getElementById('meter-note');
-const progressBox = document.getElementById('progress');
-const progressBar = progressBox.firstElementChild;
 
 
 let recorder = null;
 let stream = null;
-let chunks = [];
+// جزء كل 30 ثانية: يحدّ الضياع عند الانقطاع بدون طلبات كثيرة على الاستضافة.
+const CHUNK_MS = 30000;
+let upload = null;
+const uploads = [];
 let startedAt = null;
 let timerHandle = null;
 let audioContext = null;
@@ -152,7 +147,6 @@ function stopMeter() {
   meterBox.style.display = 'none';
 }
 let wakeLock = null;
-let pendingUpload = null;
 
 function setStatus(text) { statusBox.textContent = text; }
 
@@ -220,20 +214,29 @@ async function startRecording() {
   const { recordStream, tap } = boostedStream();
   const mimeType = chooseMimeType();
   recorder = mimeType ? new MediaRecorder(recordStream, { mimeType }) : new MediaRecorder(recordStream);
-  chunks = [];
+
+  const type = recorder.mimeType || mimeType || 'audio/mp4';
+  upload = { relayId: null, key: null, type, ext: extensionFor(type), parts: [], nextSeq: 0, sent: 0, stopped: false, done: false, pumping: false };
+  uploads.push(upload);
 
   recorder.ondataavailable = e => {
-    if (e.data && e.data.size > 0) chunks.push(e.data);
+    if (e.data && e.data.size > 0) {
+      upload.parts.push({ seq: upload.nextSeq++, blob: e.data });
+      pumpUpload(upload);
+    }
+  };
+  recorder.onstop = () => {
+    upload.stopped = true;
+    recorder = null;
+    pumpUpload(upload);
   };
 
-  recorder.onstop = finishRecording;
-  recorder.start(1000);
+  recorder.start(CHUNK_MS);
   startedAt = Date.now();
   timerBox.textContent = '00:00';
   timerHandle = setInterval(() => { timerBox.textContent = formatTime(Date.now() - startedAt); }, 500);
   keepScreenAwake();
 
-  retryButton.style.display = 'none';
   recordButton.textContent = 'إيقاف وإرسال';
   recordButton.classList.add('recording');
   setStatus('🔴 جارٍ التسجيل...');
@@ -247,64 +250,72 @@ function stopRecording() {
   stopMeter();
   if (boostSource) { boostSource.disconnect(); boostSource = null; }
   releaseScreen();
-  recordButton.disabled = true;
+  recordButton.textContent = 'ابدأ تسجيل جديد';
+  recordButton.classList.remove('recording');
+  setStatus('⬆️ انتهى التسجيل. جارٍ رفع آخر جزء...');
 }
 
-function finishRecording() {
-  const type = recorder.mimeType || 'audio/webm';
-  pendingUpload = {
-    blob: new Blob(chunks, { type }),
-    name: 'conference-' + Date.now() + '.' + extensionFor(type)
-  };
-  recorder = null;
-  chunks = [];
-  uploadRecording();
-}
-
-function sendForm(form) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/cj/recordings');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.upload.onprogress = e => {
-      if (e.lengthComputable) progressBar.style.width = Math.round(e.loaded / e.total * 100) + '%';
-    };
-    xhr.onload = () => {
-      let data = {};
-      try { data = JSON.parse(xhr.responseText); } catch (_) {}
-      if (xhr.status >= 200 && xhr.status < 300) resolve(data);
-      else reject(new Error(data.message || ('HTTP ' + xhr.status)));
-    };
-    xhr.onerror = () => reject(new Error('تعذر الاتصال بالسيرفر'));
-    xhr.send(form);
+async function postJson(url, body) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
   });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || ('HTTP ' + response.status));
+  return data;
 }
 
-async function uploadRecording() {
-  if (!pendingUpload) return;
-  recordButton.disabled = true;
-  retryButton.style.display = 'none';
-  progressBar.style.width = '0';
-  progressBox.style.display = 'block';
-  setStatus('⬆️ انتهى التسجيل. جارٍ رفع الملف...');
+async function sendPart(u, part) {
+  const form = new FormData();
+  form.append('key', u.key);
+  form.append('seq', String(part.seq));
+  form.append('chunk', part.blob, 'part-' + part.seq + '.' + u.ext);
+  const response = await fetch('/api/cj/recordings/' + u.relayId + '/chunk', {
+    method: 'POST', headers: { 'Accept': 'application/json' }, body: form
+  });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+}
 
-  try {
-    const form = new FormData();
-    form.append('audio', pendingUpload.blob, pendingUpload.name);
-    const data = await sendForm(form);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-    pendingUpload = null;
-    setStatus('✅ تم حفظ التسجيل: ' + data.relay_id);
-    pollStatus(data.relay_id);
-  } catch (error) {
-    setStatus('❌ فشل الرفع: ' + error.message + ' — التسجيل محفوظ في الصفحة، اضغط إعادة المحاولة.');
-    retryButton.style.display = 'block';
-  } finally {
-    progressBox.style.display = 'none';
-    recordButton.disabled = false;
-    recordButton.textContent = 'ابدأ تسجيل جديد';
-    recordButton.classList.remove('recording');
+// يرفع الأجزاء بالترتيب ويعيد المحاولة بلا توقف لين ترجع الشبكة؛ أي جزء ما
+// وصل يبقى في الصفحة. بعد الإيقاف يقفل التسجيل على السيرفر.
+async function pumpUpload(u) {
+  if (u.pumping || u.done) return;
+  u.pumping = true;
+  let delay = 2000;
+  // تسجيل أقدم يكمل رفعه بالخلفية بدون ما يغطي رسائل التسجيل الحالي.
+  const show = text => { if (u === upload) setStatus(text); };
+
+  while (!u.done && (u.parts.length || u.stopped)) {
+    try {
+      if (!u.relayId) {
+        const started = await postJson('/api/cj/recordings/start', { extension: u.ext, mime_type: u.type });
+        u.relayId = started.relay_id;
+        u.key = started.upload_key;
+      }
+      if (u.parts.length) {
+        await sendPart(u, u.parts[0]);
+        u.parts.shift();
+        u.sent++;
+        if (recorder && recorder.state === 'recording') {
+          show('🔴 جارٍ التسجيل — محفوظ على السيرفر حتى الدقيقة ' + Math.round(u.sent * CHUNK_MS / 60000 * 10) / 10);
+        }
+      } else {
+        const finished = await postJson('/api/cj/recordings/' + u.relayId + '/finish', { key: u.key, chunks: u.nextSeq });
+        u.done = true;
+        show('✅ تم حفظ التسجيل: ' + finished.relay_id);
+        if (u === upload) pollStatus(finished.relay_id);
+      }
+      delay = 2000;
+    } catch (error) {
+      show('⏳ ما وصل الإنترنت — ' + (u.parts.length || 1) + ' جزء بانتظار الرفع، لا تقفل الصفحة. يعيد المحاولة تلقائيًا.');
+      await sleep(delay);
+      delay = Math.min(delay * 2, 30000);
+    }
   }
+  u.pumping = false;
 }
 
 async function pollStatus(relayId) {
@@ -318,15 +329,17 @@ async function pollStatus(relayId) {
 
   // كل 10 ثواني لمدة ساعتين -- الاستضافة تحظر الـ IP عند كثرة الطلبات،
   // وتسجيل مؤتمر طويل ياخذ وقت في التحويل.
+  const mine = upload;
   for (let i = 0; i < 720; i++) {
     await new Promise(r => setTimeout(r, 10000));
+    if (upload !== mine) return;
     try {
       const response = await fetch('/api/cj/recordings/' + relayId + '/status', {
         headers: { 'Accept': 'application/json' }
       });
       if (!response.ok) continue;
       const data = await response.json();
-      if (data.status === 'received') {
+      if (data.status === 'recording' || data.status === 'received') {
         setStatus('📥 وصل التسجيل للموقع وبانتظار سيرفر البيت — ' + relayId);
         continue;
       }
@@ -346,10 +359,8 @@ recordButton.addEventListener('click', async () => {
   }
 });
 
-retryButton.addEventListener('click', uploadRecording);
-
 window.addEventListener('beforeunload', e => {
-  if ((recorder && recorder.state !== 'inactive') || pendingUpload) {
+  if ((recorder && recorder.state !== 'inactive') || uploads.some(u => !u.done)) {
     e.preventDefault();
     e.returnValue = '';
   }

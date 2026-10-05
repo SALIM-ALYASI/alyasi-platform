@@ -29,6 +29,9 @@ class ConferenceRecordingController extends Controller
 
     private const TRACKING_DAYS = 7;
 
+    // تسجيل انقطع (صفحة انقفلت أو بطارية خلصت) يتحوّل بالجزء اللي وصل.
+    private const ABANDONED_MINUTES = 10;
+
     public function store(Request $request): JsonResponse
     {
         $request->validate([
@@ -60,6 +63,113 @@ class ConferenceRecordingController extends Controller
         ]);
     }
 
+    /**
+     * رفع على دفعات: الصفحة تفتح تسجيل، ترسل جزء كل 30 ثانية أثناء التسجيل،
+     * ثم تقفله. أجزاء MediaRecorder تتجمع بالترتيب في ملف واحد صالح، فأي
+     * انقطاع يضيّع آخر جزء بس. upload_key يمنع أحد غير الصفحة يضيف للتسجيل.
+     */
+    public function start(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'extension' => ['nullable', 'string', 'max:10'],
+            'mime_type' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $extension = strtolower($data['extension'] ?? '');
+        if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
+            $extension = 'm4a';
+        }
+
+        $relayId = 'CJR-'.now('UTC')->format('Ymd-His').'-'.Str::upper(Str::random(4));
+        $path = self::DIRECTORY."/{$relayId}.{$extension}";
+        Storage::disk(self::DISK)->put($path, '');
+
+        $recording = ConferenceRecording::create([
+            'relay_id' => $relayId,
+            'upload_key' => Str::random(40),
+            'status' => ConferenceRecording::STATUS_RECORDING,
+            'original_path' => $path,
+            'original_filename' => "{$relayId}.{$extension}",
+            'mime_type' => $data['mime_type'] ?? null,
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'relay_id' => $recording->relay_id,
+            'upload_key' => $recording->upload_key,
+        ]);
+    }
+
+    public function chunk(Request $request, string $relayId): JsonResponse
+    {
+        $request->validate([
+            'key' => ['required', 'string'],
+            'seq' => ['required', 'integer', 'min:0'],
+            'chunk' => ['required', 'file', 'max:'.(50 * 1024)],
+        ]);
+
+        $recording = $this->ownedRecording($request, $relayId);
+        $seq = (int) $request->input('seq');
+
+        // إعادة إرسال جزء وصل قبل (الرد ضاع بالشبكة) -- نتجاهله.
+        if ($seq < $recording->chunks_received) {
+            return response()->json(['ok' => true, 'next_seq' => $recording->chunks_received]);
+        }
+        if ($seq > $recording->chunks_received) {
+            return response()->json(['ok' => false, 'next_seq' => $recording->chunks_received], 409);
+        }
+        abort_unless($recording->status === ConferenceRecording::STATUS_RECORDING, 409, 'Recording is closed');
+
+        $size = $request->file('chunk')->getSize();
+        abort_if($recording->size_bytes + $size > self::MAX_UPLOAD_KB * 1024, 413, 'Recording too large');
+
+        $input = fopen($request->file('chunk')->getRealPath(), 'rb');
+        $output = fopen(Storage::disk(self::DISK)->path($recording->original_path), 'ab');
+        stream_copy_to_stream($input, $output);
+        fclose($input);
+        fclose($output);
+
+        $recording->update([
+            'chunks_received' => $seq + 1,
+            'size_bytes' => $recording->size_bytes + $size,
+        ]);
+
+        return response()->json(['ok' => true, 'next_seq' => $seq + 1]);
+    }
+
+    public function finish(Request $request, string $relayId): JsonResponse
+    {
+        $data = $request->validate([
+            'key' => ['required', 'string'],
+            'chunks' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $recording = $this->ownedRecording($request, $relayId);
+
+        if ($recording->status === ConferenceRecording::STATUS_RECORDING) {
+            abort_if($data['chunks'] > $recording->chunks_received, 409, 'Missing chunks');
+            abort_if($recording->chunks_received === 0, 422, 'Recording is empty');
+            $recording->update(['status' => ConferenceRecording::STATUS_RECEIVED]);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'relay_id' => $recording->relay_id,
+            'status' => $recording->status,
+        ]);
+    }
+
+    private function ownedRecording(Request $request, string $relayId): ConferenceRecording
+    {
+        $recording = ConferenceRecording::where('relay_id', $relayId)->firstOrFail();
+        abort_unless(
+            $recording->upload_key && hash_equals($recording->upload_key, (string) $request->input('key')),
+            403,
+        );
+
+        return $recording;
+    }
+
     public function status(string $relayId): JsonResponse
     {
         $recording = ConferenceRecording::where('relay_id', $relayId)->firstOrFail();
@@ -75,6 +185,11 @@ class ConferenceRecordingController extends Controller
 
     public function pending(): JsonResponse
     {
+        ConferenceRecording::where('status', ConferenceRecording::STATUS_RECORDING)
+            ->where('updated_at', '<', now()->subMinutes(self::ABANDONED_MINUTES))
+            ->where('chunks_received', '>', 0)
+            ->update(['status' => ConferenceRecording::STATUS_RECEIVED]);
+
         $pending = ConferenceRecording::where('status', ConferenceRecording::STATUS_RECEIVED)
             ->orderBy('created_at')
             ->limit(10)

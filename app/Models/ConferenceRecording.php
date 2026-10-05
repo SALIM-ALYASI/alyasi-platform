@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ConferenceRecording extends Model
 {
+    public const STATUS_RECORDING = 'recording';
+
     public const STATUS_RECEIVED = 'received';
 
     public const STATUS_FORWARDED = 'forwarded';
@@ -27,12 +29,14 @@ class ConferenceRecording extends Model
 
     protected $fillable = [
         'relay_id',
+        'upload_key',
         'status',
         'original_path',
         'prepared_path',
         'original_filename',
         'mime_type',
         'size_bytes',
+        'chunks_received',
         'home_job_id',
         'job_status',
         'job_error',
@@ -46,10 +50,13 @@ class ConferenceRecording extends Model
         'forwarded_at',
     ];
 
+    protected $hidden = ['upload_key'];
+
     protected function casts(): array
     {
         return [
             'size_bytes' => 'integer',
+            'chunks_received' => 'integer',
             'duration_seconds' => 'float',
             'transcript_synced' => 'boolean',
             'agent_claimed_at' => 'datetime',

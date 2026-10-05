@@ -89,6 +89,18 @@ Route::prefix('cj')
             ->middleware('throttle:20,1')
             ->name('recordings.store');
 
+        Route::post('recordings/start', [ConferenceRecordingController::class, 'start'])
+            ->middleware('throttle:10,1')
+            ->name('recordings.start');
+
+        Route::post('recordings/{relayId}/chunk', [ConferenceRecordingController::class, 'chunk'])
+            ->middleware('throttle:30,1')
+            ->name('recordings.chunk');
+
+        Route::post('recordings/{relayId}/finish', [ConferenceRecordingController::class, 'finish'])
+            ->middleware('throttle:20,1')
+            ->name('recordings.finish');
+
         Route::get('recordings/{relayId}/status', [ConferenceRecordingController::class, 'status'])
             ->middleware('throttle:120,1')
             ->name('recordings.status');
