@@ -177,16 +177,14 @@ async function startRecording() {
   }
 
   // الميكروفون يبقى مفتوح طول ما الصفحة مفتوحة -- Safari يطلب الإذن من جديد
-  // كل مرة ينقفل. فلاتر المكالمات (إلغاء الصدى وكتم الضوضاء) تقطّع كلام
-  // المتحدث البعيد على iOS، والتنقية تصير على السيرفر بـ FFmpeg.
+  // كل مرة ينقفل.
   // iOS يكتم المسار بصمت بعد الرجوع من الخلفية أو مكالمة، ويبقى "live" لكنه
-  // يسجّل صمت -- نعيد فتح الميكروفون إذا كان مكتوم.
+  // يسجّل صمت -- نعيد فتح الميكروفون إذا كان مكتوم. إعدادات الميكروفون
+  // الافتراضية: إطفاء معالجة الصوت في iOS ينزّل المستوى لحد الصمت (−73 dB).
   const usable = stream && stream.getAudioTracks().some(t => t.readyState === 'live' && !t.muted && t.enabled);
   if (!usable) {
     if (stream) stream.getTracks().forEach(t => t.stop());
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true }
-    });
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   }
   stream.getAudioTracks().forEach(track => {
     track.onmute = () => {
