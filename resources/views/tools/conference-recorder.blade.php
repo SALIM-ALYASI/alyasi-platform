@@ -70,17 +70,39 @@ let startedAt = null;
 let timerHandle = null;
 let audioContext = null;
 let meterFrame = null;
+let boostSource = null;
 
-// مؤشر الصوت: أعمدة تتحرك مع مستوى الميكروفون، وتنبيه إذا ما وصل صوت.
-function startMeter() {
+// تقوية الاستقبال: الميكروفون ← تضخيم +12 dB ← ضاغط يرفع الكلام الهادي ويمنع
+// التشويه، والتسجيل والمؤشر ياخذون الصوت بعد التقوية. يرجع للميكروفون الخام
+// إذا المتصفح ما يدعم.
+function boostedStream() {
   try {
     audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
     audioContext.resume();
-  } catch (_) { return; }
+    boostSource = audioContext.createMediaStreamSource(stream);
+    const gain = audioContext.createGain();
+    gain.gain.value = 4;
+    const compressor = audioContext.createDynamicsCompressor();
+    compressor.threshold.value = -24;
+    compressor.knee.value = 30;
+    compressor.ratio.value = 6;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.25;
+    const destination = audioContext.createMediaStreamDestination();
+    boostSource.connect(gain).connect(compressor).connect(destination);
+    return { recordStream: destination.stream, tap: compressor };
+  } catch (_) {
+    return { recordStream: stream, tap: null };
+  }
+}
+
+// مؤشر الصوت: أعمدة تتحرك مع مستوى الصوت المسجّل، وتنبيه إذا ما وصل صوت.
+function startMeter(tap) {
+  if (!tap) return;
 
   const analyser = audioContext.createAnalyser();
   analyser.fftSize = 1024;
-  audioContext.createMediaStreamSource(stream).connect(analyser);
+  tap.connect(analyser);
   const samples = new Float32Array(analyser.fftSize);
   const ctx = meterCanvas.getContext('2d');
   const bars = [];
@@ -195,8 +217,9 @@ async function startRecording() {
     track.onended = track.onmute;
   });
 
+  const { recordStream, tap } = boostedStream();
   const mimeType = chooseMimeType();
-  recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+  recorder = mimeType ? new MediaRecorder(recordStream, { mimeType }) : new MediaRecorder(recordStream);
   chunks = [];
 
   recorder.ondataavailable = e => {
@@ -214,7 +237,7 @@ async function startRecording() {
   recordButton.textContent = 'إيقاف وإرسال';
   recordButton.classList.add('recording');
   setStatus('🔴 جارٍ التسجيل...');
-  startMeter();
+  startMeter(tap);
 }
 
 function stopRecording() {
@@ -222,6 +245,7 @@ function stopRecording() {
   recorder.stop();
   clearInterval(timerHandle);
   stopMeter();
+  if (boostSource) { boostSource.disconnect(); boostSource = null; }
   releaseScreen();
   recordButton.disabled = true;
 }
