@@ -102,7 +102,7 @@
         [
             'name' => 'رينيل وحيد',
             'subtitle' => 'مدير تقنية المعلومات · SOFPITAL',
-            'image' => 'images/demo/card-rineel-v3.png',
+            'image' => 'images/demo/card-rineel-v4.png',
             'ratio' => 1,
             'headline' => 'الأمن السيبراني في القطاع الصحي حماية للمرضى واستمرار للرعاية',
             'paragraphs' => [
@@ -115,7 +115,7 @@
         [
             // بطاقة رابعة -- الاسم والنص مؤقتين لين يوصل النص الفعلي.
             'name' => 'اسم الضيف',
-            'image' => 'images/demo/card-guest4.png',
+            'image' => 'images/demo/card-guest4-v2.png',
             'ratio' => 1,
             'headline' => 'عنوان الكلمة',
             'paragraphs' => [
