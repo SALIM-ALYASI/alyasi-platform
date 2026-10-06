@@ -59,6 +59,16 @@
       "extra": []
     },
     {
+      "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f", "final_question": true,
+      "core": [
+        { "audio": "fatma-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
+        { "audio": "fatma-intro", "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "fatma-bc1", "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟", "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?" },
+        { "audio": "fatma-bc2", "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟", "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?" },
+        { "audio": "fatma-bc3", "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟", "en": "What is the most common mistake in recovery plans, and how can it be avoided?" }
+      ]
+    },
+    {
       "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f", "hidden": true,
       "core": [
         { "audio": "sara-q1", "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟", "en": "What is the most important lesson you learned from protecting critical infrastructure?" },
@@ -104,16 +114,6 @@
     }
   ],
   "additional_guests": [
-    {
-      "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f", "final_question": true,
-      "questions": [
-        { "audio": "fatma-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
-        { "audio": "fatma-intro", "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
-        { "audio": "fatma-bc1", "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟", "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?" },
-        { "audio": "fatma-bc2", "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟", "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?" },
-        { "audio": "fatma-bc3", "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟", "en": "What is the most common mistake in recovery plans, and how can it be avoided?" }
-      ]
-    },
     {
       "id": "ahmed", "name_ar": "أحمد رضا", "name_en": "Ahmed Reza", "hint": "PIPWISE", "window": "13:00", "gender": "m", "hidden": true,
       "questions": [
