@@ -112,6 +112,18 @@
       ],
       "followup": null,
       "extra": []
+    },
+    {
+      "id": "khalid", "name_ar": "خالد العمراني", "name_en": "Khalid Al Amrani", "hint": "مدير جلسة أمن ICS/OT 12:15", "window": "13:00", "gender": "m", "final_question": true,
+      "core": [
+        { "audio": "yahya-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
+        { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "khalid-q1", "ar": "أستاذ خالد، ما أكثر خطأ شائع يعرّض الأفراد والمؤسسات للاختراق، وكيف نتجنّبه؟", "en": "Mr. Khalid, what is the most common mistake that exposes individuals and organizations to hacking, and how can we avoid it?" },
+        { "audio": "khalid-q2", "ar": "مع تطوّر الاحتيال باستخدام الذكاء الاصطناعي، كيف يتأكد الشخص من أن الرسالة أو الاتصال حقيقي؟", "en": "As AI-powered fraud evolves, how can a person make sure a message or a call is real?" },
+        { "audio": "khalid-q3", "ar": "ما نصيحتك للشباب العُماني الذي يريد دخول مجال الأمن السيبراني، ومن أين يبدأ؟", "en": "What is your advice for young Omanis who want to enter cybersecurity, and where should they start?" }
+      ],
+      "followup": null,
+      "extra": []
     }
   ],
   "additional_guests": [
@@ -139,7 +151,7 @@
   ],
   "interview_windows": [
     { "time": "11:30 – 12:00", "label": "استراحة القهوة", "guests": ["yahya", "fatma"] },
-    { "time": "13:00 – 14:00", "label": "الغداء", "guests": ["ahmed", "sara"] },
+    { "time": "13:00 – 14:00", "label": "الغداء", "guests": ["khalid", "ahmed", "sara"] },
     { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["haitham", "ali", "bawazeer", "abhishek", "arfan"] }
   ],
   "agenda": [
