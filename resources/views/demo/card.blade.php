@@ -102,7 +102,7 @@
         [
             'name' => 'رينيل وحيد',
             'subtitle' => 'مدير تقنية المعلومات · SOFPITAL',
-            'image' => 'images/demo/card-rineel-v2.png',
+            'image' => 'images/demo/card-rineel-v3.png',
             'ratio' => 1,
             'headline' => 'الأمن السيبراني في القطاع الصحي حماية للمرضى واستمرار للرعاية',
             'paragraphs' => [
