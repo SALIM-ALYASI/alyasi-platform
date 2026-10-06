@@ -71,7 +71,8 @@
       "id": "haitham", "name_ar": "هيثم الحجري", "name_en": "Haitham Al Hajri", "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00", "window": "15:15", "gender": "m", "final_question": true,
       "core": [
         { "audio": "haitham-q1", "ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟", "en": "How does a bank balance making digital services easy for customers while keeping them secure?" },
-        { "audio": "haitham-q2", "ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟", "en": "What is the most common fraud targeting bank customers today, and how can customers spot it?" }
+        { "audio": "haitham-q2", "ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟", "en": "What is the most common fraud targeting bank customers today, and how can customers spot it?" },
+        { "audio": "haitham-ai-role", "ar": "منصتي تعتمد على الذكاء الاصطناعي، لكنّي أرى أنني صاحب الفكرة والقرار، وهو المساعد الذي ينفّذ. برأيك، هل الذكاء الاصطناعي بديل عن تفكير الإنسان، أم أداة تنفّذ عمله؟ وأين يجب أن يبقى القرار بيد الإنسان؟", "en": "My platform relies on AI, but I see myself as the owner of the idea and the decision, and AI as the assistant that executes. In your view, is AI a replacement for human thinking, or a tool that carries out our work? And where must decisions stay in human hands?" }
       ],
       "followup": { "audio": "haitham-fu", "ar": "ما دور الذكاء الاصطناعي في كشف الاحتيال البنكي؟", "en": "What role does AI play in detecting banking fraud?" },
       "extra": [
