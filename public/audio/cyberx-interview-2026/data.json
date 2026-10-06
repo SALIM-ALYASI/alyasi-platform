@@ -1,6 +1,6 @@
 {
   "event": "CyberX Oman 2026",
-  "updated": "2026-09-30",
+  "updated": "2026-10-06",
   "quick_buttons": [
     {
       "audio": "shared-intro",
@@ -43,11 +43,17 @@
     {
       "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m",
       "core": [
-        { "audio": "yahya-q1", "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟", "en": "What change will citizens feel from the Tahawul framework?" },
-        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" }
+        { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "yahya-ai1", "ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟", "en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?" },
+        { "audio": "yahya-ai2", "ar": "كيف نميّز الصوت أو الفيديو المزيَّف بالذكاء الاصطناعي، خصوصًا إذا استُخدم لانتحال شخصية مسؤول وطلب تحويل مالي؟", "en": "How can we spot a fake AI voice or video, especially when it is used to impersonate an official and request a money transfer?" },
+        { "audio": "yahya-ai3", "ar": "إذا وقع اختراق بالفعل، ما أول إجراء يساعد المؤسسة على تقليل الضرر واستمرار خدماتها؟", "en": "If a breach has already happened, what is the first action that helps an organization limit the damage and keep its services running?" }
       ],
-      "followup": { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" },
-      "extra": []
+      "followup": null,
+      "extra": [
+        { "audio": "yahya-q1", "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟", "en": "What change will citizens feel from the Tahawul framework?" },
+        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" },
+        { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" }
+      ]
     },
     {
       "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
