@@ -59,7 +59,7 @@
       "extra": []
     },
     {
-      "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
+      "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f", "hidden": true,
       "core": [
         { "audio": "sara-q1", "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟", "en": "What is the most important lesson you learned from protecting critical infrastructure?" },
         { "audio": "sara-q2", "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟", "en": "What is the difference between industrial system security and regular IT security?" }
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay — خيار إضافي", "window": "15:15", "gender": "m", "optional": true,
+      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay — خيار إضافي", "window": "15:15", "gender": "m", "hidden": true, "optional": true,
       "core": [
         { "audio": "ali-q1", "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟", "en": "How do you build a payment startup that is secure from day one?" },
         { "audio": "ali-q3", "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟", "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?" }
@@ -115,21 +115,21 @@
       ]
     },
     {
-      "id": "ahmed", "name_ar": "أحمد رضا", "name_en": "Ahmed Reza", "hint": "PIPWISE", "window": "13:00", "gender": "m",
+      "id": "ahmed", "name_ar": "أحمد رضا", "name_en": "Ahmed Reza", "hint": "PIPWISE", "window": "13:00", "gender": "m", "hidden": true,
       "questions": [
         { "audio": "ahmed-q1", "ar": "هل يمكنك شرح «الثقة الصفرية» بكلمات بسيطة؟", "en": "Can you explain Zero Trust in simple words?" },
         { "audio": "ahmed-q2", "ar": "ما خطورة هويات الآلات والبوتات التي لا ينتبه لها أحد؟", "en": "What is the risk of machine and bot identities that nobody notices?" }
       ]
     },
     {
-      "id": "abhishek", "name_ar": "أبهيشيك سينغ", "name_en": "Abhishek Pratap Singh", "hint": "National Bank of Oman — إنجليزي", "language": "en", "window": "15:15", "gender": "m",
+      "id": "abhishek", "name_ar": "أبهيشيك سينغ", "name_en": "Abhishek Pratap Singh", "hint": "National Bank of Oman — إنجليزي", "language": "en", "window": "15:15", "gender": "m", "hidden": true,
       "questions": [
         { "audio": "abhishek-q1", "ar": "ما أكثر طريقة يفقد بها الناس حساباتهم البنكية لصالح المخترقين؟", "en": "What is the most common way people lose their bank accounts to attackers?" },
         { "audio": "abhishek-q2", "ar": "كيف يحمي العميل العادي تطبيق البنك على جواله؟", "en": "How can ordinary customers protect their banking apps?" }
       ]
     },
     {
-      "id": "arfan", "name_ar": "عرفان الصائغ", "name_en": "Arfan Al Saigh", "hint": "صندوق الحماية الاجتماعية — اختياري", "window": "15:15", "gender": "m",
+      "id": "arfan", "name_ar": "عرفان الصائغ", "name_en": "Arfan Al Saigh", "hint": "صندوق الحماية الاجتماعية — اختياري", "window": "15:15", "gender": "m", "hidden": true,
       "questions": [
         { "audio": "arfan-q1", "ar": "كيف تجعل الموظف العادي يهتم بالأمن السيبراني؟", "en": "How do you make ordinary employees care about cybersecurity?" },
         { "audio": "arfan-q2", "ar": "ما الخطأ الأكثر تكرارًا من الموظفين الذي يسبب الاختراق؟", "en": "What is the most frequent employee mistake that leads to a breach?" }

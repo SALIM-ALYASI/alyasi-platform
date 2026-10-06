@@ -383,7 +383,13 @@
 
         // كل ضيف (أولوية أو احتياط) بمكان واحد -- تُستخدم لبحث الاسم بتبويب
         // "الجدول" بدون ما نهتم من أي قائمة جاء الضيف.
-        const allGuests = [...(data.priority_guests || []), ...(data.additional_guests || [])];
+        // ضيف عليه "hidden": true ما يطلع له تبويب ولا يظهر بالجدول -- يبقى
+        // بالملف (ما ينحذف) عشان نرجّعه بسطر واحد لو تغيّرت الخطة.
+        const isVisible = (guest) => !guest.hidden;
+        data.priority_guests = (data.priority_guests || []).filter(isVisible);
+        data.additional_guests = (data.additional_guests || []).filter(isVisible);
+
+        const allGuests = [...data.priority_guests, ...data.additional_guests];
 
         // -- تبويب "عام": سؤال الجلسة القيادية فقط -- مقطع التعريف صار
         //    بالشريط السريع فوق، فما نكرره هنا. --
@@ -400,9 +406,12 @@
                 if (data.interview_windows && data.interview_windows.length) {
                     addDivider(panel, 'نوافذ المقابلات');
                     data.interview_windows.forEach((w) => {
-                        const names = w.guests
-                            .map((gid) => (allGuests.find((g) => g.id === gid) || {}).name_ar || gid)
-                            .join('، ');
+                        const visibleGuests = w.guests
+                            .map((gid) => allGuests.find((g) => g.id === gid))
+                            .filter(Boolean);
+                        if (!visibleGuests.length) return;
+
+                        const names = visibleGuests.map((g) => g.name_ar).join('، ');
 
                         const card = document.createElement('div');
                         card.className = 'card';
