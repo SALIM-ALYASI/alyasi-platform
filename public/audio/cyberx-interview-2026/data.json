@@ -21,6 +21,12 @@
       "en": "In one sentence: what is the most important thing a person should do to stay safe online?"
     },
     {
+      "audio": "shared-final",
+      "label": "السؤال الأخير",
+      "ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
+      "en": "In your opinion, is this conference meant to raise cybersecurity awareness in Omani society, or to show the world what Oman has achieved in this field? And if it serves both, how can we bring its content to the Omani public in Arabic?"
+    },
+    {
       "audio": "shared-closing",
       "label": "الختام",
       "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
