@@ -57,6 +57,7 @@ use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\WorkController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ConferenceRecordingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -535,6 +536,12 @@ Route::post('/tools/cyberx-interview/answers', [CyberxInterviewController::class
 
 // صحفي المؤتمر -- مسجّل صوت للآيفون/الآيباد (ConferenceJournalist)
 Route::view('/cj', 'tools.conference-recorder')->name('tools.conference-recorder');
+
+// روابط تحميل مؤقتة موقّعة لتسجيلات ونصوص صحفي المؤتمر (تُرسل بالإيميل).
+Route::get('/cj/files/{name}', [ConferenceRecordingController::class, 'sharedFile'])
+    ->where('name', '[A-Za-z0-9._-]+')
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('tools.conference-file');
 
 /*
 |--------------------------------------------------------------------------
