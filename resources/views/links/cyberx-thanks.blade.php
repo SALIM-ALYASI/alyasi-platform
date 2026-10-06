@@ -13,7 +13,6 @@
 <meta property="og:url" content="{{ url()->current() }}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
   :root {
     --bg: #F4F7FC; --card: #FFFFFF; --tx: #0B1F3A; --mu: #4A5D7A;
@@ -46,13 +45,13 @@
   .ornament { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--gold); margin-bottom: 14px; }
   .ornament::before, .ornament::after { content: ""; height: 1px; width: 64px; background: currentColor; opacity: .6; }
   .msg { text-align: center; color: var(--mu); font-size: 17px; line-height: 1.9; margin: 0 auto 26px; max-width: 560px; }
-  .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 16px; border-radius: 14px;
-         font: 700 15px Tajawal, sans-serif; text-decoration: none; border: 1px solid var(--line); background: var(--card); color: var(--tx); }
-  .btn i { font-size: 18px; }
-  .btn-primary { background: var(--gold); border-color: var(--gold); color: #0B1F3A; }
-  .btn-wa i { color: #25D366; }
-  .btn:active { transform: scale(.98); }
+  /* منع حفظ الصورة: بدون سحب، بدون ضغط مطوّل (قائمة "حفظ الصورة" بالآيفون)،
+     وطبقة شفافة فوقها تمنع الضغط على الصورة نفسها. */
+  .photo { position: relative; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+  .photo img { pointer-events: none; -webkit-user-drag: none; }
+  .photo::after { content: ""; position: absolute; inset: 0; }
+  .quote { text-align: center; font-size: clamp(19px, 5vw, 23px); font-weight: 700; line-height: 1.8; margin: 0 auto 14px; max-width: 560px; }
+  .quote span { color: var(--gold); }
   .foot { text-align: center; color: var(--mu); font-size: 13px; margin-top: 30px; }
   .foot a { color: var(--gold); text-decoration: none; }
 </style>
@@ -68,33 +67,27 @@
     <div class="event">CyberX Oman 2026 · سايبر إكس عُمان</div>
 
     <figure class="photo">
-      <img src="{{ asset('images/cyberx-2026/thanks-group.jpg') }}" alt="صورة جماعية مع سالم الحجري في CyberX Oman 2026" width="1496" height="1051">
+      <img src="{{ asset('images/cyberx-2026/thanks-group.jpg') }}" alt="صورة جماعية مع سالم الحجري في CyberX Oman 2026" width="1496" height="1051" draggable="false">
     </figure>
 
     <h1>شكرًا لكم على التصوير معي</h1>
-    <div class="ornament"><i class="fa-solid fa-star-of-life" style="font-size:10px"></i></div>
+    <div class="ornament">✦</div>
+
+    <p class="quote">بعض اللحظات تمرّ، وبعضها <span>يبقى</span>… وهذه الصورة من اللحظات التي تبقى.</p>
 
     <p class="msg">
-      سعدت بلقائكم في أول عمل ميداني لمنصة الياسي في مؤتمر CyberX عُمان 2026.
-      صورة نحتفظ بها ذكرى جميلة من يوم مليء بالمعرفة والحماس لمستقبل الأمن السيبراني في عُمان. 🤍
+      شكرًا لحضوركم الجميل، ولابتساماتكم التي جعلت يومي في CyberX عُمان 2026 أجمل.
+      سعيد بمعرفتكم، وممتن لكل لحظة جمعتنا. 🤍
       <br>— سالم الحجري
     </p>
-
-    <div class="actions">
-      <a class="btn btn-primary" href="{{ asset('images/cyberx-2026/thanks-group.jpg') }}" download="CyberX-Oman-2026-ALYASI.jpg">
-        <i class="fa-solid fa-download"></i> تحميل الصورة
-      </a>
-      <a class="btn btn-wa" href="https://wa.me/?text={{ rawurlencode('صورتنا من CyberX Oman 2026 مع منصة الياسي 🤍 '.url()->current()) }}" target="_blank" rel="noopener">
-        <i class="fa-brands fa-whatsapp"></i> شارك عبر واتساب
-      </a>
-      <a class="btn" href="https://alyasi.dev/alyasi_mbrmj" target="_blank" rel="noopener">
-        <i class="fa-solid fa-link"></i> تابعني على منصاتي
-      </a>
-    </div>
 
     <p class="foot">
       <a href="https://alyasi.dev">alyasi.dev</a> · © 2026 ALYASI
     </p>
   </main>
+  <script>
+    document.addEventListener('contextmenu', (e) => { if (e.target.closest('.photo')) e.preventDefault(); });
+    document.addEventListener('dragstart', (e) => { if (e.target.closest('.photo')) e.preventDefault(); });
+  </script>
 </body>
 </html>
