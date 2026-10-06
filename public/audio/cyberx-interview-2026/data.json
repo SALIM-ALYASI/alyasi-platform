@@ -90,15 +90,16 @@
       ]
     },
     {
-      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay — خيار إضافي", "window": "15:15", "gender": "m", "hidden": true, "optional": true,
+      "id": "ali", "name_ar": "علي اللواتي", "name_en": "Ali Al-Lawati", "hint": "Qpay", "window": "15:15", "gender": "m", "final_question": true, "optional": true,
       "core": [
-        { "audio": "ali-q1", "ar": "كيف تبني شركة ناشئة في الدفع الإلكتروني تكون آمنة من البداية؟", "en": "How do you build a payment startup that is secure from day one?" },
-        { "audio": "ali-q3", "ar": "لماذا المحتوى العربي في الأمن السيبراني قليل، ومن المسؤول عن سد هذه الفجوة؟", "en": "Why is Arabic cybersecurity content so limited, and who is responsible for closing this gap?" }
+        { "audio": "yahya-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
+        { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "ali-pay1", "ar": "أستاذ علي، ما أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان، وكيف يمكن تجاوزه؟", "en": "Mr. Ali, what is the biggest challenge facing the spread of digital payments in Oman, and how can it be overcome?" },
+        { "audio": "ali-pay2", "ar": "كيف تحمون المستخدم من الاحتيال المالي، خصوصًا مع استخدام الذكاء الاصطناعي لتزييف الأصوات والرسائل؟", "en": "How do you protect users from financial fraud, especially now that AI is used to fake voices and messages?" },
+        { "audio": "ali-pay3", "ar": "كيف يستطيع صاحب مشروع صغير إضافة الدفع الإلكتروني إلى موقعه بطريقة سهلة وآمنة وبتكلفة مناسبة؟", "en": "How can a small business owner add online payments to their website in an easy, secure, and affordable way?" }
       ],
-      "followup": { "audio": "ali-q-ai", "ar": "كيف تستخدم الشركات الناشئة الذكاء الاصطناعي دون أن تعرّض بيانات عملائها للخطر؟", "en": "How can startups use AI without putting their customers' data at risk?" },
-      "extra": [
-        { "audio": "ali-q2", "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟", "en": "What is your advice for an Omani developer who wants to enter cybersecurity?" }
-      ]
+      "followup": null,
+      "extra": []
     },
     {
       "id": "bawazeer", "name_ar": "علي باوزير", "name_en": "Ali Bawazeer", "hint": "Filigran", "window": "15:15", "gender": "m", "final_question": true,
