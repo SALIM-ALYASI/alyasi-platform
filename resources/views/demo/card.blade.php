@@ -8,68 +8,89 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
   :root {
-    --bg: #F4F7FC; --card: #FFFFFF; --tx: #0B1F3A; --mu: #4A5D7A;
-    --gold: #B8913F; --line: rgba(11,31,58,.10); --photo-bg: linear-gradient(160deg, #E8EEF8, #D5DFEE);
-    --shadow: 0 16px 40px rgba(11,31,58,.14);
+    --bg: #FFFFFF; --band: #13233F; --panel: #1B2F52; --tx-on-band: #FFFFFF; --mu-on-band: #C9D4E6; --gold: #D8B56A;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0B1F3A; --card: #10284A; --tx: #FFFFFF; --mu: #A9B8CF;
-      --gold: #D8B56A; --line: rgba(255,255,255,.10); --photo-bg: linear-gradient(160deg, #1B3A66, #0F2647);
-      --shadow: 0 16px 40px rgba(0,0,0,.45);
-    }
+    :root { --bg: #0B1F3A; --band: #17345E; --panel: #10284A; }
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--tx); font-family: Tajawal, system-ui, sans-serif; }
-  body { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 0; }
+  html, body { margin: 0; background: var(--bg); font-family: Tajawal, system-ui, sans-serif; }
+  body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 40px; }
 
-  /* البطاقة: عرض 80% من الشاشة، نصها صورة ونصها عنوان + سهم */
-  .card { width: 80vw; background: var(--card); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
-  .head { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; cursor: pointer; user-select: none; }
-  .photo { background: var(--photo-bg); display: flex; align-items: flex-end; justify-content: center; min-height: 100%; }
-  .photo img { display: block; width: 100%; height: auto; aspect-ratio: 465 / 445; object-fit: contain; }
-  .title { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px; text-align: center; }
-  .title h2 { margin: 0; font-size: clamp(16px, 4.2vw, 28px); font-weight: 800; line-height: 1.4; }
-  .title small { color: var(--gold); font-weight: 700; font-size: clamp(12px, 2.8vw, 16px); }
-  .arrow { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); color: var(--gold); background: transparent;
-           display: grid; place-items: center; font-size: 20px; cursor: pointer; transition: transform .35s ease, background .2s; }
-  .card.is-open .arrow { transform: rotate(180deg); background: var(--gold); color: #0B1F3A; }
+  /* أبعاد مترابطة: البطاقة 80% من الشاشة، الصورة 40% من البطاقة،
+     والشريط ارتفاعه نص ارتفاع الصورة -- فنصها السفلي داخله ونصها
+     العلوي طالع فوقه. */
+  .card {
+    --w: 80vw;
+    --photo-w: calc(var(--w) * .40);
+    --photo-h: calc(var(--photo-w) * 445 / 465);
+    width: var(--w);
+    margin-top: calc(var(--photo-h) / 2 + 40px);
+  }
 
-  /* النص المنسدل: ينزل تحت البطاقة عند الضغط، ويختفي بالضغطة الثانية */
-  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+  .band {
+    position: relative;
+    height: calc(var(--photo-h) / 2);
+    min-height: 64px;
+    background: var(--band);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    padding-inline-start: 18px;
+    padding-inline-end: calc(var(--photo-w) + 10px); /* مكان الصورة يسار الشريط */
+  }
+
+  .photo { position: absolute; left: calc(var(--w) * -.03); bottom: 0; width: var(--photo-w); pointer-events: none; }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .title { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+  .title-text { min-width: 0; }
+  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(14px, 3.4vw, 30px); font-weight: 800; line-height: 1.3; }
+  .title small { display: block; color: var(--gold); font-weight: 700; font-size: clamp(10px, 2.2vw, 16px); margin-top: 2px; }
+
+  .arrow { flex: none; width: clamp(30px, 6vw, 46px); height: clamp(30px, 6vw, 46px); border-radius: 50%;
+           border: 1px solid var(--gold); color: var(--gold); display: grid; place-items: center;
+           font-size: clamp(14px, 3vw, 22px); transition: transform .35s ease, background .2s, color .2s; }
+  .card.is-open .arrow { transform: rotate(180deg); background: var(--gold); color: var(--band); }
+
+  /* النص المنسدل تحت الشريط */
+  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); }
   .card.is-open .body { grid-template-rows: 1fr; }
   .body > div { overflow: hidden; }
-  .body p { margin: 0; padding: 18px 22px 22px; border-top: 1px solid var(--line); color: var(--mu); font-size: clamp(14px, 3.4vw, 18px); line-height: 1.9; }
+  .body p { margin: 0; padding: 16px 20px 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
 </style>
 </head>
 <body>
   <article class="card" id="card">
-    <div class="head" role="button" tabindex="0" aria-expanded="false" aria-controls="cardBody">
+    <div class="band" role="button" tabindex="0" aria-expanded="false" aria-controls="cardBody">
       <div class="photo">
         <img src="{{ asset('images/demo/card-person.png') }}" alt="صورة الضيف">
       </div>
       <div class="title">
-        <h2>عنوان تجريبي</h2>
-        <small>CyberX Oman 2026</small>
+        <div class="title-text">
+          <h2>عنوان تجريبي</h2>
+          <small>CyberX Oman 2026</small>
+        </div>
         <span class="arrow" aria-hidden="true">⌄</span>
       </div>
     </div>
     <div class="body" id="cardBody">
       <div>
-        <p>هذا نص تجريبي يظهر عند الضغط على السهم. يمكن هنا كتابة نبذة عن الضيف، منصبه، وأبرز ما قاله في المقابلة. اضغط السهم مرة أخرى ليختفي النص وتبقى الصورة والعنوان فقط.</p>
+        <p>هذا نص تجريبي يظهر عند الضغط على السهم. يمكن هنا كتابة نبذة عن الضيف، منصبه، وأبرز ما قاله في المقابلة. اضغط مرة أخرى ليختفي النص ويبقى الشريط والصورة فقط.</p>
       </div>
     </div>
   </article>
 
   <script>
     const card = document.getElementById('card');
-    const head = card.querySelector('.head');
+    const band = card.querySelector('.band');
     function toggle() {
       const open = card.classList.toggle('is-open');
-      head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      band.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
-    head.addEventListener('click', toggle);
-    head.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    band.addEventListener('click', toggle);
+    band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
   </script>
 </body>
 </html>
