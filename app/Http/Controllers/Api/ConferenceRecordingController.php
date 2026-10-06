@@ -105,7 +105,9 @@ class ConferenceRecordingController extends Controller
         $request->validate([
             'key' => ['required', 'string'],
             'seq' => ['required', 'integer', 'min:0'],
-            'chunk' => ['required', 'file', 'max:'.(50 * 1024)],
+            // iOS Safari may ignore the 30 s timeslice and hand over the whole
+            // recording as one chunk on stop, so a chunk can be the full size.
+            'chunk' => ['required', 'file', 'max:'.self::MAX_UPLOAD_KB],
         ]);
 
         $recording = $this->ownedRecording($request, $relayId);
