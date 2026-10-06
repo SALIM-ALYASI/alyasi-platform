@@ -23,10 +23,11 @@
   .card {
     --w: 80vw;
     --photo-w: calc(var(--w) * .40);
-    --photo-h: calc(var(--photo-w) * 445 / 465);
+    --photo-h: calc(var(--photo-w) * var(--ratio, 1));
     width: var(--w);
     margin-top: calc(var(--photo-h) / 2 + 40px);
   }
+  body { flex-direction: column; align-items: center; }
 
   .band {
     position: relative;
@@ -70,76 +71,113 @@
 </style>
 </head>
 <body>
-  <article class="card" id="card">
-    <div class="band" role="button" tabindex="0" aria-expanded="false" aria-controls="cardBody">
-      <div class="photo">
-        <img src="{{ asset('images/demo/card-person.png') }}" alt="صورة الضيف">
-      </div>
-      <div class="title">
-        <span class="arrow" aria-hidden="true">⌄</span>
-        <div class="title-text">
-          <h2>يحيى العزري</h2>
-          <small>سايبر إكس عُمان 2026</small>
+@php
+    // كل بطاقة: الاسم بالشريط، والعنوان + الفقرات تنكتب حرف حرف عند الفتح.
+    // ratio = ارتفاع الصورة ÷ عرضها (يحدد كم تطلع الصورة فوق الشريط).
+    $cards = [
+        [
+            'name' => 'يحيى العزري',
+            'image' => 'images/demo/card-person.png',
+            'ratio' => 445 / 465,
+            'headline' => 'الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي',
+            'paragraphs' => [
+                'أكد يحيى العزري، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.',
+                'وأوضح أن الذكاء الاصطناعي يزيد تعقيد التهديدات، من خلال تسريع تطوير البرمجيات الخبيثة، وتغيير خصائصها لتفادي الكشف، واستنساخ الأصوات وتزييف الفيديو، بما يصعّب التحقق من الهوية والمحتوى.',
+                'وطرح إطارًا دفاعيًا يقوم على افتراض وقوع الاختراق، وتطبيق دفاع متعدد الطبقات والثقة الصفرية، مع إبقاء الإنسان ضمن حلقة اتخاذ القرار. ويشمل ذلك كشف التزييف العميق، وتطوير أنظمة ذكاء اصطناعي آمنة، وأتمتة الاستجابة للحوادث.',
+                'وشدد على دور الإدارة العليا في بناء المرونة السيبرانية، وتأهيل الكوادر، وتعزيز الشراكات، وحوكمة استخدام الذكاء الاصطناعي، ونشر الوعي الأمني. كما أشار إلى أهمية التكامل مع الهوية الرقمية الوطنية في عُمان لتعزيز الثقة بالخدمات الرقمية.',
+            ],
+        ],
+        [
+            'name' => 'فاطمة اللواتي',
+            'image' => 'images/demo/card-fatma.png',
+            'ratio' => 1,
+            'headline' => 'الامتثال وحده لا يكفي لحماية استمرارية المؤسسات',
+            'paragraphs' => [
+                'أكدت فاطمة اللواتي، خلال كلمتها في مؤتمر سايبر إكس عُمان 2026، أن الالتزام بالمعايير والسياسات لا يكفي لضمان قدرة المؤسسات على مواجهة الاضطرابات السيبرانية. فالامتثال يوضح الجاهزية على الورق، بينما تظهر المرونة في قدرة المؤسسة على مواصلة خدماتها الأساسية والتعافي أثناء الأزمات.',
+                'وحددت خمس أولويات لبناء هذه المرونة، تبدأ بتحديد الخدمات الحرجة وما تعتمد عليه من تقنية وبيانات وأشخاص وموردين، وترتيب أولويات استعادتها. وتشمل أيضًا حوكمة واضحة تحدد المسؤوليات وصلاحيات القرار قبل وقوع الحوادث، مع مشاركة الإدارة العليا في فهم المخاطر وإدارة الاستجابة.',
+                'وشددت على اختبار الجاهزية عبر محاكاة واقعية تجمع الفرق التقنية والقيادات، وتشمل سيناريوهات مثل تعطل مزود رئيسي. كما أوضحت أن الاعتماد على السحابة والاتصالات والأطراف الثالثة يجعل التعاون مع الموردين والجهات المعنية جزءًا أساسيًا من استمرارية العمل.',
+                'ودعت إلى التعلم من كل حادث وتحديث خطط الاستجابة والتعافي باستمرار، وإدماج الأمن في تصميم الخدمات منذ البداية. واختتمت بأن حماية الاستمرارية تدعم الثقة في الاقتصاد الرقمي، وأن السؤال الأهم للمؤسسات هو: هل نستطيع الاستمرار عندما تقع الأزمة؟',
+            ],
+        ],
+    ];
+@endphp
+
+  @foreach ($cards as $card)
+    <article class="card" style="--ratio: {{ $card['ratio'] }}"
+             data-headline="{{ $card['headline'] }}"
+             data-paragraphs='@json($card['paragraphs'], JSON_UNESCAPED_UNICODE)'>
+      <div class="band" role="button" tabindex="0" aria-expanded="false">
+        <div class="photo">
+          <img src="{{ asset($card['image']) }}" alt="{{ $card['name'] }}">
+        </div>
+        <div class="title">
+          <span class="arrow" aria-hidden="true">⌄</span>
+          <div class="title-text">
+            <h2>{{ $card['name'] }}</h2>
+            <small>سايبر إكس عُمان 2026</small>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="body" id="cardBody">
-      <div>
-        <div class="text" id="cardText" data-headline="الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي"></div>
-        <script type="application/json" id="cardParagraphs">["أكد يحيى العزري، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.", "وأوضح أن الذكاء الاصطناعي يزيد تعقيد التهديدات، من خلال تسريع تطوير البرمجيات الخبيثة، وتغيير خصائصها لتفادي الكشف، واستنساخ الأصوات وتزييف الفيديو، بما يصعّب التحقق من الهوية والمحتوى.", "وطرح إطارًا دفاعيًا يقوم على افتراض وقوع الاختراق، وتطبيق دفاع متعدد الطبقات والثقة الصفرية، مع إبقاء الإنسان ضمن حلقة اتخاذ القرار. ويشمل ذلك كشف التزييف العميق، وتطوير أنظمة ذكاء اصطناعي آمنة، وأتمتة الاستجابة للحوادث.", "وشدد على دور الإدارة العليا في بناء المرونة السيبرانية، وتأهيل الكوادر، وتعزيز الشراكات، وحوكمة استخدام الذكاء الاصطناعي، ونشر الوعي الأمني. كما أشار إلى أهمية التكامل مع الهوية الرقمية الوطنية في عُمان لتعزيز الثقة بالخدمات الرقمية."]</script>
+      <div class="body">
+        <div>
+          <div class="text"></div>
+        </div>
       </div>
-    </div>
-  </article>
+    </article>
+  @endforeach
 
   <script>
-    const card = document.getElementById('card');
-    const band = card.querySelector('.band');
-    const textEl = document.getElementById('cardText');
-    const paragraphs = JSON.parse(document.getElementById('cardParagraphs').textContent);
-    // نكتب حرف حرف فقرة بعد فقرة، وأي فتح/إغلاق جديد يلغي الكتابة الجارية.
-    // النص طويل (~1100 حرف)، فنكتب كل 8ms حرفين تقريبًا (~10 ثواني للكل).
-    let typingRun = 0;
+    function setupCard(card) {
+      const band = card.querySelector('.band');
+      const textEl = card.querySelector('.text');
+      const headlineText = card.dataset.headline;
+      const paragraphs = JSON.parse(card.dataset.paragraphs);
+      // أي فتح/إغلاق جديد يلغي الكتابة الجارية لهذي البطاقة بس.
+      let typingRun = 0;
 
-    async function typeInto(el, text, run) {
-      el.classList.add('typing');
-      const chars = [...text];
-      for (let i = 0; i < chars.length; i += 2) {
-        if (run !== typingRun) return false;
-        el.textContent += chars.slice(i, i + 2).join('');
-        await new Promise((r) => setTimeout(r, 16));
+      async function typeInto(el, text, run) {
+        el.classList.add('typing');
+        const chars = [...text];
+        for (let i = 0; i < chars.length; i += 2) {
+          if (run !== typingRun) return false;
+          el.textContent += chars.slice(i, i + 2).join('');
+          await new Promise((r) => setTimeout(r, 16));
+        }
+        el.classList.remove('typing');
+        return true;
       }
-      el.classList.remove('typing');
-      return true;
+
+      // العنوان أولًا ثم الفقرات، كلها حرف حرف.
+      async function typeText() {
+        const run = ++typingRun;
+        textEl.innerHTML = '';
+
+        const headline = document.createElement('h3');
+        textEl.appendChild(headline);
+        if (!await typeInto(headline, headlineText, run)) return;
+
+        for (const paragraph of paragraphs) {
+          const p = document.createElement('p');
+          textEl.appendChild(p);
+          if (!await typeInto(p, paragraph, run)) return;
+        }
+      }
+
+      function toggle() {
+        const open = card.classList.toggle('is-open');
+        band.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+          typeText();
+        } else {
+          typingRun++;
+        }
+      }
+
+      band.addEventListener('click', toggle);
+      band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
     }
 
-    // العنوان أولًا ثم الفقرات، كلها حرف حرف.
-    async function typeText() {
-      const run = ++typingRun;
-      textEl.innerHTML = '';
-
-      const headline = document.createElement('h3');
-      textEl.appendChild(headline);
-      if (!await typeInto(headline, textEl.dataset.headline, run)) return;
-
-      for (const paragraph of paragraphs) {
-        const p = document.createElement('p');
-        textEl.appendChild(p);
-        if (!await typeInto(p, paragraph, run)) return;
-      }
-    }
-
-    function toggle() {
-      const open = card.classList.toggle('is-open');
-      band.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) {
-        typeText();
-      } else {
-        typingRun++;
-      }
-    }
-
-    band.addEventListener('click', toggle);
-    band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    document.querySelectorAll('.card').forEach(setupCard);
   </script>
 </body>
 </html>
