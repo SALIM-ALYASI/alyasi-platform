@@ -548,6 +548,8 @@ Route::view('/bidiyah', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah');
 
 Route::view('/cyberx-thanks', 'links.cyberx-thanks')->name('links.cyberx-thanks');
 
+Route::view('/demo/card', 'demo.card')->name('demo.card');
+
 Route::view('/Mylocation', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah.mylocation');
 
 Route::get('/setup-meta-whatsapp-token', [MetaWhatsAppSetupController::class, 'index'])
