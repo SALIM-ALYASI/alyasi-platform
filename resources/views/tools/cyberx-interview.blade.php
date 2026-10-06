@@ -500,6 +500,23 @@
                     addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
+
+                // نفس قائمة الأسئلة الاحتياطية المطوية عند ضيوف الأولوية.
+                if (guest.extra && guest.extra.length) {
+                    const details = document.createElement('details');
+                    details.className = 'extra-questions';
+
+                    const summary = document.createElement('summary');
+                    summary.textContent = 'أسئلة احتياطية إضافية (' + guest.extra.length + ')';
+                    details.appendChild(summary);
+
+                    guest.extra.forEach((q, idx) => {
+                        addCard(details, { id: q.audio, label: 'احتياطي ' + (idx + 1), ar: q.ar, en: q.en },
+                            audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
+                    });
+
+                    panel.appendChild(details);
+                }
             });
         });
 

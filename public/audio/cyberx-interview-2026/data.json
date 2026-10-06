@@ -91,6 +91,12 @@
     {
       "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f",
       "questions": [
+        { "audio": "fatma-intro", "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "fatma-bc1", "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟", "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?" },
+        { "audio": "fatma-bc2", "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟", "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?" },
+        { "audio": "fatma-bc3", "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟", "en": "What is the most common mistake in recovery plans, and how can it be avoided?" }
+      ],
+      "extra": [
         { "audio": "fatma-q0", "ar": "ماذا يعني «ما بعد الامتثال» بشكل عملي لشركة صغيرة؟", "en": "What does going beyond compliance mean in practice for a small company?" },
         { "audio": "fatma-q1", "ar": "ما أكبر عائق يمنع الفتيات من دخول الأمن السيبراني، وكيف نتجاوزه؟", "en": "What is the biggest barrier stopping young women from entering cybersecurity, and how can we overcome it?" },
         { "audio": "fatma-q2", "ar": "بماذا تنصحين فتاة تريد التخصص في هذا المجال؟", "en": "What would you advise a young woman who wants to specialize in this field?" }
