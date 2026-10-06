@@ -48,7 +48,7 @@
 
   .title { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: clamp(8px, 2.4vw, 16px); min-width: 0; }
   .title-text { min-width: 0; }
-  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(13px, 3vw, 26px); font-weight: 800; line-height: 1.45; }
+  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(16px, 4.2vw, 30px); font-weight: 800; line-height: 1.3; }
   .title small { display: block; color: var(--gold); font-weight: 700; font-size: clamp(10px, 2.2vw, 16px); margin-top: 2px; }
 
   .arrow { flex: none; color: var(--gold); font-size: clamp(20px, 5vw, 34px); line-height: 1; transition: transform .35s ease; }
@@ -66,6 +66,7 @@
   .text { padding: 14px 20px 20px; }
   .text p { margin: 0 0 12px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
   .text p:last-child { margin-bottom: 0; }
+  .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -77,14 +78,14 @@
       <div class="title">
         <span class="arrow" aria-hidden="true">⌄</span>
         <div class="title-text">
-          <h2>الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي</h2>
-          <small>يحيى العزري · سايبر إكس عُمان 2026</small>
+          <h2>يحيى العزري</h2>
+          <small>سايبر إكس عُمان 2026</small>
         </div>
       </div>
     </div>
     <div class="body" id="cardBody">
       <div>
-        <div class="text" id="cardText"></div>
+        <div class="text" id="cardText" data-headline="الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي"></div>
         <script type="application/json" id="cardParagraphs">["أكد يحيى العزري، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.", "وأوضح أن الذكاء الاصطناعي يزيد تعقيد التهديدات، من خلال تسريع تطوير البرمجيات الخبيثة، وتغيير خصائصها لتفادي الكشف، واستنساخ الأصوات وتزييف الفيديو، بما يصعّب التحقق من الهوية والمحتوى.", "وطرح إطارًا دفاعيًا يقوم على افتراض وقوع الاختراق، وتطبيق دفاع متعدد الطبقات والثقة الصفرية، مع إبقاء الإنسان ضمن حلقة اتخاذ القرار. ويشمل ذلك كشف التزييف العميق، وتطوير أنظمة ذكاء اصطناعي آمنة، وأتمتة الاستجابة للحوادث.", "وشدد على دور الإدارة العليا في بناء المرونة السيبرانية، وتأهيل الكوادر، وتعزيز الشراكات، وحوكمة استخدام الذكاء الاصطناعي، ونشر الوعي الأمني. كما أشار إلى أهمية التكامل مع الهوية الرقمية الوطنية في عُمان لتعزيز الثقة بالخدمات الرقمية."]</script>
       </div>
     </div>
@@ -99,20 +100,31 @@
     // النص طويل (~1100 حرف)، فنكتب كل 8ms حرفين تقريبًا (~10 ثواني للكل).
     let typingRun = 0;
 
+    async function typeInto(el, text, run) {
+      el.classList.add('typing');
+      const chars = [...text];
+      for (let i = 0; i < chars.length; i += 2) {
+        if (run !== typingRun) return false;
+        el.textContent += chars.slice(i, i + 2).join('');
+        await new Promise((r) => setTimeout(r, 16));
+      }
+      el.classList.remove('typing');
+      return true;
+    }
+
+    // العنوان أولًا ثم الفقرات، كلها حرف حرف.
     async function typeText() {
       const run = ++typingRun;
       textEl.innerHTML = '';
+
+      const headline = document.createElement('h3');
+      textEl.appendChild(headline);
+      if (!await typeInto(headline, textEl.dataset.headline, run)) return;
+
       for (const paragraph of paragraphs) {
         const p = document.createElement('p');
-        p.classList.add('typing');
         textEl.appendChild(p);
-        const chars = [...paragraph];
-        for (let i = 0; i < chars.length; i += 2) {
-          if (run !== typingRun) return;
-          p.textContent += chars.slice(i, i + 2).join('');
-          await new Promise((r) => setTimeout(r, 16));
-        }
-        p.classList.remove('typing');
+        if (!await typeInto(p, paragraph, run)) return;
       }
     }
 
