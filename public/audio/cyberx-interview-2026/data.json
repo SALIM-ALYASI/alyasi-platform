@@ -89,6 +89,18 @@
       "extra": [
         { "audio": "ali-q2", "ar": "ما نصيحتك لمبرمج عُماني يريد دخول مجال الأمن السيبراني؟", "en": "What is your advice for an Omani developer who wants to enter cybersecurity?" }
       ]
+    },
+    {
+      "id": "bawazeer", "name_ar": "علي باوزير", "name_en": "Ali Bawazeer", "hint": "Filigran", "window": "15:15", "gender": "m", "final_question": true,
+      "core": [
+        { "audio": "yahya-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
+        { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
+        { "audio": "bawazeer-q1", "ar": "أستاذ علي، كيف تستطيع منصة صغيرة مثل ALYASI الاستفادة من معلومات التهديدات لحماية موقعها بميزانية محدودة؟", "en": "Mr. Ali, how can a small platform like ALYASI use threat intelligence to protect its website on a limited budget?" },
+        { "audio": "bawazeer-q2", "ar": "كيف تساعد حلول Filigran المؤسسات على تحويل معلومات التهديدات إلى إجراءات تمنع الهجمات أو تقلّل أثرها؟", "en": "How do Filigran's solutions help organizations turn threat intelligence into actions that prevent attacks or reduce their impact?" },
+        { "audio": "bawazeer-q3", "ar": "برأيك، أين يفيد الذكاء الاصطناعي أكثر في الأمن السيبراني، وأي قرارات يجب أن تبقى بيد الإنسان؟", "en": "In your view, where does AI help most in cybersecurity, and which decisions must stay in human hands?" }
+      ],
+      "followup": null,
+      "extra": []
     }
   ],
   "additional_guests": [
@@ -127,7 +139,7 @@
   "interview_windows": [
     { "time": "11:30 – 12:00", "label": "استراحة القهوة", "guests": ["yahya", "fatma"] },
     { "time": "13:00 – 14:00", "label": "الغداء", "guests": ["ahmed", "sara"] },
-    { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["haitham", "ali", "abhishek", "arfan"] }
+    { "time": "15:15 – 16:30", "label": "الختام والتواصل", "guests": ["haitham", "ali", "bawazeer", "abhishek", "arfan"] }
   ],
   "agenda": [
     { "time": "08:00 – 09:20", "ar": "التسجيل والتواصل", "en": "Arrival & Networking" },
