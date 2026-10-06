@@ -33,6 +33,8 @@
     height: calc(var(--photo-h) / 2);
     min-height: 64px;
     background: var(--band);
+    border-radius: 12px;
+    transition: border-radius .2s;
     cursor: pointer;
     user-select: none;
     display: flex;
@@ -44,18 +46,21 @@
   .photo { position: absolute; left: calc(var(--w) * -.03); bottom: 0; width: var(--photo-w); pointer-events: none; }
   .photo img { display: block; width: 100%; height: auto; }
 
-  .title { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+  .title { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: clamp(8px, 2.4vw, 16px); min-width: 0; }
   .title-text { min-width: 0; }
   .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(14px, 3.4vw, 30px); font-weight: 800; line-height: 1.3; }
   .title small { display: block; color: var(--gold); font-weight: 700; font-size: clamp(10px, 2.2vw, 16px); margin-top: 2px; }
 
-  .arrow { flex: none; width: clamp(30px, 6vw, 46px); height: clamp(30px, 6vw, 46px); border-radius: 50%;
-           border: 1px solid var(--gold); color: var(--gold); display: grid; place-items: center;
-           font-size: clamp(14px, 3vw, 22px); transition: transform .35s ease, background .2s, color .2s; }
-  .card.is-open .arrow { transform: rotate(180deg); background: var(--gold); color: var(--band); }
+  .arrow { flex: none; color: var(--gold); font-size: clamp(20px, 5vw, 34px); line-height: 1; transition: transform .35s ease; }
+  .card.is-open .arrow { transform: rotate(180deg); }
+
+  /* مؤشر الكتابة أثناء ظهور النص حرف حرف */
+  .typing::after { content: "▍"; color: var(--gold); margin-inline-start: 2px; animation: blink .8s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
 
   /* النص المنسدل تحت الشريط */
-  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); }
+  .card.is-open .band { border-radius: 12px 12px 0 0; }
+  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); border-radius: 0 0 12px 12px; }
   .card.is-open .body { grid-template-rows: 1fr; }
   .body > div { overflow: hidden; }
   .body p { margin: 0; padding: 16px 20px 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
@@ -68,16 +73,16 @@
         <img src="{{ asset('images/demo/card-person.png') }}" alt="صورة الضيف">
       </div>
       <div class="title">
+        <span class="arrow" aria-hidden="true">⌄</span>
         <div class="title-text">
           <h2>عنوان تجريبي</h2>
           <small>CyberX Oman 2026</small>
         </div>
-        <span class="arrow" aria-hidden="true">⌄</span>
       </div>
     </div>
     <div class="body" id="cardBody">
       <div>
-        <p>هذا نص تجريبي يظهر عند الضغط على السهم. يمكن هنا كتابة نبذة عن الضيف، منصبه، وأبرز ما قاله في المقابلة. اضغط مرة أخرى ليختفي النص ويبقى الشريط والصورة فقط.</p>
+        <p id="cardText" data-text="هذا نص تجريبي يظهر عند الضغط على السهم. يمكن هنا كتابة نبذة عن الضيف، منصبه، وأبرز ما قاله في المقابلة. اضغط مرة أخرى ليختفي النص ويبقى الشريط والصورة فقط."></p>
       </div>
     </div>
   </article>
@@ -85,10 +90,34 @@
   <script>
     const card = document.getElementById('card');
     const band = card.querySelector('.band');
+    const textEl = document.getElementById('cardText');
+    const fullText = textEl.dataset.text;
+    // نكتب حرف حرف، وأي فتح/إغلاق جديد يلغي الكتابة الجارية (typingRun).
+    let typingRun = 0;
+
+    async function typeText() {
+      const run = ++typingRun;
+      textEl.textContent = '';
+      textEl.classList.add('typing');
+      for (const ch of fullText) {
+        if (run !== typingRun) return;
+        textEl.textContent += ch;
+        await new Promise((r) => setTimeout(r, ch === ' ' ? 18 : 35));
+      }
+      if (run === typingRun) textEl.classList.remove('typing');
+    }
+
     function toggle() {
       const open = card.classList.toggle('is-open');
       band.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        typeText();
+      } else {
+        typingRun++;
+        textEl.classList.remove('typing');
+      }
     }
+
     band.addEventListener('click', toggle);
     band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
   </script>
