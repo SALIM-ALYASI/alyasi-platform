@@ -1,3 +1,12 @@
+# Audio types for recorded interview answers (served from /storage) --
+# without these the server falls back to text/plain and phones won't play them.
+<IfModule mod_mime.c>
+    AddType audio/webm .webm
+    AddType audio/mp4 .m4a
+    AddType audio/aac .aac
+    AddType audio/ogg .ogg
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
