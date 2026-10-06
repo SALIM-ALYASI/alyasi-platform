@@ -454,6 +454,8 @@
                         audioUrl(guest.followup.audio, 'ar'), audioUrl(guest.followup.audio, 'en'), true, guest.id, showArabic);
                 }
 
+                addFinalQuestion(panel, guest, isFeminine, showArabic);
+
                 if (guest.extra && guest.extra.length) {
                     const details = document.createElement('details');
                     details.className = 'extra-questions';
@@ -504,6 +506,8 @@
                     addCard(panel, { id: q.audio, label: q.label || 'سؤال ' + (++questionNumber), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
+
+                addFinalQuestion(panel, guest, isFeminine, showArabic);
 
                 // نفس قائمة الأسئلة الاحتياطية المطوية عند ضيوف الأولوية.
                 if (guest.extra && guest.extra.length) {
@@ -560,6 +564,19 @@
         // الضيف، الختام، والمتابعات) لها نسخة مؤنثة منفصلة (لاحقة -f) عشان
         // صيغة الخطاب تكون صحيحة نحويًا لو الضيفة بنت -- ملفات الأسئلة
         // الخاصة بكل ضيف مكتوبة أصلًا بصيغته الصحيحة فما تحتاج هذا.
+        // السؤال الأخير المشترك (زر "السؤال الأخير" بالشريط السريع) كبطاقة
+        // أخيرة داخل تبويب الضيف -- للضيوف اللي عندهم final_question بس.
+        // نفس التسجيل، والنسخة المؤنثة تلقائيًا للضيفات.
+        function addFinalQuestion(panel, guest, isFeminine, showArabic) {
+            if (!guest.final_question) return;
+
+            const finalQuestion = (data.quick_buttons || []).find((qb) => qb.audio === 'shared-last');
+            if (!finalQuestion) return;
+
+            addCard(panel, { id: guest.id + '-last', label: 'السؤال الأخير', ar: finalQuestion.ar, en: finalQuestion.en },
+                audioUrl(finalQuestion.audio, 'ar', isFeminine), audioUrl(finalQuestion.audio, 'en'), true, guest.id, showArabic);
+        }
+
         function audioUrl(id, lang, feminine) {
             const suffix = (feminine && lang === 'ar') ? '-f' : '';
             return baseUrl + '/' + id + '-' + lang + suffix + '.wav';

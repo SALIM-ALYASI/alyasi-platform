@@ -47,7 +47,7 @@
   },
   "priority_guests": [
     {
-      "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m",
+      "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m", "final_question": true,
       "core": [
         { "audio": "yahya-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
         { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
@@ -68,7 +68,7 @@
       "extra": []
     },
     {
-      "id": "haitham", "name_ar": "هيثم الحجري", "name_en": "Haitham Al Hajri", "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00", "window": "15:15", "gender": "m",
+      "id": "haitham", "name_ar": "هيثم الحجري", "name_en": "Haitham Al Hajri", "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00", "window": "15:15", "gender": "m", "final_question": true,
       "core": [
         { "audio": "haitham-q1", "ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟", "en": "How does a bank balance making digital services easy for customers while keeping them secure?" },
         { "audio": "haitham-q2", "ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟", "en": "What is the most common fraud targeting bank customers today, and how can customers spot it?" }
@@ -92,7 +92,7 @@
   ],
   "additional_guests": [
     {
-      "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f",
+      "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f", "final_question": true,
       "questions": [
         { "audio": "fatma-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
         { "audio": "fatma-intro", "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
