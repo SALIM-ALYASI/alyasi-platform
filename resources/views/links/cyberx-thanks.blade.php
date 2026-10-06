@@ -33,6 +33,11 @@
   .wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 40px; }
   .brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 22px; }
   .brand img { height: 44px; width: auto; }
+  .brand .logo-dark { display: none; }
+  @media (prefers-color-scheme: dark) {
+    .brand .logo-light { display: none; }
+    .brand .logo-dark { display: block; }
+  }
   .brand span { font-weight: 800; letter-spacing: .18em; font-size: 15px; }
   .event { text-align: center; color: var(--gold); font-weight: 700; font-size: 14px; letter-spacing: .04em; margin-bottom: 18px; }
   .photo { margin: 0; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); background: var(--card); }
@@ -56,6 +61,7 @@
   <main class="wrap">
     <div class="brand">
       <img src="{{ asset('images/logo/logo-navy-icon.png') }}" alt="" class="logo-light">
+      <img src="{{ asset('images/logo/logo-white-trimmed.png') }}" alt="" class="logo-dark">
       <span>ALYASI</span>
     </div>
 
