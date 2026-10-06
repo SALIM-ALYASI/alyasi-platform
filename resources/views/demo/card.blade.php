@@ -30,8 +30,8 @@
 
   .band {
     position: relative;
-    height: calc(var(--photo-h) / 2);
-    min-height: 64px;
+    min-height: max(calc(var(--photo-h) / 2), 64px);
+    padding-block: 10px;
     background: var(--band);
     border-radius: 12px;
     transition: border-radius .2s;
@@ -48,7 +48,7 @@
 
   .title { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: clamp(8px, 2.4vw, 16px); min-width: 0; }
   .title-text { min-width: 0; }
-  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(14px, 3.4vw, 30px); font-weight: 800; line-height: 1.3; }
+  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(13px, 3vw, 26px); font-weight: 800; line-height: 1.45; }
   .title small { display: block; color: var(--gold); font-weight: 700; font-size: clamp(10px, 2.2vw, 16px); margin-top: 2px; }
 
   .arrow { flex: none; color: var(--gold); font-size: clamp(20px, 5vw, 34px); line-height: 1; transition: transform .35s ease; }
@@ -63,7 +63,9 @@
   .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); border-radius: 0 0 12px 12px; }
   .card.is-open .body { grid-template-rows: 1fr; }
   .body > div { overflow: hidden; }
-  .body p { margin: 0; padding: 16px 20px 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
+  .text { padding: 14px 20px 20px; }
+  .text p { margin: 0 0 12px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
+  .text p:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -75,14 +77,15 @@
       <div class="title">
         <span class="arrow" aria-hidden="true">⌄</span>
         <div class="title-text">
-          <h2>عنوان تجريبي</h2>
-          <small>CyberX Oman 2026</small>
+          <h2>الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي</h2>
+          <small>يحيى العزري · سايبر إكس عُمان 2026</small>
         </div>
       </div>
     </div>
     <div class="body" id="cardBody">
       <div>
-        <p id="cardText" data-text="هذا نص تجريبي يظهر عند الضغط على السهم. يمكن هنا كتابة نبذة عن الضيف، منصبه، وأبرز ما قاله في المقابلة. اضغط مرة أخرى ليختفي النص ويبقى الشريط والصورة فقط."></p>
+        <div class="text" id="cardText"></div>
+        <script type="application/json" id="cardParagraphs">["أكد يحيى العزري، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.", "وأوضح أن الذكاء الاصطناعي يزيد تعقيد التهديدات، من خلال تسريع تطوير البرمجيات الخبيثة، وتغيير خصائصها لتفادي الكشف، واستنساخ الأصوات وتزييف الفيديو، بما يصعّب التحقق من الهوية والمحتوى.", "وطرح إطارًا دفاعيًا يقوم على افتراض وقوع الاختراق، وتطبيق دفاع متعدد الطبقات والثقة الصفرية، مع إبقاء الإنسان ضمن حلقة اتخاذ القرار. ويشمل ذلك كشف التزييف العميق، وتطوير أنظمة ذكاء اصطناعي آمنة، وأتمتة الاستجابة للحوادث.", "وشدد على دور الإدارة العليا في بناء المرونة السيبرانية، وتأهيل الكوادر، وتعزيز الشراكات، وحوكمة استخدام الذكاء الاصطناعي، ونشر الوعي الأمني. كما أشار إلى أهمية التكامل مع الهوية الرقمية الوطنية في عُمان لتعزيز الثقة بالخدمات الرقمية."]</script>
       </div>
     </div>
   </article>
@@ -91,20 +94,26 @@
     const card = document.getElementById('card');
     const band = card.querySelector('.band');
     const textEl = document.getElementById('cardText');
-    const fullText = textEl.dataset.text;
-    // نكتب حرف حرف، وأي فتح/إغلاق جديد يلغي الكتابة الجارية (typingRun).
+    const paragraphs = JSON.parse(document.getElementById('cardParagraphs').textContent);
+    // نكتب حرف حرف فقرة بعد فقرة، وأي فتح/إغلاق جديد يلغي الكتابة الجارية.
+    // النص طويل (~1100 حرف)، فنكتب كل 8ms حرفين تقريبًا (~10 ثواني للكل).
     let typingRun = 0;
 
     async function typeText() {
       const run = ++typingRun;
-      textEl.textContent = '';
-      textEl.classList.add('typing');
-      for (const ch of fullText) {
-        if (run !== typingRun) return;
-        textEl.textContent += ch;
-        await new Promise((r) => setTimeout(r, ch === ' ' ? 18 : 35));
+      textEl.innerHTML = '';
+      for (const paragraph of paragraphs) {
+        const p = document.createElement('p');
+        p.classList.add('typing');
+        textEl.appendChild(p);
+        const chars = [...paragraph];
+        for (let i = 0; i < chars.length; i += 2) {
+          if (run !== typingRun) return;
+          p.textContent += chars.slice(i, i + 2).join('');
+          await new Promise((r) => setTimeout(r, 16));
+        }
+        p.classList.remove('typing');
       }
-      if (run === typingRun) textEl.classList.remove('typing');
     }
 
     function toggle() {
@@ -114,7 +123,6 @@
         typeText();
       } else {
         typingRun++;
-        textEl.classList.remove('typing');
       }
     }
 
