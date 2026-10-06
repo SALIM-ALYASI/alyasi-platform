@@ -529,6 +529,10 @@ Route::post(
 Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
     ->name('tools.cyberx-interview');
 
+Route::post('/tools/cyberx-interview/answers', [CyberxInterviewController::class, 'storeAnswer'])
+    ->middleware('throttle:30,1')
+    ->name('tools.cyberx-interview.answers');
+
 // صحفي المؤتمر -- مسجّل صوت للآيفون/الآيباد (ConferenceJournalist)
 Route::view('/cj', 'tools.conference-recorder')->name('tools.conference-recorder');
 

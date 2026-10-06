@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>أسئلة مقابلات CyberX — ALYASI</title>
     <style>
         :root {
@@ -208,6 +209,15 @@
             max-width: 100%;
             height: 34px;
         }
+
+        .send-status {
+            width: 100%;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .send-status.is-ok { color: #48bb78; }
+        .send-status.is-error { color: #f6ad55; }
 
         .divider {
             text-align: center;
@@ -573,6 +583,53 @@
         // الضيف، الختام، والمتابعات) لها نسخة مؤنثة منفصلة (لاحقة -f) عشان
         // صيغة الخطاب تكون صحيحة نحويًا لو الضيفة بنت -- ملفات الأسئلة
         // الخاصة بكل ضيف مكتوبة أصلًا بصيغته الصحيحة فما تحتاج هذا.
+        // يرفع الإجابة للسيرفر فور الإيقاف: تنحفظ نسخة (ما تضيع لو انسكرت
+        // الصفحة) وتوصل لسالم بالواتساب المجاني مع السؤال. زر "حفظ" المحلي
+        // يبقى كاحتياط لو فشل الرفع (مثلاً انقطاع النت بالقاعة).
+        async function sendAnswer(blob, questionId, meta, answerRow) {
+            const status = document.createElement('div');
+            status.className = 'send-status';
+            status.textContent = '⏳ جاري الإرسال للواتساب…';
+            answerRow.appendChild(status);
+
+            const body = new FormData();
+            const ext = (blob.type.split('/')[1] || 'webm').split(';')[0];
+            body.append('audio', blob, 'answer-' + questionId + '.' + ext);
+            body.append('question_id', questionId);
+            body.append('guest', (meta && meta.guest) || '');
+            body.append('question', (meta && meta.question) || '');
+
+            try {
+                const response = await fetch(@json(route('tools.cyberx-interview.answers')), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                    body,
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok || !result.success) throw new Error(result.message || ('HTTP ' + response.status));
+
+                status.textContent = '✅ انحفظت وانرسلت للواتساب';
+                status.classList.add('is-ok');
+            } catch (err) {
+                status.textContent = '⚠️ ما انرسلت (' + err.message + ') — اضغط ⬇ حفظ عشان ما تضيع';
+                status.classList.add('is-error');
+
+                const retry = document.createElement('button');
+                retry.type = 'button';
+                retry.className = 'btn';
+                retry.textContent = '🔁 إعادة الإرسال';
+                retry.addEventListener('click', () => {
+                    status.remove();
+                    retry.remove();
+                    sendAnswer(blob, questionId, meta, answerRow);
+                });
+                answerRow.appendChild(retry);
+            }
+        }
+
         // السؤال الأخير المشترك (زر "السؤال الأخير" بالشريط السريع) كبطاقة
         // أخيرة داخل تبويب الضيف -- للضيوف اللي عندهم final_question بس.
         // نفس التسجيل، والنسخة المؤنثة تلقائيًا للضيفات.
@@ -661,7 +718,11 @@
                 answerRow.className = 'answer';
                 card.appendChild(answerRow);
 
-                wireRecorder(recordBtn, answerRow, (recordPrefix || q.id) + '-' + q.id);
+                const guest = allGuests.find((g) => g.id === recordPrefix);
+                wireRecorder(recordBtn, answerRow, (recordPrefix || q.id) + '-' + q.id, {
+                    guest: guest ? guest.name_ar : (recordPrefix === 'panel' ? 'سؤال الجلسة القيادية' : ''),
+                    question: q.ar || q.en || '',
+                });
             } else {
                 card.appendChild(actions);
             }
@@ -734,7 +795,7 @@
             actions.appendChild(restartBtn);
         }
 
-        function wireRecorder(button, answerRow, questionId) {
+        function wireRecorder(button, answerRow, questionId, meta) {
             let mediaRecorder = null;
             let chunks = [];
             let stream = null;
@@ -791,6 +852,7 @@
                     answerRow.appendChild(download);
 
                     answerRow.classList.add('is-visible');
+                    sendAnswer(blob, questionId, meta, answerRow);
 
                     button.textContent = '🎙 إعادة التسجيل';
                     button.classList.remove('is-recording');
