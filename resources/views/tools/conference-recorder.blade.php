@@ -70,10 +70,21 @@ let boostSource = null;
 // تقوية الاستقبال: الميكروفون ← تضخيم +12 dB ← ضاغط يرفع الكلام الهادي ويمنع
 // التشويه، والتسجيل والمؤشر ياخذون الصوت بعد التقوية. يرجع للميكروفون الخام
 // إذا المتصفح ما يدعم.
-function boostedStream() {
+// iOS يشغّل محرك الصوت فقط داخل ضغطة المستخدم نفسها -- بعد نافذة إذن
+// الميكروفون يبقى موقوف ويطلع التسجيل فاضي، فنشغّله أول ما ينضغط الزر.
+function wakeAudioContext() {
   try {
     audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-    audioContext.resume();
+    if (audioContext.state !== 'running') audioContext.resume();
+  } catch (_) {}
+}
+
+function boostedStream() {
+  // محرك موقوف = تسجيل فاضي؛ نسجّل الميكروفون مباشرة بدون تقوية.
+  if (!audioContext || audioContext.state !== 'running') {
+    return { recordStream: stream, tap: null };
+  }
+  try {
     boostSource = audioContext.createMediaStreamSource(stream);
     const gain = audioContext.createGain();
     gain.gain.value = 4;
@@ -289,6 +300,11 @@ async function pumpUpload(u) {
   const show = text => { if (u === upload) setStatus(text); };
 
   while (!u.done && (u.parts.length || u.stopped)) {
+    if (u.stopped && u.nextSeq === 0) {
+      u.done = true;
+      show('❌ التسجيل طلع فاضي — ما التقط الجهاز صوت. حدّث الصفحة وجرّب مرة ثانية.');
+      break;
+    }
     try {
       if (!u.relayId) {
         const started = await postJson('/api/cj/recordings/start', { extension: u.ext, mime_type: u.type });
@@ -350,6 +366,7 @@ async function pollStatus(relayId) {
 }
 
 recordButton.addEventListener('click', async () => {
+  wakeAudioContext();
   try {
     if (recorder && recorder.state !== 'inactive') stopRecording();
     else await startRecording();

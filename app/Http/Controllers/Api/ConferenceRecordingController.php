@@ -39,6 +39,7 @@ class ConferenceRecordingController extends Controller
         ]);
 
         $file = $request->file('audio');
+        abort_if($file->getSize() === 0, 422, 'Recording is empty');
         $extension = strtolower($file->getClientOriginalExtension());
         if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
             $extension = 'webm';
