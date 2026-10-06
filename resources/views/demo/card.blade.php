@@ -8,14 +8,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
   :root {
-    --bg: #FFFFFF; --band: #13233F; --panel: #1B2F52; --tx-on-band: #FFFFFF; --mu-on-band: #C9D4E6; --gold: #D8B56A;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #0B1F3A; --band: #17345E; --panel: #10284A; }
+    --bg: #0B1F3A; --band: rgba(19, 35, 63, .55); --panel: rgba(16, 32, 58, .62);
+    --glass-line: rgba(255, 255, 255, .18); --tx-on-band: #FFFFFF; --mu-on-band: #DCE4F1; --gold: #D8B56A;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); font-family: Tajawal, system-ui, sans-serif; }
-  body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 40px; }
+  html { background: var(--bg); }
+  html, body { margin: 0; font-family: Tajawal, system-ui, sans-serif; }
+  body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 40px; position: relative; }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(rgba(7, 18, 36, .55), rgba(7, 18, 36, .75)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
+  }
 
   /* أبعاد مترابطة: البطاقة 80% من الشاشة، الصورة 40% من البطاقة،
      والشريط ارتفاعه نص ارتفاع الصورة -- فنصها السفلي داخله ونصها
@@ -34,6 +37,9 @@
     min-height: max(calc(var(--photo-h) / 2), 64px);
     padding-block: 10px;
     background: var(--band);
+    border: 1px solid var(--glass-line);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
     transition: border-radius .2s;
     cursor: pointer;
@@ -61,7 +67,8 @@
 
   /* النص المنسدل تحت الشريط */
   .card.is-open .band { border-radius: 12px 12px 0 0; }
-  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); border-radius: 0 0 12px 12px; }
+  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); border-radius: 0 0 12px 12px;
+          -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .card.is-open .body { grid-template-rows: 1fr; }
   .body > div { overflow: hidden; }
   .text { padding: 14px 20px 20px; }
