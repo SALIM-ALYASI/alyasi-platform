@@ -27,7 +27,7 @@
     width: var(--w);
     margin-top: calc(var(--photo-h) / 2 + 40px);
   }
-  body { flex-direction: column; align-items: center; }
+  body { flex-direction: column; align-items: center; justify-content: flex-start; }
 
   .band {
     position: relative;
