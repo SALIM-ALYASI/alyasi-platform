@@ -441,8 +441,11 @@
                     '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>';
                 panel.appendChild(heading);
 
-                guest.core.forEach((q, idx) => {
-                    addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
+                // عنصر بـ label خاص (مثل "تعريفي") ياخذ عنوانه، والترقيم
+                // "سؤال N" للأسئلة الفعلية بس.
+                let coreNumber = 0;
+                guest.core.forEach((q) => {
+                    addCard(panel, { id: q.audio, label: q.label || 'سؤال ' + (++coreNumber), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 
@@ -496,8 +499,9 @@
                       '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>';
                 panel.appendChild(heading);
 
-                guest.questions.forEach((q, idx) => {
-                    addCard(panel, { id: q.audio, label: 'سؤال ' + (idx + 1), ar: q.ar, en: q.en },
+                let questionNumber = 0;
+                guest.questions.forEach((q) => {
+                    addCard(panel, { id: q.audio, label: q.label || 'سؤال ' + (++questionNumber), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 

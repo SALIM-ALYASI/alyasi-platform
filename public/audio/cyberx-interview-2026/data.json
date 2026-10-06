@@ -43,17 +43,14 @@
     {
       "id": "yahya", "name_ar": "يحيى العزري", "name_en": "Yahya Al-Azri", "hint": "Oman CERT", "window": "11:30", "gender": "m",
       "core": [
+        { "audio": "yahya-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
         { "audio": "yahya-intro", "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
         { "audio": "yahya-ai1", "ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟", "en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?" },
         { "audio": "yahya-ai2", "ar": "كيف نميّز الصوت أو الفيديو المزيَّف بالذكاء الاصطناعي، خصوصًا إذا استُخدم لانتحال شخصية مسؤول وطلب تحويل مالي؟", "en": "How can we spot a fake AI voice or video, especially when it is used to impersonate an official and request a money transfer?" },
         { "audio": "yahya-ai3", "ar": "إذا وقع اختراق بالفعل، ما أول إجراء يساعد المؤسسة على تقليل الضرر واستمرار خدماتها؟", "en": "If a breach has already happened, what is the first action that helps an organization limit the damage and keep its services running?" }
       ],
       "followup": null,
-      "extra": [
-        { "audio": "yahya-q1", "ar": "ما التغيير الذي سيشعر به المواطن من إطار «تحوّل»؟", "en": "What change will citizens feel from the Tahawul framework?" },
-        { "audio": "yahya-q2", "ar": "ما الأخطاء الشائعة التي يقع فيها المستخدمون وتسهّل الاختراق؟", "en": "What common mistakes do users make that make hacking easier?" },
-        { "audio": "yahya-q3", "ar": "ما نصيحتك للشركات الصغيرة لحماية نفسها؟", "en": "What is your advice for small businesses to protect themselves?" }
-      ]
+      "extra": []
     },
     {
       "id": "sara", "name_ar": "سارة الكندي", "name_en": "Sara Al Kindi", "hint": "PDO", "window": "13:00", "gender": "f",
@@ -91,15 +88,11 @@
     {
       "id": "fatma", "name_ar": "فاطمة اللواتي", "name_en": "Fatma Al Lawati", "hint": "WiCSME", "window": "11:30", "gender": "f",
       "questions": [
+        { "audio": "fatma-hello", "label": "تعريفي", "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.", "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you." },
         { "audio": "fatma-intro", "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟", "en": "Before we start, could you tell our audience your name, your position, and what your work involves?" },
         { "audio": "fatma-bc1", "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟", "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?" },
         { "audio": "fatma-bc2", "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟", "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?" },
         { "audio": "fatma-bc3", "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟", "en": "What is the most common mistake in recovery plans, and how can it be avoided?" }
-      ],
-      "extra": [
-        { "audio": "fatma-q0", "ar": "ماذا يعني «ما بعد الامتثال» بشكل عملي لشركة صغيرة؟", "en": "What does going beyond compliance mean in practice for a small company?" },
-        { "audio": "fatma-q1", "ar": "ما أكبر عائق يمنع الفتيات من دخول الأمن السيبراني، وكيف نتجاوزه؟", "en": "What is the biggest barrier stopping young women from entering cybersecurity, and how can we overcome it?" },
-        { "audio": "fatma-q2", "ar": "بماذا تنصحين فتاة تريد التخصص في هذا المجال؟", "en": "What would you advise a young woman who wants to specialize in this field?" }
       ]
     },
     {
