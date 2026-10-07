@@ -85,17 +85,17 @@
      فوق الشريط تحتها مباشرة بمسافة البطاقة نفسها. */
   /* تعليق سالم بين المحطات: فقاعة كلام بصورته الصغيرة، عشان يبان إنه هو
      اللي يقول الكلام. */
-  .lead { width: 80vw; margin: 44px 0 -12px; display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
-          background: rgba(19, 35, 63, .5); border: 1px solid var(--glass-line); border-radius: 16px;
+  .lead { width: 80vw; margin: 44px 0 -12px; display: flex; flex-direction: column; align-items: center; text-align: center;
+          gap: 8px; padding: 18px 20px 20px;
+          background: rgba(19, 35, 63, .5); border: 1px solid var(--glass-line); border-radius: 18px;
           -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-  .lead-avatar { flex: none; width: clamp(38px, 9vw, 52px); height: clamp(38px, 9vw, 52px); border-radius: 50%; overflow: hidden;
-                 border: 2px solid var(--gold); background: #E8EEF8; }
+  .lead-avatar { flex: none; width: clamp(46px, 11vw, 60px); height: clamp(46px, 11vw, 60px); border-radius: 50%; overflow: hidden;
+                 border: 2px solid var(--gold); background: #E8EEF8; box-shadow: 0 4px 14px rgba(0, 0, 0, .35); }
   .lead-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; transform: scale(1.35); }
-  .lead-body { min-width: 0; }
-  .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); margin-bottom: 2px; }
-  .lead-text { margin: 0; color: #F2F5FA; font-size: clamp(14px, 3.6vw, 20px); font-weight: 700; line-height: 1.85; }
-  .lead-text::before { content: "« "; color: var(--gold); }
-  .lead-text::after { content: " »"; color: var(--gold); }
+  .lead-body { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+  .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); letter-spacing: .02em; }
+  .lead-name::after { content: ""; display: block; width: 34px; height: 2px; margin: 8px auto 10px; background: var(--gold); border-radius: 2px; opacity: .7; }
+  .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95; }
   .lead--outro { margin: 48px 0 24px; }
   .lead--outro .lead-text { color: var(--gold); }
   .lead a { color: #FFFFFF; }
