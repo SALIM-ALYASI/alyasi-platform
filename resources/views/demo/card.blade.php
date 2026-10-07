@@ -96,6 +96,10 @@
   .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); letter-spacing: .02em; }
   .lead-name::after { content: ""; display: block; width: 34px; height: 2px; margin: 8px auto 10px; background: var(--gold); border-radius: 2px; opacity: .7; }
   .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95; }
+  /* الاسم والصورة بأول فقاعة بس -- الباقي واضح إنه نفس المتكلم. */
+  .lead ~ .lead .lead-avatar,
+  .lead ~ .lead .lead-name { display: none; }
+  .lead ~ .lead { padding-top: 16px; }
   .lead--outro { margin: 48px 0 24px; }
   .lead--outro .lead-text { color: var(--gold); }
   .lead a { color: #FFFFFF; }
