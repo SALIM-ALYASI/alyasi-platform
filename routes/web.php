@@ -557,6 +557,8 @@ Route::view('/cyberx-thanks', 'links.cyberx-thanks')->name('links.cyberx-thanks'
 
 Route::view('/demo/card', 'demo.card')->name('demo.card');
 
+Route::view('/en/demo/card', 'demo.card', ['lang' => 'en'])->name('demo.card.en');
+
 Route::view('/Mylocation', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah.mylocation');
 
 Route::get('/setup-meta-whatsapp-token', [MetaWhatsAppSetupController::class, 'index'])

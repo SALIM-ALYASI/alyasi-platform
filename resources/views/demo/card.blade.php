@@ -1,18 +1,25 @@
+@php
+    // نفس الصفحة بلغتين: /demo/card (عربي) و /en/demo/card (إنجليزي).
+    $isEn = ($lang ?? 'ar') === 'en';
+    $t = fn (string $ar, string $en) => $isEn ? $en : $ar;
+@endphp
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="{{ $isEn ? 'en' : 'ar' }}" dir="{{ $isEn ? 'ltr' : 'rtl' }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>سايبر إكس عُمان 2026 · خمس محطات — ALYASI</title>
-<meta name="description" content="من سايبر إكس عُمان 2026 في مسقط: خمس محطات عن الاستعداد للاختراق، والاستمرارية، وأمن القطاع الصحي، والذكاء الاصطناعي وحوكمته.">
+<title>{{ $t('سايبر إكس عُمان 2026 · خمس محطات — ALYASI', 'CyberX Oman 2026 · Five Stops — ALYASI') }}</title>
+<link rel="alternate" hreflang="ar" href="{{ url('/demo/card') }}">
+<link rel="alternate" hreflang="en" href="{{ url('/en/demo/card') }}">
+<meta name="description" content="{{ $t('من سايبر إكس عُمان 2026 في مسقط: خمس محطات عن الاستعداد للاختراق، والاستمرارية، وأمن القطاع الصحي، والذكاء الاصطناعي وحوكمته.', 'From CyberX Oman 2026 in Muscat: five stops on breach readiness, continuity, healthcare security, and AI and its governance.') }}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="سايبر إكس عُمان 2026 · خمس محطات">
-<meta property="og:description" content="ماذا لو وقع الاختراق فعلًا؟ خمس محطات من المؤتمر — منصة الياسي">
+<meta property="og:title" content="{{ $t('سايبر إكس عُمان 2026 · خمس محطات', 'CyberX Oman 2026 · Five Stops') }}">
+<meta property="og:description" content="{{ $t('ماذا لو وقع الاختراق فعلًا؟ خمس محطات من المؤتمر — منصة الياسي', 'What if a breach actually happens? Five stops from the conference — ALYASI') }}">
 <meta property="og:image" content="{{ asset('images/demo/hall-bg.jpg') }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Figtree:wght@400;600;700;800&display=swap">
 <style>
   :root {
     --bg: #0B1F3A; --band: rgba(19, 35, 63, .55); --panel: rgba(16, 32, 58, .62);
@@ -21,6 +28,11 @@
   * { box-sizing: border-box; }
   html { background: var(--bg); }
   html, body { margin: 0; font-family: Tajawal, system-ui, sans-serif; }
+  html[lang="en"] body { font-family: Figtree, system-ui, sans-serif; }
+  .lang-switch { position: absolute; top: calc(env(safe-area-inset-top) + 14px); inset-inline-end: 16px; z-index: 5;
+                 padding: 6px 14px; border-radius: 999px; border: 1px solid var(--glass-line); background: rgba(19, 35, 63, .55);
+                 color: #FFFFFF; font-weight: 700; font-size: 13px; text-decoration: none;
+                 -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
   body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 40px; position: relative; }
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1;
@@ -57,7 +69,8 @@
     padding-inline-end: calc(var(--photo-w) + 10px); /* مكان الصورة يسار الشريط */
   }
 
-  .photo { position: absolute; left: calc(var(--w) * -.03); bottom: 0; width: var(--photo-w); pointer-events: none; }
+  /* الصورة عند نهاية السطر: يسار بالعربي، يمين بالإنجليزي. */
+  .photo { position: absolute; inset-inline-end: calc(var(--w) * -.03); bottom: 0; width: var(--photo-w); pointer-events: none; }
   .photo img { display: block; width: 100%; height: auto; }
 
   .title { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: clamp(8px, 2.4vw, 16px); min-width: 0; }
@@ -163,8 +176,8 @@
     padding-right: calc(var(--right-w) + 6px);
     justify-content: center;
   }
-  .card--panel .photo--left { left: calc(var(--w) * -.02); right: auto; width: var(--left-w); }
-  .card--panel .photo--right { right: calc(var(--w) * -.02); left: auto; width: var(--right-w); }
+  .card--panel .photo--left { inset-inline-end: auto; left: calc(var(--w) * -.02); right: auto; width: var(--left-w); }
+  .card--panel .photo--right { inset-inline-end: auto; right: calc(var(--w) * -.02); left: auto; width: var(--right-w); }
   .panel-center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding-block: 6px; min-width: 0; }
   .panel-center small { color: var(--gold); font-weight: 700; font-size: clamp(9px, 2vw, 14px); }
   .panel-center h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(15px, 4vw, 30px); font-weight: 800; line-height: 1.2; }
@@ -243,34 +256,94 @@
             ],
         ],
     ];
+
+    if ($isEn) {
+        $cards = [
+            [
+                'name' => 'Yahya Al-Azri',
+                'image' => 'images/demo/card-person.png',
+                'ratio' => 445 / 465,
+                'headline' => 'Digital trust starts with being ready for a breach and able to recover',
+                'paragraphs' => [
+                    'Speaking at the «Digital Trust and Cyber Resilience» session at CyberX Oman 2026, Yahya Al-Azri stressed that protecting organizations requires being prepared for a breach and able to keep operating and recover from it. He reviewed attacks that hit the healthcare, aviation, energy and water sectors, explaining that the failure of a single supplier or technology partner can affect an entire ecosystem — which is why recovery plans must cover suppliers and every system connected to the organization.',
+                    'He explained that AI is making threats more complex: speeding up malware development, changing its characteristics to evade detection, and cloning voices and faking video, which makes verifying identity and content harder.',
+                    'He proposed a defensive framework built on assuming breach, layered defense and zero trust, while keeping humans in the decision-making loop. This includes detecting deepfakes, building secure AI systems, and automating incident response.',
+                    'He emphasized the role of senior leadership in building cyber resilience, developing talent, strengthening partnerships, governing the use of AI and spreading security awareness. He also pointed to the importance of integrating with Oman\'s national digital identity to strengthen trust in digital services.',
+                ],
+            ],
+            [
+                'name' => 'Fatma Al Lawati',
+                'lead' => 'Assuming a breach is the starting point — but what comes next? How does an organization keep working while its systems are down? Here, Fatma Al Lawati takes us from meeting standards to real continuity.',
+                'image' => 'images/demo/card-fatma.png',
+                'ratio' => 1,
+                'headline' => 'Compliance alone is not enough to protect business continuity',
+                'paragraphs' => [
+                    'In her talk at CyberX Oman 2026, Fatma Al Lawati stressed that adhering to standards and policies is not enough to ensure organizations can withstand cyber disruption. Compliance shows readiness on paper, while resilience shows in an organization\'s ability to keep its essential services running and recover during a crisis.',
+                    'She set out five priorities for building that resilience, starting with identifying critical services and the technology, data, people and suppliers they depend on, and prioritizing their recovery. They also include clear governance that defines responsibilities and decision rights before incidents happen, with senior leadership involved in understanding risks and managing the response.',
+                    'She stressed testing readiness through realistic simulations that bring technical teams and leaders together, including scenarios such as the outage of a key provider. She also explained that reliance on cloud, telecom and third parties makes cooperation with suppliers and stakeholders a core part of business continuity.',
+                    'She called for learning from every incident, continuously updating response and recovery plans, and building security into the design of services from the start. She concluded that protecting continuity supports trust in the digital economy, and that the most important question for any organization is: can we keep going when the crisis hits?',
+                ],
+            ],
+            [
+                'name' => 'Rineel Wahid',
+                'lead' => 'And if continuity matters in any organization, in a hospital it can be a matter of life and death. Rineel Wahid takes us into the emergency room.',
+                'subtitle' => 'SOFPITAL',
+                'image' => 'images/demo/card-rineel-v4.png',
+                'ratio' => 1,
+                'headline' => 'Cybersecurity in healthcare protects patients and keeps care going',
+                'paragraphs' => [
+                    'Speaking at CyberX Oman 2026, Rineel Wahid stressed that cybersecurity in the healthcare sector is directly tied to patient safety. He opened with a scene of a patient arriving at the emergency room while the systems are down, leaving the medical team unable to access the patient\'s record or know their medications — explaining that attacks can disrupt urgent treatment decisions.',
+                    'He noted that the sensitivity of health data, the large number of connected medical devices and legacy systems make protecting healthcare organizations more complex. He proposed a five-stage roadmap: inventorying devices, systems and suppliers; mastering the security basics; detecting and containing attacks; preparing for recovery; and building a security culture among staff.',
+                    'He stressed the importance of network segmentation to limit the spread of an attack, and clear response procedures that prevent devices from being disconnected at random during a crisis. He also called for awareness training in both Arabic and English, and for encouraging staff to report suspicious messages.',
+                    'He explained that AI can be used for both defense and attack, and that using it in healthcare requires protecting patient data and controlling how it is shared. He concluded that the purpose of cybersecurity is to protect the people who placed their trust in the organization, and to make sure they keep receiving care.',
+                ],
+            ],
+            [
+                'name' => 'Shabil Basheer',
+                'lead' => 'Protecting the patient starts with detecting the attack before it reaches them. This is where AI comes in to support security teams, with Shabil Basheer of ESET.',
+                'subtitle' => 'ESET',
+                'image' => 'images/demo/card-guest4-v2.png',
+                'ratio' => 1,
+                'headline' => 'AI doesn\'t replace the human analyst… it helps them decide faster',
+                'paragraphs' => [
+                    'Speaking at CyberX Oman 2026, Shabil Basheer, lead pre-sales engineer at ESET, said attackers now operate «at machine speed» while defenders work at human speed, noting that the fastest breach on record took just 27 seconds and that alert overload is exhausting security teams.',
+                    'He explained that AI\'s real value lies not in detecting more threats but in understanding them: behavior-based detection instead of known signatures, cloud malware analysis within minutes, linking dozens of alerts into a single «attack story», and prioritizing by risk.',
+                    'He noted that around 80% of companies use AI, which widens the attack surface, and called for protecting employees\' conversations with AI tools, preventing sensitive data leaks, and monitoring the behavior of AI agents.',
+                    'He concluded that AI does not replace the human analyst; it gives them the context and information to make the right decision faster.',
+                ],
+            ],
+        ];
+    }
 @endphp
+
+  <a class="lang-switch" href="{{ $isEn ? url('/demo/card') : url('/en/demo/card') }}" hreflang="{{ $isEn ? 'ar' : 'en' }}">{{ $isEn ? 'العربية' : 'English' }}</a>
 
   <header class="hero">
     <img src="{{ asset('images/logo/logo-white-trimmed.png') }}" alt="ALYASI">
-    <small>CYBERX OMAN 2026 · مسقط</small>
-    <h1>خمس محطات</h1>
+    <small>{{ $t('CYBERX OMAN 2026 · مسقط', 'CYBERX OMAN 2026 · MUSCAT') }}</small>
+    <h1>{{ $t('خمس محطات', 'Five Stops') }}</h1>
   </header>
 
   <article class="card card--host" style="--ratio: 1">
     <div class="band">
       <div class="photo">
-        <img src="{{ asset('images/demo/host-salem.png') }}" alt="سالم الحجري">
+        <img src="{{ asset('images/demo/host-salem.png') }}" alt="{{ $t('سالم الحجري', 'Salem Al Hajri') }}">
       </div>
       <div class="title">
         <div class="title-text">
-          <h2>سالم الحجري</h2>
-          <small>منصة الياسي · من قلب المؤتمر</small>
+          <h2>{{ $t('سالم الحجري', 'Salem Al Hajri') }}</h2>
+          <small>{{ $t('منصة الياسي · من قلب المؤتمر', 'ALYASI · Live from the conference') }}</small>
         </div>
       </div>
     </div>
-    <p class="host-intro">من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟</p>
+    <p class="host-intro">{{ $t('من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟', 'From CyberX Oman 2026 in Muscat, I bring you five stops that caught my attention. Let\'s start with the hardest question: what if a breach actually happens?') }}</p>
   </article>
 
   @foreach ($cards as $card)
     @if (! empty($card['lead']))
       <div class="lead">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">{{ $card['lead'] }}</p></div>
+      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $card['lead'] }}</p></div>
     </div>
     @endif
     <article class="card" style="--ratio: {{ $card['ratio'] }}"
@@ -284,7 +357,7 @@
           <span class="arrow" aria-hidden="true">⌄</span>
           <div class="title-text">
             <h2>{{ $card['name'] }}</h2>
-            <small>{{ $card['subtitle'] ?? 'سايبر إكس عُمان 2026' }}</small>
+            <small>{{ $card['subtitle'] ?? $t('سايبر إكس عُمان 2026', 'CyberX Oman 2026') }}</small>
           </div>
         </div>
       </div>
@@ -297,23 +370,23 @@
   @endforeach
 
   @php
-      $panelBlocks = json_decode(file_get_contents(resource_path('views/demo/panel-ai-governance.json')), true);
+      $panelBlocks = json_decode(file_get_contents(resource_path($isEn ? 'views/demo/panel-ai-governance.en.json' : 'views/demo/panel-ai-governance.json')), true);
   @endphp
   <div class="lead">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.</p></div>
+      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who owns the decision? That\'s what the closing panel discussed.') }}</p></div>
     </div>
   <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
            data-blocks='@json($panelBlocks, JSON_UNESCAPED_UNICODE)'>
     <div class="band" role="button" tabindex="0" aria-expanded="false">
       <div class="photo photo--left">
-        <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="راميا سانكاري كارثيك — مديرة الجلسة">
+        <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="{{ $t('راميا سانكاري كارثيك — مديرة الجلسة', 'Ramya Sankari Karthick — moderator') }}">
       </div>
       <div class="panel-center">
-        <span class="panel-btn">جلسة نقاش <span class="arrow" aria-hidden="true">⌄</span></span>
+        <span class="panel-btn">{{ $t('جلسة نقاش', 'Panel Discussion') }} <span class="arrow" aria-hidden="true">⌄</span></span>
       </div>
       <div class="photo photo--right">
-        <img src="{{ asset('images/demo/panel-group.png') }}" alt="المشاركون في حلقة النقاش">
+        <img src="{{ asset('images/demo/panel-group.png') }}" alt="{{ $t('المشاركون في حلقة النقاش', 'Panelists') }}">
       </div>
     </div>
   </article>
@@ -324,10 +397,10 @@
     <header class="discussion-view__header">
       <img class="discussion-view__thumb" src="{{ asset('images/demo/panel-group.png') }}" alt="">
       <div class="discussion-view__titles">
-        <small>جلسة نقاش · CyberX Oman 2026</small>
-        <h2 id="discussionTitle">تأمين مؤسسات الذكاء الاصطناعي</h2>
+        <small>{{ $t('جلسة نقاش · CyberX Oman 2026', 'Panel discussion · CyberX Oman 2026') }}</small>
+        <h2 id="discussionTitle">{{ $t('تأمين مؤسسات الذكاء الاصطناعي', 'Securing AI-Driven Organizations') }}</h2>
       </div>
-      <button type="button" class="discussion-view__close" aria-label="إغلاق الجلسة">✕</button>
+      <button type="button" class="discussion-view__close" aria-label="{{ $t('إغلاق الجلسة', 'Close session') }}">✕</button>
     </header>
     <div class="discussion-view__content">
       <div class="text"></div>
@@ -336,7 +409,7 @@
 
   <div class="lead lead--outro">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
+      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على', 'Five stops, one message: preparation, readiness testing and data protection are what keep organizations standing when systems fail. Those were five stops from CyberX Oman 2026. Read the full coverage and details at') }}<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
     </div>
 
   <script>
