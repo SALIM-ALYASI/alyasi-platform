@@ -4,7 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>بطاقة تجريبية — ALYASI</title>
+<title>سايبر إكس عُمان 2026 · خمس محطات — ALYASI</title>
+<meta name="description" content="من سايبر إكس عُمان 2026 في مسقط: خمس محطات عن الاستعداد للاختراق، والاستمرارية، وأمن القطاع الصحي، والذكاء الاصطناعي وحوكمته.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="سايبر إكس عُمان 2026 · خمس محطات">
+<meta property="og:description" content="ماذا لو وقع الاختراق فعلًا؟ خمس محطات من المؤتمر — منصة الياسي">
+<meta property="og:image" content="{{ asset('images/demo/hall-bg.jpg') }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
   :root {
@@ -82,6 +89,11 @@
   .lead--outro { margin: 48px 0 24px; color: var(--gold); }
   .lead a { color: #FFFFFF; }
 
+  .hero { width: 80vw; margin-top: 34px; text-align: center; }
+  .hero img { height: 46px; width: auto; }
+  .hero small { display: block; margin-top: 10px; color: var(--gold); font-weight: 800; letter-spacing: .08em; font-size: clamp(11px, 2.6vw, 15px); }
+  .hero h1 { margin: 6px 0 0; color: #FFFFFF; font-size: clamp(24px, 6.4vw, 44px); font-weight: 800; line-height: 1.3; text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+
   .text h4 { margin: 18px 0 8px; color: var(--gold); font-size: clamp(14px, 3.4vw, 19px); font-weight: 800; }
   .text ul, .text ol { margin: 0 0 12px; padding-inline-start: 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
   .text li { margin-bottom: 4px; }
@@ -156,7 +168,7 @@
         [
             'name' => 'رينيل وحيد',
             'lead' => 'وإذا كانت الاستمرارية مهمة في أي مؤسسة، ففي المستشفى قد تصبح مسألة حياة. رينيل وحيد يأخذنا إلى غرفة الطوارئ.',
-            'subtitle' => 'مدير تقنية المعلومات · SOFPITAL',
+            'subtitle' => 'SOFPITAL',
             'image' => 'images/demo/card-rineel-v4.png',
             'ratio' => 1,
             'headline' => 'الأمن السيبراني في القطاع الصحي حماية للمرضى واستمرار للرعاية',
@@ -183,6 +195,12 @@
         ],
     ];
 @endphp
+
+  <header class="hero">
+    <img src="{{ asset('images/logo/logo-white-trimmed.png') }}" alt="ALYASI">
+    <small>CYBERX OMAN 2026 · مسقط</small>
+    <h1>خمس محطات</h1>
+  </header>
 
   @foreach ($cards as $card)
     @if (! empty($card['lead']))
