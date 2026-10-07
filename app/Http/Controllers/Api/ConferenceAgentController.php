@@ -20,12 +20,20 @@ class ConferenceAgentController extends Controller
 
     private const STALE_MINUTES = 30;
 
+    /**
+     * مهلة سيرفر البيت ليرفع النسخة المنقّاة، بعدها الماك ياخذ الملف الأصلي
+     * وينقّيه بنفسه (ffmpeg) -- عشان التحويل ما يوقف لما البيت ما يوصل.
+     */
+    private const ORIGINAL_FALLBACK_MINUTES = 3;
+
     public function next(): JsonResponse
     {
         // Job عالقة عند ماك توقف -- ترجع للطابور.
         ConferenceRecording::where('agent_status', ConferenceRecording::AGENT_TRANSCRIBING)
             ->where('agent_claimed_at', '<', now()->subMinutes(self::STALE_MINUTES))
             ->update(['agent_status' => ConferenceRecording::AGENT_READY]);
+
+        $this->queueUnpreparedRecordings();
 
         $candidate = ConferenceRecording::where('agent_status', ConferenceRecording::AGENT_READY)
             ->orderBy('created_at')
@@ -51,8 +59,10 @@ class ConferenceAgentController extends Controller
             'job' => [
                 'id' => $candidate->home_job_id,
                 'created_at' => $candidate->created_at?->toIso8601String(),
-                'mime_type' => 'audio/wav',
+                'mime_type' => $candidate->prepared_path ? 'audio/wav' : ($candidate->mime_type ?: 'application/octet-stream'),
                 'audio_url' => "/api/jobs/{$candidate->home_job_id}/audio",
+                // ملف أصلي بدون تنقية سيرفر البيت -- الماك ينقّيه قبل Whisper.
+                'needs_cleaning' => blank($candidate->prepared_path),
             ],
         ]);
     }
@@ -62,14 +72,23 @@ class ConferenceAgentController extends Controller
         $recording = $this->findJob($jobId);
 
         abort_unless($recording->agent_status === ConferenceRecording::AGENT_TRANSCRIBING, 409, "Job status is {$recording->agent_status}");
+
+        if ($recording->prepared_path && Storage::disk(self::DISK)->exists($recording->prepared_path)) {
+            return Storage::disk(self::DISK)->download($recording->prepared_path, "{$jobId}.wav", [
+                'Content-Type' => 'audio/wav',
+            ]);
+        }
+
         abort_unless(
-            $recording->prepared_path && Storage::disk(self::DISK)->exists($recording->prepared_path),
+            $recording->original_path && Storage::disk(self::DISK)->exists($recording->original_path),
             404,
-            'Prepared audio not found',
+            'Audio not found',
         );
 
-        return Storage::disk(self::DISK)->download($recording->prepared_path, "{$jobId}.wav", [
-            'Content-Type' => 'audio/wav',
+        $extension = pathinfo($recording->original_path, PATHINFO_EXTENSION) ?: 'bin';
+
+        return Storage::disk(self::DISK)->download($recording->original_path, "{$jobId}.{$extension}", [
+            'Content-Type' => $recording->mime_type ?: 'application/octet-stream',
         ]);
     }
 
@@ -107,6 +126,26 @@ class ConferenceAgentController extends Controller
         ]);
 
         return response()->json(['ok' => true, 'job_id' => $jobId, 'status' => 'ready']);
+    }
+
+    /**
+     * تسجيلات وصلت للموقع وما جات نسختها المنقّاة من سيرفر البيت خلال
+     * المهلة -- تدخل طابور الماك بالملف الأصلي. اللي فشلت بالبيت تُستثنى
+     * (ملف تالف غالبًا) عشان ما تعيد المحاولة بلا نهاية.
+     */
+    private function queueUnpreparedRecordings(): void
+    {
+        ConferenceRecording::whereNull('agent_status')
+            ->whereNull('prepared_path')
+            ->whereIn('status', [ConferenceRecording::STATUS_RECEIVED, ConferenceRecording::STATUS_FORWARDED])
+            ->where(fn ($query) => $query->whereNull('job_status')->orWhere('job_status', '!=', 'failed'))
+            ->where('created_at', '<', now()->subMinutes(self::ORIGINAL_FALLBACK_MINUTES))
+            ->each(function (ConferenceRecording $recording): void {
+                $recording->update([
+                    'home_job_id' => $recording->home_job_id ?: $recording->relay_id,
+                    'agent_status' => ConferenceRecording::AGENT_READY,
+                ]);
+            });
     }
 
     private function findJob(string $jobId): ConferenceRecording
