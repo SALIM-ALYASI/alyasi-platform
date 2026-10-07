@@ -74,6 +74,14 @@
   .text { padding: 14px 20px 20px; }
   .text p { margin: 0 0 12px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
   .text p:last-child { margin-bottom: 0; }
+  /* جمل الربط بين المحطات (التعليق) -- فوق كل بطاقة، وصورتها الطالعة
+     فوق الشريط تحتها مباشرة بمسافة البطاقة نفسها. */
+  .lead { width: 80vw; margin: 44px 0 -12px; text-align: center; color: #F2F5FA; font-size: clamp(14px, 3.6vw, 21px);
+          font-weight: 700; line-height: 1.9; text-shadow: 0 2px 10px rgba(0, 0, 0, .55); }
+  .lead::before { content: ""; display: block; width: 46px; height: 2px; margin: 0 auto 12px; background: var(--gold); border-radius: 2px; }
+  .lead--outro { margin: 48px 0 24px; color: var(--gold); }
+  .lead a { color: #FFFFFF; }
+
   .text h4 { margin: 18px 0 8px; color: var(--gold); font-size: clamp(14px, 3.4vw, 19px); font-weight: 800; }
   .text ul, .text ol { margin: 0 0 12px; padding-inline-start: 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
   .text li { margin-bottom: 4px; }
@@ -121,6 +129,7 @@
     $cards = [
         [
             'name' => 'يحيى العزري',
+            'lead' => 'من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟',
             'image' => 'images/demo/card-person.png',
             'ratio' => 445 / 465,
             'headline' => 'الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي',
@@ -133,6 +142,7 @@
         ],
         [
             'name' => 'فاطمة اللواتي',
+            'lead' => 'افتراض وقوع الاختراق هو البداية، لكن ماذا بعده؟ كيف تواصل المؤسسة عملها وأنظمتها متوقفة؟ هنا تنقلنا فاطمة اللواتي من الالتزام بالمعايير إلى الاستمرارية الحقيقية.',
             'image' => 'images/demo/card-fatma.png',
             'ratio' => 1,
             'headline' => 'الامتثال وحده لا يكفي لحماية استمرارية المؤسسات',
@@ -145,6 +155,7 @@
         ],
         [
             'name' => 'رينيل وحيد',
+            'lead' => 'وإذا كانت الاستمرارية مهمة في أي مؤسسة، ففي المستشفى قد تصبح مسألة حياة. رينيل وحيد يأخذنا إلى غرفة الطوارئ.',
             'subtitle' => 'مدير تقنية المعلومات · SOFPITAL',
             'image' => 'images/demo/card-rineel-v4.png',
             'ratio' => 1,
@@ -157,19 +168,26 @@
             ],
         ],
         [
-            // بطاقة رابعة -- الاسم والنص مؤقتين لين يوصل النص الفعلي.
-            'name' => 'اسم الضيف',
+            'name' => 'شابيل بشير',
+            'lead' => 'حماية المريض تبدأ باكتشاف الهجوم قبل أن يصل إليه. وهنا يأتي دور الذكاء الاصطناعي في مساندة فرق الأمن، مع شابيل بشير من ESET.',
+            'subtitle' => 'ESET',
             'image' => 'images/demo/card-guest4-v2.png',
             'ratio' => 1,
-            'headline' => 'عنوان الكلمة',
+            'headline' => 'الذكاء الاصطناعي لا يستبدل المحلل البشري… بل يساعده على القرار أسرع',
             'paragraphs' => [
-                'سيُضاف ملخص الكلمة هنا قريبًا.',
+                'أكد شابيل بشير، مهندس ما قبل البيع الرئيسي في شركة ESET، خلال مؤتمر سايبر إكس عُمان 2026، أن المهاجمين باتوا يعملون «بسرعة الآلة» بينما يعمل المدافعون بسرعة البشر، مشيرًا إلى أن أسرع اختراق رُصد استغرق 27 ثانية فقط، وأن كثرة التنبيهات باتت ترهق فرق الأمن.',
+                'وأوضح أن القيمة الحقيقية للذكاء الاصطناعي ليست في اكتشاف تهديدات أكثر، بل في فهمها: الكشف بالسلوك بدل التواقيع المعروفة، وتحليل البرمجيات الخبيثة في السحابة خلال دقائق، وربط عشرات التنبيهات في «قصة هجوم» واحدة، وترتيب الأولويات حسب المخاطر.',
+                'وأشار إلى أن نحو 80% من الشركات تستخدم الذكاء الاصطناعي، ما يوسّع سطح الهجوم، داعيًا إلى حماية محادثات الموظفين مع أدوات الذكاء الاصطناعي ومنع تسرب البيانات الحساسة، ومراقبة سلوك وكلاء الذكاء الاصطناعي.',
+                'واختتم بأن الذكاء الاصطناعي لا يحل محل المحلل البشري، بل يمنحه السياق والمعلومة ليتخذ القرار الصحيح بسرعة أكبر.',
             ],
         ],
     ];
 @endphp
 
   @foreach ($cards as $card)
+    @if (! empty($card['lead']))
+      <p class="lead">{{ $card['lead'] }}</p>
+    @endif
     <article class="card" style="--ratio: {{ $card['ratio'] }}"
              data-headline="{{ $card['headline'] }}"
              data-paragraphs='@json($card['paragraphs'], JSON_UNESCAPED_UNICODE)'>
@@ -196,6 +214,7 @@
   @php
       $panelBlocks = json_decode(file_get_contents(resource_path('views/demo/panel-ai-governance.json')), true);
   @endphp
+  <p class="lead">لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.</p>
   <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
            data-blocks='@json($panelBlocks, JSON_UNESCAPED_UNICODE)'>
     <div class="band" role="button" tabindex="0" aria-expanded="false">
@@ -215,6 +234,8 @@
       </div>
     </div>
   </article>
+
+  <p class="lead lead--outro">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. التفاصيل كاملة على <a href="https://alyasi.dev">alyasi.dev</a>.</p>
 
   <script>
     function setupCard(card) {
