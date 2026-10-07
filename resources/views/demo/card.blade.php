@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>سايبر إكس عُمان 2026 · خمس محطات — ALYASI</title>
 <meta name="description" content="من سايبر إكس عُمان 2026 في مسقط: خمس محطات عن الاستعداد للاختراق، والاستمرارية، وأمن القطاع الصحي، والذكاء الاصطناعي وحوكمته.">
@@ -107,6 +107,31 @@
   .hero img { height: 46px; width: auto; }
   .hero small { display: block; margin-top: 10px; color: var(--gold); font-weight: 800; letter-spacing: .08em; font-size: clamp(11px, 2.6vw, 15px); }
   .hero h1 { margin: 6px 0 0; color: #FFFFFF; font-size: clamp(24px, 6.4vw, 44px); font-weight: 800; line-height: 1.3; text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+
+  .discussion-view {
+    position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: 9999;
+    overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    background: linear-gradient(rgba(7, 18, 36, .9), rgba(7, 18, 36, .96)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .discussion-view[hidden] { display: none; }
+  .discussion-view.is-visible { opacity: 1; }
+  .discussion-view__header {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 12px;
+    padding: calc(env(safe-area-inset-top) + 12px) 16px 12px;
+    background: rgba(11, 31, 58, .88); border-bottom: 1px solid var(--glass-line);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  }
+  .discussion-view__thumb { flex: none; height: 44px; width: auto; border-radius: 8px; }
+  .discussion-view__titles { flex: 1; min-width: 0; }
+  .discussion-view__titles small { display: block; color: var(--gold); font-weight: 800; font-size: 12px; }
+  .discussion-view__titles h2 { margin: 2px 0 0; color: #FFFFFF; font-size: clamp(15px, 4vw, 22px); font-weight: 800; line-height: 1.35; }
+  .discussion-view__close {
+    flex: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--gold);
+    background: transparent; color: var(--gold); font-size: 18px; font-weight: 800; cursor: pointer;
+  }
+  .discussion-view__content { max-width: 760px; margin: 0 auto; padding: 18px 18px calc(36px + env(safe-area-inset-bottom)); }
 
   .text h4 { margin: 18px 0 8px; color: var(--gold); font-size: clamp(14px, 3.4vw, 19px); font-weight: 800; }
   .text ul, .text ol { margin: 0 0 12px; padding-inline-start: 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
@@ -280,12 +305,23 @@
         <img src="{{ asset('images/demo/panel-group.png') }}" alt="المشاركون في حلقة النقاش">
       </div>
     </div>
-    <div class="body">
-      <div>
-        <div class="text"></div>
-      </div>
-    </div>
   </article>
+
+  {{-- جلسة النقاش تنفتح شاشة كاملة فوق "خمس محطات" بدل ما تتمدد داخل
+       الصفحة: النص طويل، وزر الإغلاق لازم يبقى ظاهر مهما نزل القارئ. --}}
+  <div class="discussion-view" id="discussionView" role="dialog" aria-modal="true" aria-labelledby="discussionTitle" hidden>
+    <header class="discussion-view__header">
+      <img class="discussion-view__thumb" src="{{ asset('images/demo/panel-group.png') }}" alt="">
+      <div class="discussion-view__titles">
+        <small>جلسة نقاش · CyberX Oman 2026</small>
+        <h2 id="discussionTitle">تأمين مؤسسات الذكاء الاصطناعي</h2>
+      </div>
+      <button type="button" class="discussion-view__close" aria-label="إغلاق الجلسة">✕</button>
+    </header>
+    <div class="discussion-view__content">
+      <div class="text"></div>
+    </div>
+  </div>
 
   <div class="lead lead--outro">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
@@ -293,23 +329,19 @@
     </div>
 
   <script>
-    function setupCard(card) {
-      const band = card.querySelector('.band');
-      const textEl = card.querySelector('.text');
-      const blocks = card.dataset.blocks
-        ? JSON.parse(card.dataset.blocks)
-        : [{ t: 'h3', x: card.dataset.headline }, ...JSON.parse(card.dataset.paragraphs).map((x) => ({ t: 'p', x }))];
-      // نص طويل (حلقة النقاش) يُكتب بخطوات أكبر عشان يخلص بحوالي 10 ثواني.
+    // كتابة الكتل (عناوين، فقرات، قوائم) حرف حرف داخل عنصر معيّن. أي
+    // بدء/إيقاف جديد يلغي الكتابة الجارية لنفس الكاتب.
+    function createTyper(blocks) {
+      // النص الطويل (جلسة النقاش) يُكتب بخطوات أكبر عشان يخلص بحوالي 10 ثواني.
       const totalChars = blocks.reduce((n, b) => n + [...b.x].length, 0);
       const step = Math.max(2, Math.ceil(totalChars / 650));
-      // أي فتح/إغلاق جديد يلغي الكتابة الجارية لهذي البطاقة بس.
-      let typingRun = 0;
+      let run = 0;
 
-      async function typeInto(el, text, run) {
+      async function typeInto(el, text, myRun) {
         el.classList.add('typing');
         const chars = [...text];
         for (let i = 0; i < chars.length; i += step) {
-          if (run !== typingRun) return false;
+          if (myRun !== run) return false;
           el.textContent += chars.slice(i, i + step).join('');
           await new Promise((r) => setTimeout(r, 16));
         }
@@ -317,46 +349,114 @@
         return true;
       }
 
-      async function typeText() {
-        const run = ++typingRun;
-        textEl.innerHTML = '';
-        let list = null;
+      return {
+        async start(target) {
+          const myRun = ++run;
+          target.innerHTML = '';
+          let list = null;
 
-        for (const block of blocks) {
-          let el;
-          if (block.t === 'li' || block.t === 'oli') {
-            const tag = block.t === 'li' ? 'UL' : 'OL';
-            if (!list || list.tagName !== tag) {
-              list = document.createElement(tag);
-              textEl.appendChild(list);
+          for (const block of blocks) {
+            let el;
+            if (block.t === 'li' || block.t === 'oli') {
+              const tag = block.t === 'li' ? 'UL' : 'OL';
+              if (!list || list.tagName !== tag) {
+                list = document.createElement(tag);
+                target.appendChild(list);
+              }
+              el = document.createElement('li');
+              list.appendChild(el);
+            } else {
+              list = null;
+              el = document.createElement(block.t === 'note' ? 'p' : block.t);
+              if (block.t === 'note') el.className = 'note';
+              target.appendChild(el);
             }
-            el = document.createElement('li');
-            list.appendChild(el);
-          } else {
-            list = null;
-            el = document.createElement(block.t === 'note' ? 'p' : block.t);
-            if (block.t === 'note') el.className = 'note';
-            textEl.appendChild(el);
+            if (!await typeInto(el, block.x, myRun)) return;
           }
-          if (!await typeInto(el, block.x, run)) return;
-        }
-      }
-
-      function toggle() {
-        const open = card.classList.toggle('is-open');
-        band.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) {
-          typeText();
-        } else {
-          typingRun++;
-        }
-      }
-
-      band.addEventListener('click', toggle);
-      band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+        },
+        stop() { run++; },
+      };
     }
 
-    document.querySelectorAll('.card:not(.card--host)').forEach(setupCard);
+    function blocksOf(card) {
+      return card.dataset.blocks
+        ? JSON.parse(card.dataset.blocks)
+        : [{ t: 'h3', x: card.dataset.headline }, ...JSON.parse(card.dataset.paragraphs).map((x) => ({ t: 'p', x }))];
+    }
+
+    function onActivate(el, handler) {
+      el.addEventListener('click', handler);
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
+    }
+
+    // بطاقات الضيوف: تتمدد داخل الصفحة.
+    function setupCard(card) {
+      const band = card.querySelector('.band');
+      const textEl = card.querySelector('.text');
+      const typer = createTyper(blocksOf(card));
+
+      onActivate(band, () => {
+        const open = card.classList.toggle('is-open');
+        band.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) typer.start(textEl); else typer.stop();
+      });
+    }
+
+    // جلسة النقاش: شاشة كاملة فوق الصفحة. الصفحة اللي ورا تنقفل (ما
+    // تتحرك)، والتمرير داخل الشاشة بس، والإغلاق يرجّع القارئ لنفس مكانه.
+    function setupDiscussion(card) {
+      const view = document.getElementById('discussionView');
+      const viewText = view.querySelector('.text');
+      const closeBtn = view.querySelector('.discussion-view__close');
+      const band = card.querySelector('.band');
+      const typer = createTyper(blocksOf(card));
+      let savedY = 0;
+      let isOpen = false;
+
+      function lockPage() {
+        savedY = window.scrollY;
+        Object.assign(document.body.style, { position: 'fixed', top: `-${savedY}px`, left: '0', right: '0', width: '100%' });
+      }
+
+      function unlockPage() {
+        Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
+        window.scrollTo(0, savedY);
+      }
+
+      function open() {
+        if (isOpen) return;
+        isOpen = true;
+        lockPage();
+        view.hidden = false;
+        view.scrollTop = 0;
+        requestAnimationFrame(() => view.classList.add('is-visible'));
+        band.setAttribute('aria-expanded', 'true');
+        typer.start(viewText);
+        // زر الرجوع / سحبة الرجوع بالجوال تقفل الجلسة بدل ما تطلع من الصفحة.
+        history.pushState({ discussion: true }, '');
+        closeBtn.focus({ preventScroll: true });
+      }
+
+      function close(fromHistory = false) {
+        if (!isOpen) return;
+        isOpen = false;
+        typer.stop();
+        view.classList.remove('is-visible');
+        view.hidden = true;
+        band.setAttribute('aria-expanded', 'false');
+        unlockPage();
+        band.focus({ preventScroll: true });
+        if (!fromHistory && history.state && history.state.discussion) history.back();
+      }
+
+      onActivate(band, open);
+      closeBtn.addEventListener('click', () => close());
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      window.addEventListener('popstate', () => close(true));
+    }
+
+    document.querySelectorAll('.card:not(.card--host):not(.card--panel)').forEach(setupCard);
+    document.querySelectorAll('.card--panel').forEach(setupDiscussion);
   </script>
 </body>
 </html>
