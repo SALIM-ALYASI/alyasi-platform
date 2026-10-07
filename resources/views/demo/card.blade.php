@@ -108,7 +108,8 @@
   .lead-body { min-width: 0; display: flex; flex-direction: column; align-items: center; }
   .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); letter-spacing: .02em; }
   .lead-name::after { content: ""; display: block; width: 34px; height: 2px; margin: 8px auto 10px; background: var(--gold); border-radius: 2px; opacity: .7; }
-  .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95; }
+  .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(14px, 3.4vw, 19px); font-weight: 700; line-height: 1.9; }
+  html[lang="en"] .lead-text, html[lang="en"] .host-intro { font-size: clamp(13px, 3.2vw, 18px); font-weight: 600; line-height: 1.75; }
   /* الاسم موجود ببطاقة سالم فوق، فالفقاعات فيها صورته بس. */
   .lead .lead-name { display: none; }
   .lead .lead-avatar { margin-bottom: 4px; }
@@ -124,7 +125,7 @@
                 background: var(--panel); border: 1px solid var(--glass-line); border-top: 0; border-radius: 0 0 12px 12px;
                 -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   /* رابط الخاتمة بسطر مستقل بدل ما ينكسر بآخر السطر. */
-  .lead-link { display: inline-block; margin-top: 10px; padding: 6px 18px; border-radius: 999px; border: 1px solid var(--gold);
+  .lead-link { display: inline-block; margin-top: 10px; padding: 4px 14px; font-size: 14px; border-radius: 999px; border: 1px solid var(--gold);
                color: #FFFFFF; font-weight: 800; letter-spacing: .03em; text-decoration: none; direction: ltr; }
 
   .hero { width: 80vw; margin-top: 34px; text-align: center; }
@@ -230,12 +231,12 @@
         [
             'name' => 'رينيل وحيد',
             'lead' => 'وإذا كانت الاستمرارية مهمة في أي مؤسسة، ففي المستشفى قد تصبح مسألة حياة. رينيل وحيد يأخذنا إلى غرفة الطوارئ.',
-            'subtitle' => 'SOFPITAL',
+            'subtitle' => 'SOFPITAL · Health Systems',
             'image' => 'images/demo/card-rineel-v4.png',
             'ratio' => 1,
             'headline' => 'الأمن السيبراني في القطاع الصحي حماية للمرضى واستمرار للرعاية',
             'paragraphs' => [
-                'أكد رينيل وحيد، خلال مؤتمر سايبر إكس عُمان 2026، أن الأمن السيبراني في القطاع الصحي يرتبط مباشرة بسلامة المرضى. واستهل كلمته بمشهد لمريض يصل إلى الطوارئ بينما تتعطل الأنظمة، فلا يستطيع الفريق الطبي الوصول إلى سجله أو معرفة أدويته، موضحًا أن الهجمات قد تؤثر في قرارات علاجية عاجلة.',
+                'أكد رينيل وحيد، مدير تقنية المعلومات في SOFPITAL Health Systems SPC، خلال مؤتمر سايبر إكس عُمان 2026، أن الأمن السيبراني في القطاع الصحي يرتبط مباشرة بسلامة المرضى. واستهل كلمته بمشهد لمريض يصل إلى الطوارئ بينما تتعطل الأنظمة، فلا يستطيع الفريق الطبي الوصول إلى سجله أو معرفة أدويته، موضحًا أن الهجمات قد تؤثر في قرارات علاجية عاجلة.',
                 'وأشار إلى أن حساسية البيانات الصحية، وكثرة الأجهزة الطبية المتصلة، والأنظمة القديمة تجعل حماية المؤسسات الصحية أكثر تعقيدًا. وطرح خارطة طريق من خمس مراحل: حصر الأجهزة والأنظمة والموردين، وإتقان أساسيات الحماية، واكتشاف الهجمات واحتواؤها، والاستعداد للتعافي، وبناء ثقافة أمنية لدى الموظفين.',
                 'وشدد على أهمية تقسيم الشبكات للحد من انتشار الهجوم، ووضع إجراءات واضحة للاستجابة تمنع فصل الأجهزة عشوائيًا أثناء الأزمة. كما دعا إلى تدريبات توعوية بالعربية والإنجليزية وتشجيع الإبلاغ عن الرسائل المشبوهة.',
                 'وأوضح أن الذكاء الاصطناعي يمكن استخدامه للدفاع والهجوم، وأن توظيفه في الرعاية الصحية يتطلب حماية بيانات المرضى وضبط مشاركتها. واختتم بأن الهدف من الأمن السيبراني هو حماية الأشخاص الذين وثقوا بالمؤسسة، وضمان استمرار تقديم الرعاية لهم.',
@@ -243,13 +244,13 @@
         ],
         [
             'name' => 'شابيل بشير',
-            'lead' => 'حماية المريض تبدأ باكتشاف الهجوم قبل أن يصل إليه. وهنا يأتي دور الذكاء الاصطناعي في مساندة فرق الأمن، مع شابيل بشير من ESET.',
-            'subtitle' => 'ESET',
+            'lead' => 'حماية المريض تبدأ باكتشاف الهجوم قبل أن يصل إليه. وهنا يأتي دور الذكاء الاصطناعي في مساندة فرق الأمن، مع شابيل بشير من ESET الشرق الأوسط.',
+            'subtitle' => 'ESET Middle East',
             'image' => 'images/demo/card-guest4-v2.png',
             'ratio' => 1,
             'headline' => 'الذكاء الاصطناعي لا يستبدل المحلل البشري… بل يساعده على القرار أسرع',
             'paragraphs' => [
-                'أكد شابيل بشير، مهندس ما قبل البيع الرئيسي في شركة ESET، خلال مؤتمر سايبر إكس عُمان 2026، أن المهاجمين باتوا يعملون «بسرعة الآلة» بينما يعمل المدافعون بسرعة البشر، مشيرًا إلى أن أسرع اختراق رُصد استغرق 27 ثانية فقط، وأن كثرة التنبيهات باتت ترهق فرق الأمن.',
+                'أكد شابيل بشير، مهندس ما قبل البيع الرئيسي في ESET الشرق الأوسط، خلال مؤتمر سايبر إكس عُمان 2026، أن المهاجمين باتوا يعملون «بسرعة الآلة» بينما يعمل المدافعون بسرعة البشر، مشيرًا إلى أن أسرع اختراق رُصد استغرق 27 ثانية فقط، وأن كثرة التنبيهات باتت ترهق فرق الأمن.',
                 'وأوضح أن القيمة الحقيقية للذكاء الاصطناعي ليست في اكتشاف تهديدات أكثر، بل في فهمها: الكشف بالسلوك بدل التواقيع المعروفة، وتحليل البرمجيات الخبيثة في السحابة خلال دقائق، وربط عشرات التنبيهات في «قصة هجوم» واحدة، وترتيب الأولويات حسب المخاطر.',
                 'وأشار إلى أن نحو 80% من الشركات تستخدم الذكاء الاصطناعي، ما يوسّع سطح الهجوم، داعيًا إلى حماية محادثات الموظفين مع أدوات الذكاء الاصطناعي ومنع تسرب البيانات الحساسة، ومراقبة سلوك وكلاء الذكاء الاصطناعي.',
                 'واختتم بأن الذكاء الاصطناعي لا يحل محل المحلل البشري، بل يمنحه السياق والمعلومة ليتخذ القرار الصحيح بسرعة أكبر.',
@@ -273,7 +274,7 @@
             ],
             [
                 'name' => 'Fatma Al Lawati',
-                'lead' => 'Assuming a breach is the starting point — but what comes next? How does an organization keep working while its systems are down? Here, Fatma Al Lawati takes us from meeting standards to real continuity.',
+                'lead' => 'Assuming a breach is the starting point — but what comes next? How does an organization keep operating when its systems go down? Here, Fatma Al Lawati takes us from meeting standards to real continuity.',
                 'image' => 'images/demo/card-fatma.png',
                 'ratio' => 1,
                 'headline' => 'Compliance alone is not enough to protect business continuity',
@@ -287,12 +288,12 @@
             [
                 'name' => 'Rineel Wahid',
                 'lead' => 'And if continuity matters in any organization, in a hospital it can be a matter of life and death. Rineel Wahid takes us into the emergency room.',
-                'subtitle' => 'SOFPITAL',
+                'subtitle' => 'SOFPITAL · Health Systems',
                 'image' => 'images/demo/card-rineel-v4.png',
                 'ratio' => 1,
                 'headline' => 'Cybersecurity in healthcare protects patients and keeps care going',
                 'paragraphs' => [
-                    'Speaking at CyberX Oman 2026, Rineel Wahid stressed that cybersecurity in the healthcare sector is directly tied to patient safety. He opened with a scene of a patient arriving at the emergency room while the systems are down, leaving the medical team unable to access the patient\'s record or know their medications — explaining that attacks can disrupt urgent treatment decisions.',
+                    'Speaking at CyberX Oman 2026, Rineel Wahid, IT Director at SOFPITAL Health Systems SPC, stressed that cybersecurity in the healthcare sector is directly tied to patient safety. He opened with a scene of a patient arriving at the emergency room while the systems are down, leaving the medical team unable to access the patient\'s record or know their medications — explaining that attacks can disrupt urgent treatment decisions.',
                     'He noted that the sensitivity of health data, the large number of connected medical devices and legacy systems make protecting healthcare organizations more complex. He proposed a five-stage roadmap: inventorying devices, systems and suppliers; mastering the security basics; detecting and containing attacks; preparing for recovery; and building a security culture among staff.',
                     'He stressed the importance of network segmentation to limit the spread of an attack, and clear response procedures that prevent devices from being disconnected at random during a crisis. He also called for awareness training in both Arabic and English, and for encouraging staff to report suspicious messages.',
                     'He explained that AI can be used for both defense and attack, and that using it in healthcare requires protecting patient data and controlling how it is shared. He concluded that the purpose of cybersecurity is to protect the people who placed their trust in the organization, and to make sure they keep receiving care.',
@@ -300,13 +301,13 @@
             ],
             [
                 'name' => 'Shabil Basheer',
-                'lead' => 'Protecting the patient starts with detecting the attack before it reaches them. This is where AI comes in to support security teams, with Shabil Basheer of ESET.',
-                'subtitle' => 'ESET',
+                'lead' => 'Protecting the patient also means detecting threats before they disrupt care. This is where AI comes in to support security teams, with Shabil Basheer of ESET Middle East.',
+                'subtitle' => 'ESET Middle East',
                 'image' => 'images/demo/card-guest4-v2.png',
                 'ratio' => 1,
                 'headline' => 'AI doesn\'t replace the human analyst… it helps them decide faster',
                 'paragraphs' => [
-                    'Speaking at CyberX Oman 2026, Shabil Basheer, lead pre-sales engineer at ESET, said attackers now operate «at machine speed» while defenders work at human speed, noting that the fastest breach on record took just 27 seconds and that alert overload is exhausting security teams.',
+                    'Speaking at CyberX Oman 2026, Shabil Basheer, Lead Presales Engineer at ESET Middle East, said attackers now operate «at machine speed» while defenders work at human speed, noting that the fastest breach on record took just 27 seconds and that alert overload is exhausting security teams.',
                     'He explained that AI\'s real value lies not in detecting more threats but in understanding them: behavior-based detection instead of known signatures, cloud malware analysis within minutes, linking dozens of alerts into a single «attack story», and prioritizing by risk.',
                     'He noted that around 80% of companies use AI, which widens the attack surface, and called for protecting employees\' conversations with AI tools, preventing sensitive data leaks, and monitoring the behavior of AI agents.',
                     'He concluded that AI does not replace the human analyst; it gives them the context and information to make the right decision faster.',
@@ -332,11 +333,11 @@
       <div class="title">
         <div class="title-text">
           <h2>{{ $t('سالم الحجري', 'Salem Al Hajri') }}</h2>
-          <small>{{ $t('منصة الياسي · من قلب المؤتمر', 'ALYASI · Live from the conference') }}</small>
+          <small>{{ $t('منصة الياسي · من قلب المؤتمر', 'ALYASI · From CyberX Oman 2026') }}</small>
         </div>
       </div>
     </div>
-    <p class="host-intro">{{ $t('من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟', 'From CyberX Oman 2026 in Muscat, I bring you five stops that caught my attention. Let\'s start with the hardest question: what if a breach actually happens?') }}</p>
+    <p class="host-intro">{{ $t('من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟', 'From CyberX Oman 2026 in Muscat, here are five moments that stood out to me. Let\'s start with the hardest question: what if a breach actually happens?') }}</p>
   </article>
 
   @foreach ($cards as $card)
@@ -374,7 +375,7 @@
   @endphp
   <div class="lead">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who owns the decision? That\'s what the closing panel discussed.') }}</p></div>
+      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who remains accountable for the decision? That\'s what the closing panel discussed.') }}</p></div>
     </div>
   <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
            data-blocks="{{ json_encode($panelBlocks, JSON_UNESCAPED_UNICODE) }}">
@@ -398,7 +399,7 @@
       <img class="discussion-view__thumb" src="{{ asset('images/demo/panel-group.png') }}" alt="">
       <div class="discussion-view__titles">
         <small>{{ $t('جلسة نقاش · CyberX Oman 2026', 'Panel discussion · CyberX Oman 2026') }}</small>
-        <h2 id="discussionTitle">{{ $t('تأمين مؤسسات الذكاء الاصطناعي', 'Securing AI-Driven Organizations') }}</h2>
+        <h2 id="discussionTitle">{{ $t('تأمين مؤسسات الذكاء الاصطناعي', 'Securing the AI Enterprise') }}</h2>
       </div>
       <button type="button" class="discussion-view__close" aria-label="{{ $t('إغلاق الجلسة', 'Close session') }}">✕</button>
     </header>
@@ -409,7 +410,7 @@
 
   <div class="lead lead--outro">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على', 'Five stops, one message: preparation, readiness testing and data protection are what keep organizations standing when systems fail. Those were five stops from CyberX Oman 2026. Read the full coverage and details at') }}<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
+      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.') }}<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
     </div>
 
   <script>
