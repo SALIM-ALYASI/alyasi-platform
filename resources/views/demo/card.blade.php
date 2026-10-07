@@ -103,6 +103,16 @@
                background: var(--gold); color: #13233F; font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); white-space: nowrap; }
   .panel-btn .arrow { color: inherit; font-size: 1em; }
 
+  /* الجوال: الوسط ضيق -- "حلقة نقاش" والزر بس، والصور أكبر عشان تطلع فوق
+     الشريط مثل باقي البطاقات (عنوان الجلسة الكامل موجود أول الملخص). */
+  @media (max-width: 600px) {
+    .card--panel { --left-w: calc(var(--w) * .28); --right-w: calc(var(--w) * .42); }
+    .card--panel .band { min-height: 60px; padding-block: 8px; }
+    .panel-center small, .panel-center .topic { display: none; }
+    .panel-center h2 { font-size: 14px; }
+    .panel-btn { padding: 5px 10px; font-size: 11px; margin-top: 4px; }
+  }
+
   .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
 </style>
 </head>
