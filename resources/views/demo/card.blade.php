@@ -348,7 +348,7 @@
     @endif
     <article class="card" style="--ratio: {{ $card['ratio'] }}"
              data-headline="{{ $card['headline'] }}"
-             data-paragraphs='@json($card['paragraphs'], JSON_UNESCAPED_UNICODE)'>
+             data-paragraphs="{{ json_encode($card['paragraphs'], JSON_UNESCAPED_UNICODE) }}">
       <div class="band" role="button" tabindex="0" aria-expanded="false">
         <div class="photo">
           <img src="{{ asset($card['image']) }}" alt="{{ $card['name'] }}">
@@ -377,7 +377,7 @@
       <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who owns the decision? That\'s what the closing panel discussed.') }}</p></div>
     </div>
   <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
-           data-blocks='@json($panelBlocks, JSON_UNESCAPED_UNICODE)'>
+           data-blocks="{{ json_encode($panelBlocks, JSON_UNESCAPED_UNICODE) }}">
     <div class="band" role="button" tabindex="0" aria-expanded="false">
       <div class="photo photo--left">
         <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="{{ $t('راميا سانكاري كارثيك — مديرة الجلسة', 'Ramya Sankari Karthick — moderator') }}">
