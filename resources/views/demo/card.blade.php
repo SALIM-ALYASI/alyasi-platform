@@ -421,6 +421,8 @@
       function unlockPage() {
         Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
         window.scrollTo(0, savedY);
+        // احتياط: لو المتصفح حرّك الصفحة بعد الرجوع بالتاريخ.
+        requestAnimationFrame(() => window.scrollTo(0, savedY));
       }
 
       function open() {
@@ -439,6 +441,12 @@
 
       function close(fromHistory = false) {
         if (!isOpen) return;
+        // زر الإغلاق/Esc يرجع خطوة بالتاريخ، والإغلاق الفعلي يصير مرة وحدة
+        // من popstate -- عشان المتصفح ما يرجّع الصفحة لأعلاها بعدنا.
+        if (!fromHistory && history.state && history.state.discussion) {
+          history.back();
+          return;
+        }
         isOpen = false;
         typer.stop();
         view.classList.remove('is-visible');
@@ -446,7 +454,6 @@
         band.setAttribute('aria-expanded', 'false');
         unlockPage();
         band.focus({ preventScroll: true });
-        if (!fromHistory && history.state && history.state.discussion) history.back();
       }
 
       onActivate(band, open);
@@ -454,6 +461,9 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
       window.addEventListener('popstate', () => close(true));
     }
+
+    // نتحكم نحن بمكان التمرير عند فتح/إغلاق الجلسة، مو المتصفح.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
     document.querySelectorAll('.card:not(.card--host):not(.card--panel)').forEach(setupCard);
     document.querySelectorAll('.card--panel').forEach(setupDiscussion);
