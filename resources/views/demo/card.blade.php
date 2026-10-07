@@ -96,15 +96,23 @@
   .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); letter-spacing: .02em; }
   .lead-name::after { content: ""; display: block; width: 34px; height: 2px; margin: 8px auto 10px; background: var(--gold); border-radius: 2px; opacity: .7; }
   .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95; }
-  /* الصورة بكل فقاعة، والاسم بأولها بس -- ما نكرره. */
-  .lead ~ .lead .lead-name { display: none; }
-  .lead ~ .lead .lead-avatar { margin-bottom: 4px; }
+  /* الاسم موجود ببطاقة سالم فوق، فالفقاعات فيها صورته بس. */
+  .lead .lead-name { display: none; }
+  .lead .lead-avatar { margin-bottom: 4px; }
   .lead--outro { margin: 48px 0 24px; }
   .lead--outro .lead-text { color: var(--gold); }
   .lead a { color: #FFFFFF; }
 
   /* بطاقة المقدّم (سالم) أعلى الصفحة -- نفس شريط البطاقات بدون فتح. */
-  .card--host .band { cursor: default; }
+  .card--host .band { cursor: default; border-radius: 12px 12px 0 0; }
+  /* جملة الافتتاح ملتصقة ببطاقة سالم كجزء منها. */
+  .host-intro { margin: 0; padding: 16px 20px 18px; text-align: center; color: #F2F5FA;
+                font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95;
+                background: var(--panel); border: 1px solid var(--glass-line); border-top: 0; border-radius: 0 0 12px 12px;
+                -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  /* رابط الخاتمة بسطر مستقل بدل ما ينكسر بآخر السطر. */
+  .lead-link { display: inline-block; margin-top: 10px; padding: 6px 18px; border-radius: 999px; border: 1px solid var(--gold);
+               color: #FFFFFF; font-weight: 800; letter-spacing: .03em; text-decoration: none; direction: ltr; }
 
   .hero { width: 80vw; margin-top: 34px; text-align: center; }
   .hero img { height: 46px; width: auto; }
@@ -183,7 +191,6 @@
     $cards = [
         [
             'name' => 'يحيى العزري',
-            'lead' => 'من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟',
             'image' => 'images/demo/card-person.png',
             'ratio' => 445 / 465,
             'headline' => 'الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي',
@@ -256,6 +263,7 @@
         </div>
       </div>
     </div>
+    <p class="host-intro">من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟</p>
   </article>
 
   @foreach ($cards as $card)
@@ -328,7 +336,7 @@
 
   <div class="lead lead--outro">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على <a href="https://alyasi.dev">alyasi.dev</a>.</p></div>
+      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
     </div>
 
   <script>
