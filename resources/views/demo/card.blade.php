@@ -74,6 +74,35 @@
   .text { padding: 14px 20px 20px; }
   .text p { margin: 0 0 12px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
   .text p:last-child { margin-bottom: 0; }
+  .text h4 { margin: 18px 0 8px; color: var(--gold); font-size: clamp(14px, 3.4vw, 19px); font-weight: 800; }
+  .text ul, .text ol { margin: 0 0 12px; padding-inline-start: 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
+  .text li { margin-bottom: 4px; }
+  .text .note { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--glass-line); font-size: clamp(11px, 2.6vw, 14px); opacity: .8; }
+
+  /* بطاقة حلقة النقاش: مديرة الجلسة يسار، المشاركين يمين، والعنوان والزر بالنص. */
+  .card--panel {
+    --left-w: calc(var(--w) * .22);
+    --left-h: calc(var(--left-w) * var(--ratio-left, 1));
+    --right-w: calc(var(--w) * .34);
+    --right-h: calc(var(--right-w) * var(--ratio-right, 1));
+    margin-top: calc(max(var(--left-h), var(--right-h)) / 2 + 40px);
+  }
+  .card--panel .band {
+    min-height: max(calc(max(var(--left-h), var(--right-h)) / 2), 96px);
+    padding-left: calc(var(--left-w) + 6px);
+    padding-right: calc(var(--right-w) + 6px);
+    justify-content: center;
+  }
+  .card--panel .photo--left { left: calc(var(--w) * -.02); right: auto; width: var(--left-w); }
+  .card--panel .photo--right { right: calc(var(--w) * -.02); left: auto; width: var(--right-w); }
+  .panel-center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding-block: 6px; min-width: 0; }
+  .panel-center small { color: var(--gold); font-weight: 700; font-size: clamp(9px, 2vw, 14px); }
+  .panel-center h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(15px, 4vw, 30px); font-weight: 800; line-height: 1.2; }
+  .panel-center .topic { color: var(--mu-on-band); font-size: clamp(10px, 2.3vw, 16px); font-weight: 700; line-height: 1.4; }
+  .panel-btn { margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
+               background: var(--gold); color: #13233F; font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); white-space: nowrap; }
+  .panel-btn .arrow { color: inherit; font-size: 1em; }
+
   .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
 </style>
 </head>
@@ -156,46 +185,87 @@
     </article>
   @endforeach
 
+  @php
+      $panelBlocks = json_decode(file_get_contents(resource_path('views/demo/panel-ai-governance.json')), true);
+  @endphp
+  <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
+           data-blocks='@json($panelBlocks, JSON_UNESCAPED_UNICODE)'>
+    <div class="band" role="button" tabindex="0" aria-expanded="false">
+      <div class="photo photo--left">
+        <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="راميا سانكاري كارثيك — مديرة الجلسة">
+      </div>
+      <div class="panel-center">
+        <small>CyberX Oman 2026</small>
+        <h2>حلقة نقاش</h2>
+        <div class="topic">تأمين مؤسسات الذكاء الاصطناعي — الحوكمة والثقة والابتكار المسؤول</div>
+        <span class="panel-btn"><span class="btn-label">اقرأ الملخص</span> <span class="arrow" aria-hidden="true">⌄</span></span>
+      </div>
+      <div class="photo photo--right">
+        <img src="{{ asset('images/demo/panel-group.png') }}" alt="المشاركون في حلقة النقاش">
+      </div>
+    </div>
+    <div class="body">
+      <div>
+        <div class="text"></div>
+      </div>
+    </div>
+  </article>
+
   <script>
     function setupCard(card) {
       const band = card.querySelector('.band');
       const textEl = card.querySelector('.text');
-      const headlineText = card.dataset.headline;
-      const paragraphs = JSON.parse(card.dataset.paragraphs);
+      const blocks = card.dataset.blocks
+        ? JSON.parse(card.dataset.blocks)
+        : [{ t: 'h3', x: card.dataset.headline }, ...JSON.parse(card.dataset.paragraphs).map((x) => ({ t: 'p', x }))];
+      // نص طويل (حلقة النقاش) يُكتب بخطوات أكبر عشان يخلص بحوالي 10 ثواني.
+      const totalChars = blocks.reduce((n, b) => n + [...b.x].length, 0);
+      const step = Math.max(2, Math.ceil(totalChars / 650));
       // أي فتح/إغلاق جديد يلغي الكتابة الجارية لهذي البطاقة بس.
       let typingRun = 0;
 
       async function typeInto(el, text, run) {
         el.classList.add('typing');
         const chars = [...text];
-        for (let i = 0; i < chars.length; i += 2) {
+        for (let i = 0; i < chars.length; i += step) {
           if (run !== typingRun) return false;
-          el.textContent += chars.slice(i, i + 2).join('');
+          el.textContent += chars.slice(i, i + step).join('');
           await new Promise((r) => setTimeout(r, 16));
         }
         el.classList.remove('typing');
         return true;
       }
 
-      // العنوان أولًا ثم الفقرات، كلها حرف حرف.
       async function typeText() {
         const run = ++typingRun;
         textEl.innerHTML = '';
+        let list = null;
 
-        const headline = document.createElement('h3');
-        textEl.appendChild(headline);
-        if (!await typeInto(headline, headlineText, run)) return;
-
-        for (const paragraph of paragraphs) {
-          const p = document.createElement('p');
-          textEl.appendChild(p);
-          if (!await typeInto(p, paragraph, run)) return;
+        for (const block of blocks) {
+          let el;
+          if (block.t === 'li' || block.t === 'oli') {
+            const tag = block.t === 'li' ? 'UL' : 'OL';
+            if (!list || list.tagName !== tag) {
+              list = document.createElement(tag);
+              textEl.appendChild(list);
+            }
+            el = document.createElement('li');
+            list.appendChild(el);
+          } else {
+            list = null;
+            el = document.createElement(block.t === 'note' ? 'p' : block.t);
+            if (block.t === 'note') el.className = 'note';
+            textEl.appendChild(el);
+          }
+          if (!await typeInto(el, block.x, run)) return;
         }
       }
 
       function toggle() {
         const open = card.classList.toggle('is-open');
         band.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const label = card.querySelector('.btn-label');
+        if (label) label.textContent = open ? 'إخفاء الملخص' : 'اقرأ الملخص';
         if (open) {
           typeText();
         } else {
