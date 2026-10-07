@@ -25,7 +25,7 @@ class ConferenceRecordingController extends Controller
 
     private const SHARED_DIRECTORY = 'conference-journalist/shared';
 
-    private const ALLOWED_EXTENSIONS = ['webm', 'm4a', 'mp4', 'wav', 'mp3', 'ogg', 'aac', 'caf'];
+    private const ALLOWED_EXTENSIONS = ['webm', 'm4a', 'mp4', 'wav', 'mp3', 'ogg', 'aac', 'caf', 'mov', 'flac', 'opus'];
 
     private const MAX_UPLOAD_KB = 500 * 1024;
 

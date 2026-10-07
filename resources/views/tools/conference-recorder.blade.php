@@ -26,6 +26,10 @@
     #record { background:#fff; color:#0B1F3A; }
     #record.recording { background:#d93434; color:#fff; }
     #record:disabled { opacity:.55; cursor:not-allowed; }
+    #upload-file { margin-top:12px; background:transparent; color:#fff; border:1px dashed #4a6a94; font-size:17px; min-height:56px; }
+    #upload-file:disabled { opacity:.55; cursor:not-allowed; }
+    .progress { display:none; height:8px; margin-top:12px; border-radius:8px; background:#071426; overflow:hidden; border:1px solid #263a56; }
+    .progress > div { height:100%; width:0; background:#4fd18b; transition:width .3s; }
     .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:#071426; border:1px solid #263a56; min-height:52px; line-height:1.6; word-break:break-word; }
     .hint { font-size:13px; color:#8fa1b8; text-align:center; margin-top:14px; line-height:1.6; }
   </style>
@@ -33,7 +37,7 @@
 <body>
   <main class="card">
     <h1>🎙️ صحفي المؤتمر</h1>
-    <p>سجّل الجلسة أو المقابلة. بعد الإيقاف يرتفع الصوت تلقائيًا ويتحول إلى نص على الماك.</p>
+    <p>سجّل الجلسة أو المقابلة، أو ارفع ملف صوت/فيديو جاهز. الصوت ينقّى على سيرفر البيت ثم يتحول إلى نص على الماك.</p>
 
 
     <div id="timer" class="timer">00:00</div>
@@ -42,6 +46,9 @@
       <div id="meter-note" class="meter-note"></div>
     </div>
     <button id="record">ابدأ التسجيل</button>
+    <button id="upload-file" type="button">📁 رفع ملف صوت أو فيديو</button>
+    <input id="file-input" type="file" accept="audio/*,video/*,.m4a,.mp3,.wav,.aac,.ogg,.opus,.flac,.webm,.mp4,.mov,.caf" hidden>
+    <div id="progress" class="progress"><div></div></div>
     <div id="status" class="status">جاهز للتسجيل.</div>
     <div class="hint">لا تقفل الشاشة أثناء التسجيل، واترك الصفحة مفتوحة حتى تظهر رسالة نجاح الرفع.</div>
   </main>
@@ -53,6 +60,15 @@ const timerBox = document.getElementById('timer');
 const meterBox = document.getElementById('meter');
 const meterCanvas = document.getElementById('meter-canvas');
 const meterNote = document.getElementById('meter-note');
+const uploadFileButton = document.getElementById('upload-file');
+const fileInput = document.getElementById('file-input');
+const progressBox = document.getElementById('progress');
+
+// ملف جاهز: يتقسّم أجزاء 16MB ويمشي بنفس طريق التسجيل (start/chunk/finish)
+// -- السيرفر يجمع الأجزاء بالترتيب بايت ببايت، فيرجع الملف مثل الأصل.
+const FILE_CHUNK_BYTES = 16 * 1024 * 1024;
+const MAX_FILE_BYTES = 500 * 1024 * 1024;
+const FILE_EXTENSIONS = ['webm', 'm4a', 'mp4', 'wav', 'mp3', 'ogg', 'aac', 'caf', 'mov', 'flac', 'opus'];
 
 
 let recorder = null;
@@ -315,13 +331,18 @@ async function pumpUpload(u) {
         await sendPart(u, u.parts[0]);
         u.parts.shift();
         u.sent++;
-        if (recorder && recorder.state === 'recording') {
+        if (u.isFile) {
+          const pct = Math.round(u.sent / u.nextSeq * 100);
+          progressBox.firstElementChild.style.width = pct + '%';
+          show('⬆️ جارٍ رفع الملف — ' + pct + '% (' + u.sent + ' من ' + u.nextSeq + ')');
+        } else if (recorder && recorder.state === 'recording') {
           show('🔴 جارٍ التسجيل — محفوظ على السيرفر حتى الدقيقة ' + Math.round(u.sent * CHUNK_MS / 60000 * 10) / 10);
         }
       } else {
         const finished = await postJson('/api/cj/recordings/' + u.relayId + '/finish', { key: u.key, chunks: u.nextSeq });
         u.done = true;
-        show('✅ تم حفظ التسجيل: ' + finished.relay_id);
+        if (u.isFile) uploadFileButton.disabled = false;
+        show('✅ ' + (u.isFile ? 'وصل الملف' : 'تم حفظ التسجيل') + ': ' + finished.relay_id);
         if (u === upload) pollStatus(finished.relay_id);
       }
       delay = 2000;
@@ -364,6 +385,43 @@ async function pollStatus(relayId) {
     } catch (_) {}
   }
 }
+
+uploadFileButton.addEventListener('click', () => {
+  if (recorder && recorder.state !== 'inactive') {
+    setStatus('⚠️ أوقف التسجيل الحالي أول قبل رفع ملف.');
+    return;
+  }
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  fileInput.value = '';
+  if (!file) return;
+
+  if (file.size > MAX_FILE_BYTES) {
+    setStatus('❌ الملف أكبر من 500MB (' + Math.round(file.size / 1048576) + 'MB). قسّمه أو صدّره بجودة أقل.');
+    return;
+  }
+
+  const nameExt = (file.name.split('.').pop() || '').toLowerCase();
+  const ext = FILE_EXTENSIONS.includes(nameExt) ? nameExt : extensionFor(file.type || '');
+  const parts = [];
+  for (let offset = 0, seq = 0; offset < file.size; offset += FILE_CHUNK_BYTES, seq++) {
+    parts.push({ seq, blob: file.slice(offset, offset + FILE_CHUNK_BYTES) });
+  }
+
+  upload = { relayId: null, key: null, type: file.type || 'application/octet-stream', ext, parts, nextSeq: parts.length,
+             sent: 0, stopped: true, done: false, pumping: false, isFile: true };
+  uploads.push(upload);
+
+  uploadFileButton.disabled = true;
+  progressBox.style.display = 'block';
+  progressBox.firstElementChild.style.width = '0%';
+  timerBox.textContent = Math.round(file.size / 1048576 * 10) / 10 + 'MB';
+  setStatus('⬆️ بدأ رفع «' + file.name + '» — لا تقفل الصفحة لين يكتمل.');
+  pumpUpload(upload);
+});
 
 recordButton.addEventListener('click', async () => {
   wakeAudioContext();
