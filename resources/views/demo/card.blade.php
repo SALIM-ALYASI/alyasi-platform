@@ -83,11 +83,25 @@
   .text p:last-child { margin-bottom: 0; }
   /* جمل الربط بين المحطات (التعليق) -- فوق كل بطاقة، وصورتها الطالعة
      فوق الشريط تحتها مباشرة بمسافة البطاقة نفسها. */
-  .lead { width: 80vw; margin: 44px 0 -12px; text-align: center; color: #F2F5FA; font-size: clamp(14px, 3.6vw, 21px);
-          font-weight: 700; line-height: 1.9; text-shadow: 0 2px 10px rgba(0, 0, 0, .55); }
-  .lead::before { content: ""; display: block; width: 46px; height: 2px; margin: 0 auto 12px; background: var(--gold); border-radius: 2px; }
-  .lead--outro { margin: 48px 0 24px; color: var(--gold); }
+  /* تعليق سالم بين المحطات: فقاعة كلام بصورته الصغيرة، عشان يبان إنه هو
+     اللي يقول الكلام. */
+  .lead { width: 80vw; margin: 44px 0 -12px; display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+          background: rgba(19, 35, 63, .5); border: 1px solid var(--glass-line); border-radius: 16px;
+          -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .lead-avatar { flex: none; width: clamp(38px, 9vw, 52px); height: clamp(38px, 9vw, 52px); border-radius: 50%; overflow: hidden;
+                 border: 2px solid var(--gold); background: #E8EEF8; }
+  .lead-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; transform: scale(1.35); }
+  .lead-body { min-width: 0; }
+  .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); margin-bottom: 2px; }
+  .lead-text { margin: 0; color: #F2F5FA; font-size: clamp(14px, 3.6vw, 20px); font-weight: 700; line-height: 1.85; }
+  .lead-text::before { content: "« "; color: var(--gold); }
+  .lead-text::after { content: " »"; color: var(--gold); }
+  .lead--outro { margin: 48px 0 24px; }
+  .lead--outro .lead-text { color: var(--gold); }
   .lead a { color: #FFFFFF; }
+
+  /* بطاقة المقدّم (سالم) أعلى الصفحة -- نفس شريط البطاقات بدون فتح. */
+  .card--host .band { cursor: default; }
 
   .hero { width: 80vw; margin-top: 34px; text-align: center; }
   .hero img { height: 46px; width: auto; }
@@ -202,9 +216,26 @@
     <h1>خمس محطات</h1>
   </header>
 
+  <article class="card card--host" style="--ratio: 1">
+    <div class="band">
+      <div class="photo">
+        <img src="{{ asset('images/demo/host-salem.png') }}" alt="سالم الحجري">
+      </div>
+      <div class="title">
+        <div class="title-text">
+          <h2>سالم الحجري</h2>
+          <small>منصة الياسي · من قلب المؤتمر</small>
+        </div>
+      </div>
+    </div>
+  </article>
+
   @foreach ($cards as $card)
     @if (! empty($card['lead']))
-      <p class="lead">{{ $card['lead'] }}</p>
+      <div class="lead">
+      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
+      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">{{ $card['lead'] }}</p></div>
+    </div>
     @endif
     <article class="card" style="--ratio: {{ $card['ratio'] }}"
              data-headline="{{ $card['headline'] }}"
@@ -232,7 +263,10 @@
   @php
       $panelBlocks = json_decode(file_get_contents(resource_path('views/demo/panel-ai-governance.json')), true);
   @endphp
-  <p class="lead">لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.</p>
+  <div class="lead">
+      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
+      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.</p></div>
+    </div>
   <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
            data-blocks='@json($panelBlocks, JSON_UNESCAPED_UNICODE)'>
     <div class="band" role="button" tabindex="0" aria-expanded="false">
@@ -253,7 +287,10 @@
     </div>
   </article>
 
-  <p class="lead lead--outro">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. التفاصيل كاملة على <a href="https://alyasi.dev">alyasi.dev</a>.</p>
+  <div class="lead lead--outro">
+      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
+      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. التفاصيل كاملة على <a href="https://alyasi.dev">alyasi.dev</a>.</p></div>
+    </div>
 
   <script>
     function setupCard(card) {
@@ -319,7 +356,7 @@
       band.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
     }
 
-    document.querySelectorAll('.card').forEach(setupCard);
+    document.querySelectorAll('.card:not(.card--host)').forEach(setupCard);
   </script>
 </body>
 </html>
