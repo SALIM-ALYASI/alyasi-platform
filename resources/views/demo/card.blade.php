@@ -325,7 +325,7 @@
 
   <div class="lead lead--outro">
       <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. التفاصيل كاملة على <a href="https://alyasi.dev">alyasi.dev</a>.</p></div>
+      <div class="lead-body"><span class="lead-name">سالم الحجري</span><p class="lead-text">خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على <a href="https://alyasi.dev">alyasi.dev</a>.</p></div>
     </div>
 
   <script>
