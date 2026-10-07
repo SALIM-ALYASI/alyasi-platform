@@ -99,7 +99,7 @@
   .panel-center small { color: var(--gold); font-weight: 700; font-size: clamp(9px, 2vw, 14px); }
   .panel-center h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(15px, 4vw, 30px); font-weight: 800; line-height: 1.2; }
   .panel-center .topic { color: var(--mu-on-band); font-size: clamp(10px, 2.3vw, 16px); font-weight: 700; line-height: 1.4; }
-  .panel-btn { margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
+  .panel-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
                background: var(--gold); color: #13233F; font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); white-space: nowrap; }
   .panel-btn .arrow { color: inherit; font-size: 1em; }
 
@@ -108,9 +108,7 @@
   @media (max-width: 600px) {
     .card--panel { --left-w: calc(var(--w) * .28); --right-w: calc(var(--w) * .42); }
     .card--panel .band { min-height: 60px; padding-block: 8px; }
-    .panel-center small, .panel-center .topic { display: none; }
-    .panel-center h2 { font-size: 14px; }
-    .panel-btn { padding: 5px 10px; font-size: 11px; margin-top: 4px; }
+    .panel-btn { padding: 7px 12px; font-size: 13px; }
   }
 
   .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
@@ -205,10 +203,7 @@
         <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="راميا سانكاري كارثيك — مديرة الجلسة">
       </div>
       <div class="panel-center">
-        <small>CyberX Oman 2026</small>
-        <h2>حلقة نقاش</h2>
-        <div class="topic">تأمين مؤسسات الذكاء الاصطناعي — الحوكمة والثقة والابتكار المسؤول</div>
-        <span class="panel-btn"><span class="btn-label">اقرأ الملخص</span> <span class="arrow" aria-hidden="true">⌄</span></span>
+        <span class="panel-btn">جلسة نقاش <span class="arrow" aria-hidden="true">⌄</span></span>
       </div>
       <div class="photo photo--right">
         <img src="{{ asset('images/demo/panel-group.png') }}" alt="المشاركون في حلقة النقاش">
@@ -274,8 +269,6 @@
       function toggle() {
         const open = card.classList.toggle('is-open');
         band.setAttribute('aria-expanded', open ? 'true' : 'false');
-        const label = card.querySelector('.btn-label');
-        if (label) label.textContent = open ? 'إخفاء الملخص' : 'اقرأ الملخص';
         if (open) {
           typeText();
         } else {
