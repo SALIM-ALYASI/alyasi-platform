@@ -108,6 +108,7 @@
 
         {{-- شكر وتقدير لمن خصصوا وقتهم للمقابلات --}}
         <section class="coverage-thanks" data-reveal>
+            <p class="coverage-thanks__teaser"><span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }}</p>
             <figure class="coverage-thanks__photo">
                 <img src="{{ $coverage['thanks']['image'] }}" alt="{{ $coverage['thanks']['title'] }}" width="1496" height="1051" loading="lazy">
             </figure>

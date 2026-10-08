@@ -324,6 +324,23 @@
     box-shadow: var(--shadow-md);
 }
 
+/* إعلان اللقاءات القادمة -- شريط فوق الصورة */
+.coverage-thanks__teaser {
+    margin: 0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: clamp(15px, 2.2vw, 18px);
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-accent-500), var(--color-accent-700, #122745));
+    letter-spacing: .01em;
+}
+
 .coverage-thanks__photo { margin: 0; }
 .coverage-thanks__photo img { display: block; width: 100%; height: auto; }
 

@@ -174,6 +174,7 @@ class CyberxOman2026
             'hall' => asset('images/events/cyberx-2026/hall.jpg'),
             'thanks' => [
                 'title' => $t('شكر وتقدير', 'With gratitude'),
+                'teaser' => $t('ترقّبوا قريبًا لقاءات صحفية مع الضيوف', 'Coming soon: press interviews with the guests'),
                 'image' => asset('images/cyberx-2026/thanks-group.jpg'),
                 'text' => $t(
                     'كل الشكر والتقدير للدكتور هيثم الحجري، والأستاذ علي اللواتي، والأستاذ خالد العمراني، والأستاذ يحيى العزري، على تخصيص جزء من وقتهم لي، وحسن استقبالهم ومشاركتهم القيّمة التي أثرت تجربتي في تغطية مؤتمر سايبر إكس عُمان 2026.',
