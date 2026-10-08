@@ -45,6 +45,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CyberxInterviewController;
 use App\Http\Controllers\MetaWhatsAppSetupController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventCoverageController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -319,6 +320,15 @@ Route::middleware('force.locale:en')
 Route::get('/events', [EventController::class, 'index'])
     ->name('events.index');
 
+// تغطية «خمس محطات» -- قبل مسار /events/{slug} (ما يتعارض لأن الـ slug بدون /).
+Route::get('/events/cyberx-oman-2026/coverage', [EventCoverageController::class, 'cyberxOman2026'])
+    ->middleware('force.locale:ar')
+    ->name('event_coverage.cyberx_oman_2026');
+
+Route::get('/en/events/cyberx-oman-2026/coverage', [EventCoverageController::class, 'cyberxOman2026'])
+    ->middleware('force.locale:en')
+    ->name('event_coverage.cyberx_oman_2026.en');
+
 Route::middleware('force.locale:ar')
     ->prefix('events')
     ->name('event_editions.')
@@ -555,9 +565,9 @@ Route::view('/bidiyah', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah');
 
 Route::view('/cyberx-thanks', 'links.cyberx-thanks')->name('links.cyberx-thanks');
 
-Route::view('/demo/card', 'demo.card')->name('demo.card');
+Route::redirect('/demo/card', '/events/cyberx-oman-2026/coverage', 301);
 
-Route::view('/en/demo/card', 'demo.card', ['lang' => 'en'])->name('demo.card.en');
+Route::redirect('/en/demo/card', '/en/events/cyberx-oman-2026/coverage', 301);
 
 Route::view('/Mylocation', 'links.alyasi-bidiyah')->name('links.alyasi-bidiyah.mylocation');
 

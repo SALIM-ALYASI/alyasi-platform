@@ -3,6 +3,10 @@
 @php
     $phase = $edition->phase;
     $isAppleEvent2026 = request()->route('slug') === 'apple-event-2026';
+    // صفحة تغطية «خمس محطات» الخاصة بـ CyberX Oman 2026.
+    $coverageUrl = request()->route('slug') === \App\Support\Coverage\CyberxOman2026::EVENT_SLUG
+        ? url((app()->getLocale() === 'en' ? '/en' : '').'/events/'.\App\Support\Coverage\CyberxOman2026::EVENT_SLUG.'/coverage')
+        : null;
     $ogDescription = \Illuminate\Support\Str::limit(strip_tags($edition->short_description ?: ''), 160);
 
     // يربط كل "منتج/إعلان" بسعره من جدول الأسعار (لو موجود) -- مرن بالتطابق
@@ -221,6 +225,14 @@
     <section class="container community-detail__body">
 
         <h1 class="community-detail__title">{{ $edition->title }}</h1>
+
+        @if ($coverageUrl)
+            <a class="event-coverage-cta" href="{{ $coverageUrl }}">
+                <span class="event-coverage-cta__label">{{ app()->getLocale() === 'en' ? 'Field coverage' : 'تغطية ميدانية' }}</span>
+                <strong>{{ app()->getLocale() === 'en' ? 'Five Stops from CyberX Oman 2026' : 'خمس محطات من سايبر إكس عُمان 2026' }}</strong>
+                <span aria-hidden="true">{{ app()->getLocale() === 'en' ? '→' : '←' }}</span>
+            </a>
+        @endif
 
         @if ($phase !== 'concluded')
             <div class="event-detail__date-status">
