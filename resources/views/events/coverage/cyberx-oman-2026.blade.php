@@ -111,14 +111,21 @@
         <section class="coverage-thanks" data-reveal>
             <p class="coverage-thanks__teaser"><span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }}</p>
             @php($photos = $coverage['thanks']['photos'])
-            <div class="coverage-gallery" data-count="{{ count($photos) }}">
-                @foreach ($photos as $i => $photo)
-                    <button type="button" class="coverage-gallery__item" data-photo="{{ $i }}"
-                            aria-label="{{ $t('عرض الصورة', 'View photo') }} {{ $i + 1 }}">
-                        <img src="{{ $photo['src'] }}" alt="{{ $coverage['thanks']['title'] }}"
-                             width="{{ $photo['width'] }}" height="{{ $photo['height'] }}" loading="lazy">
-                    </button>
-                @endforeach
+            <div class="coverage-gallery" data-count="{{ count($photos) }}" aria-roledescription="carousel" aria-label="{{ $t('صور من المؤتمر', 'Photos from the conference') }}">
+                <div class="coverage-gallery__track" id="coverageGalleryTrack">
+                    @foreach ($photos as $i => $photo)
+                        <button type="button" class="coverage-gallery__item" data-photo="{{ $i }}"
+                                aria-label="{{ $t('عرض الصورة', 'View photo') }} {{ $i + 1 }}">
+                            <img src="{{ $photo['src'] }}" alt="{{ $coverage['thanks']['title'] }}"
+                                 width="{{ $photo['width'] }}" height="{{ $photo['height'] }}" loading="lazy" draggable="false">
+                        </button>
+                    @endforeach
+                </div>
+                @if (count($photos) > 1)
+                    <button type="button" class="coverage-gallery__arrow coverage-gallery__arrow--prev" id="coverageGalleryPrev" aria-label="{{ $t('السابقة', 'Previous') }}">{{ $isEn ? '‹' : '›' }}</button>
+                    <button type="button" class="coverage-gallery__arrow coverage-gallery__arrow--next" id="coverageGalleryNext" aria-label="{{ $t('التالية', 'Next') }}">{{ $isEn ? '›' : '‹' }}</button>
+                    <div class="coverage-gallery__dots" id="coverageGalleryDots" aria-hidden="true"></div>
+                @endif
             </div>
             <div class="coverage-thanks__body">
                 <h2 class="coverage-thanks__title">{{ $coverage['thanks']['title'] }}</h2>

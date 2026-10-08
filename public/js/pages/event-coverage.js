@@ -199,6 +199,85 @@
         });
     }
 
+    // شريط صور الشكر: يتحرك تلقائيًا يمين/يسار، ويوقف مع اللمس/المرور
+    // أو لما يكون خارج الشاشة، ويرجع للبداية بعد آخر صورة.
+    var gallery = document.querySelector('.coverage-gallery');
+    var track = $('coverageGalleryTrack');
+    if (gallery && track && photos.length > 1) {
+        var slide = 0;
+        var timer = null;
+        var inView = false;
+        var hovering = false;
+        var dotsBox = $('coverageGalleryDots');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isRtl = function () { return document.documentElement.dir === 'rtl' || document.body.dir === 'rtl'; };
+        var perView = function () { return parseInt(getComputedStyle(gallery).getPropertyValue('--per-view'), 10) || 1; };
+        var lastSlide = function () { return Math.max(0, photos.length - perView()); };
+
+        function buildDots() {
+            dotsBox.innerHTML = '';
+            for (var i = 0; i <= lastSlide(); i++) dotsBox.appendChild(document.createElement('span'));
+        }
+
+        function goTo(index) {
+            var last = lastSlide();
+            slide = index > last ? 0 : (index < 0 ? last : index);
+            // بالعربي الصور مرتبة من اليمين، فالتالية تدخل من اليسار.
+            var shift = slide * (100 / perView());
+            track.style.transform = 'translateX(' + (isRtl() ? shift : -shift) + '%)';
+            Array.prototype.forEach.call(dotsBox.children, function (dot, i) {
+                dot.classList.toggle('is-active', i === slide);
+            });
+        }
+
+        function schedule() {
+            clearInterval(timer);
+            timer = null;
+            if (reduceMotion || !inView || hovering || !lightbox.hidden) return;
+            timer = setInterval(function () { goTo(slide + 1); }, 3500);
+        }
+
+        buildDots();
+        goTo(0);
+
+        $('coverageGalleryPrev').addEventListener('click', function () { goTo(slide - 1); schedule(); });
+        $('coverageGalleryNext').addEventListener('click', function () { goTo(slide + 1); schedule(); });
+        gallery.addEventListener('mouseenter', function () { hovering = true; schedule(); });
+        gallery.addEventListener('mouseleave', function () { hovering = false; schedule(); });
+
+        // السحب بالجوال: نلغي الضغطة لو كانت سحبة عشان ما يفتح العارض.
+        var startX = null;
+        var swiped = false;
+        track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; swiped = false; }, { passive: true });
+        track.addEventListener('touchend', function (e) {
+            if (startX === null) return;
+            var dx = e.changedTouches[0].clientX - startX;
+            startX = null;
+            if (Math.abs(dx) < 40) return;
+            swiped = true;
+            goTo(slide + ((dx > 0) === isRtl() ? 1 : -1));
+            schedule();
+        });
+        track.addEventListener('click', function (e) {
+            if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
+        }, true);
+
+        window.addEventListener('resize', function () { buildDots(); goTo(Math.min(slide, lastSlide())); });
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                inView = entries[0].isIntersecting;
+                schedule();
+            }, { threshold: 0.4 }).observe(gallery);
+        } else {
+            inView = true;
+            schedule();
+        }
+
+        // يوقف الشريط وقت فتح العارض، ويكمل بعد إغلاقه.
+        new MutationObserver(schedule).observe(lightbox, { attributes: true, attributeFilter: ['hidden'] });
+    }
+
     // مشاركة التغطية: مشاركة الجوال الأصلية، وإلا نسخ الرابط.
     var share = $('coverageShare');
     if (share) {
