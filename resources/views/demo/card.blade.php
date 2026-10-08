@@ -292,6 +292,8 @@
     ];
 
     $hostAvatar = asset('images/demo/host-salem.png');
+    // @json يقسّم الوسائط عند الفواصل، فنجهّز المصفوفة هنا.
+    $jsLabels = ['stop' => $t('المحطة', 'Stop'), 'of' => $t('من', 'of')];
 @endphp
 
   <a class="lang-switch" href="{{ $isEn ? url('/demo/card') : url('/en/demo/card') }}" hreflang="{{ $isEn ? 'ar' : 'en' }}">{{ $isEn ? 'العربية' : 'English' }}</a>
@@ -369,7 +371,7 @@
   <script type="application/json" id="stopsData">@json($stops, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>
   <script>
     const stops = JSON.parse(document.getElementById('stopsData').textContent);
-    const LABEL = @json(['stop' => $t('المحطة', 'Stop'), 'of' => $t('من', 'of')]);
+    const LABEL = @json($jsLabels);
 
     const modal = document.getElementById('stopModal');
     const el = (id) => document.getElementById(id);
