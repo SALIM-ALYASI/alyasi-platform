@@ -84,8 +84,11 @@
 
     function unlockPage() {
         Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
-        window.scrollTo(0, savedY);
-        requestAnimationFrame(function () { window.scrollTo(0, savedY); });
+        // instant لأن الموقع مفعّل scroll-behavior: smooth، والرجوع المتحرك
+        // يوقف بمكان غلط بعد فك تثبيت الصفحة.
+        var restore = function () { window.scrollTo({ top: savedY, left: 0, behavior: 'instant' }); };
+        restore();
+        requestAnimationFrame(restore);
     }
 
     function open(index, trigger) {
