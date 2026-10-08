@@ -377,6 +377,12 @@
 .coverage-gallery[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .coverage-gallery[data-count="3"] .coverage-gallery__item { aspect-ratio: 3 / 5; }
 
+/* 4 صور طولية: صف واحد بالشاشات الواسعة، و2×2 بالجوال */
+@media (min-width: 641px) {
+    .coverage-gallery[data-count="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .coverage-gallery[data-count="4"] .coverage-gallery__item { aspect-ratio: 3 / 5; }
+}
+
 /* عارض الصور */
 .coverage-lightbox {
     position: fixed;
