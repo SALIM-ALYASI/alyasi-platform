@@ -38,6 +38,7 @@ class ArticleLocaleLinksComposer
         'terms',
         'social-links.index',
         'community.index',
+        'event_coverage.cyberx_oman_2026',
     ];
 
     /**
