@@ -374,7 +374,8 @@
 
 .coverage-gallery[data-count="1"] { grid-template-columns: 1fr; }
 .coverage-gallery[data-count="1"] .coverage-gallery__item { aspect-ratio: 4 / 3; }
-.coverage-gallery[data-count="3"] .coverage-gallery__item:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+.coverage-gallery[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.coverage-gallery[data-count="3"] .coverage-gallery__item { aspect-ratio: 3 / 5; }
 
 /* عارض الصور */
 .coverage-lightbox {
