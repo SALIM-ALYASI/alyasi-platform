@@ -22,183 +22,120 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Figtree:wght@400;600;700;800&display=swap">
 <style>
   :root {
-    --bg: #0B1F3A; --band: rgba(19, 35, 63, .55); --panel: rgba(16, 32, 58, .62);
-    --glass-line: rgba(255, 255, 255, .18); --tx-on-band: #FFFFFF; --mu-on-band: #DCE4F1; --gold: #D8B56A;
+    --bg: #0B1F3A; --panel: rgba(16, 32, 58, .62); --card: rgba(11, 27, 52, .78);
+    --glass-line: rgba(255, 255, 255, .16); --tx: #FFFFFF; --mu: #C9D4E6; --gold: #D8B56A; --gold-2: #C99E4C;
+    --page-w: min(92vw, 720px); --radius: 16px; --gap: 14px;
   }
   * { box-sizing: border-box; }
   html { background: var(--bg); }
   html, body { margin: 0; font-family: Tajawal, system-ui, sans-serif; }
   html[lang="en"] body { font-family: Figtree, system-ui, sans-serif; }
+  body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 0 40px; position: relative; color: var(--tx); }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(rgba(7, 18, 36, .6), rgba(7, 18, 36, .8)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
+  }
+  .glass { background: var(--card); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
   .lang-switch { position: absolute; top: calc(env(safe-area-inset-top) + 14px); inset-inline-end: 16px; z-index: 5;
                  padding: 6px 14px; border-radius: 999px; border: 1px solid var(--glass-line); background: rgba(19, 35, 63, .55);
                  color: #FFFFFF; font-weight: 700; font-size: 13px; text-decoration: none;
                  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-  body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 40px; position: relative; }
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: -1;
-    background: linear-gradient(rgba(7, 18, 36, .55), rgba(7, 18, 36, .75)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
-  }
 
-  /* أبعاد مترابطة: البطاقة 80% من الشاشة، الصورة 40% من البطاقة،
-     والشريط ارتفاعه نص ارتفاع الصورة -- فنصها السفلي داخله ونصها
-     العلوي طالع فوقه. */
-  .card {
-    --w: 80vw;
-    --photo-w: calc(var(--w) * .40);
-    --photo-h: calc(var(--photo-w) * var(--ratio, 1));
-    width: var(--w);
-    margin-top: calc(var(--photo-h) / 2 + 40px);
-  }
-  body { flex-direction: column; align-items: center; justify-content: flex-start; }
-
-  .band {
-    position: relative;
-    min-height: max(calc(var(--photo-h) / 2), 64px);
-    padding-block: 10px;
-    background: var(--band);
-    border: 1px solid var(--glass-line);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    transition: border-radius .2s;
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    padding-inline-start: 18px;
-    padding-inline-end: calc(var(--photo-w) + 10px); /* مكان الصورة يسار الشريط */
-  }
-
-  /* الصورة عند نهاية السطر: يسار بالعربي، يمين بالإنجليزي. */
-  .photo { position: absolute; inset-inline-end: calc(var(--w) * -.03); bottom: 0; width: var(--photo-w); pointer-events: none; }
-  .photo img { display: block; width: 100%; height: auto; }
-
-  .title { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: clamp(8px, 2.4vw, 16px); min-width: 0; }
-  .title-text { min-width: 0; }
-  .title h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(16px, 4.2vw, 30px); font-weight: 800; line-height: 1.3; }
-  .title small { display: block; color: var(--gold); font-weight: 700; font-size: clamp(10px, 2.2vw, 16px); margin-top: 2px; }
-
-  .arrow { flex: none; color: var(--gold); font-size: clamp(20px, 5vw, 34px); line-height: 1; transition: transform .35s ease; }
-  .card.is-open .arrow { transform: rotate(180deg); }
-
-  /* مؤشر الكتابة أثناء ظهور النص حرف حرف */
-  .typing::after { content: "▍"; color: var(--gold); margin-inline-start: 2px; animation: blink .8s steps(1) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  /* النص المنسدل تحت الشريط */
-  .card.is-open .band { border-radius: 12px 12px 0 0; }
-  .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; background: var(--panel); border-radius: 0 0 12px 12px;
-          -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-  .card.is-open .body { grid-template-rows: 1fr; }
-  .body > div { overflow: hidden; }
-  .text { padding: 14px 20px 20px; }
-  .text p { margin: 0 0 12px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
-  .text p:last-child { margin-bottom: 0; }
-  /* جمل الربط بين المحطات (التعليق) -- فوق كل بطاقة، وصورتها الطالعة
-     فوق الشريط تحتها مباشرة بمسافة البطاقة نفسها. */
-  /* تعليق سالم بين المحطات: فقاعة كلام بصورته الصغيرة، عشان يبان إنه هو
-     اللي يقول الكلام. */
-  .lead { width: 80vw; margin: 44px 0 -12px; display: flex; flex-direction: column; align-items: center; text-align: center;
-          gap: 8px; padding: 18px 20px 20px;
-          background: rgba(19, 35, 63, .5); border: 1px solid var(--glass-line); border-radius: 18px;
-          -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-  .lead-avatar { flex: none; width: clamp(46px, 11vw, 60px); height: clamp(46px, 11vw, 60px); border-radius: 50%; overflow: hidden;
-                 border: 2px solid var(--gold); background: #E8EEF8; box-shadow: 0 4px 14px rgba(0, 0, 0, .35); }
-  .lead-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; transform: scale(1.35); }
-  .lead-body { min-width: 0; display: flex; flex-direction: column; align-items: center; }
-  .lead-name { display: block; color: var(--gold); font-weight: 800; font-size: clamp(11px, 2.6vw, 14px); letter-spacing: .02em; }
-  .lead-name::after { content: ""; display: block; width: 34px; height: 2px; margin: 8px auto 10px; background: var(--gold); border-radius: 2px; opacity: .7; }
-  .lead-text { margin: 0; max-width: 34em; color: #F2F5FA; font-size: clamp(14px, 3.4vw, 19px); font-weight: 700; line-height: 1.9; }
-  html[lang="en"] .lead-text, html[lang="en"] .host-intro { font-size: clamp(13px, 3.2vw, 18px); font-weight: 600; line-height: 1.75; }
-  /* الاسم موجود ببطاقة سالم فوق، فالفقاعات فيها صورته بس. */
-  .lead .lead-name { display: none; }
-  .lead .lead-avatar { margin-bottom: 4px; }
-  .lead--outro { margin: 48px 0 24px; }
-  .lead--outro .lead-text { color: var(--gold); }
-  .lead a { color: #FFFFFF; }
-
-  /* بطاقة المقدّم (سالم) أعلى الصفحة -- نفس شريط البطاقات بدون فتح. */
-  .card--host .band { cursor: default; border-radius: 12px 12px 0 0; }
-  /* جملة الافتتاح ملتصقة ببطاقة سالم كجزء منها. */
-  .host-intro { margin: 0; padding: 16px 20px 18px; text-align: center; color: #F2F5FA;
-                font-size: clamp(15px, 3.8vw, 21px); font-weight: 700; line-height: 1.95;
-                background: var(--panel); border: 1px solid var(--glass-line); border-top: 0; border-radius: 0 0 12px 12px;
-                -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-  /* رابط الخاتمة بسطر مستقل بدل ما ينكسر بآخر السطر. */
-  .lead-link { display: inline-block; margin-top: 10px; padding: 4px 14px; font-size: 14px; border-radius: 999px; border: 1px solid var(--gold);
-               color: #FFFFFF; font-weight: 800; letter-spacing: .03em; text-decoration: none; direction: ltr; }
-
-  .hero { width: 80vw; margin-top: 34px; text-align: center; }
+  .hero { width: var(--page-w); margin-top: 34px; text-align: center; }
   .hero img { height: 46px; width: auto; }
   .hero small { display: block; margin-top: 10px; color: var(--gold); font-weight: 800; letter-spacing: .08em; font-size: clamp(11px, 2.6vw, 15px); }
-  .hero h1 { margin: 6px 0 0; color: #FFFFFF; font-size: clamp(24px, 6.4vw, 44px); font-weight: 800; line-height: 1.3; text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+  .hero h1 { margin: 6px 0 0; font-size: clamp(24px, 6.4vw, 44px); font-weight: 800; line-height: 1.3; text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
 
-  .discussion-view {
-    position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: 9999;
-    overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
-    background: linear-gradient(rgba(7, 18, 36, .9), rgba(7, 18, 36, .96)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
-    opacity: 0; transition: opacity .25s ease;
-  }
-  .discussion-view[hidden] { display: none; }
-  .discussion-view.is-visible { opacity: 1; }
-  .discussion-view__header {
-    position: sticky; top: 0; z-index: 10;
-    display: flex; align-items: center; gap: 12px;
-    padding: calc(env(safe-area-inset-top) + 12px) 16px 12px;
-    background: rgba(11, 31, 58, .88); border-bottom: 1px solid var(--glass-line);
-    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  }
-  .discussion-view__thumb { flex: none; height: 44px; width: auto; border-radius: 8px; }
-  .discussion-view__titles { flex: 1; min-width: 0; }
-  .discussion-view__titles small { display: block; color: var(--gold); font-weight: 800; font-size: 12px; }
-  .discussion-view__titles h2 { margin: 2px 0 0; color: #FFFFFF; font-size: clamp(15px, 4vw, 22px); font-weight: 800; line-height: 1.35; }
-  .discussion-view__close {
-    flex: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--gold);
-    background: transparent; color: var(--gold); font-size: 18px; font-weight: 800; cursor: pointer;
-  }
-  .discussion-view__content { max-width: 760px; margin: 0 auto; padding: 18px 18px calc(36px + env(safe-area-inset-bottom)); }
+  /* ---- بطاقة سالم (الراوي): شريط وصورته طالعة فوقه، وجملة الافتتاح تحته ---- */
+  .host { --w: var(--page-w); --photo-w: calc(var(--w) * .34); width: var(--w); margin-top: calc(var(--photo-w) / 2 + 34px); }
+  .host-band { position: relative; min-height: max(calc(var(--photo-w) / 2), 64px); display: flex; align-items: center;
+               padding: 10px 18px; padding-inline-end: calc(var(--photo-w) + 10px); border-radius: var(--radius) var(--radius) 0 0; }
+  .host-photo { position: absolute; inset-inline-end: calc(var(--w) * -.02); bottom: 0; width: var(--photo-w); pointer-events: none; }
+  .host-photo img { display: block; width: 100%; height: auto; }
+  .host-band h2 { margin: 0; font-size: clamp(17px, 4.4vw, 28px); font-weight: 800; }
+  .host-band small { display: block; margin-top: 2px; color: var(--gold); font-weight: 700; font-size: clamp(11px, 2.6vw, 15px); }
+  .host-intro { margin: 0; padding: 14px 20px 16px; text-align: center; color: #F2F5FA; border-top: 0; border-radius: 0 0 var(--radius) var(--radius);
+                font-size: clamp(15px, 3.8vw, 20px); font-weight: 700; line-height: 1.9; }
 
-  .text h4 { margin: 18px 0 8px; color: var(--gold); font-size: clamp(14px, 3.4vw, 19px); font-weight: 800; }
-  .text ul, .text ol { margin: 0 0 12px; padding-inline-start: 20px; color: var(--mu-on-band); font-size: clamp(13px, 3.2vw, 18px); line-height: 1.9; }
-  .text li { margin-bottom: 4px; }
-  .text .note { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--glass-line); font-size: clamp(11px, 2.6vw, 14px); opacity: .8; }
+  /* ---- حاوية المحطات الخمس ---- */
+  .stops { width: var(--page-w); margin-top: 22px; padding: 14px; border-radius: 22px; display: flex; flex-direction: column; gap: var(--gap);
+           background: rgba(7, 18, 36, .42); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 
-  /* بطاقة حلقة النقاش: مديرة الجلسة يسار، المشاركين يمين، والعنوان والزر بالنص. */
-  .card--panel {
-    --left-w: calc(var(--w) * .22);
-    --left-h: calc(var(--left-w) * var(--ratio-left, 1));
-    --right-w: calc(var(--w) * .34);
-    --right-h: calc(var(--right-w) * var(--ratio-right, 1));
-    margin-top: calc(max(var(--left-h), var(--right-h)) / 2 + 40px);
-  }
-  .card--panel { margin-bottom: 26px; }
-  .card--panel .band { min-height: max(calc(max(var(--left-h), var(--right-h)) / 2), 84px); }
-  .card--panel .photo--left { inset-inline-end: auto; left: calc(var(--w) * -.02); right: auto; width: var(--left-w); }
-  .card--panel .photo--right { inset-inline-end: auto; right: calc(var(--w) * -.02); left: auto; width: var(--right-w); }
+  /* كلام سالم بين المحطات: مميّز عن كلام المتحدثين -- بدون بطاقة، خط ذهبي
+     جانبي وصورة صغيرة، بلون كريمي. */
+  .bridge { margin: 0; display: flex; align-items: flex-start; gap: 10px; padding: 4px 4px 4px 0; padding-inline-start: 12px;
+            border-inline-start: 2px solid var(--gold); color: #EADFC2; font-size: clamp(14px, 3.4vw, 17px); font-weight: 600; line-height: 1.85; }
+  .bridge img { flex: none; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: 50% 30%;
+                border: 1.5px solid var(--gold); background: #E8EEF8; margin-top: 2px; }
 
-  /* زر الجلسة نازل على حافة الشريط السفلية بالوسط (نصه فوقها ونصه تحتها)
-     -- ما يزاحم الصورتين، وكل صورة تاخذ مساحتها كاملة. */
-  .panel-center { position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); z-index: 3; }
-  .panel-btn {
-    display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 999px; white-space: nowrap;
-    background: linear-gradient(135deg, #F3DB9C, #C99E4C); color: #13233F;
-    border: 1px solid rgba(255, 255, 255, .45);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .5);
-    font-weight: 800; font-size: clamp(13px, 2.8vw, 16px); letter-spacing: .01em;
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .panel-btn .arrow { color: inherit; font-size: .9em; }
-  .card--panel .band:hover .panel-btn { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .5); }
-  .card--panel .band:active .panel-btn { transform: translateY(1px); }
+  /* بطاقة المحطة: صف فوق (صورة + اسم + صفة) وصف تحت (عنوان المحور + زر) */
+  .stop { border-radius: var(--radius); overflow: hidden; }
+  .stop-top { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+  .stop-photo { flex: none; width: 64px; height: 64px; border-radius: 14px; overflow: hidden;
+                background: linear-gradient(160deg, #1D3D6B, #0F2647); border: 1px solid var(--glass-line); }
+  .stop-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; display: block; }
+  .stop-photo--group { width: 118px; }
+  .stop-photo--group img { object-position: 50% 20%; }
+  .stop-who { min-width: 0; }
+  .stop-num { display: block; color: var(--gold); font-weight: 800; font-size: 11px; letter-spacing: .06em; }
+  .stop-who h3 { margin: 1px 0 0; font-size: clamp(16px, 4vw, 19px); font-weight: 800; line-height: 1.3; }
+  .stop-who p { margin: 2px 0 0; color: var(--mu); font-size: clamp(12px, 3vw, 14px); line-height: 1.5; }
+  .stop-bottom { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--glass-line);
+                 background: rgba(255, 255, 255, .03); }
+  .stop-title { flex: 1; margin: 0; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; line-height: 1.6; color: #F2F5FA; }
+  .btn-gold { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+              font: inherit; font-weight: 800; font-size: 13px; color: #13233F; white-space: nowrap;
+              background: linear-gradient(135deg, #F3DB9C, var(--gold-2)); border: 1px solid rgba(255, 255, 255, .45);
+              box-shadow: 0 6px 16px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .5); transition: transform .15s ease; }
+  .btn-gold:active { transform: translateY(1px); }
 
-  /* الجوال: الصورتين أكبر (الوسط فاضي للزر النازل). */
-  @media (max-width: 600px) {
-    .card--panel { --left-w: calc(var(--w) * .32); --right-w: calc(var(--w) * .52); }
-    .card--panel .band { min-height: 64px; }
-    .panel-btn { padding: 8px 18px; font-size: 13px; }
-  }
+  /* ---- الخاتمة ---- */
+  .outro { width: var(--page-w); margin: 22px 0 10px; padding: 18px 20px; border-radius: var(--radius); text-align: center; }
+  .outro img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 2px solid var(--gold); background: #E8EEF8; }
+  .outro p { margin: 8px 0 0; color: var(--gold); font-size: clamp(14px, 3.4vw, 18px); font-weight: 700; line-height: 1.85; }
+  .outro a { display: inline-block; margin-top: 10px; padding: 4px 14px; border-radius: 999px; border: 1px solid var(--gold);
+             color: #FFFFFF; font-weight: 800; font-size: 14px; text-decoration: none; direction: ltr; }
+  html[lang="en"] .host-intro, html[lang="en"] .bridge, html[lang="en"] .outro p { font-weight: 600; }
 
-  .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
+  /* ---- مودال التفاصيل: شاشة كاملة فوق الصفحة ---- */
+  .stop-modal { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: 9999; display: flex; flex-direction: column;
+                overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+                background: linear-gradient(rgba(7, 18, 36, .93), rgba(7, 18, 36, .97)), url("{{ asset('images/demo/hall-bg.jpg') }}") center / cover no-repeat;
+                opacity: 0; transition: opacity .2s ease; }
+  .stop-modal[hidden] { display: none; }
+  .stop-modal.is-visible { opacity: 1; }
+  .stop-modal__header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+                        padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; background: rgba(11, 31, 58, .9);
+                        border-bottom: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .stop-modal__count { color: var(--gold); font-weight: 800; font-size: 13px; letter-spacing: .04em; }
+  .stop-modal__close { flex: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--gold); background: transparent;
+                       color: var(--gold); font-size: 18px; font-weight: 800; cursor: pointer; }
+  .stop-modal__content { flex: 1; width: 100%; max-width: 720px; margin: 0 auto; padding: 20px 18px 28px; }
+  .speaker { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: var(--radius); }
+  .speaker .stop-photo { width: 84px; height: 84px; border-radius: 18px; }
+  .speaker .stop-photo--group { width: 150px; }
+  .speaker h2 { margin: 0; font-size: clamp(18px, 4.6vw, 24px); font-weight: 800; }
+  .speaker p { margin: 3px 0 0; color: var(--mu); font-size: 14px; line-height: 1.6; }
+  .article-title { margin: 22px 0 6px; font-size: clamp(20px, 5.2vw, 28px); font-weight: 800; line-height: 1.45; }
+  .article-sub { margin: 0 0 14px; color: var(--gold); font-weight: 700; font-size: 14px; line-height: 1.6; }
+  .article { color: #E3EAF5; font-size: clamp(15px, 3.8vw, 18px); line-height: 2; }
+  html[lang="en"] .article { line-height: 1.8; }
+  .article p { margin: 0 0 16px; }
+  .article h3 { margin: 6px 0 12px; font-size: clamp(17px, 4.2vw, 21px); font-weight: 800; color: #FFFFFF; line-height: 1.6; }
+  .article h4 { margin: 22px 0 8px; color: var(--gold); font-size: clamp(15px, 3.8vw, 18px); font-weight: 800; }
+  .article ul, .article ol { margin: 0 0 16px; padding-inline-start: 22px; }
+  .article li { margin-bottom: 6px; }
+  .article .note { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--glass-line); font-size: 13px; color: var(--mu); line-height: 1.8; }
+  .stop-modal__nav { position: sticky; bottom: 0; z-index: 10; display: flex; gap: 10px; justify-content: space-between;
+                     padding: 10px 16px calc(env(safe-area-inset-bottom) + 10px); background: rgba(11, 31, 58, .92);
+                     border-top: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .nav-btn { flex: 1; max-width: 340px; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 8px 14px; border-radius: 14px;
+             border: 1px solid var(--glass-line); background: rgba(255, 255, 255, .05); color: #FFFFFF; font: inherit; cursor: pointer; text-align: start; }
+  .nav-btn--next { align-items: flex-end; text-align: end; }
+  .nav-btn small { color: var(--gold); font-weight: 800; font-size: 12px; }
+  .nav-btn span { font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
 </style>
 </head>
 <body>
@@ -319,6 +256,43 @@
         ];
     }
 @endphp
+@php
+    $panelBlocks = json_decode(file_get_contents(resource_path($isEn ? 'views/demo/panel-ai-governance.en.json' : 'views/demo/panel-ai-governance.json')), true);
+
+    // الصفة تحت الاسم في البطاقة والمودال.
+    $roles = $isEn
+        ? ['Oman CERT', 'WiCSME', 'IT Director · SOFPITAL Health Systems', 'Lead Presales Engineer · ESET Middle East']
+        : ['Oman CERT', 'WiCSME', 'مدير تقنية المعلومات · SOFPITAL', 'مهندس ما قبل البيع الرئيسي · ESET الشرق الأوسط'];
+
+    $stops = [];
+    foreach ($cards as $i => $card) {
+        $stops[] = [
+            'lead' => $card['lead'] ?? null,
+            'name' => $card['name'],
+            'role' => $roles[$i] ?? '',
+            'sub' => null,
+            'image' => asset($card['image']),
+            'group' => false,
+            'headline' => $card['headline'],
+            'blocks' => array_map(fn ($x) => ['t' => 'p', 'x' => $x], $card['paragraphs']),
+        ];
+    }
+
+    // المحطة الخامسة: جلسة النقاش. أول كتلتين بالملف (عنوان الجلسة الكامل
+    // والعنوان الرئيسي) يطلعون فوق المقال، فما نكررهم داخله.
+    $stops[] = [
+        'lead' => $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who remains accountable for the decision? That\'s what the closing panel discussed.'),
+        'name' => $t('جلسة نقاش', 'Panel Discussion'),
+        'role' => $t('تأمين مؤسسات الذكاء الاصطناعي', 'Securing the AI Enterprise'),
+        'sub' => $panelBlocks[0]['x'],
+        'image' => asset('images/demo/panel-group.png'),
+        'group' => true,
+        'headline' => $panelBlocks[1]['x'],
+        'blocks' => array_slice($panelBlocks, 2),
+    ];
+
+    $hostAvatar = asset('images/demo/host-salem.png');
+@endphp
 
   <a class="lang-switch" href="{{ $isEn ? url('/demo/card') : url('/en/demo/card') }}" hreflang="{{ $isEn ? 'ar' : 'en' }}">{{ $isEn ? 'العربية' : 'English' }}</a>
 
@@ -328,233 +302,184 @@
     <h1>{{ $t('خمس محطات', 'Five Stops') }}</h1>
   </header>
 
-  <article class="card card--host" style="--ratio: 1">
-    <div class="band">
-      <div class="photo">
-        <img src="{{ asset('images/demo/host-salem.png') }}" alt="{{ $t('سالم الحجري', 'Salem Al Hajri') }}">
-      </div>
-      <div class="title">
-        <div class="title-text">
-          <h2>{{ $t('سالم الحجري', 'Salem Al Hajri') }}</h2>
-          <small>{{ $t('منصة الياسي · من قلب المؤتمر', 'ALYASI · From CyberX Oman 2026') }}</small>
-        </div>
+  <article class="host">
+    <div class="host-band glass">
+      <div class="host-photo"><img src="{{ $hostAvatar }}" alt="{{ $t('سالم الحجري', 'Salem Al Hajri') }}"></div>
+      <div>
+        <h2>{{ $t('سالم الحجري', 'Salem Al Hajri') }}</h2>
+        <small>{{ $t('منصة الياسي · من قلب المؤتمر', 'ALYASI · From CyberX Oman 2026') }}</small>
       </div>
     </div>
-    <p class="host-intro">{{ $t('من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟', 'From CyberX Oman 2026 in Muscat, here are five moments that stood out to me. Let\'s start with the hardest question: what if a breach actually happens?') }}</p>
+    <p class="host-intro glass">{{ $t('من سايبر إكس عُمان 2026 في مسقط، أنقل لكم خمس محطات توقفت عندها. ونبدأ بالسؤال الأصعب: ماذا لو وقع الاختراق فعلًا؟', 'From CyberX Oman 2026 in Muscat, here are five moments that stood out to me. Let\'s start with the hardest question: what if a breach actually happens?') }}</p>
   </article>
 
-  @foreach ($cards as $card)
-    @if (! empty($card['lead']))
-      <div class="lead">
-      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $card['lead'] }}</p></div>
-    </div>
-    @endif
-    <article class="card" style="--ratio: {{ $card['ratio'] }}"
-             data-headline="{{ $card['headline'] }}"
-             data-paragraphs="{{ json_encode($card['paragraphs'], JSON_UNESCAPED_UNICODE) }}">
-      <div class="band" role="button" tabindex="0" aria-expanded="false">
-        <div class="photo">
-          <img src="{{ asset($card['image']) }}" alt="{{ $card['name'] }}">
-        </div>
-        <div class="title">
-          <span class="arrow" aria-hidden="true">⌄</span>
-          <div class="title-text">
-            <h2>{{ $card['name'] }}</h2>
-            <small>{{ $card['subtitle'] ?? $t('سايبر إكس عُمان 2026', 'CyberX Oman 2026') }}</small>
+  <section class="stops" aria-label="{{ $t('المحطات الخمس', 'The five stops') }}">
+    @foreach ($stops as $i => $stop)
+      @if ($stop['lead'])
+        <p class="bridge"><img src="{{ $hostAvatar }}" alt=""><span>{{ $stop['lead'] }}</span></p>
+      @endif
+      <article class="stop glass">
+        <div class="stop-top">
+          <div class="stop-photo {{ $stop['group'] ? 'stop-photo--group' : '' }}"><img src="{{ $stop['image'] }}" alt="{{ $stop['name'] }}" loading="lazy"></div>
+          <div class="stop-who">
+            <span class="stop-num">{{ $t('المحطة', 'STOP') }} {{ $i + 1 }}</span>
+            <h3>{{ $stop['name'] }}</h3>
+            <p>{{ $stop['role'] }}</p>
           </div>
         </div>
-      </div>
-      <div class="body">
+        <div class="stop-bottom">
+          <p class="stop-title">{{ $stop['headline'] }}</p>
+          <button type="button" class="btn-gold" data-stop="{{ $i }}">{{ $t('التفاصيل', 'Details') }} <span aria-hidden="true">{{ $isEn ? '→' : '←' }}</span></button>
+        </div>
+      </article>
+    @endforeach
+  </section>
+
+  <aside class="outro glass">
+    <img src="{{ $hostAvatar }}" alt="">
+    <p>{{ $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.') }}</p>
+    <a href="https://alyasi.dev">alyasi.dev</a>
+  </aside>
+
+  {{-- مودال التفاصيل: شاشة كاملة بنفس هوية الصفحة، رأس ثابت فيه الإغلاق،
+       وتنقّل سابق/تالي بين المحطات بدون الرجوع للصفحة. --}}
+  <div class="stop-modal" id="stopModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <header class="stop-modal__header">
+      <span class="stop-modal__count" id="modalCount"></span>
+      <button type="button" class="stop-modal__close" id="modalClose" aria-label="{{ $t('إغلاق', 'Close') }}">✕</button>
+    </header>
+    <div class="stop-modal__content">
+      <div class="speaker glass">
+        <div class="stop-photo" id="modalPhotoBox"><img id="modalPhoto" src="" alt=""></div>
         <div>
-          <div class="text"></div>
+          <h2 id="modalName"></h2>
+          <p id="modalRole"></p>
         </div>
       </div>
-    </article>
-  @endforeach
-
-  @php
-      $panelBlocks = json_decode(file_get_contents(resource_path($isEn ? 'views/demo/panel-ai-governance.en.json' : 'views/demo/panel-ai-governance.json')), true);
-  @endphp
-  <div class="lead">
-      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('لكن الذكاء الاصطناعي نفسه يحتاج إلى من يضبطه: ما البيانات التي يصل إليها؟ ومن يتحمّل القرار؟ هذا ما ناقشته الحلقة الختامية.', 'But AI itself needs someone to keep it in check: what data can it reach? And who remains accountable for the decision? That\'s what the closing panel discussed.') }}</p></div>
+      <h1 class="article-title" id="modalTitle"></h1>
+      <p class="article-sub" id="modalSub" hidden></p>
+      <div class="article" id="modalArticle"></div>
     </div>
-  <article class="card card--panel" style="--ratio-left: 1; --ratio-right: {{ 506 / 900 }}"
-           data-blocks="{{ json_encode($panelBlocks, JSON_UNESCAPED_UNICODE) }}">
-    <div class="band" role="button" tabindex="0" aria-expanded="false">
-      <div class="photo photo--left">
-        <img src="{{ asset('images/demo/panel-ramya.png') }}" alt="{{ $t('راميا سانكاري كارثيك — مديرة الجلسة', 'Ramya Sankari Karthick — moderator') }}">
-      </div>
-      <div class="panel-center">
-        <span class="panel-btn">{{ $t('جلسة نقاش', 'Panel Discussion') }} <span class="arrow" aria-hidden="true">⌄</span></span>
-      </div>
-      <div class="photo photo--right">
-        <img src="{{ asset('images/demo/panel-group.png') }}" alt="{{ $t('المشاركون في حلقة النقاش', 'Panelists') }}">
-      </div>
-    </div>
-  </article>
-
-  {{-- جلسة النقاش تنفتح شاشة كاملة فوق "خمس محطات" بدل ما تتمدد داخل
-       الصفحة: النص طويل، وزر الإغلاق لازم يبقى ظاهر مهما نزل القارئ. --}}
-  <div class="discussion-view" id="discussionView" role="dialog" aria-modal="true" aria-labelledby="discussionTitle" hidden>
-    <header class="discussion-view__header">
-      <img class="discussion-view__thumb" src="{{ asset('images/demo/panel-group.png') }}" alt="">
-      <div class="discussion-view__titles">
-        <small>{{ $t('جلسة نقاش · CyberX Oman 2026', 'Panel discussion · CyberX Oman 2026') }}</small>
-        <h2 id="discussionTitle">{{ $t('تأمين مؤسسات الذكاء الاصطناعي', 'Securing the AI Enterprise') }}</h2>
-      </div>
-      <button type="button" class="discussion-view__close" aria-label="{{ $t('إغلاق الجلسة', 'Close session') }}">✕</button>
-    </header>
-    <div class="discussion-view__content">
-      <div class="text"></div>
-    </div>
+    <nav class="stop-modal__nav" aria-label="{{ $t('التنقل بين المحطات', 'Stop navigation') }}">
+      <button type="button" class="nav-btn" id="modalPrev"><small>{{ $isEn ? '←' : '→' }} {{ $t('السابق', 'Previous') }}</small><span></span></button>
+      <button type="button" class="nav-btn nav-btn--next" id="modalNext"><small>{{ $t('التالي', 'Next') }} {{ $isEn ? '→' : '←' }}</small><span></span></button>
+    </nav>
   </div>
 
-  <div class="lead lead--outro">
-      <div class="lead-avatar"><img src="{{ asset('images/demo/host-salem.png') }}" alt=""></div>
-      <div class="lead-body"><span class="lead-name">{{ $t('سالم الحجري', 'Salem Al Hajri') }}</span><p class="lead-text">{{ $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات من سايبر إكس عُمان 2026. اقرأ التغطية الكاملة والتفاصيل على', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.') }}<br><a class="lead-link" href="https://alyasi.dev">alyasi.dev</a></p></div>
-    </div>
-
+  <script type="application/json" id="stopsData">@json($stops, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>
   <script>
-    // كتابة الكتل (عناوين، فقرات، قوائم) حرف حرف داخل عنصر معيّن. أي
-    // بدء/إيقاف جديد يلغي الكتابة الجارية لنفس الكاتب.
-    function createTyper(blocks) {
-      // النص الطويل (جلسة النقاش) يُكتب بخطوات أكبر عشان يخلص بحوالي 10 ثواني.
-      const totalChars = blocks.reduce((n, b) => n + [...b.x].length, 0);
-      const step = Math.max(2, Math.ceil(totalChars / 650));
-      let run = 0;
+    const stops = JSON.parse(document.getElementById('stopsData').textContent);
+    const LABEL = @json(['stop' => $t('المحطة', 'Stop'), 'of' => $t('من', 'of')]);
 
-      async function typeInto(el, text, myRun) {
-        el.classList.add('typing');
-        const chars = [...text];
-        for (let i = 0; i < chars.length; i += step) {
-          if (myRun !== run) return false;
-          el.textContent += chars.slice(i, i + step).join('');
-          await new Promise((r) => setTimeout(r, 16));
-        }
-        el.classList.remove('typing');
-        return true;
-      }
+    const modal = document.getElementById('stopModal');
+    const el = (id) => document.getElementById(id);
+    let current = -1;
+    let savedY = 0;
+    let isOpen = false;
+    let opener = null;
 
-      return {
-        async start(target) {
-          const myRun = ++run;
-          target.innerHTML = '';
-          let list = null;
-
-          for (const block of blocks) {
-            let el;
-            if (block.t === 'li' || block.t === 'oli') {
-              const tag = block.t === 'li' ? 'UL' : 'OL';
-              if (!list || list.tagName !== tag) {
-                list = document.createElement(tag);
-                target.appendChild(list);
-              }
-              el = document.createElement('li');
-              list.appendChild(el);
-            } else {
-              list = null;
-              el = document.createElement(block.t === 'note' ? 'p' : block.t);
-              if (block.t === 'note') el.className = 'note';
-              target.appendChild(el);
-            }
-            if (!await typeInto(el, block.x, myRun)) return;
+    function renderArticle(blocks) {
+      const article = el('modalArticle');
+      article.innerHTML = '';
+      let list = null;
+      for (const block of blocks) {
+        if (block.t === 'li' || block.t === 'oli') {
+          const tag = block.t === 'li' ? 'UL' : 'OL';
+          if (!list || list.tagName !== tag) {
+            list = document.createElement(tag);
+            article.appendChild(list);
           }
-        },
-        stop() { run++; },
-      };
-    }
-
-    function blocksOf(card) {
-      return card.dataset.blocks
-        ? JSON.parse(card.dataset.blocks)
-        : [{ t: 'h3', x: card.dataset.headline }, ...JSON.parse(card.dataset.paragraphs).map((x) => ({ t: 'p', x }))];
-    }
-
-    function onActivate(el, handler) {
-      el.addEventListener('click', handler);
-      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
-    }
-
-    // بطاقات الضيوف: تتمدد داخل الصفحة.
-    function setupCard(card) {
-      const band = card.querySelector('.band');
-      const textEl = card.querySelector('.text');
-      const typer = createTyper(blocksOf(card));
-
-      onActivate(band, () => {
-        const open = card.classList.toggle('is-open');
-        band.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) typer.start(textEl); else typer.stop();
-      });
-    }
-
-    // جلسة النقاش: شاشة كاملة فوق الصفحة. الصفحة اللي ورا تنقفل (ما
-    // تتحرك)، والتمرير داخل الشاشة بس، والإغلاق يرجّع القارئ لنفس مكانه.
-    function setupDiscussion(card) {
-      const view = document.getElementById('discussionView');
-      const viewText = view.querySelector('.text');
-      const closeBtn = view.querySelector('.discussion-view__close');
-      const band = card.querySelector('.band');
-      const typer = createTyper(blocksOf(card));
-      let savedY = 0;
-      let isOpen = false;
-
-      function lockPage() {
-        savedY = window.scrollY;
-        Object.assign(document.body.style, { position: 'fixed', top: `-${savedY}px`, left: '0', right: '0', width: '100%' });
-      }
-
-      function unlockPage() {
-        Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
-        window.scrollTo(0, savedY);
-        // احتياط: لو المتصفح حرّك الصفحة بعد الرجوع بالتاريخ.
-        requestAnimationFrame(() => window.scrollTo(0, savedY));
-      }
-
-      function open() {
-        if (isOpen) return;
-        isOpen = true;
-        lockPage();
-        view.hidden = false;
-        view.scrollTop = 0;
-        requestAnimationFrame(() => view.classList.add('is-visible'));
-        band.setAttribute('aria-expanded', 'true');
-        typer.start(viewText);
-        // زر الرجوع / سحبة الرجوع بالجوال تقفل الجلسة بدل ما تطلع من الصفحة.
-        history.pushState({ discussion: true }, '');
-        closeBtn.focus({ preventScroll: true });
-      }
-
-      function close(fromHistory = false) {
-        if (!isOpen) return;
-        // زر الإغلاق/Esc يرجع خطوة بالتاريخ، والإغلاق الفعلي يصير مرة وحدة
-        // من popstate -- عشان المتصفح ما يرجّع الصفحة لأعلاها بعدنا.
-        if (!fromHistory && history.state && history.state.discussion) {
-          history.back();
-          return;
+          const li = document.createElement('li');
+          li.textContent = block.x;
+          list.appendChild(li);
+          continue;
         }
-        isOpen = false;
-        typer.stop();
-        view.classList.remove('is-visible');
-        view.hidden = true;
-        band.setAttribute('aria-expanded', 'false');
-        unlockPage();
-        band.focus({ preventScroll: true });
+        list = null;
+        const node = document.createElement(block.t === 'note' ? 'p' : block.t);
+        if (block.t === 'note') node.className = 'note';
+        node.textContent = block.x;
+        article.appendChild(node);
       }
-
-      onActivate(band, open);
-      closeBtn.addEventListener('click', () => close());
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-      window.addEventListener('popstate', () => close(true));
     }
 
-    // نتحكم نحن بمكان التمرير عند فتح/إغلاق الجلسة، مو المتصفح.
+    function render(index) {
+      current = index;
+      const stop = stops[index];
+      el('modalCount').textContent = `${LABEL.stop} ${index + 1} ${LABEL.of} ${stops.length}`;
+      el('modalPhotoBox').classList.toggle('stop-photo--group', stop.group);
+      el('modalPhoto').src = stop.image;
+      el('modalPhoto').alt = stop.name;
+      el('modalName').textContent = stop.name;
+      el('modalRole').textContent = stop.role;
+      el('modalTitle').textContent = stop.headline;
+      el('modalSub').hidden = !stop.sub;
+      el('modalSub').textContent = stop.sub || '';
+      renderArticle(stop.blocks);
+
+      const prev = stops[index - 1];
+      const next = stops[index + 1];
+      el('modalPrev').disabled = !prev;
+      el('modalNext').disabled = !next;
+      el('modalPrev').querySelector('span').textContent = prev ? prev.name : '';
+      el('modalNext').querySelector('span').textContent = next ? next.name : '';
+      modal.scrollTop = 0;
+    }
+
+    function lockPage() {
+      savedY = window.scrollY;
+      Object.assign(document.body.style, { position: 'fixed', top: `-${savedY}px`, left: '0', right: '0', width: '100%' });
+    }
+
+    function unlockPage() {
+      Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
+      window.scrollTo(0, savedY);
+      requestAnimationFrame(() => window.scrollTo(0, savedY));
+    }
+
+    function open(index, trigger) {
+      if (isOpen) { render(index); return; }
+      isOpen = true;
+      opener = trigger || null;
+      lockPage();
+      render(index);
+      modal.hidden = false;
+      requestAnimationFrame(() => modal.classList.add('is-visible'));
+      // زر الرجوع / سحبة الرجوع بالجوال تقفل المودال بدل ما تطلع من الصفحة.
+      history.pushState({ stopModal: true }, '');
+      el('modalClose').focus({ preventScroll: true });
+    }
+
+    function close(fromHistory = false) {
+      if (!isOpen) return;
+      // الإغلاق الفعلي يصير مرة وحدة من popstate عشان المتصفح ما يحرّك الصفحة بعدنا.
+      if (!fromHistory && history.state && history.state.stopModal) {
+        history.back();
+        return;
+      }
+      isOpen = false;
+      modal.classList.remove('is-visible');
+      modal.hidden = true;
+      unlockPage();
+      if (opener) opener.focus({ preventScroll: true });
+    }
+
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-    document.querySelectorAll('.card:not(.card--host):not(.card--panel)').forEach(setupCard);
-    document.querySelectorAll('.card--panel').forEach(setupDiscussion);
+    document.querySelectorAll('[data-stop]').forEach((btn) => {
+      btn.addEventListener('click', () => open(Number(btn.dataset.stop), btn));
+    });
+    el('modalClose').addEventListener('click', () => close());
+    el('modalPrev').addEventListener('click', () => current > 0 && render(current - 1));
+    el('modalNext').addEventListener('click', () => current < stops.length - 1 && render(current + 1));
+    window.addEventListener('popstate', () => close(true));
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+      if (e.key === 'Escape') close();
+      // الأسهم تتبع اتجاه الصفحة: بالعربي اليسار = التالي.
+      const rtl = document.documentElement.dir === 'rtl';
+      if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight') && current < stops.length - 1) render(current + 1);
+      if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft') && current > 0) render(current - 1);
+    });
   </script>
 </body>
 </html>
