@@ -135,6 +135,67 @@
         if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft') && current > 0) render(current - 1);
     });
 
+    // معرض صور الشكر: عرض الصورة بشاشة كاملة مع تنقّل بالأسهم والسحب.
+    var lightbox = $('coverageLightbox');
+    var photos = data.photos || [];
+    var photoIndex = 0;
+    var photoOpener = null;
+
+    function showPhoto(index) {
+        photoIndex = (index + photos.length) % photos.length;
+        $('coverageLightboxImg').src = photos[photoIndex];
+        $('coverageLightboxCount').textContent = photos.length > 1 ? (photoIndex + 1) + ' ' + labels.of + ' ' + photos.length : '';
+        $('coverageLightboxPrev').hidden = photos.length < 2;
+        $('coverageLightboxNext').hidden = photos.length < 2;
+    }
+
+    function closePhoto() {
+        if (lightbox.hidden) return;
+        lightbox.hidden = true;
+        unlockPage();
+        if (photoOpener) photoOpener.focus({ preventScroll: true });
+    }
+
+    if (lightbox && photos.length) {
+        document.body.appendChild(lightbox);
+
+        document.querySelectorAll('[data-photo]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                photoOpener = btn;
+                lockPage();
+                showPhoto(Number(btn.dataset.photo));
+                lightbox.hidden = false;
+                $('coverageLightboxClose').focus({ preventScroll: true });
+            });
+        });
+
+        $('coverageLightboxClose').addEventListener('click', closePhoto);
+        $('coverageLightboxPrev').addEventListener('click', function () { showPhoto(photoIndex - 1); });
+        $('coverageLightboxNext').addEventListener('click', function () { showPhoto(photoIndex + 1); });
+        // الضغط على الخلفية (خارج الصورة والأزرار) يقفل العارض.
+        lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closePhoto(); });
+
+        document.addEventListener('keydown', function (e) {
+            if (lightbox.hidden) return;
+            var rtl = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl';
+            if (e.key === 'Escape') closePhoto();
+            if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) showPhoto(photoIndex + 1);
+            if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) showPhoto(photoIndex - 1);
+        });
+
+        var touchX = null;
+        lightbox.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+        lightbox.addEventListener('touchend', function (e) {
+            if (touchX === null || photos.length < 2) return;
+            var dx = e.changedTouches[0].clientX - touchX;
+            touchX = null;
+            if (Math.abs(dx) < 50) return;
+            var rtl = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl';
+            // بالعربي السحب لليمين = التالية، وبالإنجليزي السحب لليسار.
+            showPhoto(photoIndex + ((dx > 0) === rtl ? 1 : -1));
+        });
+    }
+
     // مشاركة التغطية: مشاركة الجوال الأصلية، وإلا نسخ الرابط.
     var share = $('coverageShare');
     if (share) {

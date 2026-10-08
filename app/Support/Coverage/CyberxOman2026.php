@@ -175,7 +175,10 @@ class CyberxOman2026
             'thanks' => [
                 'title' => $t('شكر وتقدير', 'With gratitude'),
                 'teaser' => $t('ترقّبوا قريبًا لقاءات صحفية مع الضيوف', 'Coming soon: press interviews with the guests'),
-                'image' => asset('images/cyberx-2026/thanks-group.jpg'),
+                // معرض صور الشكر (حتى 4 صور) -- التصميم يتكيّف مع عددها.
+                'photos' => [
+                    ['src' => asset('images/cyberx-2026/thanks-1.jpg'), 'width' => 1086, 'height' => 1448],
+                ],
                 'text' => $t(
                     'كل الشكر والتقدير للدكتور هيثم الحجري، والأستاذ علي اللواتي، والأستاذ خالد العمراني، والأستاذ يحيى العزري، على تخصيص جزء من وقتهم لي، وحسن استقبالهم ومشاركتهم القيّمة التي أثرت تجربتي في تغطية مؤتمر سايبر إكس عُمان 2026.',
                     'Heartfelt thanks to Dr. Haitham Al Hajri, Mr. Ali Al-Lawati, Mr. Khalid Al Amrani and Mr. Yahya Al-Azri for giving me some of their time, for their warm welcome, and for their valuable contributions that enriched my experience covering CyberX Oman 2026.'

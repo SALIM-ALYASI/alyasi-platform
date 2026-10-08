@@ -14,6 +14,7 @@
     );
     $jsData = [
         'stops' => $stops,
+        'photos' => array_column($coverage['thanks']['photos'], 'src'),
         'labels' => ['of' => $t('من', 'of'), 'ordinals' => $ordinals],
     ];
 @endphp
@@ -109,9 +110,16 @@
         {{-- شكر وتقدير لمن خصصوا وقتهم للمقابلات --}}
         <section class="coverage-thanks" data-reveal>
             <p class="coverage-thanks__teaser"><span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }}</p>
-            <figure class="coverage-thanks__photo">
-                <img src="{{ $coverage['thanks']['image'] }}" alt="{{ $coverage['thanks']['title'] }}" width="1496" height="1051" loading="lazy">
-            </figure>
+            @php($photos = $coverage['thanks']['photos'])
+            <div class="coverage-gallery" data-count="{{ count($photos) }}">
+                @foreach ($photos as $i => $photo)
+                    <button type="button" class="coverage-gallery__item" data-photo="{{ $i }}"
+                            aria-label="{{ $t('عرض الصورة', 'View photo') }} {{ $i + 1 }}">
+                        <img src="{{ $photo['src'] }}" alt="{{ $coverage['thanks']['title'] }}"
+                             width="{{ $photo['width'] }}" height="{{ $photo['height'] }}" loading="lazy">
+                    </button>
+                @endforeach
+            </div>
             <div class="coverage-thanks__body">
                 <h2 class="coverage-thanks__title">{{ $coverage['thanks']['title'] }}</h2>
                 <p class="coverage-thanks__text">{{ $coverage['thanks']['text'] }}</p>
@@ -155,6 +163,15 @@
                 <small>{{ $t('التالي', 'Next') }} {{ $isEn ? '→' : '←' }}</small><span></span>
             </button>
         </nav>
+    </div>
+
+    {{-- عارض صور المعرض بشاشة كاملة --}}
+    <div class="coverage-lightbox" id="coverageLightbox" role="dialog" aria-modal="true" aria-label="{{ $t('معرض الصور', 'Photo gallery') }}" hidden>
+        <button type="button" class="coverage-lightbox__close" id="coverageLightboxClose" aria-label="{{ $t('إغلاق', 'Close') }}">✕</button>
+        <button type="button" class="coverage-lightbox__nav coverage-lightbox__nav--prev" id="coverageLightboxPrev" aria-label="{{ $t('السابقة', 'Previous') }}">{{ $isEn ? '‹' : '›' }}</button>
+        <img id="coverageLightboxImg" src="" alt="">
+        <button type="button" class="coverage-lightbox__nav coverage-lightbox__nav--next" id="coverageLightboxNext" aria-label="{{ $t('التالية', 'Next') }}">{{ $isEn ? '›' : '‹' }}</button>
+        <span class="coverage-lightbox__count" id="coverageLightboxCount"></span>
     </div>
 
     <script type="application/json" id="coverageData">@json($jsData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>
