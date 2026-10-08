@@ -171,28 +171,31 @@
     --right-h: calc(var(--right-w) * var(--ratio-right, 1));
     margin-top: calc(max(var(--left-h), var(--right-h)) / 2 + 40px);
   }
-  .card--panel .band {
-    min-height: max(calc(max(var(--left-h), var(--right-h)) / 2), 96px);
-    padding-left: calc(var(--left-w) + 6px);
-    padding-right: calc(var(--right-w) + 6px);
-    justify-content: center;
-  }
+  .card--panel { margin-bottom: 26px; }
+  .card--panel .band { min-height: max(calc(max(var(--left-h), var(--right-h)) / 2), 84px); }
   .card--panel .photo--left { inset-inline-end: auto; left: calc(var(--w) * -.02); right: auto; width: var(--left-w); }
   .card--panel .photo--right { inset-inline-end: auto; right: calc(var(--w) * -.02); left: auto; width: var(--right-w); }
-  .panel-center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding-block: 6px; min-width: 0; }
-  .panel-center small { color: var(--gold); font-weight: 700; font-size: clamp(9px, 2vw, 14px); }
-  .panel-center h2 { margin: 0; color: var(--tx-on-band); font-size: clamp(15px, 4vw, 30px); font-weight: 800; line-height: 1.2; }
-  .panel-center .topic { color: var(--mu-on-band); font-size: clamp(10px, 2.3vw, 16px); font-weight: 700; line-height: 1.4; }
-  .panel-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
-               background: var(--gold); color: #13233F; font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); white-space: nowrap; }
-  .panel-btn .arrow { color: inherit; font-size: 1em; }
 
-  /* الجوال: الوسط ضيق -- "حلقة نقاش" والزر بس، والصور أكبر عشان تطلع فوق
-     الشريط مثل باقي البطاقات (عنوان الجلسة الكامل موجود أول الملخص). */
+  /* زر الجلسة نازل على حافة الشريط السفلية بالوسط (نصه فوقها ونصه تحتها)
+     -- ما يزاحم الصورتين، وكل صورة تاخذ مساحتها كاملة. */
+  .panel-center { position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); z-index: 3; }
+  .panel-btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 999px; white-space: nowrap;
+    background: linear-gradient(135deg, #F3DB9C, #C99E4C); color: #13233F;
+    border: 1px solid rgba(255, 255, 255, .45);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .5);
+    font-weight: 800; font-size: clamp(13px, 2.8vw, 16px); letter-spacing: .01em;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .panel-btn .arrow { color: inherit; font-size: .9em; }
+  .card--panel .band:hover .panel-btn { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .5); }
+  .card--panel .band:active .panel-btn { transform: translateY(1px); }
+
+  /* الجوال: الصورتين أكبر (الوسط فاضي للزر النازل). */
   @media (max-width: 600px) {
-    .card--panel { --left-w: calc(var(--w) * .28); --right-w: calc(var(--w) * .42); }
-    .card--panel .band { min-height: 60px; padding-block: 8px; }
-    .panel-btn { padding: 7px 12px; font-size: 13px; }
+    .card--panel { --left-w: calc(var(--w) * .32); --right-w: calc(var(--w) * .52); }
+    .card--panel .band { min-height: 64px; }
+    .panel-btn { padding: 8px 18px; font-size: 13px; }
   }
 
   .text h3 { margin: 0 0 12px; color: var(--tx-on-band); font-size: clamp(15px, 3.8vw, 22px); font-weight: 800; line-height: 1.6; }
