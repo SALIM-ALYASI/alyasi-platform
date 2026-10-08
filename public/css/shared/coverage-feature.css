@@ -1,0 +1,70 @@
+/* بطاقة تغطية «خمس محطات» بالرئيسية وصفحة الفعاليات */
+.coverage-feature { margin-block: 28px; }
+
+.coverage-feature__card {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) 1fr;
+    overflow: hidden;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-lg);
+    background: var(--theme-card);
+    color: var(--color-text);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.coverage-feature__card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-500);
+    box-shadow: var(--shadow-md);
+}
+
+.coverage-feature__media { position: relative; min-height: 180px; }
+
+.coverage-feature__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 35%;
+}
+
+.coverage-feature__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 24px;
+}
+
+.coverage-feature__badge {
+    align-self: flex-start;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.coverage-feature__title {
+    font-family: var(--font-heading);
+    font-size: clamp(19px, 2.4vw, 24px);
+    line-height: 1.35;
+}
+
+.coverage-feature__desc { color: var(--theme-muted); font-size: 14px; line-height: 1.8; }
+
+.coverage-feature__cta { margin-top: auto; color: var(--color-accent-500); font-weight: 700; font-size: 14px; }
+
+:root[data-theme="dark"] .coverage-feature__badge {
+    background: color-mix(in srgb, var(--color-accent-500) 18%, transparent);
+    color: var(--color-accent-300);
+}
+
+@media (max-width: 640px) {
+    .coverage-feature__card { grid-template-columns: 1fr; }
+    .coverage-feature__media { min-height: 150px; }
+    .coverage-feature__body { padding: 18px; }
+}

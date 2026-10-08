@@ -34,6 +34,7 @@ class GenerateSitemap extends Command
         'articles.index',
         'community.index',
         'social-links.index',
+        'event_coverage.cyberx_oman_2026',
         'privacy',
         'terms',
     ];

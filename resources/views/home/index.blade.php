@@ -36,6 +36,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/home.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/coverage-feature.css') }}">
 @endpush
 
 @section('content')
@@ -103,6 +104,8 @@
             </div>
         </section>
     @endif
+
+    @include('events.coverage._feature')
 
     {{-- PILLARS --}}
     <section class="home-pillars">

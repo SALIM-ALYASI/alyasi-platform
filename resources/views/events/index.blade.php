@@ -11,6 +11,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/community-index.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/coverage-feature.css') }}">
 @endpush
 
 @section('content')
@@ -23,6 +24,8 @@
         :image-width="1672"
         :image-height="941"
     />
+
+    @include('events.coverage._feature')
 
     <section class="container community-section">
         @if ($events->isNotEmpty())
