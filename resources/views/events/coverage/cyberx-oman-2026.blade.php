@@ -105,6 +105,18 @@
                 </button>
             </div>
         </section>
+
+        {{-- شكر وتقدير لمن خصصوا وقتهم للمقابلات --}}
+        <section class="coverage-thanks" data-reveal>
+            <figure class="coverage-thanks__photo">
+                <img src="{{ $coverage['thanks']['image'] }}" alt="{{ $coverage['thanks']['title'] }}" width="1496" height="1051" loading="lazy">
+            </figure>
+            <div class="coverage-thanks__body">
+                <h2 class="coverage-thanks__title">{{ $coverage['thanks']['title'] }}</h2>
+                <p class="coverage-thanks__text">{{ $coverage['thanks']['text'] }}</p>
+                <span class="coverage-thanks__sign">— {{ $host['name'] }}</span>
+            </div>
+        </section>
     </div>
 
     {{-- مودال التفاصيل: شاشة كاملة بهوية المنصة، رأس ثابت فيه الإغلاق،

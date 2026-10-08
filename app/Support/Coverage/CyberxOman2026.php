@@ -172,6 +172,14 @@ class CyberxOman2026
             'stops' => $stops,
             'outro' => $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات توقفت عندها في سايبر إكس عُمان 2026.', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.'),
             'hall' => asset('images/events/cyberx-2026/hall.jpg'),
+            'thanks' => [
+                'title' => $t('شكر وتقدير', 'With gratitude'),
+                'image' => asset('images/cyberx-2026/thanks-group.jpg'),
+                'text' => $t(
+                    'كل الشكر والتقدير للدكتور هيثم الحجري، والأستاذ علي اللواتي، والأستاذ خالد العمراني، والأستاذ يحيى العزري، على تخصيص جزء من وقتهم لي، وحسن استقبالهم ومشاركتهم القيّمة التي أثرت تجربتي في تغطية مؤتمر سايبر إكس عُمان 2026.',
+                    'Heartfelt thanks to Dr. Haitham Al Hajri, Mr. Ali Al-Lawati, Mr. Khalid Al Amrani and Mr. Yahya Al-Azri for giving me some of their time, for their warm welcome, and for their valuable contributions that enriched my experience covering CyberX Oman 2026.'
+                ),
+            ],
         ];
     }
 }
