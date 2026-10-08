@@ -30,6 +30,7 @@
 @section('og_image', $coverage['hall'])
 
 @push('styles')
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/event-coverage.css') }}">
 @endpush
 
