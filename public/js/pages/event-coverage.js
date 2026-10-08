@@ -278,6 +278,21 @@
         new MutationObserver(schedule).observe(lightbox, { attributes: true, attributeFilter: ['hidden'] });
     }
 
+    // فيديو الملخص: نحمّل مشغّل يوتيوب فقط لما يضغط القارئ تشغيل.
+    var video = $('coverageVideo');
+    if (video) {
+        video.querySelector('.coverage-video__poster').addEventListener('click', function () {
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(video.dataset.videoId) + '?autoplay=1&rel=0&playsinline=1';
+            iframe.title = video.dataset.videoTitle;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            video.innerHTML = '';
+            video.appendChild(iframe);
+        });
+    }
+
     // مشاركة التغطية: مشاركة الجوال الأصلية، وإلا نسخ الرابط.
     var share = $('coverageShare');
     if (share) {

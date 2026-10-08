@@ -172,6 +172,13 @@ class CyberxOman2026
             'stops' => $stops,
             'outro' => $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات توقفت عندها في سايبر إكس عُمان 2026.', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.'),
             'hall' => asset('images/events/cyberx-2026/hall.jpg'),
+            // فيديو ملخص التغطية على قناة اليوتيوب.
+            'video' => [
+                'id' => 'ATZqGX2DJR4',
+                'label' => $t('ملخص التغطية بالفيديو', 'Video summary'),
+                'title' => $t('ماذا يحدث عندما يقع الاختراق؟', 'What happens when a breach occurs?'),
+                'url' => 'https://youtu.be/ATZqGX2DJR4',
+            ],
             'thanks' => [
                 'title' => $t('شكر وتقدير', 'With gratitude'),
                 'teaser' => $t('ترقّبوا قريبًا لقاءات صحفية مع الضيوف', 'Coming soon: press interviews with the guests'),
