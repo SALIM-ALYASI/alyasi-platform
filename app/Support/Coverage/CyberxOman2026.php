@@ -180,6 +180,7 @@ class CyberxOman2026
                     ['src' => asset('images/cyberx-2026/thanks-1.jpg'), 'width' => 1086, 'height' => 1448],
                     ['src' => asset('images/cyberx-2026/thanks-2.jpg'), 'width' => 1086, 'height' => 1448],
                     ['src' => asset('images/cyberx-2026/thanks-3.jpg'), 'width' => 1086, 'height' => 1448],
+                    ['src' => asset('images/cyberx-2026/thanks-4.jpg'), 'width' => 1086, 'height' => 1448],
                 ],
                 'text' => $t(
                     'كل الشكر والتقدير للدكتور هيثم الحجري، والأستاذ علي اللواتي، والأستاذ خالد العمراني، والأستاذ يحيى العزري، على تخصيص جزء من وقتهم لي، وحسن استقبالهم ومشاركتهم القيّمة التي أثرت تجربتي في تغطية مؤتمر سايبر إكس عُمان 2026.',
