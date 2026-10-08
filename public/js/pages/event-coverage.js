@@ -7,6 +7,10 @@
     var modal = document.getElementById('coverageModal');
     if (!dataEl || !modal) return;
 
+    // <main> بالمنصة عليه transform (انتقال الصفحات)، وهذا يخلي position: fixed
+    // نسبة له بدل الشاشة -- فننقل المودال لـ body عشان يغطي الشاشة فعلًا.
+    document.body.appendChild(modal);
+
     var data = JSON.parse(dataEl.textContent);
     var stops = data.stops;
     var labels = data.labels;
