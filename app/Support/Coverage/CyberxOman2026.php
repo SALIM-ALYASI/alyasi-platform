@@ -130,8 +130,8 @@ class CyberxOman2026
         }
 
         $roles = $isEn
-            ? ['Oman CERT', 'WiCSME', 'IT Director · SOFPITAL Health Systems', 'Lead Presales Engineer · ESET Middle East']
-            : ['Oman CERT', 'WiCSME', 'مدير تقنية المعلومات · SOFPITAL', 'مهندس ما قبل البيع الرئيسي · ESET الشرق الأوسط'];
+            ? ['Oman CERT', 'Cybersecurity Executive, Speakers Lead · Women in Cybersecurity Middle East (WiCSME)', 'IT Director · SOFPITAL Health Systems', 'Lead Presales Engineer · ESET Middle East']
+            : ['Oman CERT', 'قيادية في الأمن السيبراني، مسؤولة المتحدثين · النساء في الأمن السيبراني بالشرق الأوسط (WiCSME)', 'مدير تقنية المعلومات · SOFPITAL', 'مهندس ما قبل البيع الرئيسي · ESET الشرق الأوسط'];
 
         $stops = [];
         foreach ($cards as $i => $card) {
