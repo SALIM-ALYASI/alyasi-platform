@@ -22,7 +22,7 @@ class CyberxOman2026
                 'ratio' => 445 / 465,
                 'headline' => 'الثقة الرقمية تبدأ بالاستعداد للاختراق والقدرة على التعافي',
                 'paragraphs' => [
-                    'أكد يحيى العزري، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.',
+                    'أكد يحيى العزري، خبير تقنية المعلومات والأمن السيبراني في المركز الوطني للسلامة المعلوماتية (Oman CERT)، خلال جلسة «الثقة الرقمية والمرونة السيبرانية» في مؤتمر سايبر إكس عُمان 2026، أن حماية المؤسسات تتطلب الاستعداد للاختراق والقدرة على مواصلة العمل والتعافي منه. واستعرض أمثلة لهجمات طالت قطاعات الصحة والطيران والطاقة والمياه، موضحًا أن تعطل مورد أو شريك تقني قد يؤثر في منظومة كاملة، ولذلك يجب أن تشمل خطط التعافي الموردين والأنظمة المرتبطة بالمؤسسة.',
                     'وأوضح أن الذكاء الاصطناعي يزيد تعقيد التهديدات، من خلال تسريع تطوير البرمجيات الخبيثة، وتغيير خصائصها لتفادي الكشف، واستنساخ الأصوات وتزييف الفيديو، بما يصعّب التحقق من الهوية والمحتوى.',
                     'وطرح إطارًا دفاعيًا يقوم على افتراض وقوع الاختراق، وتطبيق دفاع متعدد الطبقات والثقة الصفرية، مع إبقاء الإنسان ضمن حلقة اتخاذ القرار. ويشمل ذلك كشف التزييف العميق، وتطوير أنظمة ذكاء اصطناعي آمنة، وأتمتة الاستجابة للحوادث.',
                     'وشدد على دور الإدارة العليا في بناء المرونة السيبرانية، وتأهيل الكوادر، وتعزيز الشراكات، وحوكمة استخدام الذكاء الاصطناعي، ونشر الوعي الأمني. كما أشار إلى أهمية التكامل مع الهوية الرقمية الوطنية في عُمان لتعزيز الثقة بالخدمات الرقمية.',
@@ -79,7 +79,7 @@ class CyberxOman2026
                     'ratio' => 445 / 465,
                     'headline' => 'Digital trust starts with being ready for a breach and able to recover',
                     'paragraphs' => [
-                        'Speaking at the «Digital Trust and Cyber Resilience» session at CyberX Oman 2026, Yahya Al-Azri stressed that protecting organizations requires being prepared for a breach and able to keep operating and recover from it. He reviewed attacks that hit the healthcare, aviation, energy and water sectors, explaining that the failure of a single supplier or technology partner can affect an entire ecosystem — which is why recovery plans must cover suppliers and every system connected to the organization.',
+                        'Speaking at the «Digital Trust and Cyber Resilience» session at CyberX Oman 2026, Yahya Al-Azri, ICT and Cybersecurity Expert at Oman CERT (MTCIT), stressed that protecting organizations requires being prepared for a breach and able to keep operating and recover from it. He reviewed attacks that hit the healthcare, aviation, energy and water sectors, explaining that the failure of a single supplier or technology partner can affect an entire ecosystem — which is why recovery plans must cover suppliers and every system connected to the organization.',
                         'He explained that AI is making threats more complex: speeding up malware development, changing its characteristics to evade detection, and cloning voices and faking video, which makes verifying identity and content harder.',
                         'He proposed a defensive framework built on assuming breach, layered defense and zero trust, while keeping humans in the decision-making loop. This includes detecting deepfakes, building secure AI systems, and automating incident response.',
                         'He emphasized the role of senior leadership in building cyber resilience, developing talent, strengthening partnerships, governing the use of AI and spreading security awareness. He also pointed to the importance of integrating with Oman\'s national digital identity to strengthen trust in digital services.',
@@ -130,8 +130,8 @@ class CyberxOman2026
         }
 
         $roles = $isEn
-            ? ['Oman CERT', 'Cybersecurity Executive, Speakers Lead · Women in Cybersecurity Middle East (WiCSME)', 'IT Director · SOFPITAL Health Systems', 'Lead Presales Engineer · ESET Middle East']
-            : ['Oman CERT', 'قيادية في الأمن السيبراني، مسؤولة المتحدثين · النساء في الأمن السيبراني بالشرق الأوسط (WiCSME)', 'مدير تقنية المعلومات · SOFPITAL', 'مهندس ما قبل البيع الرئيسي · ESET الشرق الأوسط'];
+            ? ['ICT and Cybersecurity Expert · Oman CERT, MTCIT', 'Cybersecurity Executive, Speakers Lead · Women in Cybersecurity Middle East (WiCSME)', 'IT Director · SOFPITAL Health Systems', 'Lead Presales Engineer · ESET Middle East']
+            : ['خبير تقنية المعلومات والأمن السيبراني · المركز الوطني للسلامة المعلوماتية (Oman CERT)', 'قيادية في الأمن السيبراني، مسؤولة المتحدثين · النساء في الأمن السيبراني بالشرق الأوسط (WiCSME)', 'مدير تقنية المعلومات · SOFPITAL', 'مهندس ما قبل البيع الرئيسي · ESET الشرق الأوسط'];
 
         $stops = [];
         foreach ($cards as $i => $card) {
