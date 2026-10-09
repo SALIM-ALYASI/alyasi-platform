@@ -3,8 +3,10 @@
 namespace Tests\Feature\Api;
 
 use App\Models\NewsArticle;
+use App\Models\NewsCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class NewsIngestTest extends TestCase
@@ -16,6 +18,16 @@ class NewsIngestTest extends TestCase
         parent::setUp();
 
         Config::set('services.news_bot.token', 'test-secret-token');
+
+        // الخبر الجديد ينبّه n8n وواتساب -- ما نطلع لأي خدمة خارجية بالاختبار.
+        Http::fake();
+
+        NewsCategory::query()->create([
+            'name_ar' => 'تقنية',
+            'name_en' => 'Tech',
+            'slug' => 'tech',
+            'is_active' => true,
+        ]);
     }
 
     private function payload(array $overrides = []): array
@@ -25,8 +37,14 @@ class NewsIngestTest extends TestCase
             'title_ar' => 'عنوان تجريبي',
             'content_en' => '<p>Body</p><script>alert(1)</script>',
             'content_ar' => '<p>محتوى</p><script>alert(1)</script>',
+            'category_slug' => 'tech',
+            'slug' => 'example-headline',
             'link' => 'https://example.com/article-1',
+            'image' => 'https://example.com/image.jpg',
             'source' => 'TechCrunch',
+            'author' => 'ALYASI News',
+            'published_at' => now()->subMinute()->toIso8601String(),
+            'is_published' => true,
         ], $overrides);
     }
 
