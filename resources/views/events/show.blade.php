@@ -227,17 +227,9 @@
         <h1 class="community-detail__title">{{ $edition->title }}</h1>
 
         @if ($coverageUrl)
-            <a class="event-coverage-cta" href="{{ $coverageUrl }}">
-                <span class="event-coverage-cta__label">{{ app()->getLocale() === 'en' ? 'Field coverage' : 'تغطية ميدانية' }}</span>
-                <strong>{{ app()->getLocale() === 'en' ? 'Five Stops from CyberX Oman 2026' : 'خمس محطات من سايبر إكس عُمان 2026' }}</strong>
-                <span aria-hidden="true">{{ app()->getLocale() === 'en' ? '→' : '←' }}</span>
-            </a>
-            <a class="event-coverage-cta" href="{{ localized_route('event_coverage.cyberx_oman_2026.interviews') }}">
-                <span class="event-coverage-cta__label">{{ app()->getLocale() === 'en' ? 'Interviews' : 'لقاءات صحفية' }}</span>
-                <strong>{{ app()->getLocale() === 'en' ? 'Conversations with the guests' : 'لقاءات مع الضيوف' }}</strong>
-                <span aria-hidden="true">{{ app()->getLocale() === 'en' ? '→' : '←' }}</span>
-            </a>
-        @endif
+            {{-- المؤتمر انتهى: نعرض أرشيف تغطية الياسي بدل التفاصيل والجدول --}}
+            @include('events.coverage._edition-archive')
+        @else
 
         @if ($phase !== 'concluded')
             <div class="event-detail__date-status">
@@ -420,6 +412,8 @@
             @endif
 
         @endif
+
+        @endif {{-- /coverageUrl --}}
 
     </section>
 

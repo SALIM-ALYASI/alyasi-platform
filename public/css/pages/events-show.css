@@ -668,3 +668,85 @@
 .event-coverage-cta strong { flex: 1; font-family: var(--font-heading); font-size: 16px; }
 .event-coverage-cta > span:last-child { color: var(--color-accent-500); font-weight: 700; }
 .event-coverage-cta + .event-coverage-cta { margin-top: 0; }
+
+/* ---------- أرشيف تغطية CyberX Oman 2026 داخل صفحة المؤتمر ---------- */
+.cyberx-archive__intro { margin: 14px 0 6px; color: var(--theme-muted); font-size: 15.5px; line-height: 2; }
+.cyberx-archive { margin-top: 30px; }
+.cyberx-archive__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.cyberx-archive__head h2 { margin: 0; font-family: var(--font-heading); font-size: clamp(20px, 2.8vw, 24px); color: var(--color-text); }
+.cyberx-archive__head a { color: var(--color-accent-500); font-weight: 700; font-size: 14px; text-decoration: none; }
+
+.cyberx-stops { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+
+.cyberx-stop {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-lg);
+    background: var(--theme-card);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.cyberx-stop:hover { transform: translateY(-2px); border-color: var(--color-accent-500); box-shadow: var(--shadow-md); }
+.cyberx-stop__num { flex: 0 0 auto; font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--color-accent-300); font-variant-numeric: tabular-nums; }
+.cyberx-stop__photo { flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden; border-radius: 50%; background: var(--theme-card-soft); }
+.cyberx-stop__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+.cyberx-stop__photo.is-group { border-radius: 12px; flex-basis: 72px; width: 72px; }
+.cyberx-stop__photo.is-group img { object-position: 50% 40%; }
+.cyberx-stop__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cyberx-stop__who { color: var(--color-accent-500); font-size: 12.5px; font-weight: 700; }
+.cyberx-stop__body strong { font-family: var(--font-heading); font-size: 15.5px; line-height: 1.6; }
+
+.cyberx-interviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+.cyberx-interview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-lg);
+    background: var(--theme-card);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.cyberx-interview:hover { transform: translateY(-2px); border-color: var(--color-accent-500); box-shadow: var(--shadow-md); }
+.cyberx-interview__body { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.cyberx-interview__body strong { font-family: var(--font-heading); font-size: 16px; }
+.cyberx-interview__body small { color: var(--theme-muted); font-size: 12.5px; }
+.cyberx-interview__quote { margin-top: 4px; color: var(--color-accent-600); font-size: 14px; line-height: 1.7; }
+:root[data-theme="dark"] .cyberx-interview__quote { color: var(--color-accent-300); }
+
+.cyberx-interview__play {
+    display: grid;
+    flex: 0 0 38px;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-accent-500);
+    color: #fff;
+    font-size: 12px;
+    padding-inline-start: 2px;
+}
+
+.cyberx-interview .interview-avatar {
+    display: inline-grid;
+    flex: 0 0 56px;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent-500), var(--color-accent-800));
+    color: #fff;
+    font-weight: 700;
+}
+
+.cyberx-interview .interview-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }

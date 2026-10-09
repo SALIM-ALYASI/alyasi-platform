@@ -34,7 +34,8 @@ class EventCoverageController extends Controller
         $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
 
         return view('events.coverage.interviews.index', [
-            'guests' => CyberxInterviews::guests($locale),
+            // اللي ما ردّ ما يظهر أبدًا -- بس المقابلات المنشورة.
+            'guests' => array_values(array_filter(CyberxInterviews::guests($locale), fn ($g) => $g['published'])),
             'isEn' => $locale === 'en',
             'coverageUrl' => localized_route('event_coverage.cyberx_oman_2026'),
         ]);
@@ -61,7 +62,7 @@ class EventCoverageController extends Controller
 
         return view('events.coverage.interviews.show', [
             'guest' => $data,
-            'others' => array_values(array_filter(CyberxInterviews::guests($locale), fn ($g) => $g['slug'] !== $guest)),
+            'others' => array_values(array_filter(CyberxInterviews::guests($locale), fn ($g) => $g['published'] && $g['slug'] !== $guest)),
             'isEn' => $locale === 'en',
             'host' => CyberxOman2026::content($locale)['host'],
             'hubUrl' => localized_route('event_coverage.cyberx_oman_2026.interviews'),

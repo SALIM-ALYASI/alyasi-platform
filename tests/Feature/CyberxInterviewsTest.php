@@ -9,20 +9,21 @@ class CyberxInterviewsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_hub_lists_published_and_upcoming_guests_in_both_languages(): void
+    public function test_hub_lists_only_published_guests_in_both_languages(): void
     {
         $this->get('/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('د. هيثم الحجري')
             ->assertSee(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'), false)
-            ->assertSee('قريبًا');
+            ->assertDontSee('يحيى العزري')
+            ->assertDontSee('قريبًا');
 
         $this->get('/en/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
             ->assertSee('In Arabic')
             ->assertSee('href="'.url('/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
-            ->assertSee('Coming soon');
+            ->assertDontSee('Coming soon');
     }
 
     public function test_interview_page_shows_questions_timed_answers_and_audio(): void

@@ -120,6 +120,12 @@
 
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+    // رابط ?stop=3 (من صفحة المؤتمر) يفتح المحطة الثالثة مباشرة.
+    var requested = Number(new URLSearchParams(window.location.search).get('stop'));
+    if (requested >= 1 && requested <= stops.length) {
+        requestAnimationFrame(function () { open(requested - 1, null); });
+    }
+
     document.querySelectorAll('[data-stop]').forEach(function (btn) {
         btn.addEventListener('click', function () { open(Number(btn.dataset.stop), btn); });
     });
