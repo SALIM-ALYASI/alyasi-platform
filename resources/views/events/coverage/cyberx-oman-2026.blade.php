@@ -129,7 +129,9 @@
 
         {{-- شكر وتقدير لمن خصصوا وقتهم للمقابلات --}}
         <section class="coverage-thanks" data-reveal>
-            <p class="coverage-thanks__teaser"><span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }}</p>
+            <a class="coverage-thanks__teaser" href="{{ localized_route('event_coverage.cyberx_oman_2026.interviews') }}">
+                <span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }} <span aria-hidden="true">{{ $isEn ? '→' : '←' }}</span>
+            </a>
             @php($photos = $coverage['thanks']['photos'])
             <div class="coverage-gallery" data-count="{{ count($photos) }}" aria-roledescription="carousel" aria-label="{{ $t('صور من المؤتمر', 'Photos from the conference') }}">
                 <div class="coverage-gallery__track" id="coverageGalleryTrack">

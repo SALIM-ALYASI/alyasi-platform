@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Support\Coverage;
+
+/**
+ * اللقاءات الصحفية مع ضيوف CyberX Oman 2026 -- المحتوى (نص الإجابات بتوقيت
+ * كل جملة، وترجمتها، وروابط الصوت) في resources/data/interviews/، والصفحات
+ * تعرضه بلغة الرابط.
+ */
+class CyberxInterviews
+{
+    private const DATA = 'data/interviews/cyberx-oman-2026.json';
+
+    /** @return list<array<string, mixed>> */
+    public static function guests(string $locale): array
+    {
+        $data = json_decode((string) file_get_contents(resource_path(self::DATA)), true);
+
+        return array_map(fn (array $guest) => self::localize($guest, $locale), $data['guests']);
+    }
+
+    /** @return array<string, mixed>|null */
+    public static function guest(string $slug, string $locale): ?array
+    {
+        foreach (self::guests($locale) as $guest) {
+            if ($guest['slug'] === $slug) {
+                return $guest;
+            }
+        }
+
+        return null;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public static function published(): array
+    {
+        return array_values(array_filter(self::guests('ar'), fn ($guest) => $guest['published']));
+    }
+
+    private static function localize(array $guest, string $locale): array
+    {
+        $pick = fn (string $key) => $guest[$key.'_'.$locale] ?? $guest[$key.'_ar'] ?? null;
+
+        $items = array_map(fn (array $item) => [
+            'question' => $item['q_'.$locale] ?? $item['q_ar'],
+            'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
+            'a_audio' => asset(ltrim($item['a_audio'], '/')),
+            'duration' => $item['duration'],
+            'segments' => array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
+        ], $guest['items'] ?? []);
+
+        return [
+            'slug' => $guest['slug'],
+            'published' => (bool) $guest['published'],
+            'name' => $pick('name'),
+            'role' => $pick('role'),
+            'topic' => $pick('topic'),
+            'quote' => $pick('quote'),
+            'intro' => $pick('intro'),
+            'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
+            'initials' => $guest['initials'][$locale] ?? $guest['initials']['ar'] ?? '',
+            'items' => $items,
+            'minutes' => (int) max(1, round(array_sum(array_column($items, 'duration')) / 60)),
+        ];
+    }
+}

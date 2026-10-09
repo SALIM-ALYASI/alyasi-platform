@@ -1,0 +1,238 @@
+{
+ "event": "cyberx-oman-2026",
+ "guests": [
+  {
+   "slug": "haitham-al-hajri",
+   "published": true,
+   "name_ar": "د. هيثم الحجري",
+   "name_en": "Dr. Haitham Al Hajri",
+   "role_ar": "بنك الإسكان العُماني",
+   "role_en": "Oman Housing Bank",
+   "photo": null,
+   "initials": {
+    "ar": "هـ",
+    "en": "HA"
+   },
+   "topic_ar": "الخدمات المصرفية الرقمية، والاحتيال، والذكاء الاصطناعي",
+   "topic_en": "Digital banking, fraud and AI",
+   "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
+   "quote_en": "In the end, it is the human who makes the decision.",
+   "intro_ar": "أرسل الدكتور هيثم الحجري إجاباته بصوته على أسئلتي المسجّلة: كيف توازن البنوك بين سهولة الخدمات الرقمية وحمايتها، وما أخطر أساليب الاحتيال اليوم، وأين يجب أن يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي.",
+   "intro_en": "Dr. Haitham Al Hajri answered my recorded questions in his own voice: how banks balance convenience and security in digital services, the most dangerous fraud tactics today, and where decisions must stay in human hands in the age of AI.",
+   "items": [
+    {
+     "q_ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟",
+     "q_en": "How does a bank balance making digital services easy for customers while keeping them secure?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-q1-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-q1-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a1.m4a",
+     "duration": 50.6,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "شكرًا جزيلًا سالم على هذا السؤال الجميل.",
+       "en": "Thank you very much, Salem, for this great question."
+      },
+      {
+       "t": 3.28,
+       "ar": "وطبعًا مثل ما تعلمون، البنوك اليوم والخدمات المصرفية تعمل جاهدة لتبنّي الخدمات الرقمية وتسهيلها وتقديمها للعملاء حتى تكون في متناول اليد.",
+       "en": "As you know, banks and banking services today work hard to adopt digital services, make them easier, and offer them to customers so they are always within reach."
+      },
+      {
+       "t": 13.84,
+       "ar": "ومن قبل أن يقوم البنك بتدشين أي عملية رقمية أو خدمة رقمية، يقوم بعمل تقييم للمخاطر المصاحبة لهذه الخدمات الرقمية.",
+       "en": "Before a bank launches any digital process or service, it assesses the risks that come with it."
+      },
+      {
+       "t": 24.44,
+       "ar": "ولذلك لما نقدّم خدمة رقمية، يقوم تحليل المخاطر بإجراء دراسة، وأيضًا كيفية تنبيه العملاء من حيث تقديم كثير من الحملات التوعوية للاستخدام الآمن والسليم لهذه الخدمات الرقمية؛",
+       "en": "So when we offer a digital service, the risk analysis includes a study, and also how to alert customers, through many awareness campaigns on using these services safely and correctly:"
+      },
+      {
+       "t": 40.92,
+       "ar": "عن طريق الفحص الأمني، وتقييم المخاطر، والتدريب والتوعية للمواطنين والمستخدمين بشكل عام.",
+       "en": "through security testing, risk assessment, and training and awareness for citizens and users in general."
+      }
+     ]
+    },
+    {
+     "q_ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟",
+     "q_en": "What is the most common fraud targeting bank customers today, and how can customers spot it?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-q2-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-q2-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a2.m4a",
+     "duration": 73.9,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "طبعًا اليوم أكثر الخدمات الرقمية يتم استهدافها عن طريق التصيّد الاحتيالي،",
+       "en": "Today, digital services are most often targeted through phishing:"
+      },
+      {
+       "t": 6.92,
+       "ar": "وهو أنهم يتصيّدون العملاء ويرسلون لهم رسائل يدّعون أنهم البنك، أو يدّعون أنهم إحدى الخدمات الحكومية؛ يعني انتحال صفة غير حقيقية.",
+       "en": "attackers bait customers with messages claiming to be the bank, or a government service. In other words, impersonation."
+      },
+      {
+       "t": 18.74,
+       "ar": "ومن هنا يتم إيهام العميل بأنه يقوم بإجراء عملية إرسال مبالغ أو تحويل مبالغ أو دفع فواتير، وبالتالي تتم سرقة الأموال عن طريقها.",
+       "en": "The customer is led to believe they are sending money, making a transfer, or paying a bill, and that is how the money is stolen."
+      },
+      {
+       "t": 30.96,
+       "ar": "وأحد المخاطر الأخرى التي برزت اليوم بشكل كبير أن كثيرًا من الأجهزة الرقمية، وخاصة الهواتف النقالة، تحتوي على برمجيات خبيثة.",
+       "en": "Another risk that has grown significantly is that many digital devices, especially mobile phones, contain malware."
+      },
+      {
+       "t": 41.56,
+       "ar": "وهذه البرمجيات الخبيثة تبحث عن البرامج التي فيها خدمات مالية، وتقوم بسرقة بيانات الدخول والاستيلاء على هذه الحسابات وتحويل المبالغ بدون علم العميل نفسه.",
+       "en": "This malware looks for apps with financial services, steals login credentials, takes over the accounts, and transfers money without the customer even knowing."
+      },
+      {
+       "t": 56.94,
+       "ar": "طبعًا هناك أيضًا مخاطر أكثر تبرز، وهناك مخاطر متطورة، ولكن هذين الخطرين اليوم — التصيّد الاحتيالي والبرمجيات الخبيثة المصاحبة للأجهزة الرقمية — يُعتبران في مصافّ المخاطر المتقدمة.",
+       "en": "Other, more sophisticated risks are emerging too, but these two, phishing and malware on digital devices, rank among the most serious today."
+      }
+     ]
+    },
+    {
+     "q_ar": "منصتي تعتمد على الذكاء الاصطناعي، لكنّي أرى أنني صاحب الفكرة والقرار، وهو المساعد الذي ينفّذ. برأيك، هل الذكاء الاصطناعي بديل عن تفكير الإنسان، أم أداة تنفّذ عمله؟ وأين يجب أن يبقى القرار بيد الإنسان؟",
+     "q_en": "My platform relies on AI, but I see myself as the owner of the idea and the decision, and AI as the assistant that executes. In your view, is AI a replacement for human thinking, or a tool that carries out our work? And where must decisions stay in human hands?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-ai-role-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-ai-role-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a3.m4a",
+     "duration": 111.3,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "الذكاء الاصطناعي أصلًا تم إيجاده لمساعدة الإنسان في عمل أكثر من شيء في نفس الوقت، وأيضًا أن تكون فيه دقة متناهية قد تفوق قدرات البشر.",
+       "en": "AI was created to help people do more than one thing at the same time, with a precision that can exceed human ability."
+      },
+      {
+       "t": 16.92,
+       "ar": "اليوم أنت صاحب هذه المنصة، وأنت تستخدم الذكاء الاصطناعي لكي يمكّنك من القيام بعدة أشياء أنت ممكن تعملها، بس تتطلب منك وقتًا وجهدًا وفكرًا كبيرًا.",
+       "en": "You own this platform, and you use AI to do many things you could do yourself, but that would take a lot of time, effort and thought."
+      },
+      {
+       "t": 29.02,
+       "ar": "الذكاء الاصطناعي ما يلغي الفكرة، ولا يمكن أن يبتكر الفكرة من الصفر، ولكن ممكن يحسّن هذه الفكرة ويخليها أفضل وأفضل، وأيضًا ينبّهك إلى نقاط قصور يمكن أنت ما فكرت فيها.",
+       "en": "AI doesn't replace the idea, and it can't invent it from scratch, but it can improve it, make it better and better, and point out weaknesses you may not have thought of."
+      },
+      {
+       "t": 45.66,
+       "ar": "فلذلك الذكاء الاصطناعي عامل مساعد للإنسان، وهكذا تم أصلًا إنشاء الذكاء الاصطناعي: لكي يساعدنا في حياتنا اليومية وفي التحليل المنطقي.",
+       "en": "So AI is an assistant to people. That is what it was built for: to help us in our daily lives and in logical analysis."
+      },
+      {
+       "t": 59.22,
+       "ar": "يعني الإنسان لا يستطيع أن يحلّل بيانات ألف كتاب في يوم واحد، ولكن اليوم باستخدام الذكاء الاصطناعي ممكن أن تُحلَّل الفكرة من خلال أكثر من نظرية في أكثر من كتاب، ويبسّطها لك في ملخص بسيط.",
+       "en": "A person can't analyze a thousand books in a single day, but with AI an idea can be examined across many theories and books, and simplified for you into a short summary."
+      },
+      {
+       "t": 73.46,
+       "ar": "وفي النهاية، الإنسان هو اللي يتخذ القرار بعدما تعطي برمجيات الذكاء الاصطناعي المعطيات.",
+       "en": "In the end, it is the human who makes the decision, after the AI provides the inputs."
+      },
+      {
+       "t": 81.34,
+       "ar": "فبالتالي الخطوة الأخيرة دائمًا: الإنسان هو اللي يقرر هل يقوم الذكاء الاصطناعي بالعمل أو لا.",
+       "en": "The last step always belongs to the human, who decides whether the AI should carry out the task or not."
+      },
+      {
+       "t": 88.64,
+       "ar": "وهنا يأتي شق آخر، وهو الأتمتة (Automation)، بحيث تتم أتمتة بعض البرمجيات وهي تتخذ القرار، ولكن في هذه الأتمتة يكون هناك نطاق محدود جدًا للصلاحيات التي تُعطى للذكاء الاصطناعي.",
+       "en": "Then there is another side, automation, where some software is automated to make decisions, but within a very limited scope of permissions given to the AI."
+      },
+      {
+       "t": 104.52,
+       "ar": "وهذه كلها ضمن أخلاقيات استخدام الذكاء الاصطناعي اليوم. شكرًا.",
+       "en": "All of this falls within the ethics of using AI today. Thank you."
+      }
+     ]
+    },
+    {
+     "q_ar": "ما دور الذكاء الاصطناعي في كشف الاحتيال البنكي؟",
+     "q_en": "What role does AI play in detecting banking fraud?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-fu-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-fu-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a4.m4a",
+     "duration": 61.2,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "اليوم الذكاء الاصطناعي أصبح عاملًا أساسيًا، كونه يفوق قدرات الإنسان الطبيعي، خاصة في مجالات التحليلات المنطقية أو النمطية.",
+       "en": "AI has become essential today, because it exceeds normal human capacity, especially in logical and pattern analysis."
+      },
+      {
+       "t": 10.8,
+       "ar": "فاليوم يكشف الاحتيال بشكل مبكر في القطاعات البنكية، أو حتى الاختراقات الأمنية التي تصير؛",
+       "en": "It now detects fraud early in the banking sector, and even security breaches as they happen."
+      },
+      {
+       "t": 19.14,
+       "ar": "يقوم الذكاء الاصطناعي بملاحظة وتحليل كثير من البيانات، وكشف الأنماط غير المنطقية أو غير الصحيحة، وإرسال إشعارات للإنسان أو الشخص الذي يراجع هذه الأنماط، ويقول له إن هذه الأنماط غير طبيعية أو غير معقولة.",
+       "en": "AI monitors and analyzes large amounts of data, spots illogical or incorrect patterns, and alerts the person reviewing them that these patterns are abnormal."
+      },
+      {
+       "t": 40.36,
+       "ar": "وبالتالي يتم اكتشاف الاحتيال البنكي، أو الاختراق الذي يصير داخل الأنظمة، بشكل مبكر، ويتم إشعار العملاء بأن هناك معاملات قد تكون غير حقيقية أو مخترقة.",
+       "en": "This way, banking fraud or a breach inside the systems is caught early, and customers are notified that some transactions may be fake or compromised."
+      },
+      {
+       "t": 55.6,
+       "ar": "فالذكاء الاصطناعي يقوم بعمل جيد في هذا المجال.",
+       "en": "AI does a good job in this field."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "yahya-al-azri",
+   "published": false,
+   "name_ar": "يحيى العزري",
+   "name_en": "Yahya Al-Azri",
+   "role_ar": "خبير تقنية المعلومات والأمن السيبراني · Oman CERT",
+   "role_en": "ICT and Cybersecurity Expert · Oman CERT",
+   "photo": "/images/events/cyberx-2026/yahya-al-azri.png",
+   "initials": {
+    "ar": "ي",
+    "en": "YA"
+   }
+  },
+  {
+   "slug": "ali-al-lawati",
+   "published": false,
+   "name_ar": "علي اللواتي",
+   "name_en": "Ali Al-Lawati",
+   "role_ar": "Qpay",
+   "role_en": "Qpay",
+   "photo": null,
+   "initials": {
+    "ar": "ع",
+    "en": "AL"
+   }
+  },
+  {
+   "slug": "khalid-al-amrani",
+   "published": false,
+   "name_ar": "خالد العمراني",
+   "name_en": "Khalid Al Amrani",
+   "role_ar": "أمن الأنظمة الصناعية ICS/OT",
+   "role_en": "ICS/OT Security",
+   "photo": null,
+   "initials": {
+    "ar": "خ",
+    "en": "KA"
+   }
+  }
+ ]
+}

@@ -344,6 +344,25 @@ Route::get('/en/events/cyberx-oman-2026/coverage', [EventCoverageController::cla
     ->middleware('force.locale:en')
     ->name('event_coverage.cyberx_oman_2026.en');
 
+// اللقاءات الصحفية مع ضيوف المؤتمر.
+Route::get('/events/cyberx-oman-2026/interviews', [EventCoverageController::class, 'cyberxOman2026Interviews'])
+    ->middleware('force.locale:ar')
+    ->name('event_coverage.cyberx_oman_2026.interviews');
+
+Route::get('/en/events/cyberx-oman-2026/interviews', [EventCoverageController::class, 'cyberxOman2026Interviews'])
+    ->middleware('force.locale:en')
+    ->name('event_coverage.cyberx_oman_2026.interviews.en');
+
+Route::get('/events/cyberx-oman-2026/interviews/{guest}', [EventCoverageController::class, 'cyberxOman2026Interview'])
+    ->middleware('force.locale:ar')
+    ->where('guest', '[a-z0-9-]+')
+    ->name('event_coverage.cyberx_oman_2026.interview');
+
+Route::get('/en/events/cyberx-oman-2026/interviews/{guest}', [EventCoverageController::class, 'cyberxOman2026Interview'])
+    ->middleware('force.locale:en')
+    ->where('guest', '[a-z0-9-]+')
+    ->name('event_coverage.cyberx_oman_2026.interview.en');
+
 Route::middleware('force.locale:ar')
     ->prefix('events')
     ->name('event_editions.')

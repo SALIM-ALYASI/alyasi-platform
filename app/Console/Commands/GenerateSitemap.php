@@ -35,6 +35,7 @@ class GenerateSitemap extends Command
         'community.index',
         'social-links.index',
         'event_coverage.cyberx_oman_2026',
+        'event_coverage.cyberx_oman_2026.interviews',
         'tech-history.index',
         'privacy',
         'terms',
@@ -89,6 +90,7 @@ class GenerateSitemap extends Command
         $this->addStaticPages($sitemap);
         $this->addArticles($sitemap);
         $this->addTechHistory($sitemap);
+        $this->addInterviews($sitemap);
         $this->addNews($sitemap);
         $this->addServices($sitemap);
         $this->addWorks($sitemap);
@@ -215,6 +217,21 @@ class GenerateSitemap extends Command
                     $sitemap->add($entry);
                 }
             });
+    }
+
+    /**
+     * اللقاءات الصحفية المنشورة مع ضيوف CyberX Oman 2026، باللغتين.
+     */
+    private function addInterviews(Sitemap $sitemap): void
+    {
+        foreach (\App\Support\Coverage\CyberxInterviews::published() as $guest) {
+            $arUrl = route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]);
+            $enUrl = route('event_coverage.cyberx_oman_2026.interview.en', ['guest' => $guest['slug']]);
+
+            foreach ([$arUrl, $enUrl] as $url) {
+                $sitemap->add(Url::create($url)->addAlternate($arUrl, 'ar')->addAlternate($enUrl, 'en'));
+            }
+        }
     }
 
     private function addNews(Sitemap $sitemap): void

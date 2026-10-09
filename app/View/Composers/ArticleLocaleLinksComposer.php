@@ -39,6 +39,8 @@ class ArticleLocaleLinksComposer
         'social-links.index',
         'community.index',
         'event_coverage.cyberx_oman_2026',
+        'event_coverage.cyberx_oman_2026.interviews',
+        'event_coverage.cyberx_oman_2026.interview',
         'tech-history.index',
     ];
 

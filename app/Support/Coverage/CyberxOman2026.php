@@ -181,7 +181,7 @@ class CyberxOman2026
             ],
             'thanks' => [
                 'title' => $t('شكر وتقدير', 'With gratitude'),
-                'teaser' => $t('ترقّبوا قريبًا لقاءات صحفية مع الضيوف', 'Coming soon: press interviews with the guests'),
+                'teaser' => $t('اللقاءات الصحفية مع الضيوف · استمع الآن', 'Interviews with the guests · Listen now'),
                 // معرض صور الشكر (حتى 4 صور) -- التصميم يتكيّف مع عددها.
                 'photos' => [
                     ['src' => asset('images/cyberx-2026/thanks-1.jpg'), 'width' => 1086, 'height' => 1448],
