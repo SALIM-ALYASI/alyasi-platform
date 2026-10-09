@@ -84,25 +84,27 @@
                         </div>
                     </div>
 
+                    {{-- الإجابة مرآة السؤال: فقاعة الضيف وصورته بالجهة المقابلة --}}
                     <div class="qa__answer">
-                        <div class="qa__player">
-                            @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 44])
-                            <button type="button" class="qa__play" data-play="a" data-item="{{ $i }}"
-                                    aria-label="{{ $t('استمع للإجابة', 'Play the answer') }}">
-                                <span class="qa__play-icon" aria-hidden="true">▶</span>
-                            </button>
-                            <div class="qa__track">
-                                <span class="qa__speaker">{{ $guest['name'] }}</span>
-                                <span class="qa__bar"><span class="qa__fill" data-fill="{{ $i }}"></span></span>
-                            </div>
-                            <span class="qa__time" data-time="{{ $i }}">{{ gmdate('i:s', (int) round($item['duration'])) }}</span>
-                        </div>
+                        <div class="qa__answer-bubble">
+                            <span class="qa__label">{{ $t('إجابة', 'Answer') }} {{ $i + 1 }} · {{ $guest['name'] }}</span>
 
-                        <p class="qa__text">
-                            @foreach ($item['segments'] as $s => $segment)
-                                <span class="qa__seg" data-item="{{ $i }}" data-seg="{{ $s }}" data-t="{{ $segment['t'] }}">{{ $segment['text'] }}</span>
-                            @endforeach
-                        </p>
+                            <div class="qa__player">
+                                <button type="button" class="qa__play" data-play="a" data-item="{{ $i }}"
+                                        aria-label="{{ $t('استمع للإجابة', 'Play the answer') }}">
+                                    <span class="qa__play-icon" aria-hidden="true">▶</span>
+                                </button>
+                                <span class="qa__bar"><span class="qa__fill" data-fill="{{ $i }}"></span></span>
+                                <span class="qa__time" data-time="{{ $i }}">{{ gmdate('i:s', (int) round($item['duration'])) }}</span>
+                            </div>
+
+                            <p class="qa__text">
+                                @foreach ($item['segments'] as $s => $segment)
+                                    <span class="qa__seg" data-item="{{ $i }}" data-seg="{{ $s }}" data-t="{{ $segment['t'] }}">{{ $segment['text'] }}</span>
+                                @endforeach
+                            </p>
+                        </div>
+                        @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 40])
                     </div>
 
                     @if ($i === 2 && $guest['quote'])
