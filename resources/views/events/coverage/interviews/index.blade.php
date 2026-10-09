@@ -41,8 +41,13 @@
         <div class="interviews-grid">
             @foreach ($guests as $guest)
                 @if ($guest['published'])
-                    <a class="interview-card" data-reveal
-                       href="{{ localized_route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]) }}">
+                    @php
+                        $inPageLanguage = in_array($isEn ? 'en' : 'ar', $guest['languages'], true);
+                        $cardUrl = $inPageLanguage
+                            ? localized_route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']])
+                            : route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]);
+                    @endphp
+                    <a class="interview-card" data-reveal href="{{ $cardUrl }}" @unless ($inPageLanguage) hreflang="ar" @endunless>
                         <span class="interview-card__top">
                             @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 64])
                             <span class="interview-card__who">
@@ -60,6 +65,9 @@
                         <span class="interview-card__cta">
                             <span class="interview-card__play" aria-hidden="true">▶</span>
                             {{ $t('استمع واقرأ', 'Listen & read') }}
+                            @unless ($inPageLanguage)
+                                <span class="interview-card__lang">In Arabic</span>
+                            @endunless
                         </span>
                     </a>
                 @else

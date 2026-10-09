@@ -225,11 +225,19 @@ class GenerateSitemap extends Command
     private function addInterviews(Sitemap $sitemap): void
     {
         foreach (\App\Support\Coverage\CyberxInterviews::published() as $guest) {
-            $arUrl = route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]);
-            $enUrl = route('event_coverage.cyberx_oman_2026.interview.en', ['guest' => $guest['slug']]);
+            $urls = array_intersect_key([
+                'ar' => route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]),
+                'en' => route('event_coverage.cyberx_oman_2026.interview.en', ['guest' => $guest['slug']]),
+            ], array_flip($guest['languages']));
 
-            foreach ([$arUrl, $enUrl] as $url) {
-                $sitemap->add(Url::create($url)->addAlternate($arUrl, 'ar')->addAlternate($enUrl, 'en'));
+            foreach ($urls as $url) {
+                $entry = Url::create($url);
+
+                if (count($urls) === 2) {
+                    $entry->addAlternate($urls['ar'], 'ar')->addAlternate($urls['en'], 'en');
+                }
+
+                $sitemap->add($entry);
             }
         }
     }

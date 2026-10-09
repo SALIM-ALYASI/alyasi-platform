@@ -20,8 +20,10 @@
 @section('title', $pageTitle.' — ALYASI')
 @section('meta_description', $guest['intro'])
 @section('canonical', $isEn ? $urlEn : $urlAr)
-@section('hreflang_ar', $urlAr)
-@section('hreflang_en', $urlEn)
+@if (in_array('ar', $guest['languages'], true) && in_array('en', $guest['languages'], true))
+    @section('hreflang_ar', $urlAr)
+    @section('hreflang_en', $urlEn)
+@endif
 @section('og_type', 'article')
 @section('og_title', $pageTitle)
 @section('og_description', $guest['intro'])
@@ -84,6 +86,7 @@
 
                     <div class="qa__answer">
                         <div class="qa__player">
+                            @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 44])
                             <button type="button" class="qa__play" data-play="a" data-item="{{ $i }}"
                                     aria-label="{{ $t('استمع للإجابة', 'Play the answer') }}">
                                 <span class="qa__play-icon" aria-hidden="true">▶</span>

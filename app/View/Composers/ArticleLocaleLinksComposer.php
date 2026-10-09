@@ -40,7 +40,6 @@ class ArticleLocaleLinksComposer
         'community.index',
         'event_coverage.cyberx_oman_2026',
         'event_coverage.cyberx_oman_2026.interviews',
-        'event_coverage.cyberx_oman_2026.interview',
         'tech-history.index',
     ];
 
@@ -97,6 +96,17 @@ class ArticleLocaleLinksComposer
             return [
                 'ar' => localized_route('community.index', [], 'ar'),
                 'en' => localized_route('community.index', [], 'en'),
+            ];
+        }
+
+        // مقابلة ضيف: زر اللغة يظهر فقط للغات اللي جاوب بها.
+        if ($baseName === 'event_coverage.cyberx_oman_2026.interview') {
+            $guest = (string) $route->parameter('guest');
+            $languages = \App\Support\Coverage\CyberxInterviews::languagesOf($guest);
+
+            return [
+                'ar' => in_array('ar', $languages, true) ? route($baseName, ['guest' => $guest]) : null,
+                'en' => in_array('en', $languages, true) ? route($baseName.'.en', ['guest' => $guest]) : null,
             ];
         }
 

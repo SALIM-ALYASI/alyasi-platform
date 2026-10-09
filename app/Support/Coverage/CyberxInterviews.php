@@ -31,6 +31,16 @@ class CyberxInterviews
         return null;
     }
 
+    /**
+     * لغات صفحة المقابلة نفسها (حسب لغة إجابات الضيف). صفحة الضيوف تبقى باللغتين.
+     *
+     * @return list<string>
+     */
+    public static function languagesOf(string $slug): array
+    {
+        return self::guest($slug, 'ar')['languages'] ?? ['ar'];
+    }
+
     /** @return list<array<string, mixed>> */
     public static function published(): array
     {
@@ -52,6 +62,7 @@ class CyberxInterviews
         return [
             'slug' => $guest['slug'],
             'published' => (bool) $guest['published'],
+            'languages' => $guest['languages'] ?? ['ar'],
             'name' => $pick('name'),
             'role' => $pick('role'),
             'topic' => $pick('topic'),

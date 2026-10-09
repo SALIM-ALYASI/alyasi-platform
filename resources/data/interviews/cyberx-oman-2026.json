@@ -193,6 +193,9 @@
       }
      ]
     }
+   ],
+   "languages": [
+    "ar"
    ]
   },
   {
@@ -206,7 +209,10 @@
    "initials": {
     "ar": "ي",
     "en": "YA"
-   }
+   },
+   "languages": [
+    "ar"
+   ]
   },
   {
    "slug": "ali-al-lawati",
@@ -219,7 +225,10 @@
    "initials": {
     "ar": "ع",
     "en": "AL"
-   }
+   },
+   "languages": [
+    "ar"
+   ]
   },
   {
    "slug": "khalid-al-amrani",
@@ -232,7 +241,10 @@
    "initials": {
     "ar": "خ",
     "en": "KA"
-   }
+   },
+   "languages": [
+    "ar"
+   ]
   }
  ]
 }

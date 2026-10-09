@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\Coverage\CyberxInterviews;
 use App\Support\Coverage\CyberxOman2026;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class EventCoverageController extends Controller
@@ -42,12 +43,21 @@ class EventCoverageController extends Controller
     /**
      * مقابلة ضيف واحد: سؤال سالم بصوته، وإجابة الضيف بصوته ونصها بتوقيت كل جملة.
      */
-    public function cyberxOman2026Interview(string $guest): View
+    public function cyberxOman2026Interview(string $guest): View|RedirectResponse
     {
         $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
         $data = CyberxInterviews::guest($guest, $locale);
 
         abort_unless($data && $data['published'], 404);
+
+        // المقابلة بلغة إجابات الضيف فقط -- رابط بلغة ثانية يروح للنسخة الموجودة.
+        if (! in_array($locale, $data['languages'], true)) {
+            $fallback = $data['languages'][0];
+
+            return redirect()->to($fallback === 'en'
+                ? route('event_coverage.cyberx_oman_2026.interview.en', ['guest' => $guest])
+                : route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest]));
+        }
 
         return view('events.coverage.interviews.show', [
             'guest' => $data,
