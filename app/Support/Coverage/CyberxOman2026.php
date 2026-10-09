@@ -174,6 +174,8 @@ class CyberxOman2026
             'hall' => asset('images/events/cyberx-2026/coverage-hero.jpg'),
             // فيديو ملخص التغطية على قناة اليوتيوب.
             'video' => [
+                // مخفي مؤقتًا بطلب سالم -- غيّرها لـ true لإرجاعه.
+                'visible' => false,
                 'id' => 'ATZqGX2DJR4',
                 'label' => $t('ملخص التغطية بالفيديو', 'Video summary'),
                 'title' => $t('ماذا يحدث عندما يقع الاختراق؟', 'What happens when a breach occurs?'),

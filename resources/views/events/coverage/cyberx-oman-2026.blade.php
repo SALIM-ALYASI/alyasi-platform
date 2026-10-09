@@ -60,6 +60,7 @@
 
         {{-- فيديو ملخص التغطية: صورة مصغّرة، والمشغّل ما يتحمّل إلا عند الضغط --}}
         @php($video = $coverage['video'])
+        @if ($video['visible'] ?? true)
         <section class="coverage-video" data-reveal>
             <div class="coverage-video__frame" id="coverageVideo" data-video-id="{{ $video['id'] }}" data-video-title="{{ $video['title'] }}">
                 <button type="button" class="coverage-video__poster" aria-label="{{ $t('تشغيل الفيديو', 'Play video') }}: {{ $video['title'] }}">
@@ -77,6 +78,7 @@
                 </a>
             </div>
         </section>
+        @endif
 
         {{-- المحطات الخمس على خط زمني واحد، وكلام سالم بينها --}}
         <ol class="coverage-timeline" aria-label="{{ $t('المحطات الخمس', 'The five stops') }}">
