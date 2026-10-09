@@ -336,8 +336,8 @@ html[lang="en"] .qa__text { line-height: 1.85; }
     .interview { padding-block: 18px 90px; }
     .interview__head { padding: 26px 18px 22px; }
     .interview__intro p { font-size: 15px; }
-    .qa__question { padding-inline-end: 18px; }
-    .qa__answer { padding-inline-start: 18px; }
+    .qa__question { padding-inline-end: 0; }
+    .qa__answer { gap: 8px; padding-inline-start: 0; }
     .qa__answer-bubble { padding: 12px 14px 14px; }
     .qa__bubble p { font-size: 16px; }
     .qa__text { font-size: 16px; }
