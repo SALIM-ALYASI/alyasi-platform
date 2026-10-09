@@ -5,8 +5,8 @@
     $seriesUrl = route(app()->getLocale() === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]);
 @endphp
 
-@section('title', $event->name.' — ALYASI')
-@section('meta_description', __('events.series_meta_description', ['name' => $event->name]))
+@section('title', $event->localizedName().' — ALYASI')
+@section('meta_description', __('events.series_meta_description', ['name' => $event->localizedName()]))
 @section('canonical', $seriesUrl)
 @section('og_url', $seriesUrl)
 @section('og_image', $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg'))
@@ -22,8 +22,8 @@
 
     <x-page-hero
         :badge="__('events.series_badge')"
-        :title="$event->name"
-        :description="__('events.series_intro', ['name' => $event->name])"
+        :title="$event->localizedName()"
+        :description="__('events.series_intro', ['name' => $event->localizedName()])"
         :image="$latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg')"
         :image-width="1672"
         :image-height="941"

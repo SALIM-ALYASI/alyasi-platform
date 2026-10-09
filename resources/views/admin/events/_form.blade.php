@@ -45,6 +45,11 @@
             </div>
 
             <div class="form-group">
+                <label for="new_event_name_en">الاسم بالإنجليزي (مثال: Apple Event)</label>
+                <input type="text" id="new_event_name_en" name="new_event_name_en" value="{{ old('new_event_name_en') }}" dir="ltr">
+            </div>
+
+            <div class="form-group">
                 <label for="new_event_organizer">الجهة المنظِّمة</label>
                 <input type="text" id="new_event_organizer" name="new_event_organizer" value="{{ old('new_event_organizer') }}">
             </div>

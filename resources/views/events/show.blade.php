@@ -189,7 +189,7 @@
         'url' => $edition->permalink()?->url(),
         'organizer' => [
             '@type' => 'Organization',
-            'name' => $edition->event->organizer ?? $edition->event->name,
+            'name' => $edition->event->organizer ?? $edition->event->localizedName(),
         ],
         'publisher' => [
             '@type' => 'Organization',

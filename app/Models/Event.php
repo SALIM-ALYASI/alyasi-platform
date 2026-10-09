@@ -12,9 +12,20 @@ class Event extends Model
      */
     protected $fillable = [
         'name',
+        'name_en',
         'slug',
         'organizer',
     ];
+
+    /**
+     * اسم المؤتمر بلغة الصفحة: الإنجليزي بالصفحات الإنجليزية لو موجود.
+     */
+    public function localizedName(): string
+    {
+        return app()->getLocale() === 'en' && filled($this->name_en)
+            ? $this->name_en
+            : $this->name;
+    }
 
     /**
      * نسخ الحدث عبر السنين.

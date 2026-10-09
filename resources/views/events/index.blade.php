@@ -41,7 +41,7 @@
                         <div class="community-card__media">
                             <img
                                 src="{{ $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg') }}"
-                                alt="{{ $event->name }}"
+                                alt="{{ $event->localizedName() }}"
                                 loading="lazy"
                             >
 
@@ -60,7 +60,7 @@
                                 @endif
                             </div>
 
-                            <h3 class="community-card__title">{{ $event->name }}</h3>
+                            <h3 class="community-card__title">{{ $event->localizedName() }}</h3>
 
                             <p class="community-card__excerpt">
                                 {{ $latestEdition?->short_description ?: __('events.series_default_description') }}

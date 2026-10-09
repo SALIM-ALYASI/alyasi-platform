@@ -141,12 +141,13 @@ class EventEditionController extends Controller
 
             $event = Event::query()->create([
                 'name' => $eventName,
+                'name_en' => $validated['new_event_name_en'] ?? null,
                 'slug' => $this->uniqueEventSlug($eventName),
                 'organizer' => $validated['new_event_organizer'] ?? null,
             ]);
             $eventId = $event->id;
         }
-        unset($validated['new_event_name'], $validated['new_event_organizer']);
+        unset($validated['new_event_name'], $validated['new_event_name_en'], $validated['new_event_organizer']);
         $validated['event_id'] = $eventId;
 
         $storedImage = null;
@@ -201,7 +202,7 @@ class EventEditionController extends Controller
     public function update(Request $request, EventEdition $event): RedirectResponse
     {
         $validated = $this->validatedData($request);
-        unset($validated['event_id'], $validated['new_event_name'], $validated['new_event_organizer'], $validated['year']);
+        unset($validated['event_id'], $validated['new_event_name'], $validated['new_event_name_en'], $validated['new_event_organizer'], $validated['year']);
 
         $oldImage = $event->image;
         if ($request->hasFile('image')) {
@@ -235,6 +236,7 @@ class EventEditionController extends Controller
         $data = $request->validate([
             'event_id' => ['required', 'string'],
             'new_event_name' => ['required_if:event_id,new', 'nullable', 'string', 'max:255'],
+            'new_event_name_en' => ['nullable', 'string', 'max:255'],
             'new_event_organizer' => ['nullable', 'string', 'max:255'],
             'year' => ['required', 'integer', 'min:2000', 'max:2100'],
             'title_ar' => ['required', 'string', 'max:255'],
