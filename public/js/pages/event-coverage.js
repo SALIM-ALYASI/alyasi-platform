@@ -306,7 +306,9 @@
 
         function scrollToEl(el, offset) {
             if (!el || isOpen) return;
-            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: smooth });
+            // التمرير الناعم ما يشتغل والصفحة بالخلفية -- نقفز مباشرة وقتها.
+            var behavior = document.visibilityState === 'visible' ? smooth : 'auto';
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: behavior });
         }
 
         function setCue(index, scroll) {
