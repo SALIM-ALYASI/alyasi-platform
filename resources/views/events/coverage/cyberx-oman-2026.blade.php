@@ -58,6 +58,24 @@
             <p class="coverage-byline__intro">{{ $host['intro'] }}</p>
         </header>
 
+        {{-- التقرير الصوتي: زر استماع بشريط تقدّم -- الملف ما يتحمّل إلا عند الضغط --}}
+        @php($report = $coverage['audio'])
+        <section class="coverage-listen" data-reveal>
+            <button type="button" class="coverage-listen__play" id="coverageListenPlay"
+                    data-src="{{ $report['src'] }}" aria-label="{{ $t('تشغيل التقرير الصوتي', 'Play the audio report') }}">
+                <span class="coverage-listen__icon" aria-hidden="true">▶</span>
+            </button>
+            <div class="coverage-listen__body">
+                <span class="coverage-listen__label">🎧 {{ $report['label'] }}</span>
+                <strong class="coverage-listen__title">{{ $report['title'] }}</strong>
+                <div class="coverage-listen__track">
+                    <span class="coverage-listen__bar" id="coverageListenBar"><span id="coverageListenFill"></span></span>
+                    <span class="coverage-listen__time" id="coverageListenTime">{{ gmdate('i:s', $report['duration']) }}</span>
+                </div>
+                <span class="coverage-listen__note">{{ $report['note'] }}</span>
+            </div>
+        </section>
+
         {{-- فيديو ملخص التغطية: صورة مصغّرة، والمشغّل ما يتحمّل إلا عند الضغط --}}
         @php($video = $coverage['video'])
         @if ($video['visible'] ?? true)

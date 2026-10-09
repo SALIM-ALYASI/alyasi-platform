@@ -284,6 +284,43 @@
         new MutationObserver(schedule).observe(lightbox, { attributes: true, attributeFilter: ['hidden'] });
     }
 
+    // التقرير الصوتي: زر تشغيل/إيقاف، وشريط تقدّم يقبل الضغط للقفز.
+    var listen = $('coverageListenPlay');
+    if (listen) {
+        var report = new Audio();
+        report.preload = 'none';
+        var icon = listen.querySelector('.coverage-listen__icon');
+        var fill = $('coverageListenFill');
+        var time = $('coverageListenTime');
+        var fmt = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+        var sync = function () {
+            var playing = !report.paused;
+            icon.textContent = playing ? '❚❚' : '▶';
+            listen.classList.toggle('is-playing', playing);
+        };
+
+        listen.addEventListener('click', function () {
+            if (!report.src) report.src = listen.dataset.src;
+            report.paused ? report.play().catch(function () {}) : report.pause();
+        });
+        report.addEventListener('play', sync);
+        report.addEventListener('pause', sync);
+        report.addEventListener('ended', sync);
+        report.addEventListener('timeupdate', function () {
+            if (!report.duration) return;
+            fill.style.width = (report.currentTime / report.duration * 100) + '%';
+            time.textContent = fmt(report.currentTime) + ' / ' + fmt(report.duration);
+        });
+        $('coverageListenBar').addEventListener('click', function (e) {
+            if (!report.duration) return;
+            var rect = this.getBoundingClientRect();
+            var ratio = (e.clientX - rect.left) / rect.width;
+            // بالعربي الشريط يبدأ من اليمين.
+            if (getComputedStyle(this).direction === 'rtl') ratio = 1 - ratio;
+            report.currentTime = Math.min(Math.max(ratio, 0), 1) * report.duration;
+        });
+    }
+
     // فيديو الملخص: نحمّل مشغّل يوتيوب فقط لما يضغط القارئ تشغيل.
     var video = $('coverageVideo');
     if (video) {
