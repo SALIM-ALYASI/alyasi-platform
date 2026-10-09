@@ -53,7 +53,7 @@
 
 
         {{-- الروابط السريعة --}}
-        <div class="site-footer__col">
+        <div class="site-footer__col site-footer__col--quick">
 
             <h4 class="site-footer__heading">
                 {{ __('layout.footer.quick_links') }}
@@ -89,7 +89,7 @@
 
 
         {{-- المؤتمرات والروابط العامة --}}
-        <div class="site-footer__col">
+        <div class="site-footer__col site-footer__col--explore">
 
             <h4 class="site-footer__heading">
                 {{ __('layout.footer.explore_title') }}
@@ -119,7 +119,7 @@
 
 
         {{-- التواصل --}}
-        <div class="site-footer__col">
+        <div class="site-footer__col site-footer__col--connect">
 
             <h4 class="site-footer__heading">
                 {{ __('layout.footer.connect_title') }}

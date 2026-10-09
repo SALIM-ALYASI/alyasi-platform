@@ -54,8 +54,55 @@
     .site-footer__top { grid-template-columns: 1fr 1fr; }
 }
 
+/* الجوال: الهوية والوصف في الوسط، أيقونات التواصل تحتها مباشرة، والروابط
+   بعمودين متجاورين داخل بطاقتين بدل قائمة طويلة عمود واحد. */
 @media (max-width: 767px) {
-    .site-footer { padding: 48px 0 24px; }
-    .site-footer__top { grid-template-columns: 1fr; gap: 32px; padding-bottom: 32px; }
-    .site-footer__bottom { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .site-footer { padding: 40px 0 calc(22px + env(safe-area-inset-bottom)); }
+
+    .site-footer__top {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "about about"
+            "connect connect"
+            "quick explore";
+        gap: 24px 12px;
+        padding-bottom: 26px;
+    }
+
+    .site-footer__about { grid-area: about; text-align: center; }
+    .site-footer__brand { justify-content: center; margin-bottom: 12px; }
+    .site-footer__desc { max-width: 320px; margin-inline: auto; font-size: 13.5px; line-height: 1.85; }
+
+    .site-footer__col--connect { grid-area: connect; }
+    .site-footer__col--connect .site-footer__heading { display: none; }
+    .site-footer__socials { justify-content: center; gap: 14px; }
+    .site-footer__social {
+        width: 46px;
+        height: 46px;
+        font-size: 17px;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .14);
+    }
+
+    .site-footer__col--quick { grid-area: quick; }
+    .site-footer__col--explore { grid-area: explore; }
+    .site-footer__col--quick,
+    .site-footer__col--explore {
+        padding: 14px 14px 4px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .04);
+    }
+
+    .site-footer__heading { margin-bottom: 4px; font-size: 13px; color: var(--color-accent-300); }
+    .site-footer__links { gap: 0; }
+    .site-footer__links a {
+        padding: 10px 0;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+    .site-footer__links a:last-child { border-bottom: 0; }
+
+    .site-footer__bottom { flex-direction: column; align-items: center; gap: 10px; padding-top: 20px; text-align: center; }
+    .site-footer__legal { justify-content: center; gap: 18px; }
 }
