@@ -50,11 +50,11 @@
             <div class="site-header__desktop-preferences">
                 <div class="site-header__lang" role="group" aria-label="Language">
                     @if (($langLinks['ar'] ?? null))
-                        <a href="{{ $langLinks['ar'] }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
+                        <a href="{{ $langLinks['ar'] }}" data-lang-choice="ar" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
                     @endif
 
                     @if (($langLinks['en'] ?? null))
-                        <a href="{{ $langLinks['en'] }}" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
+                        <a href="{{ $langLinks['en'] }}" data-lang-choice="en" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
                     @endif
                 </div>
 
@@ -83,11 +83,11 @@
         <div class="site-header__mobile-preferences">
             <div class="site-header__lang site-header__lang--mobile" role="group" aria-label="Language">
                 @if (($langLinks['ar'] ?? null))
-                    <a href="{{ $langLinks['ar'] }}" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
+                    <a href="{{ $langLinks['ar'] }}" data-lang-choice="ar" class="site-header__lang-option @if($currentLocale === 'ar') is-active @endif">{{ __('layout.lang_switch_ar') }}</a>
                 @endif
 
                 @if (($langLinks['en'] ?? null))
-                    <a href="{{ $langLinks['en'] }}" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
+                    <a href="{{ $langLinks['en'] }}" data-lang-choice="en" class="site-header__lang-option @if($currentLocale === 'en') is-active @endif">{{ __('layout.lang_switch_en') }}</a>
                 @endif
             </div>
 

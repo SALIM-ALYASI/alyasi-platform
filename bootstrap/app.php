@@ -11,6 +11,7 @@ use App\Http\Middleware\AuthenticateProductWatch;
 use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
 use App\Http\Middleware\ForceLocale;
+use App\Http\Middleware\PreferDeviceLocale;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackVisit;
@@ -46,9 +47,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             SetLocale::class,
+            PreferDeviceLocale::class,
             CheckMaintenanceMode::class,
             TrackVisit::class,
         ]);
+
+        // كوكي اختيار اللغة يكتبه زر AR/EN بالمتصفح مباشرة، فما ينشفّر.
+        $middleware->encryptCookies(except: [PreferDeviceLocale::COOKIE]);
 
         $middleware->append(SecurityHeaders::class);
 

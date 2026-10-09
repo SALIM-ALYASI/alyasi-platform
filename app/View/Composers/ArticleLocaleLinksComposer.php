@@ -54,6 +54,18 @@ class ArticleLocaleLinksComposer
 
     public function compose(View $view): void
     {
+        $view->with('langLinks', $this->links());
+    }
+
+    /**
+     * روابط الصفحة الحالية باللغتين. رابط اللغة الأخرى يكون رابطًا مباشرًا
+     * لما تكون للصفحة نسخة فعلية بها، وإلا /locale/{locale}، أو null لو
+     * المحتوى غير مترجم. يستخدمه أيضًا PreferDeviceLocale لتحويل الزائر.
+     *
+     * @return array{ar: string|null, en: string|null}
+     */
+    public function links(): array
+    {
         $route = request()->route();
         $name = $route?->getName();
 
@@ -65,12 +77,10 @@ class ArticleLocaleLinksComposer
         $baseName = $name !== null && str_ends_with($name, '.en') ? substr($name, 0, -3) : $name;
 
         if ($baseName === 'articles.index') {
-            $view->with('langLinks', [
+            return [
                 'ar' => article_route('index', [], 'ar'),
                 'en' => article_route('index', [], 'en'),
-            ]);
-
-            return;
+            ];
         }
 
         /*
@@ -79,37 +89,31 @@ class ArticleLocaleLinksComposer
          * صفحة قسم المجتمع باللغة المطلوبة.
          */
         if ($baseName === 'community.show') {
-            $view->with('langLinks', [
+            return [
                 'ar' => localized_route('community.index', [], 'ar'),
                 'en' => localized_route('community.index', [], 'en'),
-            ]);
-
-            return;
+            ];
         }
 
         if ($baseName !== null && array_key_exists($baseName, self::PERMALINK_BASED_ROUTES)) {
-            $view->with('langLinks', $this->permalinkLinks(
+            return $this->permalinkLinks(
                 $route,
                 $baseName,
                 self::PERMALINK_BASED_ROUTES[$baseName],
                 $default
-            ));
-
-            return;
+            );
         }
 
         if ($baseName !== null && in_array($baseName, self::SIMPLE_LOCALE_ROUTES, true)) {
             $params = $route->parameters();
 
-            $view->with('langLinks', [
+            return [
                 'ar' => localized_route($baseName, $params, 'ar'),
                 'en' => localized_route($baseName, $params, 'en'),
-            ]);
-
-            return;
+            ];
         }
 
-        $view->with('langLinks', $default);
+        return $default;
     }
 
     /**

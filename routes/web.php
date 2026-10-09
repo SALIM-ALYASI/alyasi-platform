@@ -84,6 +84,8 @@ Route::get('/en', [HomeController::class, 'index'])
 Route::get('/locale/{locale}', function (Request $request, string $locale) {
     if (in_array($locale, SetLocale::SUPPORTED_LOCALES, true)) {
         session(['locale' => $locale]);
+        // اختيار صريح من الزائر -- يتقدّم على لغة الجهاز (PreferDeviceLocale).
+        cookie()->queue(cookie(\App\Http\Middleware\PreferDeviceLocale::COOKIE, $locale, 60 * 24 * 365, '/', null, null, false, false, 'lax'));
     }
 
     /*

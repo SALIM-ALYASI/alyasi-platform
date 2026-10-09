@@ -64,6 +64,15 @@
         });
     }
 
+    // زر AR/EN = اختيار صريح من الزائر: نحفظه سنة، ويتقدّم بعدها على
+    // لغة الجهاز (PreferDeviceLocale بالسيرفر يقرأ نفس الكوكي).
+    document.addEventListener('click', function (event) {
+        var link = event.target.closest && event.target.closest('[data-lang-choice]');
+        if (!link) return;
+        document.cookie = 'alyasi_lang=' + link.getAttribute('data-lang-choice')
+            + '; path=/; max-age=31536000; samesite=lax' + (location.protocol === 'https:' ? '; secure' : '');
+    });
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
