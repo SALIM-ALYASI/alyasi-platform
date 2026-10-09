@@ -45,7 +45,7 @@ class CyberxOman2026
                 'name' => 'رينيل وحيد',
                 'lead' => 'وإذا كانت الاستمرارية مهمة في أي مؤسسة، ففي المستشفى قد تصبح مسألة حياة. رينيل وحيد يأخذنا إلى غرفة الطوارئ.',
                 'subtitle' => 'SOFPITAL · Health Systems',
-                'image' => 'images/events/cyberx-2026/rineel-wahid.png',
+                'image' => 'images/events/cyberx-2026/rineel-wahid-v2.png',
                 'ratio' => 1,
                 'headline' => 'الأمن السيبراني في القطاع الصحي حماية للمرضى واستمرار للرعاية',
                 'paragraphs' => [
@@ -59,7 +59,7 @@ class CyberxOman2026
                 'name' => 'شابيل بشير',
                 'lead' => 'حماية المريض تبدأ باكتشاف الهجوم قبل أن يصل إليه. وهنا يأتي دور الذكاء الاصطناعي في مساندة فرق الأمن، مع شابيل بشير من ESET الشرق الأوسط.',
                 'subtitle' => 'ESET Middle East',
-                'image' => 'images/events/cyberx-2026/shabil-basheer.png',
+                'image' => 'images/events/cyberx-2026/shabil-basheer-v2.png',
                 'ratio' => 1,
                 'headline' => 'الذكاء الاصطناعي لا يستبدل المحلل البشري… بل يساعده على القرار أسرع',
                 'paragraphs' => [
@@ -102,7 +102,7 @@ class CyberxOman2026
                     'name' => 'Rineel Wahid',
                     'lead' => 'And if continuity matters in any organization, in a hospital it can be a matter of life and death. Rineel Wahid takes us into the emergency room.',
                     'subtitle' => 'SOFPITAL · Health Systems',
-                    'image' => 'images/events/cyberx-2026/rineel-wahid.png',
+                    'image' => 'images/events/cyberx-2026/rineel-wahid-v2.png',
                     'ratio' => 1,
                     'headline' => 'Cybersecurity in healthcare protects patients and keeps care going',
                     'paragraphs' => [
@@ -116,7 +116,7 @@ class CyberxOman2026
                     'name' => 'Shabil Basheer',
                     'lead' => 'Protecting the patient also means detecting threats before they disrupt care. This is where AI comes in to support security teams, with Shabil Basheer of ESET Middle East.',
                     'subtitle' => 'ESET Middle East',
-                    'image' => 'images/events/cyberx-2026/shabil-basheer.png',
+                    'image' => 'images/events/cyberx-2026/shabil-basheer-v2.png',
                     'ratio' => 1,
                     'headline' => 'AI doesn\'t replace the human analyst… it helps them decide faster',
                     'paragraphs' => [
