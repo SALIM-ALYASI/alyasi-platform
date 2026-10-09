@@ -610,6 +610,62 @@ html[lang="en"] .coverage-thanks__text { line-height: 1.8; }
     .coverage-listen__play { flex-basis: 62px; width: 62px; height: 62px; }
 }
 
+/* الجزء اللي يحكي عنه التقرير الصوتي الحين */
+.coverage-stop.is-narrating .stop-card {
+    border-color: var(--color-accent-500);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-500) 25%, transparent), var(--shadow-lg);
+}
+
+.coverage-stop.is-narrating .coverage-stop__node { transform: scale(1.12); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent-500) 22%, transparent); }
+.coverage-outro.is-narrating,
+.coverage-thanks.is-narrating { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-500) 30%, transparent), var(--shadow-lg); }
+.stop-card, .coverage-stop__node { transition: box-shadow .35s ease, border-color .35s ease, transform .35s ease; }
+.coverage-outro[data-reveal], .coverage-thanks[data-reveal] { transition: opacity .7s ease, transform .7s ease, box-shadow .35s ease; }
+
+/* شريط التقرير الصوتي السفلي */
+.coverage-dock {
+    position: fixed;
+    inset-inline: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 520px;
+    margin-inline: auto;
+    padding: 8px 14px 8px 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: var(--radius-pill);
+    background: rgba(8, 16, 32, .9);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+[dir="rtl"] .coverage-dock { padding: 8px 8px 8px 14px; }
+.coverage-dock[hidden] { display: none; }
+.coverage-dock img { flex: 0 0 30px; border-radius: 50%; background: #fdfdfd; }
+
+.coverage-dock__toggle {
+    display: grid;
+    flex: 0 0 36px;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-accent-500);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.coverage-dock__label { flex: 1; min-width: 0; overflow: hidden; font-size: 13px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
+.coverage-dock__bar { position: absolute; inset-inline: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, .12); }
+.coverage-dock__bar span { display: block; width: 0; height: 100%; background: var(--color-accent-300); transition: width .25s linear; }
+
 /* ---------- فيديو ملخص التغطية ---------- */
 .coverage-video {
     max-width: var(--coverage-max);

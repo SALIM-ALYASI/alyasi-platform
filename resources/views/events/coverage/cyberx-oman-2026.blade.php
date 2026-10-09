@@ -61,8 +61,16 @@
         {{-- التقرير الصوتي: زر استماع بشريط تقدّم -- الملف ما يتحمّل إلا عند الضغط --}}
         @php($report = $coverage['audio'])
         <section class="coverage-listen" data-reveal>
+            @php
+                $cueLabels = array_merge(
+                    array_map(fn ($stop, $i) => $ordinals[$i].' · '.$stop['name'], $stops, array_keys($stops)),
+                    [$t('الخلاصة', 'Summary'), $coverage['thanks']['title']]
+                );
+            @endphp
             <button type="button" class="coverage-listen__play" id="coverageListenPlay"
-                    data-src="{{ $report['src'] }}" aria-label="{{ $t('تشغيل التقرير الصوتي', 'Play the audio report') }}">
+                    data-src="{{ $report['src'] }}"
+                    data-cues="{{ json_encode($report['cues']) }}"
+                    data-cue-labels="{{ json_encode($cueLabels, JSON_UNESCAPED_UNICODE) }}" aria-label="{{ $t('تشغيل التقرير الصوتي', 'Play the audio report') }}">
                 <img class="coverage-listen__logo" src="{{ asset('images/logo/alyasi-mark-play.png') }}" alt="" width="68" height="68">
                 <span class="coverage-listen__icon" aria-hidden="true">▶</span>
             </button>
@@ -109,7 +117,7 @@
                     </li>
                 @endif
 
-                <li class="coverage-stop" data-reveal>
+                <li class="coverage-stop" data-reveal data-cue="{{ $i }}">
                     <span class="coverage-stop__node" aria-hidden="true">{{ sprintf('%02d', $i + 1) }}</span>
                     <article class="stop-card">
                         <span class="stop-card__watermark" aria-hidden="true">{{ sprintf('%02d', $i + 1) }}</span>
@@ -136,7 +144,7 @@
         </ol>
 
         {{-- الخلاصة --}}
-        <section class="coverage-outro" data-reveal>
+        <section class="coverage-outro" data-reveal data-cue="{{ count($stops) }}">
             <img class="coverage-outro__avatar" src="{{ $host['avatar'] }}" alt="" width="56" height="56">
             <p class="coverage-outro__text">{{ $coverage['outro'] }}</p>
             <div class="coverage-outro__actions">
@@ -149,7 +157,7 @@
         </section>
 
         {{-- شكر وتقدير لمن خصصوا وقتهم للمقابلات --}}
-        <section class="coverage-thanks" data-reveal>
+        <section class="coverage-thanks" data-reveal data-cue="{{ count($stops) + 1 }}">
             <a class="coverage-thanks__teaser" href="{{ localized_route('event_coverage.cyberx_oman_2026.interviews') }}">
                 <span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }} <span aria-hidden="true">{{ $isEn ? '→' : '←' }}</span>
             </a>
@@ -222,6 +230,14 @@
         <img id="coverageLightboxImg" src="" alt="">
         <button type="button" class="coverage-lightbox__nav coverage-lightbox__nav--next" id="coverageLightboxNext" aria-label="{{ $t('التالية', 'Next') }}">{{ $isEn ? '›' : '‹' }}</button>
         <span class="coverage-lightbox__count" id="coverageLightboxCount"></span>
+    </div>
+
+    {{-- شريط التقرير الصوتي السفلي: يظهر وقت الاستماع لما تختفي بطاقة الاستماع --}}
+    <div class="coverage-dock" id="coverageDock" hidden>
+        <button type="button" class="coverage-dock__toggle" id="coverageDockToggle" aria-label="{{ $t('تشغيل / إيقاف', 'Play / pause') }}">❚❚</button>
+        <img src="{{ asset('images/logo/alyasi-mark-play.png') }}" alt="" width="30" height="30">
+        <span class="coverage-dock__label" id="coverageDockLabel">{{ $report['label'] }}</span>
+        <span class="coverage-dock__bar"><span id="coverageDockFill"></span></span>
     </div>
 
     <script type="application/json" id="coverageData">@json($jsData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>

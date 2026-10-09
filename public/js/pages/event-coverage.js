@@ -284,7 +284,8 @@
         new MutationObserver(schedule).observe(lightbox, { attributes: true, attributeFilter: ['hidden'] });
     }
 
-    // التقرير الصوتي: زر تشغيل/إيقاف، وشريط تقدّم يقبل الضغط للقفز.
+    // التقرير الصوتي: زر تشغيل/إيقاف، وشريط تقدّم يقبل الضغط للقفز. وقت الاستماع
+    // الصفحة تنزل مع الصوت: كل ما يوصل التسجيل لمحطة، ننزل لها ونظلّلها.
     var listen = $('coverageListenPlay');
     if (listen) {
         var report = new Audio();
@@ -292,24 +293,71 @@
         var icon = listen.querySelector('.coverage-listen__icon');
         var fill = $('coverageListenFill');
         var time = $('coverageListenTime');
+        var dock = $('coverageDock');
+        var cues = JSON.parse(listen.dataset.cues || '[]');
+        var cueLabels = JSON.parse(listen.dataset.cueLabels || '[]');
+        var currentCue = -1;
+        var started = false;
+        var cardVisible = true;
+        var smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
         var fmt = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+
+        document.body.appendChild(dock);
+
+        function scrollToEl(el, offset) {
+            if (!el || isOpen) return;
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: smooth });
+        }
+
+        function setCue(index, scroll) {
+            if (index === currentCue) return;
+            currentCue = index;
+            document.querySelectorAll('[data-cue].is-narrating').forEach(function (el) { el.classList.remove('is-narrating'); });
+            var target = index >= 0 ? document.querySelector('[data-cue="' + index + '"]') : null;
+            $('coverageDockLabel').textContent = index >= 0 ? cueLabels[index] : listen.querySelector('.coverage-listen__label').textContent;
+            if (!target) return;
+            target.classList.add('is-narrating');
+            if (scroll) scrollToEl(target, 96);
+        }
+
+        function cueAt(t) {
+            var index = -1;
+            for (var i = 0; i < cues.length; i++) if (t >= cues[i]) index = i;
+            return index;
+        }
+
         var sync = function () {
             var playing = !report.paused;
             icon.textContent = playing ? '❚❚' : '▶';
             listen.classList.toggle('is-playing', playing);
+            $('coverageDockToggle').textContent = playing ? '❚❚' : '▶';
+            dock.hidden = !started || cardVisible;
         };
 
         listen.addEventListener('click', function () {
             if (!report.src) report.src = listen.dataset.src;
+            if (report.paused) {
+                report.play().catch(function () {});
+                // أول تشغيل: ننزل بحيث تكون بطاقة الاستماع فوق والمحطات تحتها.
+                if (!started) { started = true; scrollToEl(listen.closest('.coverage-listen'), 84); }
+            } else {
+                report.pause();
+            }
+        });
+        $('coverageDockToggle').addEventListener('click', function () {
             report.paused ? report.play().catch(function () {}) : report.pause();
         });
+
         report.addEventListener('play', sync);
         report.addEventListener('pause', sync);
-        report.addEventListener('ended', sync);
+        report.addEventListener('ended', function () { sync(); setCue(-1, false); });
         report.addEventListener('timeupdate', function () {
             if (!report.duration) return;
-            fill.style.width = (report.currentTime / report.duration * 100) + '%';
+            var ratio = report.currentTime / report.duration * 100;
+            fill.style.width = ratio + '%';
+            $('coverageDockFill').style.width = ratio + '%';
             time.textContent = fmt(report.currentTime) + ' / ' + fmt(report.duration);
+            setCue(cueAt(report.currentTime), !report.paused);
         });
         $('coverageListenBar').addEventListener('click', function (e) {
             if (!report.duration) return;
@@ -319,6 +367,14 @@
             if (getComputedStyle(this).direction === 'rtl') ratio = 1 - ratio;
             report.currentTime = Math.min(Math.max(ratio, 0), 1) * report.duration;
         });
+
+        // الشريط السفلي يظهر بس لما تطلع بطاقة الاستماع من الشاشة.
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                cardVisible = entries[0].isIntersecting;
+                sync();
+            }, { threshold: 0.3 }).observe(listen.closest('.coverage-listen'));
+        }
     }
 
     // فيديو الملخص: نحمّل مشغّل يوتيوب فقط لما يضغط القارئ تشغيل.
