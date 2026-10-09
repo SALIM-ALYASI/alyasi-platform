@@ -49,6 +49,8 @@ class ArticleLocaleLinksComposer
         'articles.show' => 'article',
         'services.show' => 'service',
         'news.show' => 'news_article',
+        // الرابط الذكي للخبر (/news/YYYY/MM/DD/NNN/slug) -- شكل كل الأخبار الحالية.
+        'news.show.smart' => 'news_article',
         'event_editions.show' => 'event_edition',
     ];
 
@@ -136,12 +138,11 @@ class ArticleLocaleLinksComposer
             return $default;
         }
 
-        $arSlug = $linkable->permalinks->firstWhere('locale', 'ar')?->slug;
-        $enSlug = $linkable->permalinks->firstWhere('locale', 'en')?->slug;
-
+        // Permalink::url() يبني الرابط الرسمي لكل نوع (ومنه رابط الخبر الذكي
+        // اللي يحتاج التاريخ والتسلسل، مو الـ slug بس).
         return [
-            'ar' => $arSlug ? localized_route($baseName, ['slug' => $arSlug], 'ar') : null,
-            'en' => $enSlug ? localized_route($baseName, ['slug' => $enSlug], 'en') : null,
+            'ar' => $linkable->permalinks->firstWhere('locale', 'ar')?->url(),
+            'en' => $linkable->permalinks->firstWhere('locale', 'en')?->url(),
         ];
     }
 }
