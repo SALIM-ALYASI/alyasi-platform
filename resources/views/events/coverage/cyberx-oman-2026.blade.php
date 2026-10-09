@@ -63,6 +63,7 @@
         <section class="coverage-listen" data-reveal>
             <button type="button" class="coverage-listen__play" id="coverageListenPlay"
                     data-src="{{ $report['src'] }}" aria-label="{{ $t('تشغيل التقرير الصوتي', 'Play the audio report') }}">
+                <img class="coverage-listen__logo" src="{{ asset('images/logo/alyasi-mark-play.png') }}" alt="" width="68" height="68">
                 <span class="coverage-listen__icon" aria-hidden="true">▶</span>
             </button>
             <div class="coverage-listen__body">

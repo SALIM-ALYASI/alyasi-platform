@@ -551,24 +551,50 @@ html[lang="en"] .coverage-thanks__text { line-height: 1.8; }
 }
 
 .coverage-listen__play {
-    display: grid;
-    flex: 0 0 68px;
-    place-items: center;
-    width: 68px;
-    height: 68px;
-    border: 0;
+    position: relative;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
+    padding: 0;
+    border: 3px solid var(--theme-card);
     border-radius: 50%;
-    background: var(--color-accent-500);
-    color: #fff;
-    font-size: 22px;
+    background: #fdfdfd;
     cursor: pointer;
-    box-shadow: 0 10px 26px color-mix(in srgb, var(--color-accent-500) 40%, transparent);
+    box-shadow: 0 0 0 1px var(--color-divider), 0 10px 26px color-mix(in srgb, var(--color-accent-500) 35%, transparent);
     transition: transform .15s ease;
 }
 
-.coverage-listen__play:hover { transform: scale(1.06); }
-.coverage-listen__icon { padding-inline-start: 3px; }
-.coverage-listen__play.is-playing .coverage-listen__icon { padding: 0; font-size: 18px; }
+.coverage-listen__play:hover { transform: scale(1.05); }
+.coverage-listen__logo { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+/* شارة التشغيل/الإيقاف على طرف الشعار */
+.coverage-listen__icon {
+    position: absolute;
+    bottom: -4px;
+    inset-inline-start: -4px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding-inline-start: 2px;
+    border: 2px solid var(--theme-card);
+    border-radius: 50%;
+    background: var(--color-accent-500);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
+}
+
+.coverage-listen__play.is-playing .coverage-listen__icon { padding: 0; font-size: 9px; }
+.coverage-listen__play.is-playing .coverage-listen__logo { animation: coverageListenPulse 1.6s ease-in-out infinite; }
+
+@keyframes coverageListenPulse {
+    50% { transform: scale(.94); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .coverage-listen__play.is-playing .coverage-listen__logo { animation: none; }
+}
 
 .coverage-listen__body { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
 .coverage-listen__label { font-size: 12px; font-weight: 700; color: var(--color-accent-500); }
@@ -581,7 +607,7 @@ html[lang="en"] .coverage-thanks__text { line-height: 1.8; }
 
 @media (max-width: 640px) {
     .coverage-listen { gap: 14px; padding: 16px; }
-    .coverage-listen__play { flex-basis: 56px; width: 56px; height: 56px; font-size: 18px; }
+    .coverage-listen__play { flex-basis: 62px; width: 62px; height: 62px; }
 }
 
 /* ---------- فيديو ملخص التغطية ---------- */
