@@ -28,7 +28,11 @@
 @section('og_title', $pageTitle)
 @section('og_description', $guest['intro'])
 @section('og_url', $isEn ? $urlEn : $urlAr)
-@section('og_image', asset('images/events/cyberx-2026/hall.jpg'))
+@section('og_image', $guest['og_image'] ?? $guest['photo'] ?? asset('images/events/cyberx-2026/coverage-hero.jpg'))
+@if ($guest['og_image'])
+    @section('og_image_width', 1200)
+    @section('og_image_height', 630)
+@endif
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/event-interviews.css') }}">

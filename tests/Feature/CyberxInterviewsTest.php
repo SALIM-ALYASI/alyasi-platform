@@ -32,7 +32,8 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟')
             ->assertSee('data-t="3.28"', false)
             ->assertSee('haitham\/a1.m4a', false)
-            ->assertDontSee('data-lang-choice="en"', false);
+            ->assertDontSee('data-lang-choice="en"', false)
+            ->assertSee('haitham-al-hajri-og.jpg', false);
     }
 
     public function test_arabic_only_interview_sends_english_links_to_the_arabic_page(): void

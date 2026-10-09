@@ -69,6 +69,8 @@ class CyberxInterviews
             'quote' => $pick('quote'),
             'intro' => $pick('intro'),
             'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
+            // صورة المشاركة (1200×630): الضيف واسمه واقتباسه -- تظهر لما ينرسل رابط مقابلته.
+            'og_image' => ! empty($guest['og_image']) ? asset(ltrim($guest['og_image'], '/')) : null,
             'initials' => $guest['initials'][$locale] ?? $guest['initials']['ar'] ?? '',
             'items' => $items,
             'minutes' => (int) max(1, round(array_sum(array_column($items, 'duration')) / 60)),
