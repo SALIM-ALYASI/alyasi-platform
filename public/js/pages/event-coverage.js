@@ -299,7 +299,7 @@
         var currentCue = -1;
         var started = false;
         var cardVisible = true;
-        var smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        var smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
         var fmt = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 
         document.body.appendChild(dock);
@@ -307,7 +307,7 @@
         function scrollToEl(el, offset) {
             if (!el || isOpen) return;
             // التمرير الناعم ما يشتغل والصفحة بالخلفية -- نقفز مباشرة وقتها.
-            var behavior = document.visibilityState === 'visible' ? smooth : 'auto';
+            var behavior = document.visibilityState === 'visible' ? smooth : 'instant';
             window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: behavior });
         }
 
