@@ -667,3 +667,4 @@
 .event-coverage-cta__label { font-size: 12px; font-weight: 700; color: var(--color-accent-500); }
 .event-coverage-cta strong { flex: 1; font-family: var(--font-heading); font-size: 16px; }
 .event-coverage-cta > span:last-child { color: var(--color-accent-500); font-weight: 700; }
+.event-coverage-cta + .event-coverage-cta { margin-top: 0; }

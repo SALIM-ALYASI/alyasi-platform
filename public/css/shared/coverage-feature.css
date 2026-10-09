@@ -68,3 +68,48 @@
     .coverage-feature__media { min-height: 150px; }
     .coverage-feature__body { padding: 18px; }
 }
+
+/* تغطية سايبر إكس داخل صفحة المؤتمر: بطاقتان (خمس محطات + اللقاءات) */
+.coverage-links { margin-block: 8px 28px; }
+.coverage-links__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+.coverage-links__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-lg);
+    background: var(--theme-card);
+    color: var(--color-text);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.coverage-links__card:hover { transform: translateY(-2px); border-color: var(--color-accent-500); box-shadow: var(--shadow-md); }
+.coverage-links__media { aspect-ratio: 16 / 9; overflow: hidden; }
+.coverage-links__media img { width: 100%; height: 100%; object-fit: cover; }
+.coverage-links__body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 18px 20px 20px; }
+.coverage-links__body strong { font-family: var(--font-heading); font-size: clamp(17px, 2.2vw, 20px); line-height: 1.45; }
+
+.coverage-links__badge {
+    align-self: flex-start;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+:root[data-theme="dark"] .coverage-links__badge {
+    background: color-mix(in srgb, var(--color-accent-500) 18%, transparent);
+    color: var(--color-accent-300);
+}
+
+.coverage-links__desc { color: var(--theme-muted); font-size: 14px; line-height: 1.8; }
+.coverage-links__cta { margin-top: auto; color: var(--color-accent-500); font-weight: 700; font-size: 14px; }
+
+@media (max-width: 640px) {
+    .coverage-links__grid { grid-template-columns: 1fr; }
+}

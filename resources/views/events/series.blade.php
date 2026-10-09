@@ -16,6 +16,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/community-index.css') }}">
+    @if ($event->slug === 'cyberx-oman')
+        <link rel="stylesheet" href="{{ versioned_asset('css/shared/coverage-feature.css') }}">
+    @endif
 @endpush
 
 @section('content')
@@ -75,5 +78,9 @@
             @endforeach
         </div>
     </section>
+
+    @if ($event->slug === 'cyberx-oman')
+        @include('events.coverage._cyberx-links')
+    @endif
 
 @endsection
