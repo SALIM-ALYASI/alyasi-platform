@@ -42,8 +42,8 @@
         :highlight="$t('محطات', 'Stops')"
         :description="$t('ماذا لو وقع الاختراق فعلًا؟ رحلة من مسقط في خمس محطات.', 'What if a breach actually happens? A journey from Muscat in five stops.')"
         :image="$coverage['hall']"
-        :image-width="1449"
-        :image-height="2576"
+        :image-width="1672"
+        :image-height="941"
     />
 
     <div class="coverage container">

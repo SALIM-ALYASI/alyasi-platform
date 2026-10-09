@@ -171,7 +171,7 @@ class CyberxOman2026
             ],
             'stops' => $stops,
             'outro' => $t('خمس محطات، ورسالة واحدة: الاستعداد واختبار الجاهزية وحماية البيانات هي ما يُبقي المؤسسات قائمة عندما تتعطل الأنظمة. هذه كانت خمس محطات توقفت عندها في سايبر إكس عُمان 2026.', 'Five stops, one message: cyber resilience starts long before an incident happens. Preparation, readiness testing, data protection and clear accountability are what keep organizations moving when systems fail. These were the five moments that stood out to me at CyberX Oman 2026.'),
-            'hall' => asset('images/events/cyberx-2026/hall.jpg'),
+            'hall' => asset('images/events/cyberx-2026/coverage-hero.jpg'),
             // فيديو ملخص التغطية على قناة اليوتيوب.
             'video' => [
                 'id' => 'ATZqGX2DJR4',
