@@ -59,7 +59,7 @@
         </header>
 
         {{-- التقرير الصوتي: زر استماع بشريط تقدّم -- الملف ما يتحمّل إلا عند الضغط --}}
-        @php($report = $coverage['audio'])
+        @php $report = $coverage['audio']; @endphp
         <section class="coverage-listen" data-reveal>
             @php
                 $cueLabels = array_merge(
@@ -86,7 +86,7 @@
         </section>
 
         {{-- فيديو ملخص التغطية: صورة مصغّرة، والمشغّل ما يتحمّل إلا عند الضغط --}}
-        @php($video = $coverage['video'])
+        @php $video = $coverage['video']; @endphp
         @if ($video['visible'] ?? true)
         <section class="coverage-video" data-reveal>
             <div class="coverage-video__frame" id="coverageVideo" data-video-id="{{ $video['id'] }}" data-video-title="{{ $video['title'] }}">
@@ -161,7 +161,7 @@
             <a class="coverage-thanks__teaser" href="{{ localized_route('event_coverage.cyberx_oman_2026.interviews') }}">
                 <span aria-hidden="true">🎙️</span> {{ $coverage['thanks']['teaser'] }} <span aria-hidden="true">{{ $isEn ? '→' : '←' }}</span>
             </a>
-            @php($photos = $coverage['thanks']['photos'])
+            @php $photos = $coverage['thanks']['photos']; @endphp
             <div class="coverage-gallery" data-count="{{ count($photos) }}" aria-roledescription="carousel" aria-label="{{ $t('صور من المؤتمر', 'Photos from the conference') }}">
                 <div class="coverage-gallery__track" id="coverageGalleryTrack">
                     @foreach ($photos as $i => $photo)

@@ -43,6 +43,17 @@ class CyberxInterviewsTest extends TestCase
             ->assertRedirect(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'));
     }
 
+    public function test_coverage_page_renders_with_audio_report_cues(): void
+    {
+        $this->get('/events/cyberx-oman-2026/coverage')
+            ->assertOk()
+            ->assertSee('coverageListenPlay', false)
+            ->assertSee('data-cue="0"', false)
+            ->assertSee('coverageDock', false);
+
+        $this->get('/en/events/cyberx-oman-2026/coverage')->assertOk();
+    }
+
     public function test_unpublished_or_unknown_guest_is_not_found(): void
     {
         $this->get('/events/cyberx-oman-2026/interviews/yahya-al-azri')->assertNotFound();
