@@ -25,7 +25,7 @@ class TechHistoryController extends Controller
         $stories = Article::query()
             ->with(['permalinks'])
             ->published()
-            ->availableIn('ar')
+            ->availableIn(app()->getLocale())
             ->whereHas('category', fn ($q) => $q->where('slug', self::CATEGORY_SLUG))
             ->ordered()
             ->paginate(12);
@@ -40,7 +40,7 @@ class TechHistoryController extends Controller
         $permalink = Permalink::query()
             ->with('linkable')
             ->where('linkable_type', 'article')
-            ->where('locale', 'ar')
+            ->where('locale', app()->getLocale())
             ->where('slug', $slug)
             ->first();
 
@@ -62,7 +62,7 @@ class TechHistoryController extends Controller
         $otherStories = Article::query()
             ->with('permalinks')
             ->published()
-            ->availableIn('ar')
+            ->availableIn(app()->getLocale())
             ->whereHas('category', fn ($q) => $q->where('slug', self::CATEGORY_SLUG))
             ->whereKeyNot($article->getKey())
             ->ordered()
@@ -76,7 +76,7 @@ class TechHistoryController extends Controller
     {
         $redirect = PermalinkRedirect::query()
             ->with('permalink.linkable')
-            ->where('locale', 'ar')
+            ->where('locale', app()->getLocale())
             ->where('old_slug', $slug)
             ->first();
 
@@ -90,7 +90,7 @@ class TechHistoryController extends Controller
         );
 
         return redirect()->to(
-            route('tech-history.show', ['slug' => $redirect->permalink->slug]),
+            localized_route('tech-history.show', ['slug' => $redirect->permalink->slug]),
             301
         );
     }

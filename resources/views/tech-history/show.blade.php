@@ -1,16 +1,27 @@
 @extends('layouts.app')
 
-@section('title', ($article->meta_title_ar ?: $article->title).' — ALYASI')
-@section('meta_description', $article->meta_description_ar ?: \Illuminate\Support\Str::limit(strip_tags($article->content), 160))
-
 @php
-    $arPermalink = $article->permalinks->firstWhere('locale', 'ar');
+    $isEn = app()->getLocale() === 'en';
+    $metaTitle = ($isEn ? $article->meta_title_en : $article->meta_title_ar) ?: $article->title;
+    $metaDescription = ($isEn ? $article->meta_description_en : $article->meta_description_ar)
+        ?: \Illuminate\Support\Str::limit(strip_tags($article->content), 160);
+    // روابط الحلقة بقسم تاريخ التقنية نفسه (مو /articles) لكل لغة متوفرة.
+    $arSlug = $article->translatedSlug('ar');
+    $enSlug = $article->translatedSlug('en');
+    $arUrl = $arSlug ? route('tech-history.show', ['slug' => $arSlug]) : null;
+    $enUrl = $enSlug ? route('tech-history.show.en', ['slug' => $enSlug]) : null;
 @endphp
 
-@section('canonical', $arPermalink ? $arPermalink->url() : url()->current())
+@section('title', $metaTitle.' — ALYASI')
+@section('meta_description', $metaDescription)
+@section('canonical', ($isEn ? $enUrl : $arUrl) ?: url()->current())
+@if ($arUrl && $enUrl)
+    @section('hreflang_ar', $arUrl)
+    @section('hreflang_en', $enUrl)
+@endif
 @section('og_type', 'article')
-@section('og_title', $article->meta_title_ar ?: $article->title)
-@section('og_description', $article->meta_description_ar ?: \Illuminate\Support\Str::limit(strip_tags($article->content), 160))
+@section('og_title', $metaTitle)
+@section('og_description', $metaDescription)
 @section('og_url', url()->current())
 @section('og_image', media_url($article->displayImage()))
 
@@ -61,7 +72,7 @@
 
 <section class="container articles-detail__header-after-image">
     <div class="articles-detail__breadcrumb">
-        <a href="{{ route('tech-history.index') }}">{{ __('tech_history.hero_badge') }}</a>
+        <a href="{{ localized_route('tech-history.index') }}">{{ __('tech_history.hero_badge') }}</a>
     </div>
 
     <div class="articles-detail__meta">
@@ -106,8 +117,8 @@
 
         <div class="grid-3">
             @foreach ($otherStories as $other)
-                @php $otherSlug = $other->slug('ar'); @endphp
-                <a href="{{ $otherSlug ? route('tech-history.show', ['slug' => $otherSlug]) : route('tech-history.index') }}" class="card card--hover articles-detail__related-card">
+                @php $otherSlug = $other->translatedSlug(app()->getLocale()); @endphp
+                <a href="{{ $otherSlug ? localized_route('tech-history.show', ['slug' => $otherSlug]) : localized_route('tech-history.index') }}" class="card card--hover articles-detail__related-card">
                     <div class="articles-detail__related-media">
                         <img src="{{ media_url($other->displayImage()) }}" alt="{{ $other->title }}" loading="lazy">
                     </div>

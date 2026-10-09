@@ -281,6 +281,19 @@ Route::middleware('force.locale:ar')
             ->name('show');
     });
 
+Route::middleware('force.locale:en')
+    ->prefix('en/tech-history')
+    ->name('tech-history.')
+    ->controller(TechHistoryController::class)
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index.en');
+
+        Route::get('/{slug}', 'show')
+            ->where('slug', '[^/]+')
+            ->name('show.en');
+    });
+
 /*
 |--------------------------------------------------------------------------
 | Public Articles

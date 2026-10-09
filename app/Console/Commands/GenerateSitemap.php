@@ -35,6 +35,7 @@ class GenerateSitemap extends Command
         'community.index',
         'social-links.index',
         'event_coverage.cyberx_oman_2026',
+        'tech-history.index',
         'privacy',
         'terms',
     ];
@@ -87,6 +88,7 @@ class GenerateSitemap extends Command
 
         $this->addStaticPages($sitemap);
         $this->addArticles($sitemap);
+        $this->addTechHistory($sitemap);
         $this->addNews($sitemap);
         $this->addServices($sitemap);
         $this->addWorks($sitemap);
@@ -183,6 +185,34 @@ class GenerateSitemap extends Command
                                 ->addAlternate($enUrl, 'en')
                         );
                     }
+                }
+            });
+    }
+
+    /**
+     * حلقات تاريخ التقنية -- مقالات بقسمها الخاص (/tech-history)، باللغتين.
+     */
+    private function addTechHistory(Sitemap $sitemap): void
+    {
+        Article::query()
+            ->published()
+            ->with('permalinks')
+            ->whereHas('category', fn ($q) => $q->where('slug', Article::TECH_HISTORY_CATEGORY_SLUG))
+            ->get()
+            ->each(function (Article $story) use ($sitemap): void {
+                $urls = array_filter([
+                    'ar' => ($slug = $story->translatedSlug('ar')) ? route('tech-history.show', ['slug' => $slug]) : null,
+                    'en' => ($slug = $story->translatedSlug('en')) ? route('tech-history.show.en', ['slug' => $slug]) : null,
+                ]);
+
+                foreach ($urls as $url) {
+                    $entry = Url::create($url)->setLastModificationDate($story->updated_at);
+
+                    if (count($urls) === 2) {
+                        $entry->addAlternate($urls['en'], 'en')->addAlternate($urls['ar'], 'ar');
+                    }
+
+                    $sitemap->add($entry);
                 }
             });
     }

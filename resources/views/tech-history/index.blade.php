@@ -3,8 +3,10 @@
 @section('title', __('tech_history.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('tech_history.meta_description'))
 
-@section('canonical', paginated_canonical(route('tech-history.index')))
-@section('og_url', route('tech-history.index'))
+@section('canonical', paginated_canonical(localized_route('tech-history.index')))
+@section('og_url', localized_route('tech-history.index'))
+@section('hreflang_ar', route('tech-history.index'))
+@section('hreflang_en', route('tech-history.index.en'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
@@ -27,11 +29,11 @@
         @if ($stories->isNotEmpty())
             <div class="grid-3">
                 @foreach ($stories as $story)
-                    @php $slug = $story->slug('ar'); @endphp
-                    <a href="{{ $slug ? route('tech-history.show', ['slug' => $slug]) : route('tech-history.index') }}" class="card card--hover articles-card" data-reveal>
-                        @if ($story->featured_image_ar)
+                    @php $slug = $story->translatedSlug(app()->getLocale()); @endphp
+                    <a href="{{ $slug ? localized_route('tech-history.show', ['slug' => $slug]) : localized_route('tech-history.index') }}" class="card card--hover articles-card" data-reveal>
+                        @if ($story->displayImage())
                             <div class="articles-card__media">
-                                <img src="{{ media_url($story->featured_image_ar) }}" alt="{{ $story->title }}" loading="lazy">
+                                <img src="{{ media_url($story->displayImage()) }}" alt="{{ $story->title }}" loading="lazy">
                             </div>
                         @endif
                         <div class="articles-card__body">
@@ -46,7 +48,7 @@
                             @if ($story->excerpt)
                                 <p class="articles-card__excerpt">{{ $story->excerpt }}</p>
                             @endif
-                            <span class="articles-card__link">{{ __('tech_history.read_more') }} ←</span>
+                            <span class="articles-card__link">{{ __('tech_history.read_more') }} {{ app()->getLocale() === 'en' ? '→' : '←' }}</span>
                         </div>
                     </a>
                 @endforeach

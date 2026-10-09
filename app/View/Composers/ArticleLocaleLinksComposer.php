@@ -39,6 +39,7 @@ class ArticleLocaleLinksComposer
         'social-links.index',
         'community.index',
         'event_coverage.cyberx_oman_2026',
+        'tech-history.index',
     ];
 
     /**
@@ -94,6 +95,23 @@ class ArticleLocaleLinksComposer
             return [
                 'ar' => localized_route('community.index', [], 'ar'),
                 'en' => localized_route('community.index', [], 'en'),
+            ];
+        }
+
+        // حلقات تاريخ التقنية مقالات، لكن رابطها بقسمها الخاص مو /articles.
+        if ($baseName === 'tech-history.show') {
+            $permalink = Permalink::query()
+                ->with('linkable.permalinks')
+                ->where('linkable_type', 'article')
+                ->where('slug', $route->parameter('slug'))
+                ->first();
+            $linkable = $permalink?->linkable;
+            $arSlug = $linkable?->permalinks->firstWhere('locale', 'ar')?->slug;
+            $enSlug = $linkable?->permalinks->firstWhere('locale', 'en')?->slug;
+
+            return [
+                'ar' => $arSlug ? route('tech-history.show', ['slug' => $arSlug]) : null,
+                'en' => $enSlug ? route('tech-history.show.en', ['slug' => $enSlug]) : null,
             ];
         }
 

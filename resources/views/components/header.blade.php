@@ -2,7 +2,7 @@
     $showArticlesNav = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
 
     // الروابط التي لها فعليًا نسخة /en (غيرها يبقى بدون prefix بغض النظر عن اللغة).
-    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index'];
+    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index', 'tech-history.index'];
 
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
