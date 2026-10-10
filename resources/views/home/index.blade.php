@@ -37,6 +37,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/home.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/coverage-feature.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/shared/certificates.css') }}">
 @endpush
 
 @section('content')
@@ -279,6 +280,8 @@
     </section>
 
     {{-- LATEST UPDATES (أخبار + مقالات + مجتمع مدمجة) --}}
+    @include('partials.certificates')
+
     <section id="updates" class="container home-section">
         <div class="home-section__head">
             <div>
