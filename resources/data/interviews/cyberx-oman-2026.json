@@ -17,8 +17,8 @@
    "topic_en": "Digital banking, fraud and AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
-   "intro_ar": "أرسل الدكتور هيثم الحجري إجاباته بصوته على أسئلتي المسجّلة: كيف توازن البنوك بين سهولة الخدمات الرقمية وحمايتها، وما أخطر أساليب الاحتيال اليوم، وأين يجب أن يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي.",
-   "intro_en": "Dr. Haitham Al Hajri answered my recorded questions in his own voice: how banks balance convenience and security in digital services, the most dangerous fraud tactics today, and where decisions must stay in human hands in the age of AI.",
+   "intro_ar": "أرسل الدكتور هيثم الحجري إجاباته بصوته على أسئلتي المسجّلة: كيف توازن البنوك بين سهولة الخدمات الرقمية وحمايتها، وما أخطر أساليب الاحتيال اليوم، وأين يجب أن يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي، وما الذي يحققه مؤتمر مثل سايبر إكس عُمان للمجتمع العُماني.",
+   "intro_en": "Dr. Haitham Al Hajri answered my recorded questions in his own voice: how banks balance convenience and security in digital services, the most dangerous fraud tactics today, where decisions must stay in human hands in the age of AI, and what a conference like CyberX Oman achieves for Omani society.",
    "items": [
     {
      "q_ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟",
@@ -190,6 +190,63 @@
        "t": 55.6,
        "ar": "فالذكاء الاصطناعي يقوم بعمل جيد في هذا المجال.",
        "en": "AI does a good job in this field."
+      }
+     ]
+    },
+    {
+     "q_ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
+     "q_en": "Is this conference mainly about raising cyber awareness in Oman, or showing the world Oman's progress? And if it serves both, how can we share it with Omanis in Arabic?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-last-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-last-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a5.m4a",
+     "duration": 106.0,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "طبعًا سؤال جدًا جميل، وموجّه للمجتمع العُماني، وأيضًا للخبراء العُمانيين الذين كانوا جزءًا من هذا المؤتمر.",
+       "en": "Of course, a very good question, aimed at Omani society and also at the Omani experts who were part of this conference."
+      },
+      {
+       "t": 9.14,
+       "ar": "مثل ما أنت شفت اليوم، المؤتمر شمل أكثر من جانب: هناك الخبراء الخارجيون الذين أتوا من السعودية ومن دول الخليج ومن الخارج، فأتوا بمشاركات عمّا توصلت إليه دولهم أو التقنيات في شركاتهم، وخاصة الشركات العالمية التي ساهمت في هذا المؤتمر.",
+       "en": "As you saw today, the conference covered more than one side: there were experts from Saudi Arabia, the Gulf and beyond, who shared what their countries and companies have achieved, especially the global companies that took part."
+      },
+      {
+       "t": 30.9,
+       "ar": "وهذا بنفسه هدف ثانٍ: أن نطّلع على خبرات الآخرين، ونتعلّم من التقنيات الجديدة، وكيف نتبنّاها بشكل آمن وسليم.",
+       "en": "That in itself is a second goal: to learn from others' experience and from new technologies, and how to adopt them safely and soundly."
+      },
+      {
+       "t": 40.82,
+       "ar": "والمنطلق الآخر هم الخبراء العُمانيون الذين كانوا موجودين في هذا المؤتمر في شتّى مجالاتهم، مثل الحوكمة والقوانين، والذكاء الاصطناعي، والأمن السيبراني.",
+       "en": "The other side is the Omani experts who attended from many fields, such as governance and law, artificial intelligence and cybersecurity."
+      },
+      {
+       "t": 52.38,
+       "ar": "فكانوا يتكلمون عن كيف نكون مكمّلين لبعض، بحيث نغطي جميع هذه المجالات في جلسة نقاشية وحوارية نتبادل فيها المعلومات.",
+       "en": "They spoke about how we can complement each other, covering all these fields in panel discussions where we exchange information."
+      },
+      {
+       "t": 63.0,
+       "ar": "وفي النهاية نخرج بتوصيات قد تفيد في صياغة قوانين جديدة وحوكمات جديدة تتواءم مع التطور الرقمي الذي تشهده السلطنة اليوم، وهو تحوّل جدًا كبير وجميل وفي الاتجاه الصحيح.",
+       "en": "In the end we come out with recommendations that can help draft new laws and governance that keep pace with Oman's digital development today, a very big, positive shift in the right direction."
+      },
+      {
+       "t": 79.52,
+       "ar": "فلذلك المؤتمر يخدم عدة أجندات.",
+       "en": "So the conference serves several agendas."
+      },
+      {
+       "t": 82.16,
+       "ar": "أما بالنسبة لأن يصل المحتوى إلى المجتمع العُماني باللغة العربية، فهنا يأتي دور الإعلاميين الذين يقومون بترجمة منجزات ومخرجات هذا المؤتمر وتبسيطها للمجتمع العام، بحيث يستفيد من هذه المعلومات وينشر التوعية بشكل أفضل.",
+       "en": "As for getting the content to Omanis in Arabic, that is where journalists come in: translating and simplifying the conference's outcomes for the general public, so people benefit and awareness spreads further."
+      },
+      {
+       "t": 100.94,
+       "ar": "وهنا يأتي دوركم في هذا المجال.",
+       "en": "And that is where your role comes in."
       }
      ]
     }
