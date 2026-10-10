@@ -5,7 +5,7 @@ return [
     'nav' => [
         'home' => 'الرئيسية',
         'services' => 'الخدمات',
-        'works' => 'أعمالنا',
+        'works' => 'أعمالي',
         'news' => 'الأخبار',
         'product_launches' => 'إطلاقات المنتجات',
         'tech_history' => 'تاريخ التقنية',

@@ -32,7 +32,7 @@ return [
 
     'hero_cta_primary' => 'اطلب خدمتك الآن',
 
-    'hero_cta_secondary' => 'شاهد أعمالنا',
+    'hero_cta_secondary' => 'شاهد أعمالي',
 
     'explore_services' => 'استكشف الخدمات',
 
