@@ -399,7 +399,8 @@
     "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a",
     "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-en.m4a"
    },
-   "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026"
+   "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og-en.jpg"
   },
   {
    "slug": "yahya-al-azri",

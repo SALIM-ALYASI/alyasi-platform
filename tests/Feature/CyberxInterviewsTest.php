@@ -45,6 +45,7 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('AI-generated voice, with Dr. Haitham’s consent')
             ->assertSee('Original recording in Arabic')
             ->assertSee('haitham\/en-a1.m4a', false)
+            ->assertSee('haitham-al-hajri-og-en.jpg', false)
             ->assertSee('haitham\/a1.m4a', false);
     }
 
