@@ -28,7 +28,8 @@ class TrackVisit
 
         if ($response->getStatusCode() === 200 && $this->shouldTrack($request)) {
             $visit = PageVisit::query()->create([
-                'path' => '/'.ltrim($request->path(), '/'),
+                // الروابط العربية المرمّزة (%D9%81…) ممكن تتعدى 255 حرف وتطيّح الصفحة بخطأ 500.
+                'path' => substr('/'.ltrim($request->path(), '/'), 0, 255),
                 'ip_address' => $request->ip(),
                 'user_agent' => substr((string) $request->userAgent(), 0, 255),
             ]);
