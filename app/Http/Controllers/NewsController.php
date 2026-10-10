@@ -97,9 +97,12 @@ class NewsController extends Controller
         $article = $permalink->linkable;
 
         /*
-         * التأكد من أن الرابط يعود إلى خبر.
+         * التأكد من أن الرابط يعود إلى خبر. خبر محذوف عمدًا (سلة المحذوفات)
+         * يرجع 410 بدل 404 -- يخلي قوقل يشيله من الفهرس أسرع.
          */
-        abort_unless($article instanceof NewsArticle, 404);
+        if (! $article instanceof NewsArticle) {
+            abort(NewsArticle::onlyTrashed()->whereKey($permalink->linkable_id)->exists() ? 410 : 404);
+        }
 
         /*
          * التأكد من أن الخبر منشور ومتاح للعامة.
@@ -225,7 +228,14 @@ class NewsController extends Controller
             ->where('daily_sequence', $sequenceNumber)
             ->first();
 
-        abort_unless($article, 404);
+        if (! $article) {
+            $deleted = NewsArticle::onlyTrashed()
+                ->whereDate('publication_date', $date)
+                ->where('daily_sequence', $sequenceNumber)
+                ->exists();
+
+            abort($deleted ? 410 : 404);
+        }
 
         $article->load([
             'category',
