@@ -81,7 +81,18 @@ class WorkController extends Controller
                 'title_en',
             ]);
 
-        $types = $this->workTypes();
+        // أزرار التصفية: نعرض بس الأنواع اللي فيها أعمال منشورة فعلًا.
+        $usedTypes = Work::query()
+            ->where('is_active', true)
+            ->distinct()
+            ->pluck('type')
+            ->all();
+
+        $types = array_filter(
+            $this->workTypes(),
+            fn (string $key) => in_array($key, $usedTypes, true),
+            ARRAY_FILTER_USE_KEY
+        );
 
         return view(
             'works.index',
