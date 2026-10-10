@@ -17,7 +17,7 @@
    "topic_en": "Cybersecurity, banking fraud and the future of AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
-   "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي خمس إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني.",
+   "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي ست إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني، ولماذا يخلط المجتمع بين المبرمج ومختص الأمن السيبراني والمخترق.",
    "intro_en": "Following CyberX Oman 2026, we chose a different format for this conversation: questions recorded in audio, and answers recorded by Dr. Haitham Al Hajri himself, whenever it suited him. A format that goes beyond the limits of distance and scheduling, and keeps every answer in its owner's voice, exactly as it was said.\n\nIn five answers, Al Hajri opens the key files of digital security: how banks balance convenience and safety, the most dangerous fraud tactics targeting users today, where decisions stay with humans in the age of AI, how AI detects banking fraud early, and what the conference offers Omani society.",
    "items": [
     {
@@ -290,6 +290,64 @@
       "Cybersecurity is not the responsibility of experts and institutions alone; it is a shared responsibility. By making cybersecurity knowledge accessible in Arabic, we can empower individuals, protect communities, and build a stronger culture of digital trust across Oman.",
       "Ultimately, CyberX Oman should be viewed not only as a platform for exchanging knowledge, but also as an opportunity to strengthen national capabilities, showcase Omani expertise, encourage responsible innovation, and contribute to a safer and more resilient digital future."
      ]
+    },
+    {
+     "q_ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
+     "q_en": "Many people, when they learn I'm a programmer, ask me: can you hack an account? What is the difference between a programmer, a cybersecurity specialist and a penetration tester, and why does society confuse them?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-panel-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a6.m4a",
+     "duration": 184.7,
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "سؤال جدًا جيد، وطبعًا فيه لبس كثير، خاصة في المجتمع العام الذي ليس لديه الدراية الكافية بأن هناك فرقًا جوهريًا ما بين المبرمج ومطوّر البرمجيات، ومهندس الأمن السيبراني، أو من لديه فنون الاختراق."
+      },
+      {
+       "t": 21.42,
+       "ar": "أولًا، خلّنا نقول إن المبرمج بشكل عام يطوّر البرنامج من الأساس بحكم خبرته في كتابة الأكواد، وهذه الأكواد لما تعمل مع بعض تُخرج منتجًا، سواء كان موقعًا إلكترونيًا، أو برنامج كمبيوتر، أو تطبيقًا يعمل على الهاتف النقّال."
+      },
+      {
+       "t": 47.94,
+       "ar": "أما دور فنّي أمن المعلومات أو المخترق، فهو تسخير قدرته في فهم آلية عمل هذه البرمجيات وكيفية حمايتها من المخاطر."
+      },
+      {
+       "t": 61.24,
+       "ar": "وفي نفس الوقت، لديه المعلومة والقدرة والعلم في فحص هذا البرنامج وإيجاد الثغرات الموجودة فيه؛ فقد يستغلها استغلالًا سيئًا، وهنا يصبح مخترق برامج."
+      },
+      {
+       "t": 77.1,
+       "ar": "الفرق ما بين المخترق ومهندس الأمن السيبراني هو الاستغلال السيئ للثغرة: مهندس الأمن السيبراني يجد الثغرة ويسكّرها، ولذلك يُسمَّون «القبعات البيضاء»، أما «القبعات السوداء» فهم المخترقون الذين لديهم نوايا خبيثة، يستغلون نقاط الضعف الموجودة في البرمجة ويسخّرونها لهدف الاختراق."
+      },
+      {
+       "t": 106.16,
+       "ar": "وهذا هو الموضوع الجوهري."
+      },
+      {
+       "t": 109.08,
+       "ar": "طيب، وين يحصل اللبس؟"
+      },
+      {
+       "t": 110.98,
+       "ar": "لأن نفس الشخص المبرمج يمكن أن يسخّر قدرته في البرمجة وقراءة الأكواد لاكتشاف الأخطاء التي وقع فيها مبرمج سابق، ويستغل نقاط الضعف فيها، وبالتالي يقوم بالاختراق."
+      },
+      {
+       "t": 125.12,
+       "ar": "فهنا يصير اللبس؛ لذلك كثير من الناس يقول لك: دام أنه مبرمج، فهذا الشخص لديه العلم والقدرة أن يشوف وش نقاط الضعف ويستغلها."
+      },
+      {
+       "t": 138.36,
+       "ar": "وطبعًا لما نتكلم عن مختبر الاختراق: لما نقول «مختبر» فهو مش بس لاب موجود في مكان، بل ممكن يكون مجموعة برمجيات موجودة في حاسب آلي، تساهم في فحص الأنظمة بشكل عام — الأنظمة الأمنية والشبكية وغيرها — وتقوم بإيجاد الثغرات الموجودة فيها، وبعدين المخترق يمكن يستغلها استغلالًا سيئًا."
+      },
+      {
+       "t": 170.22,
+       "ar": "فمختبر الاختراق هو مجموعة من الأدوات التي يتمكن من خلالها المخترق من توجيهها واستغلالها لاكتشاف الثغرات الأمنية."
+      }
+     ],
+     "languages": [
+      "ar"
+     ]
     }
    ],
    "languages": [
@@ -298,7 +356,7 @@
    ],
    "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a",
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a",
     "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-en.m4a"
    }
   },

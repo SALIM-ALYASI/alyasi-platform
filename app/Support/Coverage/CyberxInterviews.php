@@ -51,6 +51,12 @@ class CyberxInterviews
     {
         $pick = fn (string $key) => $guest[$key.'_'.$locale] ?? $guest[$key.'_ar'] ?? null;
 
+        // سؤال بلغة وحدة (مثلًا جواب بدون نسخة إنجليزية من الضيف) ما يطلع باللغة الثانية.
+        $guestItems = array_values(array_filter(
+            $guest['items'] ?? [],
+            fn (array $item) => in_array($locale, $item['languages'] ?? ['ar', 'en'], true)
+        ));
+
         $items = array_map(fn (array $item) => [
             'question' => $item['q_'.$locale] ?? $item['q_ar'],
             'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
@@ -61,7 +67,7 @@ class CyberxInterviews
             'segments' => $locale === 'en' && ! empty($item['en_paragraphs'])
                 ? []
                 : array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
-        ], $guest['items'] ?? []);
+        ], $guestItems);
 
         return [
             'slug' => $guest['slug'],
