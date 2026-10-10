@@ -67,7 +67,10 @@
 
     function load(track, seek) {
         current = track;
-        var src = track.kind === 'i' ? data.intro : (track.kind === 'q' ? items[track.item].q : items[track.item].a);
+        var src = track.kind === 'i' ? data.intro
+            : track.kind === 'q' ? items[track.item].q
+            : track.kind === 'o' ? items[track.item].o
+            : items[track.item].a;
         if (audio.getAttribute('src') !== src) {
             audio.src = src;
         }

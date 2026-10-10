@@ -60,8 +60,11 @@ class CyberxInterviews
         $items = array_map(fn (array $item) => [
             'question' => $item['q_'.$locale] ?? $item['q_ar'],
             'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
-            'a_audio' => asset(ltrim($item['a_audio'], '/')),
-            'duration' => $item['duration'],
+            // بالإنجليزي: صوت الضيف المولّد (بموافقته) لو موجود، والتسجيل العربي الأصلي يبقى متاحًا.
+            'a_audio' => asset(ltrim($locale === 'en' && ! empty($item['a_audio_en']) ? $item['a_audio_en']['src'] : $item['a_audio'], '/')),
+            'a_audio_original' => $locale === 'en' && ! empty($item['a_audio_en']) ? asset(ltrim($item['a_audio'], '/')) : null,
+            'ai_voice' => $locale === 'en' && ! empty($item['a_audio_en']['ai_voice']),
+            'duration' => $locale === 'en' && ! empty($item['a_audio_en']) ? $item['a_audio_en']['duration'] : $item['duration'],
             // النسخة الإنجليزية: نص الضيف نفسه (فقرات) لو كتبها -- ما تتزامن مع الصوت العربي.
             'paragraphs' => $locale === 'en' && ! empty($item['en_paragraphs']) ? $item['en_paragraphs'] : [],
             'segments' => $locale === 'en' && ! empty($item['en_paragraphs'])

@@ -62,7 +62,12 @@
       "Before introducing any digital service, banks must conduct comprehensive risk assessments, identify potential vulnerabilities, and implement appropriate security controls. This includes security testing, continuous monitoring, and ensuring that the service meets applicable regulatory and cybersecurity requirements.",
       "Equally important is customer awareness. Even the most advanced security systems can be undermined by human error or social engineering. Banks must therefore invest in continuous awareness campaigns that educate customers on how to use digital banking services safely, recognize suspicious activities, and protect their personal and financial information.",
       "Ultimately, the objective is not simply to make banking digital, but to make it secure, resilient, and trustworthy. Security should be built into the service from the design stage, rather than added as an afterthought."
-     ]
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a1.m4a",
+      "duration": 88.9,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "ما أكثر أسلوب احتيال يستهدف عملاء البنوك اليوم، وكيف يكتشفه العميل؟",
@@ -111,7 +116,12 @@
       "Another serious and evolving threat is mobile malware. Malicious applications can compromise devices, steal banking credentials, monitor user activity, or facilitate unauthorized transactions without the customer’s knowledge.",
       "To protect themselves, customers should never share their passwords or OTPs, avoid clicking on suspicious links, download applications only from trusted sources, and keep their devices and applications updated. They should also verify unexpected requests directly through official banking channels and report suspicious transactions immediately.",
       "The key message is simple: never trust a message, call, or link solely because it appears to come from a legitimate organization. Verify first, and act only when you are confident that the request is genuine."
-     ]
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a2.m4a",
+      "duration": 99.3,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "منصتي تعتمد على الذكاء الاصطناعي، لكنّي أرى أنني صاحب الفكرة والقرار، وهو المساعد الذي ينفّذ. برأيك، هل الذكاء الاصطناعي بديل عن تفكير الإنسان، أم أداة تنفّذ عمله؟ وأين يجب أن يبقى القرار بيد الإنسان؟",
@@ -177,7 +187,12 @@
       "Automation can certainly allow AI-enabled systems to execute specific tasks and make predefined decisions. However, such autonomy must operate within clearly established permissions, risk thresholds, monitoring mechanisms, and accountability structures. High-impact decisions should have appropriate human oversight and escalation mechanisms.",
       "This is where AI governance and ethics become essential. Organizations must establish clear policies defining what AI can do independently, what requires human approval, and who remains accountable for the outcome.",
       "AI can accelerate our thinking and expand our capabilities, but responsibility must never be delegated blindly to a machine. The future belongs to those who know how to combine human intelligence with artificial intelligence responsibly."
-     ]
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a3.m4a",
+      "duration": 150.1,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "ما دور الذكاء الاصطناعي في كشف الاحتيال البنكي؟",
@@ -222,7 +237,12 @@
       "However, AI is not a standalone solution. Its effectiveness depends on the quality of the data, the accuracy of its models, continuous monitoring, and integration with the bank’s broader security architecture. Human expertise remains essential for investigating alerts, validating findings, and making critical decisions.",
       "Banks must also ensure that AI systems themselves are protected against manipulation, misuse, and unauthorized access, while maintaining appropriate data privacy and governance controls.",
       "The real value of AI in banking lies in moving from reactive security to proactive, intelligence-driven protection—detecting threats earlier, responding faster, and strengthening the protection of both customers and financial systems."
-     ]
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a4.m4a",
+      "duration": 149.0,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
@@ -289,7 +309,12 @@
       "This is where the media plays a crucial role. By translating key discussions into Arabic, simplifying technical information, and presenting practical guidance, journalists can help bridge the gap between cybersecurity experts and the general public. The objective is to turn professional knowledge into public awareness and actionable guidance that people can apply in their daily lives.",
       "Cybersecurity is not the responsibility of experts and institutions alone; it is a shared responsibility. By making cybersecurity knowledge accessible in Arabic, we can empower individuals, protect communities, and build a stronger culture of digital trust across Oman.",
       "Ultimately, CyberX Oman should be viewed not only as a platform for exchanging knowledge, but also as an opportunity to strengthen national capabilities, showcase Omani expertise, encourage responsible innovation, and contribute to a safer and more resilient digital future."
-     ]
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a5.m4a",
+      "duration": 182.3,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
@@ -358,7 +383,8 @@
     "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a",
     "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-en.m4a"
    },
-   "intro_audio_six_ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a"
+   "intro_audio_six_ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a",
+   "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026"
   },
   {
    "slug": "yahya-al-azri",

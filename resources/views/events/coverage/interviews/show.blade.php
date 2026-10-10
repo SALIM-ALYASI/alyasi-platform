@@ -8,6 +8,7 @@
         'items' => array_map(fn ($item) => [
             'q' => $item['q_audio'],
             'a' => $item['a_audio'],
+            'o' => $item['a_audio_original'],
             'segments' => array_column($item['segments'], 't'),
         ], $guest['items']),
         'labels' => [
@@ -80,7 +81,7 @@
             </div>
 
             @if ($isEn)
-                <p class="interview__note">The written answers below are Dr. Haitham Al Hajri’s own English version. The audio is his original recording in Arabic.</p>
+                <p class="interview__note">The answers below are Dr. Haitham Al Hajri’s own English text, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer.</p>
             @endif
         </header>
 
@@ -115,7 +116,14 @@
                             </div>
 
                             @if ($item['paragraphs'])
-                                <span class="qa__orig">🎧 {{ $t('التسجيل الأصلي', 'Original recording in Arabic') }}</span>
+                                @if ($item['ai_voice'])
+                                    <span class="qa__orig">🤖 AI-generated voice, with Dr. Haitham’s consent</span>
+                                    <button type="button" class="qa__mini" data-play="o" data-item="{{ $i }}">
+                                        <span class="qa__mini-icon" aria-hidden="true">▶</span> Original recording in Arabic
+                                    </button>
+                                @else
+                                    <span class="qa__orig">🎧 {{ $t('التسجيل الأصلي', 'Original recording in Arabic') }}</span>
+                                @endif
                                 <div class="qa__text qa__text--written">
                                     @foreach ($item['paragraphs'] as $paragraph)
                                         <p>{{ $paragraph }}</p>

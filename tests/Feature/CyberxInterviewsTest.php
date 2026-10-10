@@ -42,7 +42,9 @@ class CyberxInterviewsTest extends TestCase
         $this->get('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri')
             ->assertOk()
             ->assertSee('Thank you, Salem, for this important question.')
+            ->assertSee('AI-generated voice, with Dr. Haitham’s consent')
             ->assertSee('Original recording in Arabic')
+            ->assertSee('haitham\/en-a1.m4a', false)
             ->assertSee('haitham\/a1.m4a', false);
     }
 
