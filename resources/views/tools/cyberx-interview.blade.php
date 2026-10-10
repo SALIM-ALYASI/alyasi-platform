@@ -495,14 +495,7 @@
             });
         });
 
-        // -- فاصل بصري بس بشريط التبويبات، يفصل ضيوف الأولوية عن ضيوف
-        //    الاحتياط بدون ما يكون تبويب قابل للضغط. --
-        if ((data.additional_guests || []).length) {
-            const divider = document.createElement('div');
-            divider.className = 'tabs-divider';
-            divider.textContent = 'ضيوف احتياط';
-            tabsBar.appendChild(divider);
-        }
+        // (فاصل «ضيوف احتياط» انشال بطلب سالم -- كل الضيوف بنفس الصف.)
 
         // -- تبويب لكل ضيف احتياط: كل أسئلته زي ما هي، بدون تقليص --
         (data.additional_guests || []).forEach((guest) => {

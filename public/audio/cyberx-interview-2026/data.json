@@ -311,7 +311,7 @@
    "id": "ahmed",
    "name_ar": "أحمد رضا",
    "name_en": "Ahmed Reza",
-   "hint": "حين يقع الاختراق… هل يصمد التطبيق؟",
+   "hint": "حين يقع الاختراق… هل نحن جاهزون؟",
    "window": "13:00",
    "gender": "m",
    "questions": [
@@ -322,40 +322,19 @@
      "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
     },
     {
-     "audio": "ahmed-app-q1",
-     "label": "سؤال 1 · من المؤتمر إلى الواقع",
-     "ar": "في إعلان مشاركتك في CyberX Oman 2026، أشرت إلى المرونة السيبرانية. ما الفكرة الأهم التي أردت إيصالها، وكيف تتحول إلى خطوة عملية داخل المؤسسة؟",
-     "en": "In your CyberX Oman 2026 announcement, you pointed to cyber resilience. What was the key idea you wanted to get across, and how does it become a practical step inside an organization?"
+     "audio": "ahmed-v3-q1",
+     "ar": "في مشاركتك في CyberX Oman، ما أهم رسالة أردت إيصالها عن قدرة المؤسسات على مواجهة الاختراق والتعافي منه؟",
+     "en": "In your participation at CyberX Oman, what was the most important message you wanted to share about organizations' ability to withstand a breach and recover from it?"
     },
     {
-     "audio": "ahmed-app-q2",
-     "label": "سؤال 2 · لحظة الاختبار",
-     "ar": "تخيّل أن تطبيقًا ماليًا تعرّض للاختراق الآن: ما أول قرار يجب اتخاذه لحماية المستخدمين والحد من الضرر؟",
-     "en": "Imagine a financial app has just been breached: what is the first decision that must be made to protect users and limit the damage?"
+     "audio": "ahmed-v3-q2",
+     "ar": "مع استخدام الذكاء الاصطناعي في البرمجة، كيف نتأكد أن التطبيق آمن، وليس فقط يعمل؟",
+     "en": "With AI being used in programming, how do we make sure an app is secure, and not just working?"
     },
     {
-     "audio": "ahmed-app-q3",
-     "label": "سؤال 3 · كود يعمل… لكن هل هو آمن؟",
-     "ar": "قد ينتج الذكاء الاصطناعي كودًا يعمل ويبدو مقنعًا. كيف يكتشف المطوّر أنه يخفي ثغرة قبل أن يصل إلى المستخدم؟",
-     "en": "AI can produce code that works and looks convincing. How can a developer tell that it hides a vulnerability before it reaches users?"
-    },
-    {
-     "audio": "ahmed-app-q4",
-     "label": "سؤال 4 · الحماية بعد الإطلاق",
-     "ar": "قد يجتاز التطبيق الاختبارات الأمنية ثم تظهر فيه ثغرة لاحقًا. كيف نجعل الحماية عملية مستمرة طوال عمر التطبيق؟",
-     "en": "An app may pass security testing, and then a vulnerability appears later. How do we make security a continuous process throughout the app's life?"
-    },
-    {
-     "audio": "ahmed-app-q5",
-     "label": "سؤال 5 · سهولة الاستخدام وحدود الأمان",
-     "ar": "في التطبيقات المالية، متى تصبح سهولة الاستخدام مصدر خطر؟ وهل تستطيع إعطاء مثال يوضح كيف نصمم تجربة سهلة وآمنة معًا؟",
-     "en": "In financial apps, when does ease of use become a source of risk? And could you give an example of how to design an experience that is both easy and secure?"
-    },
-    {
-     "audio": "ahmed-app-q6",
-     "label": "سؤال 6 · اختبار الجاهزية",
-     "ar": "لو طلبنا من شركة صغيرة إجراء اختبار واحد هذا الأسبوع لمعرفة قدرتها على الصمود والتعافي، ماذا تختار؟ وما النتيجة التي تعتبرها علامة خطر؟",
-     "en": "If we asked a small company to run one test this week to see whether it can withstand and recover, which would you choose? And what result would you consider a red flag?"
+     "audio": "ahmed-v3-q3",
+     "ar": "ما أول خطوة تنصح بها شركة صغيرة اليوم لتكون أكثر استعدادًا لأي اختراق؟",
+     "en": "What first step would you advise a small company to take today to be better prepared for any breach?"
     },
     {
      "audio": "ahmed-app-closing",
