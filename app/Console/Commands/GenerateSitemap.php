@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Article;
-use App\Models\CommunityPost;
 use App\Models\NewsArticle;
 use App\Models\Service;
 use App\Models\Work;
@@ -124,26 +123,6 @@ class GenerateSitemap extends Command
         foreach (self::STATIC_SINGLE_PATHS as $path) {
             $sitemap->add(Url::create($path));
         }
-    }
-
-    /**
-     * منشورات المجتمع محتوى بلغة واحدة فقط (بدون حقول ar/en منفصلة)،
-     * فتُضاف برابط واحد بدون alternates.
-     */
-    private function addCommunityPosts(Sitemap $sitemap): void
-    {
-        CommunityPost::query()
-            ->active()
-            ->published()
-            ->orderBy('id')
-            ->chunk(100, function ($posts) use ($sitemap) {
-                foreach ($posts as $post) {
-                    $sitemap->add(
-                        Url::create(route('community.show', $post))
-                            ->setLastModificationDate($post->updated_at)
-                    );
-                }
-            });
     }
 
     private function addArticles(Sitemap $sitemap): void

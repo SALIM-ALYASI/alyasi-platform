@@ -9,6 +9,8 @@
 @section('meta_description', __('events.series_meta_description', ['name' => $event->localizedName()]))
 @section('canonical', $seriesUrl)
 @section('og_url', $seriesUrl)
+@section('hreflang_ar', route('event_editions.show', ['slug' => $event->slug]))
+@section('hreflang_en', route('event_editions.show.en', ['slug' => $event->slug]))
 @section('og_image', $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg'))
 @section('og_image_width', 1200)
 @section('og_image_height', 630)
