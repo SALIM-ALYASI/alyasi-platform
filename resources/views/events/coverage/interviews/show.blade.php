@@ -80,7 +80,7 @@
             </div>
 
             @if ($isEn)
-                <p class="interview__note">The answers were recorded in Arabic. The English text is a translation that follows the audio.</p>
+                <p class="interview__note">The written answers below are Dr. Haitham Al Hajri’s own English version. The audio is his original recording in Arabic.</p>
             @endif
         </header>
 
@@ -114,11 +114,20 @@
                                 <span class="qa__time" data-time="{{ $i }}">{{ gmdate('i:s', (int) round($item['duration'])) }}</span>
                             </div>
 
-                            <p class="qa__text">
-                                @foreach ($item['segments'] as $s => $segment)
-                                    <span class="qa__seg" data-item="{{ $i }}" data-seg="{{ $s }}" data-t="{{ $segment['t'] }}">{{ $segment['text'] }}</span>
-                                @endforeach
-                            </p>
+                            @if ($item['paragraphs'])
+                                <span class="qa__orig">🎧 {{ $t('التسجيل الأصلي', 'Original recording in Arabic') }}</span>
+                                <div class="qa__text qa__text--written">
+                                    @foreach ($item['paragraphs'] as $paragraph)
+                                        <p>{{ $paragraph }}</p>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="qa__text">
+                                    @foreach ($item['segments'] as $s => $segment)
+                                        <span class="qa__seg" data-item="{{ $i }}" data-seg="{{ $s }}" data-t="{{ $segment['t'] }}">{{ $segment['text'] }}</span>
+                                    @endforeach
+                                </p>
+                            @endif
                         </div>
                         @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 40])
                     </div>

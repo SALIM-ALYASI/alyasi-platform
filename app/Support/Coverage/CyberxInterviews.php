@@ -56,7 +56,11 @@ class CyberxInterviews
             'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
             'a_audio' => asset(ltrim($item['a_audio'], '/')),
             'duration' => $item['duration'],
-            'segments' => array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
+            // النسخة الإنجليزية: نص الضيف نفسه (فقرات) لو كتبها -- ما تتزامن مع الصوت العربي.
+            'paragraphs' => $locale === 'en' && ! empty($item['en_paragraphs']) ? $item['en_paragraphs'] : [],
+            'segments' => $locale === 'en' && ! empty($item['en_paragraphs'])
+                ? []
+                : array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
         ], $guest['items'] ?? []);
 
         return [
@@ -69,8 +73,8 @@ class CyberxInterviews
             'quote' => $pick('quote'),
             'intro' => $pick('intro'),
             // المقدمة بصوت سالم (اختيارية) -- أول ما يشتغل بـ«استمع للمقابلة كاملة».
-            'intro_audio' => ! empty($guest['intro_audio'][$locale] ?? $guest['intro_audio']['ar'] ?? null)
-                ? asset(ltrim($guest['intro_audio'][$locale] ?? $guest['intro_audio']['ar'], '/'))
+            'intro_audio' => ! empty($guest['intro_audio'][$locale] ?? null)
+                ? asset(ltrim($guest['intro_audio'][$locale], '/'))
                 : null,
             'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
             // صورة المشاركة (1200×630): الضيف واسمه واقتباسه -- تظهر لما ينرسل رابط مقابلته.

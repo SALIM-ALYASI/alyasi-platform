@@ -349,3 +349,7 @@ html[lang="en"] .qa__text { line-height: 1.85; }
 
 .interview__intro > div { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .interview__intro-play { margin-top: 0; }
+
+.qa__orig { display: block; margin-top: 6px; color: var(--theme-muted); font-size: 12px; }
+.qa__text--written p { margin: 0 0 12px; }
+.qa__text--written p:last-child { margin-bottom: 0; }

@@ -21,8 +21,8 @@ class CyberxInterviewsTest extends TestCase
         $this->get('/en/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
-            ->assertSee('In Arabic')
-            ->assertSee('href="'.url('/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
+            ->assertDontSee('In Arabic')
+            ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
     }
 
@@ -33,14 +33,17 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟')
             ->assertSee('data-t="3.28"', false)
             ->assertSee('haitham\/a1.m4a', false)
-            ->assertDontSee('data-lang-choice="en"', false)
+            ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'" data-lang-choice="en"', false)
             ->assertSee('haitham-al-hajri-og.jpg', false);
     }
 
-    public function test_arabic_only_interview_sends_english_links_to_the_arabic_page(): void
+    public function test_english_page_shows_the_guests_own_written_answers(): void
     {
         $this->get('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri')
-            ->assertRedirect(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'));
+            ->assertOk()
+            ->assertSee('Thank you, Salem, for this important question.')
+            ->assertSee('Original recording in Arabic')
+            ->assertSee('haitham\/a1.m4a', false);
     }
 
     public function test_coverage_page_renders_with_audio_report_cues(): void

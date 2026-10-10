@@ -14,7 +14,7 @@
     "en": "HA"
    },
    "topic_ar": "الخدمات المصرفية الرقمية، والاحتيال، والذكاء الاصطناعي",
-   "topic_en": "Digital banking, fraud and AI",
+   "topic_en": "Cybersecurity, banking fraud and the future of AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
    "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي خمس إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني.",
@@ -55,6 +55,13 @@
        "ar": "عن طريق الفحص الأمني، وتقييم المخاطر، والتدريب والتوعية للمواطنين والمستخدمين بشكل عام.",
        "en": "through security testing, risk assessment, and training and awareness for citizens and users in general."
       }
+     ],
+     "en_paragraphs": [
+      "Thank you, Salem, for this important question.",
+      "Today, banks are continuously investing in digital transformation to make financial services more accessible, convenient, and efficient for their customers. However, digital convenience must always go hand in hand with security and trust.",
+      "Before introducing any digital service, banks must conduct comprehensive risk assessments, identify potential vulnerabilities, and implement appropriate security controls. This includes security testing, continuous monitoring, and ensuring that the service meets applicable regulatory and cybersecurity requirements.",
+      "Equally important is customer awareness. Even the most advanced security systems can be undermined by human error or social engineering. Banks must therefore invest in continuous awareness campaigns that educate customers on how to use digital banking services safely, recognize suspicious activities, and protect their personal and financial information.",
+      "Ultimately, the objective is not simply to make banking digital, but to make it secure, resilient, and trustworthy. Security should be built into the service from the design stage, rather than added as an afterthought."
      ]
     },
     {
@@ -97,6 +104,13 @@
        "ar": "طبعًا هناك أيضًا مخاطر أكثر تبرز، وهناك مخاطر متطورة، ولكن هذين الخطرين اليوم — التصيّد الاحتيالي والبرمجيات الخبيثة المصاحبة للأجهزة الرقمية — يُعتبران في مصافّ المخاطر المتقدمة.",
        "en": "Other, more sophisticated risks are emerging too, but these two, phishing and malware on digital devices, rank among the most serious today."
       }
+     ],
+     "en_paragraphs": [
+      "One of the most prevalent threats facing banking customers today is phishing, particularly through impersonation. Fraudsters pose as representatives of banks, government entities, or trusted service providers to deceive customers into revealing sensitive information or authorizing fraudulent transactions.",
+      "These attacks may arrive through text messages, emails, phone calls, or messaging applications. Customers may be directed to fraudulent websites or persuaded to share their passwords, one-time passwords (OTPs), or other authentication details, allowing criminals to gain access to their accounts and steal their money.",
+      "Another serious and evolving threat is mobile malware. Malicious applications can compromise devices, steal banking credentials, monitor user activity, or facilitate unauthorized transactions without the customer’s knowledge.",
+      "To protect themselves, customers should never share their passwords or OTPs, avoid clicking on suspicious links, download applications only from trusted sources, and keep their devices and applications updated. They should also verify unexpected requests directly through official banking channels and report suspicious transactions immediately.",
+      "The key message is simple: never trust a message, call, or link solely because it appears to come from a legitimate organization. Verify first, and act only when you are confident that the request is genuine."
      ]
     },
     {
@@ -154,6 +168,15 @@
        "ar": "وهذه كلها ضمن أخلاقيات استخدام الذكاء الاصطناعي اليوم. شكرًا.",
        "en": "All of this falls within the ethics of using AI today. Thank you."
       }
+     ],
+     "en_paragraphs": [
+      "Artificial intelligence should be viewed as an enabler of human intelligence, not a replacement for human judgment, creativity, or accountability.",
+      "AI allows us to analyze vast amounts of information, identify patterns, evaluate different scenarios, and perform complex tasks in a fraction of the time that would otherwise be required. For example, reviewing thousands of pages of research and extracting relevant insights could take a person weeks or months, whereas AI can help organize and summarize that information much more efficiently.",
+      "However, the value of AI depends on the quality of the human idea, the objectives defined, and the way the technology is directed. AI can help refine an idea, identify weaknesses, explore alternatives, and reveal opportunities that may not have been immediately apparent. Nevertheless, its outputs must be critically evaluated, as AI can produce inaccurate or misleading information.",
+      "In my view, humans should remain responsible for defining objectives, establishing boundaries, evaluating outcomes, and making decisions that carry significant consequences. This is particularly important in sensitive sectors such as banking, healthcare, national security, and public administration.",
+      "Automation can certainly allow AI-enabled systems to execute specific tasks and make predefined decisions. However, such autonomy must operate within clearly established permissions, risk thresholds, monitoring mechanisms, and accountability structures. High-impact decisions should have appropriate human oversight and escalation mechanisms.",
+      "This is where AI governance and ethics become essential. Organizations must establish clear policies defining what AI can do independently, what requires human approval, and who remains accountable for the outcome.",
+      "AI can accelerate our thinking and expand our capabilities, but responsibility must never be delegated blindly to a machine. The future belongs to those who know how to combine human intelligence with artificial intelligence responsibly."
      ]
     },
     {
@@ -191,6 +214,14 @@
        "ar": "فالذكاء الاصطناعي يقوم بعمل جيد في هذا المجال.",
        "en": "AI does a good job in this field."
       }
+     ],
+     "en_paragraphs": [
+      "Artificial intelligence is becoming an increasingly important component of modern banking security because of its ability to analyze large volumes of data, recognize complex patterns, and identify suspicious activities at a speed and scale that would be difficult to achieve through manual analysis alone.",
+      "AI-powered systems can analyze transaction patterns, identify unusual customer behavior, detect anomalies, and flag potentially fraudulent activities in near real time. These capabilities can help banks identify suspicious transactions earlier, respond more quickly to emerging threats, and reduce potential financial losses.",
+      "Beyond transaction monitoring, AI can also support cybersecurity operations by identifying abnormal system behavior, detecting indicators of compromise, and helping security teams investigate potential attacks. When integrated with established security controls, such as security information and event management (SIEM) systems and endpoint detection and response (EDR) solutions, AI can enhance threat detection and accelerate incident response.",
+      "However, AI is not a standalone solution. Its effectiveness depends on the quality of the data, the accuracy of its models, continuous monitoring, and integration with the bank’s broader security architecture. Human expertise remains essential for investigating alerts, validating findings, and making critical decisions.",
+      "Banks must also ensure that AI systems themselves are protected against manipulation, misuse, and unauthorized access, while maintaining appropriate data privacy and governance controls.",
+      "The real value of AI in banking lies in moving from reactive security to proactive, intelligence-driven protection—detecting threats earlier, responding faster, and strengthening the protection of both customers and financial systems."
      ]
     },
     {
@@ -248,15 +279,27 @@
        "ar": "وهنا يأتي دوركم في هذا المجال.",
        "en": "And that is where your role comes in."
       }
+     ],
+     "en_paragraphs": [
+      "CyberX Oman serves both purposes, and its value extends beyond either objective in isolation.",
+      "First, the conference provides a platform for international and regional experts, including participants from across the Gulf and beyond, to share their experiences, showcase technological developments, and discuss emerging cybersecurity challenges. This enables Oman to learn from international best practices and explore how new technologies can be adopted securely and responsibly within its own digital transformation journey.",
+      "Second, the conference highlights the expertise available within Oman. Professionals working across cybersecurity, artificial intelligence, governance, law, and other technology-related disciplines contribute valuable insights into the challenges and opportunities facing the country. Bringing these perspectives together encourages collaboration, strengthens knowledge exchange, and helps develop recommendations that can support more effective policies, governance frameworks, and regulatory approaches.",
+      "These discussions are particularly important as Oman continues to advance its digital transformation objectives. Innovation must be supported by appropriate cybersecurity measures, effective governance, responsible AI adoption, and the protection of personal and organizational data.",
+      "However, the impact of a conference should not end when the event concludes. Its insights and recommendations must reach the wider community, including people who may not have the technical background to understand complex cybersecurity concepts.",
+      "This is where the media plays a crucial role. By translating key discussions into Arabic, simplifying technical information, and presenting practical guidance, journalists can help bridge the gap between cybersecurity experts and the general public. The objective is to turn professional knowledge into public awareness and actionable guidance that people can apply in their daily lives.",
+      "Cybersecurity is not the responsibility of experts and institutions alone; it is a shared responsibility. By making cybersecurity knowledge accessible in Arabic, we can empower individuals, protect communities, and build a stronger culture of digital trust across Oman.",
+      "Ultimately, CyberX Oman should be viewed not only as a platform for exchanging knowledge, but also as an opportunity to strengthen national capabilities, showcase Omani expertise, encourage responsible innovation, and contribute to a safer and more resilient digital future."
      ]
     }
    ],
    "languages": [
-    "ar"
+    "ar",
+    "en"
    ],
    "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a"
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-en.m4a"
    }
   },
   {
