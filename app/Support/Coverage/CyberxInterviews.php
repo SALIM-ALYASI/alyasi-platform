@@ -68,6 +68,10 @@ class CyberxInterviews
             'topic' => $pick('topic'),
             'quote' => $pick('quote'),
             'intro' => $pick('intro'),
+            // المقدمة بصوت سالم (اختيارية) -- أول ما يشتغل بـ«استمع للمقابلة كاملة».
+            'intro_audio' => ! empty($guest['intro_audio'][$locale] ?? $guest['intro_audio']['ar'] ?? null)
+                ? asset(ltrim($guest['intro_audio'][$locale] ?? $guest['intro_audio']['ar'], '/'))
+                : null,
             'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
             // صورة المشاركة (1200×630): الضيف واسمه واقتباسه -- تظهر لما ينرسل رابط مقابلته.
             'og_image' => ! empty($guest['og_image']) ? asset(ltrim($guest['og_image'], '/')) : null,

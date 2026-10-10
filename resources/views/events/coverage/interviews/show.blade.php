@@ -4,6 +4,7 @@
     $t = fn (string $ar, string $en) => $isEn ? $en : $ar;
     $pageTitle = $guest['name'].' — '.$t('لقاء من سايبر إكس عُمان 2026', 'Interview from CyberX Oman 2026');
     $jsData = [
+        'intro' => $guest['intro_audio'],
         'items' => array_map(fn ($item) => [
             'q' => $item['q_audio'],
             'a' => $item['a_audio'],
@@ -13,6 +14,7 @@
             'question' => $t('سؤال', 'Question'),
             'answer' => $guest['name'],
             'host' => $host['name'],
+            'intro' => $t('المقدمة', 'Introduction'),
         ],
     ];
 @endphp
@@ -55,7 +57,15 @@
 
             <div class="interview__intro">
                 <img src="{{ $host['avatar'] }}" alt="" width="40" height="40">
-                <p>{{ $guest['intro'] }}</p>
+                <div>
+                    <p>{{ $guest['intro'] }}</p>
+                    @if ($guest['intro_audio'])
+                        <button type="button" class="qa__mini interview__intro-play" data-play="i" data-item="-1"
+                                aria-label="{{ $t('استمع للمقدمة', 'Play the introduction') }}">
+                            <span class="qa__mini-icon" aria-hidden="true">▶</span> {{ $t('استمع للمقدمة بصوتي', 'Listen to my introduction') }}
+                        </button>
+                    @endif
+                </div>
             </div>
 
             <div class="interview__actions">

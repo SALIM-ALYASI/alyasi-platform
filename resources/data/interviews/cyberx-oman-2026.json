@@ -17,8 +17,8 @@
    "topic_en": "Digital banking, fraud and AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
-   "intro_ar": "أرسل الدكتور هيثم الحجري إجاباته بصوته على أسئلتي المسجّلة: كيف توازن البنوك بين سهولة الخدمات الرقمية وحمايتها، وما أخطر أساليب الاحتيال اليوم، وأين يجب أن يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي، وما الذي يحققه مؤتمر مثل سايبر إكس عُمان للمجتمع العُماني.",
-   "intro_en": "Dr. Haitham Al Hajri answered my recorded questions in his own voice: how banks balance convenience and security in digital services, the most dangerous fraud tactics today, where decisions must stay in human hands in the age of AI, and what a conference like CyberX Oman achieves for Omani society.",
+   "intro_ar": "هذه مقابلة عن بُعد. بعد مؤتمر سايبر إكس عُمان 2026، سجّلت أسئلتي بصوتي وأرسلتها إلى الدكتور هيثم الحجري، فسجّل إجاباته بنفسه في الوقت الذي يناسبه. طريقة اخترتها لتسهيل عملي وتغطيتي، تختصر المسافة والمواعيد، وتحفظ كل إجابة كما قيلت. في خمس إجابات، يتحدث عن الموازنة بين سهولة الخدمات المصرفية الرقمية وحمايتها، وأخطر أساليب الاحتيال اليوم، وأين يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي، وما الذي يحققه المؤتمر للمجتمع العُماني.",
+   "intro_en": "This is a remote interview. After CyberX Oman 2026, I recorded my questions in my own voice and sent them to Dr. Haitham Al Hajri, who recorded his answers himself, whenever it suited him. A method I chose to make my work and coverage easier: it removes distance and scheduling, and keeps every answer exactly as it was said. In five answers, he talks about balancing convenience and security in digital banking, today's most dangerous fraud tactics, where decisions must stay in human hands in the age of AI, and what the conference achieves for Omani society.",
    "items": [
     {
      "q_ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟",
@@ -254,7 +254,10 @@
    "languages": [
     "ar"
    ],
-   "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg"
+   "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg",
+   "intro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-ar.m4a"
+   }
   },
   {
    "slug": "yahya-al-azri",

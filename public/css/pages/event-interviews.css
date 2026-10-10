@@ -346,3 +346,6 @@ html[lang="en"] .qa__text { line-height: 1.85; }
 @media (prefers-reduced-motion: reduce) {
     .qa__fill, .interview-dock__bar span, .qa__seg { transition: none; }
 }
+
+.interview__intro > div { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.interview__intro-play { margin-top: 0; }

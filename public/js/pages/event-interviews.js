@@ -59,13 +59,15 @@
         dock.hidden = !current;
         if (current) {
             document.getElementById('interviewDockToggle').textContent = playing ? '❚❚' : '▶';
-            dockLabel.textContent = (current.kind === 'q' ? data.labels.question + ' ' + (current.item + 1) + ' · ' + data.labels.host : data.labels.answer + ' · ' + (current.item + 1));
+            dockLabel.textContent = current.kind === 'i'
+                ? data.labels.intro + ' · ' + data.labels.host
+                : (current.kind === 'q' ? data.labels.question + ' ' + (current.item + 1) + ' · ' + data.labels.host : data.labels.answer + ' · ' + (current.item + 1));
         }
     }
 
     function load(track, seek) {
         current = track;
-        var src = track.kind === 'q' ? items[track.item].q : items[track.item].a;
+        var src = track.kind === 'i' ? data.intro : (track.kind === 'q' ? items[track.item].q : items[track.item].a);
         if (audio.getAttribute('src') !== src) {
             audio.src = src;
         }
@@ -88,7 +90,9 @@
     }
 
     function nextInQueue() {
-        if (!current) return { item: 0, kind: 'q' };
+        // الترتيب: المقدمة بصوت سالم (لو موجودة)، ثم سؤال/إجابة لكل محور.
+        if (!current) return data.intro ? { item: -1, kind: 'i' } : { item: 0, kind: 'q' };
+        if (current.kind === 'i') return { item: 0, kind: 'q' };
         if (current.kind === 'q') return { item: current.item, kind: 'a' };
         return current.item + 1 < items.length ? { item: current.item + 1, kind: 'q' } : null;
     }
@@ -145,8 +149,10 @@
         if (queueMode && !audio.paused) { audio.pause(); return; }
         if (queueMode && current) { audio.play(); return; }
         queueMode = true;
-        load({ item: 0, kind: 'q' });
-        document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        current = null;
+        var first = nextInQueue();
+        load(first);
+        if (first.kind === 'q') document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     document.getElementById('interviewDockToggle').addEventListener('click', function () {
