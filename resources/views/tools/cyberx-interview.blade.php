@@ -53,6 +53,7 @@
             color: var(--muted);
         }
 
+        .followups-bar[hidden] { display: none; }
         .followups-bar {
             background: rgba(216,181,106,.08);
             border: 1px solid rgba(216,181,106,.3);
@@ -305,12 +306,13 @@
             <p>اضغط زر سريع فوق قبل ما تبدأ، وبعدها اختر الضيف — كل تبويب فيه أهم سؤالين بس.</p>
         </header>
 
-        <div class="followups-bar">
+        {{-- مخفي مؤقتًا: الضيوف يسجّلون من الرابط بأنفسهم -- شيل hidden لإرجاعه --}}
+        <div class="followups-bar" hidden>
             <div class="heading">أزرار سريعة (تعريف · سؤال موحد · ختام)</div>
             <div class="actions" id="quick-buttons"></div>
         </div>
 
-        <div class="followups-bar">
+        <div class="followups-bar" hidden>
             <div class="heading">متابعات سريعة (أي وقت، أي ضيف)</div>
             <div class="actions" id="followups"></div>
         </div>
