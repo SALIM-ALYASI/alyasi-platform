@@ -42,8 +42,7 @@
         @if ($articles->isNotEmpty())
             <div class="grid-3">
                 @foreach ($articles as $article)
-                    @php $slug = $article->slug(); @endphp
-                    <a href="{{ $slug ? localized_route('news.show', ['slug' => $slug]) : localized_route('news.index') }}" class="card card--hover news-card" data-reveal>
+                    <a href="{{ $article->url() ?: localized_route('news.index') }}" class="card card--hover news-card" data-reveal>
                         <div class="news-card__media">
                             <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
                         </div>

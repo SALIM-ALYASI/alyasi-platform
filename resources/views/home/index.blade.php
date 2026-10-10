@@ -301,7 +301,7 @@
 
                 @if ($latestNews->isNotEmpty())
                     @foreach ($latestNews as $article)
-                        <a href="{{ $article->slug() ? localized_route('news.show', ['slug' => $article->slug()]) : localized_route('news.index') }}" class="home-updates-card">
+                        <a href="{{ $article->url() ?: localized_route('news.index') }}" class="home-updates-card">
                             <div class="home-updates-card__media">
                                 <img src="{{ media_url($article->image) }}" alt="{{ $article->title }}" loading="lazy">
                             </div>

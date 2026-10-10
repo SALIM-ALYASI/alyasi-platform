@@ -110,6 +110,20 @@ class NewsArticle extends Model
         return $this->permalink($locale)?->slug;
     }
 
+    /**
+     * الرابط النهائي للخبر (الذكي: /news/YYYY/MM/DD/NNN/slug) بدل الرابط
+     * القصير اللي يحوّل 301 -- لكل رابط داخلي وخرائط الموقع وhreflang،
+     * عشان قوقل ما يلقى تحويلات بدل صفحات.
+     */
+    public function url(?string $locale = null, bool $exact = false): ?string
+    {
+        $permalink = $exact
+            ? $this->permalinks->firstWhere('locale', $locale ?? app()->getLocale())
+            : $this->permalink($locale);
+
+        return $permalink?->setRelation('linkable', $this)->url();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

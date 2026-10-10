@@ -58,12 +58,9 @@ class NewsArticleResource extends JsonResource
             ],
 
             'url' => $this->whenLoaded('permalinks', function () {
-                $arSlug = $this->permalinks->firstWhere('locale', 'ar')?->slug;
-                $enSlug = $this->permalinks->firstWhere('locale', 'en')?->slug;
-
                 return [
-                    'ar' => $arSlug ? route('news.show', $arSlug) : null,
-                    'en' => $enSlug ? route('news.show', $enSlug) : null,
+                    'ar' => $this->resource->url('ar', true),
+                    'en' => $this->resource->url('en', true),
                 ];
             }),
 

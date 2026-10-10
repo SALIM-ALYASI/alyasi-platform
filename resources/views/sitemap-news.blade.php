@@ -8,7 +8,7 @@
 @endphp
 @if ($arPermalink)
 <url>
-    <loc>{{ route('news.show', $arPermalink->slug) }}</loc>
+    <loc>{{ $arPermalink->setRelation('linkable', $article)->url() }}</loc>
     <news:news>
         <news:publication>
             <news:name>ALYASI</news:name>
@@ -21,7 +21,7 @@
 @endif
 @if ($enPermalink)
 <url>
-    <loc>{{ localized_route('news.show', ['slug' => $enPermalink->slug], 'en') }}</loc>
+    <loc>{{ $enPermalink->setRelation('linkable', $article)->url() }}</loc>
     <news:news>
         <news:publication>
             <news:name>ALYASI</news:name>

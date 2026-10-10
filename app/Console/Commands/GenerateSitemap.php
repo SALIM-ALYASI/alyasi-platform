@@ -269,28 +269,25 @@ class GenerateSitemap extends Command
             ->orderBy('id')
             ->chunk(100, function ($articles) use ($sitemap) {
                 foreach ($articles as $article) {
-                    $arSlug = $article->permalinks->firstWhere('locale', 'ar')?->slug;
-                    $enSlug = $article->permalinks->firstWhere('locale', 'en')?->slug;
+                    // الرابط النهائي (الذكي) -- مو القصير اللي يحوّل 301.
+                    $arUrl = $article->url('ar', true);
+                    $enUrl = $article->url('en', true);
 
-                    if (! $arSlug) {
+                    if (! $arUrl) {
                         continue;
                     }
-
-                    $arUrl = route('news.show', ['slug' => $arSlug]);
 
                     $url = Url::create($arUrl)
                         ->setLastModificationDate($article->updated_at);
 
-                    if ($enSlug) {
-                        $enUrl = localized_route('news.show', ['slug' => $enSlug], 'en');
+                    if ($enUrl) {
                         $url->addAlternate($enUrl, 'en');
                         $url->addAlternate($arUrl, 'ar');
                     }
 
                     $sitemap->add($url);
 
-                    if ($enSlug) {
-                        $enUrl = localized_route('news.show', ['slug' => $enSlug], 'en');
+                    if ($enUrl) {
 
                         $sitemap->add(
                             Url::create($enUrl)

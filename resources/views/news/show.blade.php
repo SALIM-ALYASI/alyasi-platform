@@ -22,8 +22,8 @@
 ========================================================= --}}
 @section('canonical', $currentNewsPermalink ? $currentNewsPermalink->url() : url()->current())
 
-@section('hreflang_ar', $arNewsPermalink ? route('news.show', $arNewsPermalink->slug) : '')
-@section('hreflang_en', $enNewsPermalink ? localized_route('news.show', ['slug' => $enNewsPermalink->slug], 'en') : '')
+@section('hreflang_ar', $arNewsPermalink ? $arNewsPermalink->setRelation('linkable', $article)->url() : '')
+@section('hreflang_en', $enNewsPermalink ? $enNewsPermalink->setRelation('linkable', $article)->url() : '')
 
 {{-- =========================================================
      Open Graph
@@ -496,13 +496,11 @@
                 @foreach ($relatedArticles as $related)
 
                     @php
-                        $relatedSlug = $related->slug();
+                        $relatedUrl = $related->url();
                     @endphp
 
                     <a
-                        href="{{ $relatedSlug
-                            ? localized_route('news.show', ['slug' => $relatedSlug])
-                            : localized_route('news.index') }}"
+                        href="{{ $relatedUrl ?: localized_route('news.index') }}"
                         class="card card--hover news-detail__related-card"
                     >
 
