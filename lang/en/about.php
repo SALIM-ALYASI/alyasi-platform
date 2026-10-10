@@ -52,4 +52,33 @@ return [
 
     'cta_services' => 'Explore Our Services',
 
+    // My certificates -- images in public/images/about/certificates
+    'certificates_badge' => 'My certificates',
+    'certificates_title' => 'Certificates & appearances',
+    'certificates_view' => 'View certificate',
+    'certificates_close' => 'Close',
+    'certificates' => [
+        [
+            'image' => 'cyberx-oman-2026.jpg',
+            'type' => 'Accredited certificate',
+            'title' => 'CyberX Oman 2026 Certificate',
+            'issuer' => 'CyberX Global · Accredited for 9 CPD credits',
+            'date' => '6 October 2026',
+        ],
+        [
+            'image' => 'clubhouse-mesh-sudfa.jpg',
+            'type' => 'Speaker',
+            'title' => 'When a Speech Disability Becomes a Drive to Achieve Dreams',
+            'issuer' => '“The Silent Dreamers Speak” session · “Mesh Sudfa” on Clubhouse · hosted by Marwa Abdelmaksoud',
+            'date' => '8 May 2021',
+        ],
+        [
+            'image' => 'homathon-2020.jpg',
+            'type' => 'Certificate of participation',
+            'title' => 'Homathon Virtual Hackathon',
+            'issuer' => 'Saudi Federation for Cybersecurity, Programming and Drones · tech solutions to limit the impact of COVID-19',
+            'date' => '14 April – 3 May 2020',
+        ],
+    ],
+
 ];
