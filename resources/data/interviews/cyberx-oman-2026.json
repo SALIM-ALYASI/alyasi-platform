@@ -17,8 +17,8 @@
    "topic_en": "Cybersecurity, banking fraud and the future of AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
-   "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي خمس إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني.",
-   "intro_en": "Following CyberX Oman 2026, we chose a different format for this conversation: questions recorded in audio, and answers recorded by Dr. Haitham Al Hajri himself, whenever it suited him. A format that goes beyond the limits of distance and scheduling, and keeps every answer in its owner's voice, exactly as it was said.\n\nIn five answers, Al Hajri opens the key files of digital security: how banks balance convenience and safety, the most dangerous fraud tactics targeting users today, where decisions stay with humans in the age of AI, how AI detects banking fraud early, and what the conference offers Omani society.",
+   "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي ست إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني، ولماذا يخلط المجتمع بين المبرمج ومختص الأمن السيبراني والمخترق.",
+   "intro_en": "Following CyberX Oman 2026, we chose a different format for this conversation: questions recorded in audio, and answers recorded by Dr. Haitham Al Hajri himself, whenever it suited him. A format that goes beyond the limits of distance and scheduling, and keeps every answer in its owner's voice, exactly as it was said.\n\nIn six answers, Al Hajri opens the key files of digital security: how banks balance convenience and safety, the most dangerous fraud tactics targeting users today, where decisions stay with humans in the age of AI, how AI detects banking fraud early, what the conference offers Omani society, and why society confuses programmers, cybersecurity specialists and hackers.",
    "items": [
     {
      "q_ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟",
@@ -318,9 +318,10 @@
     },
     {
      "q_ar": "كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
-     "q_en": "Many people, when they learn I'm a programmer, ask me: can you hack an account? What is the difference between a programmer, a cybersecurity specialist and a penetration tester, and why does society confuse them?",
+     "q_en": "Many people, when they learn I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even once accused of hacking an account in a group, just because I'm a programmer. What is the difference between a programmer, a cybersecurity specialist and a penetration tester? And why does society confuse these fields?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-panel-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/haitham/q-panel-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/haitham/q-panel-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/haitham/a6.m4a",
      "duration": 184.7,
@@ -370,8 +371,23 @@
        "ar": "فمختبر الاختراق هو مجموعة من الأدوات التي يتمكن من خلالها المخترق من توجيهها واستغلالها لاكتشاف الثغرات الأمنية."
       }
      ],
-     "languages": [],
-     "pending_note": "سؤال الجلسة القيادية -- بانتظار تأكيد د. هيثم قبل النشر"
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "en_paragraphs": [
+      "A very good question, and of course there is a lot of confusion about it, especially among the general public, who may not realize that there is a fundamental difference between a programmer or software developer, a cybersecurity engineer, and someone skilled in hacking.",
+      "First, let’s say that a programmer, in general, builds software from the ground up, drawing on their experience in writing code. When that code works together, it produces a product, whether it is a website, a computer program, or a mobile application.",
+      "The role of an information security specialist, or a hacker, is to use their ability to understand how this software works and how to protect it from risks. At the same time, they have the knowledge and skill to examine the program and find the vulnerabilities in it, and they may exploit them maliciously. That is when they become a malicious hacker (cracker).",
+      "The difference between a hacker and a cybersecurity engineer lies in the malicious exploitation of a vulnerability. A cybersecurity engineer finds the vulnerability and closes it, which is why they are called “white hats.” “Black hats,” on the other hand, are hackers with malicious intent, who exploit weaknesses in the code and use them for the purpose of breaking in. That is the essential point.",
+      "So where does the confusion come from? The same programmer can use their programming skills and ability to read code to discover mistakes made by a previous programmer, exploit those weaknesses, and break into the system. That is where the confusion arises, and why many people say: since he is a programmer, he must have the knowledge and ability to find the weak points and exploit them.",
+      "And of course, when we talk about a penetration testing lab, a “lab” is not just a physical room. It can be a set of software on a computer that helps examine systems in general, such as security and network systems, and finds the vulnerabilities in them, which a hacker could then exploit maliciously. So a penetration testing lab is a set of tools that a hacker can direct and use to discover security vulnerabilities."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/haitham/en-a6.m4a",
+      "duration": 143.4,
+      "ai_voice": true
+     }
     }
    ],
    "languages": [
@@ -380,10 +396,9 @@
    ],
    "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a",
-    "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-en.m4a"
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-en.m4a"
    },
-   "intro_audio_six_ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v3-ar.m4a",
    "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026"
   },
   {

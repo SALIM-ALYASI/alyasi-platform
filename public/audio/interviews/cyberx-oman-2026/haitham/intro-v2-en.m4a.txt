@@ -1,0 +1,3 @@
+file '/private/tmp/claude-501/-Volumes-Projects-Laravel-alyasi-platform/5b7937d6-a565-4ffb-91fa-43671312e973/scratchpad/hen6/intro1-t0.wav'
+file '/private/tmp/claude-501/-Volumes-Projects-Laravel-alyasi-platform/5b7937d6-a565-4ffb-91fa-43671312e973/scratchpad/hen6/gap.wav'
+file '/private/tmp/claude-501/-Volumes-Projects-Laravel-alyasi-platform/5b7937d6-a565-4ffb-91fa-43671312e973/scratchpad/hen6/intro2-t2.wav'
