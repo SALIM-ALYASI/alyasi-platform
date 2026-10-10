@@ -58,7 +58,9 @@
             <div class="interview__intro">
                 <img src="{{ $host['avatar'] }}" alt="" width="40" height="40">
                 <div>
-                    <p>{{ $guest['intro'] }}</p>
+                    @foreach (preg_split('/\n\s*\n/', $guest['intro']) as $introParagraph)
+                        <p>{{ $introParagraph }}</p>
+                    @endforeach
                     @if ($guest['intro_audio'])
                         <button type="button" class="qa__mini interview__intro-play" data-play="i" data-item="-1"
                                 aria-label="{{ $t('استمع للمقدمة', 'Play the introduction') }}">

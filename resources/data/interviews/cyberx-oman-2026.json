@@ -17,8 +17,8 @@
    "topic_en": "Digital banking, fraud and AI",
    "quote_ar": "في النهاية، الإنسان هو اللي يتخذ القرار.",
    "quote_en": "In the end, it is the human who makes the decision.",
-   "intro_ar": "هذه مقابلة عن بُعد. بعد مؤتمر سايبر إكس عُمان 2026، سجّلت أسئلتي بصوتي وأرسلتها إلى الدكتور هيثم الحجري، فسجّل إجاباته بنفسه في الوقت الذي يناسبه. طريقة اخترتها لتسهيل عملي وتغطيتي، تختصر المسافة والمواعيد، وتحفظ كل إجابة كما قيلت. في خمس إجابات، يتحدث عن الموازنة بين سهولة الخدمات المصرفية الرقمية وحمايتها، وأخطر أساليب الاحتيال اليوم، وأين يبقى القرار بيد الإنسان في عصر الذكاء الاصطناعي، وما الذي يحققه المؤتمر للمجتمع العُماني.",
-   "intro_en": "This is a remote interview. After CyberX Oman 2026, I recorded my questions in my own voice and sent them to Dr. Haitham Al Hajri, who recorded his answers himself, whenever it suited him. A method I chose to make my work and coverage easier: it removes distance and scheduling, and keeps every answer exactly as it was said. In five answers, he talks about balancing convenience and security in digital banking, today's most dangerous fraud tactics, where decisions must stay in human hands in the age of AI, and what the conference achieves for Omani society.",
+   "intro_ar": "في أعقاب مؤتمر «سايبر إكس عُمان 2026»، اخترنا لهذا الحوار صيغة مختلفة: أسئلة مسجّلة بالصوت، وإجابات سجّلها الدكتور هيثم الحجري بنفسه، في الوقت الذي يناسبه. صيغة تتجاوز قيود المسافة والمواعيد، وتحفظ كل إجابة بصوت صاحبها كما قيلت.\n\nفي خمس إجابات، يفتح الحجري أبرز ملفات الأمن الرقمي: كيف توازن البنوك بين سهولة الخدمة وأمانها، وما أخطر أساليب الاحتيال التي تستهدف المستخدمين اليوم، وأين يبقى القرار للإنسان في زمن الذكاء الاصطناعي، وكيف يكشف الذكاء الاصطناعي الاحتيال المصرفي مبكرًا، وماذا يقدّم المؤتمر للمجتمع العُماني.",
+   "intro_en": "Following CyberX Oman 2026, we chose a different format for this conversation: questions recorded in audio, and answers recorded by Dr. Haitham Al Hajri himself, whenever it suited him. A format that goes beyond the limits of distance and scheduling, and keeps every answer in its owner's voice, exactly as it was said.\n\nIn five answers, Al Hajri opens the key files of digital security: how banks balance convenience and safety, the most dangerous fraud tactics targeting users today, where decisions stay with humans in the age of AI, how AI detects banking fraud early, and what the conference offers Omani society.",
    "items": [
     {
      "q_ar": "كيف يوازن البنك بين تسهيل الخدمات الرقمية للعملاء وحمايتها؟",
@@ -256,7 +256,7 @@
    ],
    "og_image": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og.jpg",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-ar.m4a"
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-ar.m4a"
    }
   },
   {
