@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Jobs\ResolveVisitCountry;
 use App\Models\PageVisit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -14,7 +15,7 @@ class VisitTrackingTest extends TestCase
 
     public function test_visiting_a_public_page_records_a_visit(): void
     {
-        Queue::fake();
+        Bus::fake();
 
         $this->get('/')->assertOk();
 
@@ -24,7 +25,7 @@ class VisitTrackingTest extends TestCase
 
         $this->assertSame('/', $visit->path);
 
-        Queue::assertPushed(ResolveVisitCountry::class);
+        Bus::assertDispatchedAfterResponse(ResolveVisitCountry::class);
     }
 
     public function test_admin_pages_are_not_tracked(): void
@@ -65,5 +66,18 @@ class VisitTrackingTest extends TestCase
         (new ResolveVisitCountry($visit->id))->handle();
 
         $this->assertSame('محلي', $visit->fresh()->country_name);
+    }
+
+    public function test_known_ip_reuses_its_country_without_calling_the_service(): void
+    {
+        \Illuminate\Support\Facades\Http::fake();
+
+        PageVisit::query()->create(['path' => '/', 'ip_address' => '5.36.0.1', 'country_code' => 'OM', 'country_name' => 'Oman']);
+        $visit = PageVisit::query()->create(['path' => '/news', 'ip_address' => '5.36.0.1']);
+
+        (new ResolveVisitCountry($visit->id))->handle();
+
+        $this->assertSame('Oman', $visit->fresh()->country_name);
+        \Illuminate\Support\Facades\Http::assertNothingSent();
     }
 }

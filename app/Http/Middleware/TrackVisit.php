@@ -33,7 +33,9 @@ class TrackVisit
                 'user_agent' => substr((string) $request->userAgent(), 0, 255),
             ]);
 
-            ResolveVisitCountry::dispatch($visit->id);
+            // بعد ما تنرسل الصفحة للزائر (بدون طابور): الاستضافة ما فيها
+            // queue worker، فالطابور كان يتكدّس وما يتحدد أي بلد.
+            ResolveVisitCountry::dispatchAfterResponse($visit->id);
         }
 
         return $response;

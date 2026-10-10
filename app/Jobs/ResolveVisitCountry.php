@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -44,20 +45,39 @@ class ResolveVisitCountry implements ShouldQueue
             return;
         }
 
-        try {
-            $response = Http::timeout(4)
-                ->get("http://ip-api.com/json/{$visit->ip_address}", [
-                    'fields' => 'status,country,countryCode',
-                ]);
+        // نفس العنوان انعرف بلده قبل؟ ناخذه من الزيارات السابقة بدل ما نسأل الخدمة.
+        $known = PageVisit::query()
+            ->where('ip_address', $visit->ip_address)
+            ->whereNotNull('country_code')
+            ->latest('id')
+            ->first(['country_code', 'country_name']);
 
-            if (! $response->successful() || $response->json('status') !== 'success') {
+        if ($known) {
+            $visit->update(['country_code' => $known->country_code, 'country_name' => $known->country_name]);
+
+            return;
+        }
+
+        try {
+            // الخدمة المجانية تسمح 45 طلب بالدقيقة -- نحفظ الجواب يوم عشان التكرار.
+            $data = Cache::remember('visit-country:'.$visit->ip_address, now()->addDay(), function () use ($visit) {
+                $response = Http::timeout(4)
+                    ->get("http://ip-api.com/json/{$visit->ip_address}", [
+                        'fields' => 'status,country,countryCode',
+                    ]);
+
+                return $response->successful() && $response->json('status') === 'success'
+                    ? ['country_code' => $response->json('countryCode'), 'country_name' => $response->json('country')]
+                    : null;
+            });
+
+            if (! $data) {
+                Cache::forget('visit-country:'.$visit->ip_address);
+
                 return;
             }
 
-            $visit->update([
-                'country_code' => $response->json('countryCode'),
-                'country_name' => $response->json('country'),
-            ]);
+            $visit->update($data);
         } catch (\Throwable $e) {
             Log::warning('تعذر تحديد بلد الزيارة', [
                 'ip' => $visit->ip_address,
