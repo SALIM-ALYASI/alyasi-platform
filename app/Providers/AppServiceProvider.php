@@ -12,6 +12,7 @@ use App\Models\NewsArticle;
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\Work;
+use App\Support\SitemapRefresher;
 use App\Services\AppleStorePricingService;
 use App\Services\ReliableAppleStorePricingService;
 use App\View\Composers\ArticleLocaleLinksComposer;
@@ -41,6 +42,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // خريطة الموقع تتحدّث لحالها مع أي نشر/تعديل/حذف لمحتوى عام (حتى من البوتات).
+        foreach ([Article::class, NewsArticle::class, Service::class, Work::class, EventEdition::class, \App\Models\Event::class, CommunityPost::class] as $model) {
+            $model::saved(fn () => SitemapRefresher::markDirty());
+            $model::deleted(fn () => SitemapRefresher::markDirty());
+        }
+
         /*
          * نفرض جذر الروابط من APP_URL دايمًا (بدل الاعتماد على Host الخاص
          * بالطلب الحالي)، حتى لو وصل الطلب عبر www أو /public أو أي مضيف

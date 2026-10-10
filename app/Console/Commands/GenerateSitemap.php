@@ -32,7 +32,6 @@ class GenerateSitemap extends Command
         'works.index',
         'news.index',
         'articles.index',
-        'community.index',
         'social-links.index',
         'event_coverage.cyberx_oman_2026',
         'event_coverage.cyberx_oman_2026.interviews',
@@ -94,7 +93,7 @@ class GenerateSitemap extends Command
         $this->addNews($sitemap);
         $this->addServices($sitemap);
         $this->addWorks($sitemap);
-        $this->addCommunityPosts($sitemap);
+        $this->addEvents($sitemap);
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
@@ -240,6 +239,47 @@ class GenerateSitemap extends Command
                 $sitemap->add($entry);
             }
         }
+    }
+
+    /**
+     * الفعاليات: صفحة الفعاليات، وصفحة كل مؤتمر (سلسلة) باللغتين، وكل نسخة
+     * منشورة عبر روابطها الدائمة. (/community ومنشوراتها تحوّل 301 للفعاليات
+     * فما تنحط بالخريطة.)
+     */
+    private function addEvents(Sitemap $sitemap): void
+    {
+        $sitemap->add(Url::create(route('events.index')));
+
+        \App\Models\Event::query()
+            ->whereHas('editions', fn ($query) => $query->published())
+            ->with(['editions' => fn ($query) => $query->published()->with('permalinks')])
+            ->get()
+            ->each(function ($event) use ($sitemap): void {
+                $arUrl = route('event_editions.show', ['slug' => $event->slug]);
+                $enUrl = route('event_editions.show.en', ['slug' => $event->slug]);
+
+                foreach ([$arUrl, $enUrl] as $url) {
+                    $sitemap->add(Url::create($url)->addAlternate($arUrl, 'ar')->addAlternate($enUrl, 'en'));
+                }
+
+                foreach ($event->editions as $edition) {
+                    $urls = [];
+                    foreach (['ar', 'en'] as $locale) {
+                        $permalink = $edition->permalinks->firstWhere('locale', $locale);
+                        if ($permalink) {
+                            $urls[$locale] = $permalink->url();
+                        }
+                    }
+
+                    foreach ($urls as $url) {
+                        $entry = Url::create($url)->setLastModificationDate($edition->updated_at);
+                        if (count($urls) === 2) {
+                            $entry->addAlternate($urls['ar'], 'ar')->addAlternate($urls['en'], 'en');
+                        }
+                        $sitemap->add($entry);
+                    }
+                }
+            });
     }
 
     private function addNews(Sitemap $sitemap): void

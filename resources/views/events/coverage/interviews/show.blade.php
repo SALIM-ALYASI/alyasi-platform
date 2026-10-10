@@ -37,6 +37,26 @@
     @section('og_image_height', 630)
 @endif
 
+@section('schema')
+    @php
+        $interviewSchema = [
+            '@'.'context' => 'https://schema.org',
+            '@type' => 'Article',
+            'inLanguage' => $isEn ? 'en' : 'ar',
+            'headline' => $pageTitle,
+            'description' => preg_replace('/\s+/', ' ', $guest['intro']),
+            'image' => array_values(array_filter([$guest['og_image'], $guest['photo']])),
+            'datePublished' => '2026-10-09T12:00:00+04:00',
+            'dateModified' => \Illuminate\Support\Carbon::createFromTimestamp(filemtime(resource_path('data/interviews/cyberx-oman-2026.json')))->toIso8601String(),
+            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $isEn ? $urlEn : $urlAr],
+            'author' => ['@type' => 'Person', 'name' => $isEn ? 'Salem Al Hajri' : 'سالم الحجري', 'url' => url('/about')],
+            'publisher' => ['@id' => url('/').'#organization'],
+            'about' => ['@type' => 'Person', 'name' => $guest['name'], 'worksFor' => ['@type' => 'Organization', 'name' => $guest['role']]],
+        ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($interviewSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endsection
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/event-interviews.css') }}">
 @endpush

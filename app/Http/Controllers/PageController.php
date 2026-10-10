@@ -136,6 +136,9 @@ class PageController extends Controller
 
     public function sitemap()
 {
+    // لو فيه محتوى جديد ما دخل الخريطة بعد، نبنيها قبل ما نرسلها (لقوقل مثلًا).
+    \App\Support\SitemapRefresher::refreshIfDirty();
+
     return response()
         ->file(public_path('sitemap.xml'), [
             'Content-Type' => 'application/xml',

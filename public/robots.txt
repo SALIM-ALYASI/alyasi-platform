@@ -1,5 +1,15 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# صفحات إدارية وأدوات داخلية وتسجيلات المقابلات الخام -- مو للفهرسة
+Disallow: /admin
+Disallow: /api/
+Disallow: /tools/
+Disallow: /cj
+Disallow: /locale/
+Disallow: /storage/cyberx-answers/
+Disallow: /setup-meta-whatsapp-token
+Disallow: /telescope
 
 Sitemap: https://alyasi.dev/sitemap.xml
 Sitemap: https://alyasi.dev/sitemap-news.xml

@@ -25,6 +25,27 @@
 @section('og_url', url()->current())
 @section('og_image', media_url($article->displayImage()))
 
+@section('schema')
+    @php
+        $episodeSchema = [
+            '@'.'context' => 'https://schema.org',
+            '@type' => 'Article',
+            'inLanguage' => $isEn ? 'en' : 'ar',
+            'headline' => $article->title,
+            'description' => $metaDescription,
+            'image' => [media_url($article->displayImage())],
+            'datePublished' => optional($article->published_at)->toIso8601String(),
+            'dateModified' => optional($article->updated_at)->toIso8601String(),
+            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => ($isEn ? $enUrl : $arUrl) ?: url()->current()],
+            'publisher' => ['@id' => url('/').'#organization'],
+        ];
+        if ($article->author) {
+            $episodeSchema['author'] = ['@type' => 'Person', 'name' => $article->author->displayName()];
+        }
+    @endphp
+    <script type="application/ld+json">{!! json_encode($episodeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endsection
+
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/articles-show.css') }}">
 @endpush

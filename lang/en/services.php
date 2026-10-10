@@ -3,7 +3,7 @@
 return [
 
     'meta_title' => 'Our Services | :brand',
-    'meta_description' => 'Explore ALYASI digital and technology services.',
+    'meta_description' => 'ALYASI digital services: website and app development, business management systems, design, and AI solutions for individuals and companies in Oman.',
 
     'hero_badge' => 'ALYASI Services',
     'hero_title' => 'Professional',
