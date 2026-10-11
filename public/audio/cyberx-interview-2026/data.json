@@ -439,6 +439,86 @@
     }
    ],
    "final_question": false
+  },
+  {
+   "id": "hajar",
+   "name_ar": "هاجر سعيد الرواحي",
+   "name_en": "Hajar Saeed Al Rawahi",
+   "hint": "حماية البنية الأساسية والأنظمة التشغيلية",
+   "hint_en": "Critical infrastructure & OT security",
+   "gender": "f",
+   "questions": [
+    {
+     "audio": "hajar-hello",
+     "label": "تعريفي",
+     "label_en": "Hello",
+     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
+     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+    },
+    {
+     "audio": "hajar-intro",
+     "label": "تعريف الضيفة",
+     "label_en": "Introduction",
+     "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
+     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+    },
+    {
+     "audio": "hajar-q1",
+     "ar": "في قطاع الكهرباء، كيف يمكن أن يتحول هجوم سيبراني إلى أثر يشعر به الناس في حياتهم اليومية؟",
+     "en": "In the electricity sector, how can a cyberattack turn into an impact people feel in their daily lives?"
+    },
+    {
+     "audio": "hajar-q2",
+     "ar": "إذا تعرضت أنظمة التشغيل للاختراق، كيف نوازن بين احتواء الهجوم واستمرار الخدمة بأمان؟",
+     "en": "If operational systems are breached, how do we balance containing the attack with keeping the service running safely?"
+    },
+    {
+     "audio": "hajar-q3",
+     "ar": "ما أول خطوة تنصحين بها مؤسسة تريد تقوية حماية أنظمتها التشغيلية؟",
+     "en": "What first step would you recommend for an organization that wants to strengthen the protection of its operational systems?"
+    }
+   ],
+   "final_question": true
+  },
+  {
+   "id": "asma",
+   "name_ar": "أسماء حبيب",
+   "name_en": "Asma Habib",
+   "hint": "إدارة مخاطر الأمن السيبراني",
+   "hint_en": "Cybersecurity risk management",
+   "gender": "f",
+   "questions": [
+    {
+     "audio": "asma-hello",
+     "label": "تعريفي",
+     "label_en": "Hello",
+     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
+     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+    },
+    {
+     "audio": "asma-intro",
+     "label": "تعريف الضيفة",
+     "label_en": "Introduction",
+     "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
+     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+    },
+    {
+     "audio": "asma-q1",
+     "ar": "كيف تعرف المؤسسة أن أمنها السيبراني فعّال فعلًا، وليس مجرد سياسات وشهادات امتثال؟",
+     "en": "How can an organization tell whether its cybersecurity is truly effective, and not just policies and compliance certificates?"
+    },
+    {
+     "audio": "asma-q2",
+     "ar": "عندما تريد المؤسسة تبنّي تقنية جديدة بسرعة، كيف تقيّم مخاطرها دون تعطيل الابتكار؟",
+     "en": "When an organization wants to adopt a new technology quickly, how can it assess the risks without slowing down innovation?"
+    },
+    {
+     "audio": "asma-q3",
+     "ar": "إذا كانت الميزانية محدودة، كيف تختار المؤسسة المخاطر التي يجب أن تعالجها أولًا؟",
+     "en": "With a limited budget, how should an organization choose which risks to address first?"
+    }
+   ],
+   "final_question": true
   }
  ],
  "interview_windows": [
