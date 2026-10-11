@@ -16,6 +16,8 @@ class TrackVisit
     private const BOT_SIGNATURES = [
         'bot', 'spider', 'crawl', 'slurp', 'facebookexternalhit',
         'whatsapp', 'telegrambot', 'preview', 'headless', 'curl', 'python-requests',
+        // طلبات الفحص من السيرفر نفسه (Request::create بدون متصفح).
+        'symfony',
     ];
 
     /**
