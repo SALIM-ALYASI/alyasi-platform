@@ -391,6 +391,54 @@
      "en": "What is the most frequent employee mistake that leads to a breach?"
     }
    ]
+  },
+  {
+   "id": "tajuddin",
+   "name_ar": "محمد تاج الدين",
+   "name_en": "Mohammed Tajuddin",
+   "hint": "حوكمة الذكاء الاصطناعي",
+   "hint_en": "AI Governance",
+   "language": "en",
+   "gender": "m",
+   "questions": [
+    {
+     "audio": "tajuddin-hello",
+     "label": "تعريفي",
+     "label_en": "Hello",
+     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
+     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+    },
+    {
+     "audio": "tajuddin-intro",
+     "label": "تعريف الضيف",
+     "label_en": "Introduction",
+     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+    },
+    {
+     "audio": "tajuddin-q1",
+     "ar": "في CyberX Oman، طرحت الجلسة فكرة «لا يمكنك حوكمة ما لا تراه». كيف تبدأ المؤسسة في اكتشاف أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها؟",
+     "en": "At CyberX Oman, the panel raised the idea that “you can’t govern what you can’t see.” How can an organization start discovering AI tools its employees use without its knowledge?"
+    },
+    {
+     "audio": "tajuddin-q2",
+     "ar": "عندما يستطيع وكيل ذكاء اصطناعي تنفيذ إجراءات داخل أنظمة المؤسسة، ما أهم ضابط يجب وضعه قبل منحه هذه الصلاحية؟",
+     "en": "When an AI agent can take actions within an organization’s systems, what is the most important safeguard to put in place before granting it that access?"
+    },
+    {
+     "audio": "tajuddin-q3",
+     "ar": "لو أوصيت بخطوة واحدة تتخذها مؤسسة عُمانية اليوم لاستخدام الذكاء الاصطناعي بأمان، فما هي؟",
+     "en": "If you could recommend one step an Omani organization should take today to use AI safely, what would it be?"
+    },
+    {
+     "audio": "tajuddin-closing",
+     "label": "سؤال ختامي",
+     "label_en": "Closing question",
+     "ar": "ما الاعتقاد الشائع عن الذكاء الاصطناعي في بيئة العمل الذي تتمنى أن يتوقف القادة والموظفون عن تصديقه؟",
+     "en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?"
+    }
+   ],
+   "final_question": false
   }
  ],
  "interview_windows": [

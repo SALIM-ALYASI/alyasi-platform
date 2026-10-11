@@ -535,10 +535,10 @@
                       '<div class="sub">' + (guest.hint_en || guest.hint) + '</div>'
                     : isEnglishOnly
                     ? '<div class="name">' + guest.name_en + '</div>' +
-                      '<div class="sub">' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>' +
+                      '<div class="sub">' + guest.hint + (guest.window ? ' · ' + formatTimeAr(guest.window) : '') + '</div>' +
                       '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
                     : '<div class="name">' + guest.name_ar + '</div>' +
-                      '<div class="sub">' + guest.name_en + ' · ' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>';
+                      '<div class="sub">' + guest.name_en + ' · ' + guest.hint + (guest.window ? ' · ' + formatTimeAr(guest.window) : '') + '</div>';
                 panel.appendChild(heading);
 
                 let questionNumber = 0;
