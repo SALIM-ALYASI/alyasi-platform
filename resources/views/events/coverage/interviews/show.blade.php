@@ -6,6 +6,8 @@
     $jsData = [
         'intro' => $guest['intro_audio'],
         'items' => array_map(fn ($item) => [
+            // اسم البطاقة بشريط التشغيل: «تعريف الضيف» أو رقم السؤال.
+            'tag' => $item['label'] ?? (string) $item['number'],
             'q' => $item['q_audio'],
             'a' => $item['a_audio'],
             'o' => $item['a_audio_original'],
@@ -97,7 +99,7 @@
                     <span data-label-play>{{ $t('استمع للمقابلة كاملة', 'Play the full interview') }}</span>
                     <span data-label-pause hidden>{{ $t('إيقاف مؤقت', 'Pause') }}</span>
                 </button>
-                <span class="interview__length">{{ count($guest['items']) }} {{ $t('أسئلة', 'questions') }} · {{ $guest['minutes'] }} {{ $t('دقائق', 'min') }}</span>
+                <span class="interview__length">{{ $guest['questions'] }} {{ $t('أسئلة', 'questions') }} · {{ $guest['minutes'] }} {{ $t('دقائق', 'min') }}</span>
             </div>
 
             @if ($isEn)
@@ -112,7 +114,7 @@
                     <div class="qa__question">
                         <img class="qa__host" src="{{ $host['avatar'] }}" alt="" width="36" height="36">
                         <div class="qa__bubble">
-                            <span class="qa__label">{{ $t('سؤال', 'Question') }} {{ $i + 1 }} · {{ $host['name'] }}</span>
+                            <span class="qa__label">{{ $item['label'] ?? $t('سؤال', 'Question').' '.$item['number'] }} · {{ $host['name'] }}</span>
                             <p>{{ $item['question'] }}</p>
                             <button type="button" class="qa__mini" data-play="q" data-item="{{ $i }}"
                                     aria-label="{{ $t('استمع للسؤال', 'Play the question') }}">
@@ -124,7 +126,7 @@
                     {{-- الإجابة مرآة السؤال: فقاعة الضيف وصورته بالجهة المقابلة --}}
                     <div class="qa__answer">
                         <div class="qa__answer-bubble">
-                            <span class="qa__label">{{ $t('إجابة', 'Answer') }} {{ $i + 1 }} · {{ $guest['name'] }}</span>
+                            <span class="qa__label">{{ $item['label'] ?? $t('إجابة', 'Answer').' '.$item['number'] }} · {{ $guest['name'] }}</span>
 
                             <div class="qa__player">
                                 <button type="button" class="qa__play" data-play="a" data-item="{{ $i }}"

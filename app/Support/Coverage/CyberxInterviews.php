@@ -57,7 +57,12 @@ class CyberxInterviews
             fn (array $item) => in_array($locale, $item['languages'] ?? ['ar', 'en'], true)
         ));
 
+        // بطاقة بعنوان (مثل «تعريف الضيف») ما تنحسب ضمن ترقيم الأسئلة.
+        $number = 0;
+
         $items = array_map(fn (array $item) => [
+            'label' => $item['label_'.$locale] ?? $item['label_ar'] ?? null,
+            'number' => null,
             'question' => $item['q_'.$locale] ?? $item['q_ar'],
             'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
             // بالإنجليزي: صوت الضيف المولّد (بموافقته) لو موجود، والتسجيل العربي الأصلي يبقى متاحًا.
@@ -71,6 +76,11 @@ class CyberxInterviews
                 ? []
                 : array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
         ], $guestItems);
+
+        foreach ($items as &$item) {
+            $item['number'] = $item['label'] === null ? ++$number : null;
+        }
+        unset($item);
 
         return [
             'slug' => $guest['slug'],
@@ -90,6 +100,7 @@ class CyberxInterviews
             'og_image' => ($ogImage = $guest['og_image_'.$locale] ?? $guest['og_image'] ?? null) ? asset(ltrim($ogImage, '/')) : null,
             'initials' => $guest['initials'][$locale] ?? $guest['initials']['ar'] ?? '',
             'items' => $items,
+            'questions' => count(array_filter($items, fn (array $item) => $item['number'] !== null)),
             'minutes' => (int) max(1, round(array_sum(array_column($items, 'duration')) / 60)),
         ];
     }

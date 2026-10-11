@@ -428,6 +428,26 @@
    "og_image": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og.jpg",
    "items": [
     {
+     "label_ar": "تعريف الضيف",
+     "label_en": "Introduction",
+     "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+     "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "q_audio": {
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-intro-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a0.m4a",
+     "duration": 12.7,
+     "languages": [
+      "ar"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "ar": "يحيى بن سالم العزري، خبير المركز الوطني للسلامة المعلوماتية، وزارة النقل والاتصالات وتقنية المعلومات."
+      }
+     ]
+    },
+    {
      "q_ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟",
      "q_en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?",
      "q_audio": {

@@ -60,7 +60,7 @@
                         @endif
                         <span class="interview-card__meta">
                             <span>{{ $guest['topic'] }}</span>
-                            <span>{{ count($guest['items']) }} {{ $t('أسئلة', 'questions') }} · {{ $guest['minutes'] }} {{ $t('دقائق', 'min') }}</span>
+                            <span>{{ $guest['questions'] }} {{ $t('أسئلة', 'questions') }} · {{ $guest['minutes'] }} {{ $t('دقائق', 'min') }}</span>
                         </span>
                         <span class="interview-card__cta">
                             <span class="interview-card__play" aria-hidden="true">▶</span>

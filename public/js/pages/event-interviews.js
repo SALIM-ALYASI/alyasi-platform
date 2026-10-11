@@ -28,6 +28,11 @@
         return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
     }
 
+    // «سؤال 2» أو اسم البطاقة لو لها عنوان (مثل «تعريف الضيف»).
+    function qTag(i) {
+        return /^\d+$/.test(items[i].tag) ? data.labels.question + ' ' + items[i].tag : items[i].tag;
+    }
+
     function same(a, b) { return a && b && a.item === b.item && a.kind === b.kind; }
 
     function setSegment(itemIndex, segIndex) {
@@ -61,7 +66,7 @@
             document.getElementById('interviewDockToggle').textContent = playing ? '❚❚' : '▶';
             dockLabel.textContent = current.kind === 'i'
                 ? data.labels.intro + ' · ' + data.labels.host
-                : (current.kind === 'q' ? data.labels.question + ' ' + (current.item + 1) + ' · ' + data.labels.host : data.labels.answer + ' · ' + (current.item + 1));
+                : (current.kind === 'q' ? qTag(current.item) + ' · ' + data.labels.host : data.labels.answer + ' · ' + items[current.item].tag);
         }
     }
 

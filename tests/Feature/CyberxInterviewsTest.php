@@ -75,7 +75,10 @@ class CyberxInterviewsTest extends TestCase
             ->assertOk()
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
             ->assertSee('يحيى العزري')
-            ->assertSee('شرطة عُمان السلطانية');
+            ->assertSee('شرطة عُمان السلطانية')
+            // التعريف أول بطاقة بدون رقم، والأسئلة بعده من 1 إلى 4.
+            ->assertSeeInOrder(['تعريف الضيف · سالم الحجري', 'سؤال 1 · سالم الحجري', 'سؤال 4 · سالم الحجري'])
+            ->assertDontSee('سؤال 5 ·');
 
         $this->get($url.'x')->assertNotFound();
     }
