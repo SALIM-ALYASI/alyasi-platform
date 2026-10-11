@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\NotifiesWhatsApp;
+use App\Support\Analytics\CloudflareIps;
+use App\Support\Analytics\DeviceSummary;
+use App\Support\Analytics\VisitClassifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -56,18 +59,21 @@ class CyberxInterviewController extends Controller
      * إجابة ضيف مسجّلة من الأداة: تنحفظ على السيرفر (نسخة ما تضيع لو
      * انسكرت الصفحة) وتوصل لسالم بالواتساب المجاني مع السؤال ورابط
      * الإجابة -- الجسر يرسل نص بس، فالصوت يوصل كرابط يتشغّل مباشرة.
+     *
+     * الضيوف خبراء أمن وممكن يجرّبون الأداة: اسم الضيف ونص السؤال
+     * ياخذهم السيرفر من data.json حسب question_id (ما نثق بنص من المتصفح
+     * يوصل لواتساب سالم)، وبيانات الجهاز تنحفظ بملف خاص غير عام.
      */
     public function storeAnswer(Request $request): JsonResponse
     {
         $data = $request->validate([
             'audio' => ['required', 'file', 'max:51200'],
             'question_id' => ['required', 'string', 'max:120', 'regex:/^[A-Za-z0-9_-]+$/'],
-            'guest' => ['nullable', 'string', 'max:120'],
-            'question' => ['nullable', 'string', 'max:600'],
         ]);
 
         $file = $request->file('audio');
-        $mime = strtolower(explode(';', (string) $file->getMimeType())[0]);
+        // النوع من محتوى الملف نفسه (finfo) -- مب من الاسم ولا من اللي يقوله المتصفح.
+        $mime = strtolower((string) (new \finfo(FILEINFO_MIME_TYPE))->file($file->getRealPath()));
         $extension = self::AUDIO_EXTENSIONS[$mime] ?? null;
 
         if ($extension === null) {
@@ -84,15 +90,39 @@ class CyberxInterviewController extends Controller
         }
 
         $url = Storage::disk('public')->url($path);
+        [$guest, $question] = $this->lookupQuestion($data['question_id']);
+        [$class, $reasons] = VisitClassifier::classify($request, isPageView: false);
+        $device = DeviceSummary::describe($request->userAgent());
+        $country = $this->country($request);
+
+        // سجل الجهاز بمكان خاص (مب public) -- فيه العنوان والـ user agent كامل.
+        Storage::disk('local')->put('cyberx-answers-meta/'.$now->format('Y-m-d').'/'.$name.'.json', json_encode([
+            'file' => $path,
+            'question_id' => $data['question_id'],
+            'received_at' => $now->toIso8601String(),
+            'ip' => $request->ip(),
+            'proxy_ip' => $request->server('REMOTE_ADDR'),
+            'country' => $country,
+            'user_agent' => $request->userAgent(),
+            'device' => $device,
+            'accept_language' => $request->header('Accept-Language'),
+            'mime' => $mime,
+            'size_bytes' => $file->getSize(),
+            'traffic_class' => $class,
+            'class_reasons' => $reasons,
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         $lines = ['🎙 إجابة جديدة — CyberX Oman 2026'];
+        $lines[] = 'الضيف: '.($guest ?? '⚠️ غير معروف ('.$data['question_id'].')');
 
-        if (filled($data['guest'] ?? null)) {
-            $lines[] = 'الضيف: '.$data['guest'];
+        if ($question !== null) {
+            $lines[] = 'السؤال: '.$question;
         }
 
-        if (filled($data['question'] ?? null)) {
-            $lines[] = 'السؤال: '.$data['question'];
+        $lines[] = '📱 '.$device.($country ? ' — '.$country : '');
+
+        if ($class !== VisitClassifier::HUMAN && $class !== VisitClassifier::OWNER) {
+            $lines[] = '⚠️ ملاحظة: '.implode('، ', $reasons ?: [$class]);
         }
 
         $lines[] = '';
@@ -101,5 +131,62 @@ class CyberxInterviewController extends Controller
         $this->notifyWhatsApp(implode("\n", $lines));
 
         return response()->json(['success' => true, 'url' => $url]);
+    }
+
+    /**
+     * question_id = «<الضيف>-<معرّف السؤال>» كما تبنيه الأداة. نرجّع اسم الضيف
+     * ونص السؤال من data.json، أو null لو ما انعرف.
+     *
+     * @return array{0: ?string, 1: ?string}
+     */
+    private function lookupQuestion(string $questionId): array
+    {
+        $data = json_decode((string) @file_get_contents(public_path('audio/cyberx-interview-2026/data.json')), true) ?: [];
+
+        $guests = collect(array_merge($data['priority_guests'] ?? [], $data['additional_guests'] ?? []));
+        $guest = $guests->first(fn ($g) => str_starts_with($questionId, $g['id'].'-'));
+        $prefix = $guest['id'] ?? (str_starts_with($questionId, 'panel-') ? 'panel' : null);
+        $rest = $prefix ? substr($questionId, strlen($prefix) + 1) : $questionId;
+
+        $guestName = $guest['name_ar'] ?? ($prefix === 'panel' ? 'سؤال الجلسة القيادية' : null);
+
+        if ($rest === 'panel_question') {
+            return [$guestName, $data['panel_question']['ar'] ?? null];
+        }
+
+        if ($guest && $rest === $guest['id'].'-last') {
+            $rest = 'shared-last';
+        }
+
+        // كل بطاقة سؤال بالملف (أسئلة الضيوف، الأزرار السريعة، المتابعات) معرّفها = audio.
+        $questions = [];
+        $collect = function ($node) use (&$collect, &$questions) {
+            if (! is_array($node)) {
+                return;
+            }
+
+            if (isset($node['audio'], $node['ar']) && is_string($node['audio'])) {
+                $questions[$node['audio']] ??= $node['ar'];
+            }
+
+            array_map($collect, $node);
+        };
+        $collect($data);
+
+        return [$guestName, $questions[$rest] ?? null];
+    }
+
+    /**
+     * البلد من Cloudflare (موثوق فقط لو الطلب جاي منها فعلًا).
+     */
+    private function country(Request $request): ?string
+    {
+        $code = strtoupper((string) $request->header('CF-IPCountry'));
+
+        if (! CloudflareIps::contains($request->server('REMOTE_ADDR')) || ! preg_match('/^[A-Z]{2}$/', $code) || in_array($code, ['XX', 'T1'], true)) {
+            return null;
+        }
+
+        return (locale_get_display_region('-'.$code, 'ar') ?: $code).' ('.$code.')';
     }
 }
