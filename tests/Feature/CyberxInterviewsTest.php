@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class CyberxInterviewsTest extends TestCase
@@ -64,5 +65,18 @@ class CyberxInterviewsTest extends TestCase
     {
         $this->get('/events/cyberx-oman-2026/interviews/yahya-al-azri')->assertNotFound();
         $this->get('/events/cyberx-oman-2026/interviews/nobody')->assertNotFound();
+    }
+
+    public function test_unpublished_interview_opens_with_a_signed_preview_link(): void
+    {
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview', ['guest' => 'yahya-al-azri'], absolute: false);
+
+        $this->get($url)
+            ->assertOk()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
+            ->assertSee('يحيى العزري')
+            ->assertSee('شرطة عُمان السلطانية');
+
+        $this->get($url.'x')->assertNotFound();
     }
 }

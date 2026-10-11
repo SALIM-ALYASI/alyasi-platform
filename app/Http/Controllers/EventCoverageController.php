@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Support\Coverage\CyberxInterviews;
 use App\Support\Coverage\CyberxOman2026;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class EventCoverageController extends Controller
@@ -44,12 +45,15 @@ class EventCoverageController extends Controller
     /**
      * مقابلة ضيف واحد: سؤال سالم بصوته، وإجابة الضيف بصوته ونصها بتوقيت كل جملة.
      */
-    public function cyberxOman2026Interview(string $guest): View|RedirectResponse
+    public function cyberxOman2026Interview(string $guest): View|RedirectResponse|Response
     {
         $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
         $data = CyberxInterviews::guest($guest, $locale);
 
-        abort_unless($data && $data['published'], 404);
+        // مقابلة مخفية تنفتح برابط معاينة موقّع (URL::signedRoute بدون absolute -- التوقيع ما يتأثر بـ https خلف Cloudflare) عشان سالم يراجعها قبل النشر.
+        $preview = $data && ! $data['published'] && request()->hasValidRelativeSignature();
+
+        abort_unless($data && ($data['published'] || $preview), 404);
 
         // المقابلة بلغة إجابات الضيف فقط -- رابط بلغة ثانية يروح للنسخة الموجودة.
         if (! in_array($locale, $data['languages'], true)) {
@@ -60,7 +64,7 @@ class EventCoverageController extends Controller
                 : route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest]));
         }
 
-        return view('events.coverage.interviews.show', [
+        $view = view('events.coverage.interviews.show', [
             'guest' => $data,
             'others' => array_values(array_filter(CyberxInterviews::guests($locale), fn ($g) => $g['published'] && $g['slug'] !== $guest)),
             'isEn' => $locale === 'en',
@@ -70,5 +74,9 @@ class EventCoverageController extends Controller
             'urlAr' => route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest]),
             'urlEn' => route('event_coverage.cyberx_oman_2026.interview.en', ['guest' => $guest]),
         ]);
+
+        return $preview
+            ? response($view)->header('X-Robots-Tag', 'noindex, nofollow')->header('Cache-Control', 'no-store, private')
+            : $view;
     }
 }
