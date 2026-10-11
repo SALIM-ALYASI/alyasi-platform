@@ -78,7 +78,10 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('شرطة عُمان السلطانية')
             // التعريف أول بطاقة بدون رقم، والأسئلة بعده من 1 إلى 4.
             ->assertSeeInOrder(['تعريف الضيف · سالم الحجري', 'سؤال 1 · سالم الحجري', 'سؤال 4 · سالم الحجري'])
-            ->assertDontSee('سؤال 5 ·');
+            ->assertDontSee('سؤال 5 ·')
+            // خاتمة سالم بعد آخر إجابة، بصوته.
+            ->assertSeeInOrder(['سؤال 4 · سالم الحجري', 'id="interviewOutro"', 'أنا كنت هناك لهذا السبب تحديدًا', 'استمع للخاتمة بصوتي'], false)
+            ->assertSee('yahya\\/outro-ar.m4a', false);
 
         $this->get($url.'x')->assertNotFound();
     }

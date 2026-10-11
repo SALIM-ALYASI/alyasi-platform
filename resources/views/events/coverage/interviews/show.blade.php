@@ -5,6 +5,7 @@
     $pageTitle = $guest['name'].' — '.$t('لقاء من سايبر إكس عُمان 2026', 'Interview from CyberX Oman 2026');
     $jsData = [
         'intro' => $guest['intro_audio'],
+        'outro' => $guest['outro_audio'],
         'items' => array_map(fn ($item) => [
             // اسم البطاقة بشريط التشغيل: «تعريف الضيف» أو رقم السؤال.
             'tag' => $item['label'] ?? (string) $item['number'],
@@ -18,6 +19,7 @@
             'answer' => $guest['name'],
             'host' => $host['name'],
             'intro' => $t('المقدمة', 'Introduction'),
+            'outro' => $t('الخاتمة', 'Closing'),
         ],
     ];
 @endphp
@@ -171,6 +173,24 @@
                 </li>
             @endforeach
         </ol>
+
+        {{-- خاتمة سالم بعد آخر إجابة --}}
+        @if ($guest['outro'])
+            <section class="interview__intro interview__outro" id="interviewOutro" data-reveal>
+                <img src="{{ $host['avatar'] }}" alt="" width="40" height="40">
+                <div>
+                    @foreach (preg_split('/\n\s*\n/', $guest['outro']) as $outroParagraph)
+                        <p>{{ $outroParagraph }}</p>
+                    @endforeach
+                    @if ($guest['outro_audio'])
+                        <button type="button" class="qa__mini interview__intro-play" data-play="x" data-item="-2"
+                                aria-label="{{ $t('استمع للخاتمة', 'Play the closing') }}">
+                            <span class="qa__mini-icon" aria-hidden="true">▶</span> {{ $t('استمع للخاتمة بصوتي', 'Listen to my closing') }}
+                        </button>
+                    @endif
+                </div>
+            </section>
+        @endif
 
         {{-- بقية الضيوف --}}
         @if ($others)

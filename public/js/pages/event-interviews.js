@@ -64,8 +64,8 @@
         dock.hidden = !current;
         if (current) {
             document.getElementById('interviewDockToggle').textContent = playing ? '❚❚' : '▶';
-            dockLabel.textContent = current.kind === 'i'
-                ? data.labels.intro + ' · ' + data.labels.host
+            dockLabel.textContent = current.kind === 'i' || current.kind === 'x'
+                ? data.labels[current.kind === 'i' ? 'intro' : 'outro'] + ' · ' + data.labels.host
                 : (current.kind === 'q' ? qTag(current.item) + ' · ' + data.labels.host : data.labels.answer + ' · ' + items[current.item].tag);
         }
     }
@@ -73,6 +73,7 @@
     function load(track, seek) {
         current = track;
         var src = track.kind === 'i' ? data.intro
+            : track.kind === 'x' ? data.outro
             : track.kind === 'q' ? items[track.item].q
             : track.kind === 'o' ? items[track.item].o
             : items[track.item].a;
@@ -98,11 +99,13 @@
     }
 
     function nextInQueue() {
-        // الترتيب: المقدمة بصوت سالم (لو موجودة)، ثم سؤال/إجابة لكل محور.
+        // الترتيب: المقدمة بصوت سالم (لو موجودة)، ثم سؤال/إجابة لكل محور، ثم الخاتمة.
         if (!current) return data.intro ? { item: -1, kind: 'i' } : { item: 0, kind: 'q' };
         if (current.kind === 'i') return { item: 0, kind: 'q' };
         if (current.kind === 'q') return { item: current.item, kind: 'a' };
-        return current.item + 1 < items.length ? { item: current.item + 1, kind: 'q' } : null;
+        if (current.kind === 'x') return null;
+        if (current.item + 1 < items.length) return { item: current.item + 1, kind: 'q' };
+        return data.outro ? { item: -2, kind: 'x' } : null;
     }
 
     audio.addEventListener('timeupdate', function () {
@@ -131,8 +134,8 @@
         var next = queueMode ? nextInQueue() : null;
         if (next) {
             load(next);
-            var li = document.getElementById('q' + (next.item + 1));
-            if (li && next.kind === 'q') li.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            var li = next.kind === 'x' ? document.getElementById('interviewOutro') : document.getElementById('q' + (next.item + 1));
+            if (li && (next.kind === 'q' || next.kind === 'x')) li.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
             queueMode = false;
             render();

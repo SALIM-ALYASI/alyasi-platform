@@ -95,6 +95,11 @@ class CyberxInterviews
             'intro_audio' => ! empty($guest['intro_audio'][$locale] ?? null)
                 ? asset(ltrim($guest['intro_audio'][$locale], '/'))
                 : null,
+            // خاتمة سالم بعد آخر إجابة (اختيارية) -- آخر ما يشتغل بـ«استمع للمقابلة كاملة».
+            'outro' => $pick('outro'),
+            'outro_audio' => ! empty($guest['outro_audio'][$locale] ?? null)
+                ? asset(ltrim($guest['outro_audio'][$locale], '/'))
+                : null,
             'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
             // صورة المشاركة (1200×630): الضيف واسمه واقتباسه -- تظهر لما ينرسل رابط مقابلته.
             'og_image' => ($ogImage = $guest['og_image_'.$locale] ?? $guest['og_image'] ?? null) ? asset(ltrim($ogImage, '/')) : null,
