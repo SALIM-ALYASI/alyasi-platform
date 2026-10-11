@@ -644,7 +644,7 @@
    "name_en": "Ali Al Lawati",
    "role_ar": "المؤسس والرئيس التقني · QPay",
    "role_en": "Founder & CTO · QPay",
-   "photo": null,
+   "photo": "/images/events/cyberx-2026/ali-al-lawati.png",
    "initials": {
     "ar": "ع",
     "en": "AL"
@@ -834,7 +834,9 @@
    ],
    "intro_audio": {
     "en": "/audio/interviews/cyberx-oman-2026/ali/intro-en.m4a"
-   }
+   },
+   "og_image": "/images/interviews/cyberx-oman-2026/ali-al-lawati-og-en.jpg",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/ali-al-lawati-og-en.jpg"
   },
   {
    "slug": "khalid-al-amrani",
