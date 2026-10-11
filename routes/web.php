@@ -58,7 +58,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\WorkController;
 use App\Http\Middleware\SetLocale;
-use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ConferenceRecordingController;
 use Illuminate\Support\Facades\Route;
@@ -580,15 +579,15 @@ Route::post('/tools/cyberx-interview/answers', [CyberxInterviewController::class
     ->middleware('throttle:30,1')
     ->name('tools.cyberx-interview.answers');
 
-// الإحصائيات: رابط سالم لاستبعاد أجهزته، وأحداث التفاعل من الصفحات
-// (بدون CSRF -- sendBeacon ما يرسل التوكن، والحدث ما يغيّر أي محتوى).
+// الإحصائيات: رابط سالم لاستبعاد أجهزته، وأحداث التفاعل من الصفحات.
+// sendBeacon ما يرسل توكن CSRF، بس المتصفح يرسل Sec-Fetch-Site: same-origin
+// وحماية Laravel 13 تقبله -- فطلبات المواقع الثانية تنرفض.
 Route::get('/analytics/device', [AnalyticsController::class, 'device'])
     ->middleware('throttle:20,1')
     ->name('analytics.device');
 
 Route::post('/analytics/event', [AnalyticsController::class, 'event'])
     ->middleware('throttle:60,1')
-    ->withoutMiddleware(ValidateCsrfToken::class)
     ->name('analytics.event');
 
 // صحفي المؤتمر -- مسجّل صوت للآيفون/الآيباد (ConferenceJournalist)
