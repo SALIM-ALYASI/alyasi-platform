@@ -542,14 +542,19 @@
             });
         });
 
-        // أول تبويب مفعّل تلقائياً
-        if (tabsBar.firstElementChild) tabsBar.firstElementChild.click();
+        // الرابط يحدد الضيف (?guest=haitham) عشان لما ينرسل لضيف يفتح على
+        // أسئلته مباشرة، وإلا أول تبويب.
+        const requestedGuest = new URLSearchParams(location.search).get('guest');
+        const initialTab = [...tabsBar.children].find((b) => b.dataset.tab === requestedGuest)
+            || tabsBar.firstElementChild;
+        if (initialTab) initialTab.click();
 
         function makeTab(id, label, isFeminine, build) {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'tab-btn';
             btn.textContent = label;
+            btn.dataset.tab = id;
 
             const panel = document.createElement('div');
             panel.className = 'tab-panel';
@@ -566,7 +571,10 @@
                 panel.classList.add('is-active');
                 renderQuickButtons(isFeminine);
                 renderFollowups(isFeminine);
-                window.scrollTo({ top: 0, behavior: 'auto' });
+                const url = new URL(location.href);
+                url.searchParams.set('guest', id);
+                history.replaceState(null, '', url);
+                window.scrollTo({ top: 0, behavior: 'instant' });
             });
 
             tabsBar.appendChild(btn);
