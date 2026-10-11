@@ -641,17 +641,200 @@
    "slug": "ali-al-lawati",
    "published": false,
    "name_ar": "علي اللواتي",
-   "name_en": "Ali Al-Lawati",
-   "role_ar": "Qpay",
-   "role_en": "Qpay",
+   "name_en": "Ali Al Lawati",
+   "role_ar": "المؤسس والرئيس التقني · QPay",
+   "role_en": "Founder & CTO · QPay",
    "photo": null,
    "initials": {
     "ar": "ع",
     "en": "AL"
    },
    "languages": [
-    "ar"
-   ]
+    "en"
+   ],
+   "topic_ar": "المدفوعات الرقمية، والحماية من الاحتيال، والتقنية المالية في عُمان",
+   "topic_en": "Digital payments, fraud protection and fintech in Oman",
+   "quote_ar": "أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان هو الوعي.",
+   "quote_en": "The biggest challenge facing the spread of digital payments in Oman is basically awareness.",
+   "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the fintech founders in the Sultanate.\n\nWe talked about the biggest challenge facing digital payments in Oman, how to protect users from AI-powered fraud, and how a small business can start accepting online payments.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
+   "intro_ar": "في مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء الخاص مع أحد مؤسسي شركات التقنية المالية في السلطنة.\n\nتحدثنا عن أكبر تحدٍّ يواجه المدفوعات الرقمية في عُمان، وكيف نحمي المستخدمين من الاحتيال بالذكاء الاصطناعي، وكيف يبدأ المشروع الصغير بقبول المدفوعات الإلكترونية.\n\nأشكره على وقته، وعلى تعاونه الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك له التعريف بنفسه.",
+   "items": [
+    {
+     "label_ar": "تعريف الضيف",
+     "label_en": "Introduction",
+     "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+     "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ali/q-intro-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ali/a0.m4a",
+     "duration": 33.4,
+     "languages": [
+      "en"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "My name is Ali Al Lawati. I'm the founder and the CTO of QPay. QPay is a buy now, pay later platform — a fintech platform licensed by the Central Bank of Oman.",
+       "ar": "اسمي علي اللواتي، مؤسس QPay ورئيسها التقني. QPay منصة «اشترِ الآن وادفع لاحقًا»، منصة تقنية مالية مرخّصة من البنك المركزي العُماني."
+      },
+      {
+       "t": 10.0,
+       "en": "My major role is basically to develop the lending architecture, which I developed at an early stage when we launched the services.",
+       "ar": "دوري الأساسي تطوير بنية الإقراض التي بنيتها في المرحلة الأولى عند إطلاق الخدمة."
+      },
+      {
+       "t": 19.0,
+       "en": "And now my job is basically to enhance the services and make sure they are supporting the ecosystems we developed in-house, like the fraud engine, the risk engine and many other engines that support the day-to-day operations.",
+       "ar": "واليوم عملي تطوير الخدمات وضمان دعمها للمنظومات التي طوّرناها داخليًا، مثل محرّك كشف الاحتيال ومحرّك المخاطر وغيرها من المحرّكات التي تدعم العمليات اليومية."
+      }
+     ]
+    },
+    {
+     "q_ar": "أستاذ علي، ما أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان، وكيف يمكن تجاوزه؟",
+     "q_en": "Mr. Ali, what is the biggest challenge facing the spread of digital payments in Oman, and how can it be overcome?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ali/q-pay1-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ali/a1.m4a",
+     "duration": 32.3,
+     "languages": [
+      "en"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "The biggest challenge facing the spread of digital payments in Oman is basically awareness.",
+       "ar": "أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان هو الوعي."
+      },
+      {
+       "t": 7.0,
+       "en": "Digital payments come in different methods: it could be through a PSP, it could be through mobile phone payment.",
+       "ar": "المدفوعات الرقمية لها طرق مختلفة: عبر مزوّدي خدمات الدفع، أو الدفع بالهاتف."
+      },
+      {
+       "t": 16.0,
+       "en": "But the QPay payment system is a little bit different, because we provide a credit line to individuals.",
+       "ar": "لكن نظام QPay مختلف قليلًا، لأننا نمنح الأفراد خطًّا ائتمانيًا."
+      },
+      {
+       "t": 24.0,
+       "en": "So its spread has to go along with some awareness as well. Thank you.",
+       "ar": "فانتشاره يحتاج أن يرافقه وعي أيضًا. شكرًا."
+      }
+     ]
+    },
+    {
+     "q_ar": "كيف تحمون المستخدم من الاحتيال المالي، خصوصًا مع استخدام الذكاء الاصطناعي لتزييف الأصوات والرسائل؟",
+     "q_en": "How do you protect users from financial fraud, especially now that AI is used to fake voices and messages?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ali/q-pay2-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ali/a2.m4a",
+     "duration": 47.0,
+     "languages": [
+      "en"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "How do we protect our users from AI fraud?",
+       "ar": "كيف نحمي مستخدمينا من الاحتيال بالذكاء الاصطناعي؟"
+      },
+      {
+       "t": 6.0,
+       "en": "The onboarding process is very rigid: the customer has to onboard himself by entering his mobile number, scanning his ID card front and back, doing a digital KYC onboarding and validating the picture with the ID card.",
+       "ar": "إجراءات التسجيل صارمة جدًا: يسجّل العميل بنفسه برقم هاتفه، ويمسح بطاقته الشخصية من الوجهين، ويُجري التحقق الرقمي من الهوية، وتُطابَق صورته مع البطاقة."
+      },
+      {
+       "t": 22.0,
+       "en": "Subsequent to that, OTPs are used for any new payments.",
+       "ar": "بعد ذلك تُستخدم رموز التحقق لمرة واحدة (OTP) لأي عملية دفع جديدة."
+      },
+      {
+       "t": 29.4,
+       "en": "In addition to that, payment requests are sent to the mobile, and the mobile application cannot be installed on multiple devices.",
+       "ar": "إضافة إلى ذلك تُرسَل طلبات الدفع إلى الهاتف، ولا يمكن تثبيت التطبيق على أكثر من جهاز."
+      },
+      {
+       "t": 36.3,
+       "en": "So these are other ways that we protect our customers from getting scammed.",
+       "ar": "وهذه طرقنا لحماية عملائنا من الاحتيال."
+      }
+     ]
+    },
+    {
+     "q_ar": "كيف يستطيع صاحب مشروع صغير إضافة الدفع الإلكتروني إلى موقعه بطريقة سهلة وآمنة وبتكلفة مناسبة؟",
+     "q_en": "How can a small business owner add online payments to their website in an easy, secure, and affordable way?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ali/q-pay3-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ali/a3.m4a",
+     "duration": 48.2,
+     "languages": [
+      "en"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "For smaller merchants it is very easy. We have multiple ways to connect.",
+       "ar": "الأمر سهل جدًا للتجّار الصغار، ولدينا أكثر من طريقة للربط."
+      },
+      {
+       "t": 5.6,
+       "en": "We have the merchant mobile app if the merchant doesn't have an API-enabled website.",
+       "ar": "لدينا تطبيق التاجر إن لم يكن لديه موقع يدعم الربط البرمجي."
+      },
+      {
+       "t": 11.2,
+       "en": "For an API-enabled website, we authenticate the merchant with a public/private key pair, and then there are five or six APIs that need to be integrated on the system.",
+       "ar": "وللمواقع التي تدعم الربط البرمجي، نوثّق التاجر بزوج مفاتيح عام وخاص، ثم يربط خمس أو ست واجهات برمجية في نظامه."
+      },
+      {
+       "t": 24.8,
+       "en": "If the merchant does not have a website or a marketplace, then we provide them a mobile application.",
+       "ar": "وإن لم يكن لدى التاجر موقع أو متجر إلكتروني، نوفّر له تطبيقًا على الهاتف."
+      },
+      {
+       "t": 36.8,
+       "en": "He enters his merchant ID and generates the QR code for the purchase.",
+       "ar": "يُدخل رقم التاجر، ويُنشئ رمز QR لعملية الشراء."
+      },
+      {
+       "t": 42.2,
+       "en": "And the request is either scanned through the customer's QR code or sent to the customer's phone.",
+       "ar": "ثم إمّا أن يمسحه العميل، أو يصل الطلب إلى هاتفه."
+      }
+     ]
+    },
+    {
+     "q_ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
+     "q_en": "Is this conference mainly about raising cyber awareness in Oman, or showing the world Oman's progress? And if it serves both, how can we share it with Omanis in Arabic?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ali/q-last-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ali/a4.m4a",
+     "duration": 23.9,
+     "languages": [
+      "en"
+     ],
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "The conference served both purposes: first of all, educating the local Omani market about what's happening in the cybersecurity ecosystem,",
+       "ar": "المؤتمر خدم الهدفين: أولًا توعية السوق العُماني المحلي بما يحدث في منظومة الأمن السيبراني،"
+      },
+      {
+       "t": 12.0,
+       "en": "and at the same time, showcasing what Oman has achieved in cybersecurity and the payment system. So it serves both purposes.",
+       "ar": "وفي الوقت نفسه إبراز ما حققته عُمان في الأمن السيبراني وأنظمة الدفع. فهو يخدم الهدفين."
+      }
+     ]
+    }
+   ],
+   "intro_audio": {
+    "en": "/audio/interviews/cyberx-oman-2026/ali/intro-en.m4a"
+   }
   },
   {
    "slug": "khalid-al-amrani",
