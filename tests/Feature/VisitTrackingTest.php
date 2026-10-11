@@ -17,7 +17,9 @@ class VisitTrackingTest extends TestCase
     {
         Bus::fake();
 
-        $this->get('/')->assertOk();
+        $this->withHeader('Accept-Language', 'ar')
+            ->withHeader('User-Agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Mobile/15E148 Safari/604.1')
+            ->get('/')->assertOk();
 
         $this->assertDatabaseCount('page_visits', 1);
 
@@ -43,6 +45,15 @@ class VisitTrackingTest extends TestCase
 
         $this->withHeader('User-Agent', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)')
             ->get('/');
+
+        $this->assertDatabaseCount('page_visits', 0);
+    }
+
+    public function test_server_side_test_renders_are_not_tracked(): void
+    {
+        Queue::fake();
+
+        $this->withHeader('User-Agent', 'Symfony')->get('/');
 
         $this->assertDatabaseCount('page_visits', 0);
     }
