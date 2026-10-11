@@ -319,7 +319,8 @@
      "audio": "ahmed-app-intro",
      "label": "تعريف الضيف",
      "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "label_en": "Introduction"
     },
     {
      "audio": "ahmed-v3-q1",
@@ -340,10 +341,13 @@
      "audio": "ahmed-app-closing",
      "label": "سؤال ختامي",
      "ar": "ما الاعتقاد الشائع عن أمن التطبيقات الذي تتمنى أن يتوقف المطوّرون وأصحاب المشاريع عن تصديقه؟",
-     "en": "What common belief about application security do you wish developers and project owners would stop believing?"
+     "en": "What common belief about application security do you wish developers and project owners would stop believing?",
+     "label_en": "Closing question"
     }
    ],
-   "final_question": false
+   "final_question": false,
+   "language": "en",
+   "hint_en": "When a breach happens… are we ready?"
   },
   {
    "id": "abhishek",

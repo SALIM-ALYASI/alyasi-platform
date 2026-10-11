@@ -302,8 +302,8 @@
 <body>
     <div class="wrap">
         <header class="top">
-            <h1>أسئلة مقابلات CyberX عُمان 2026</h1>
-            <p>اضغط زر سريع فوق قبل ما تبدأ، وبعدها اختر الضيف — كل تبويب فيه أهم سؤالين بس.</p>
+            <h1 id="pageTitle">أسئلة مقابلات CyberX عُمان 2026</h1>
+            <p id="pageIntro">اضغط زر سريع فوق قبل ما تبدأ، وبعدها اختر الضيف — كل تبويب فيه أهم سؤالين بس.</p>
         </header>
 
         {{-- مخفي مؤقتًا: الضيوف يسجّلون من الرابط بأنفسهم -- شيل hidden لإرجاعه --}}
@@ -326,6 +326,29 @@
         const baseUrl = @json(asset('audio/cyberx-interview-2026/'));
         const tabsBar = document.getElementById('tabs');
         const panelsWrap = document.getElementById('panels');
+
+        // رابط الضيف (?guest=ahmed) يعرض تبويبه بس، والضيف الأجنبي
+        // (language: en) تطلع له الصفحة كاملة بالإنجليزي من اليسار لليمين.
+        const requestedGuest = new URLSearchParams(location.search).get('guest');
+        const focusGuest = [...(data.priority_guests || []), ...(data.additional_guests || [])]
+            .find((g) => g.id === requestedGuest && !g.hidden) || null;
+        const pageEn = !!focusGuest && focusGuest.language === 'en';
+        const T = (ar, en) => (pageEn ? en : ar);
+
+        if (focusGuest) {
+            tabsBar.style.display = 'none';
+            document.getElementById('pageIntro').textContent = T(
+                'استمع إلى كل سؤال، ثم اضغط «تسجيل الإجابة»، وتُرسَل إجابتك تلقائيًا عند الإيقاف.',
+                'Listen to each question, then tap “Record your answer”. Your answer is sent automatically when you stop.'
+            );
+        }
+
+        if (pageEn) {
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+            document.title = 'CyberX Oman 2026 — Interview · ALYASI';
+            document.getElementById('pageTitle').textContent = 'CyberX Oman 2026 — Interview';
+        }
 
         // مشغّل واحد نشط بكل الصفحة -- قبل ما نشغّل أي مقطع جديد نوقف أي
         // مقطع ثاني شغّال (بدون ما نصفّر مكانه، زي ضغط زر الإيقاف نفسه)،
@@ -466,7 +489,7 @@
                 // "سؤال N" للأسئلة الفعلية بس.
                 let coreNumber = 0;
                 guest.core.forEach((q) => {
-                    addCard(panel, { id: q.audio, label: q.label || 'سؤال ' + (++coreNumber), ar: q.ar, en: q.en },
+                    addCard(panel, { id: q.audio, label: q.label || T('سؤال ', 'Question ') + (++coreNumber), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 
@@ -507,7 +530,10 @@
             makeTab(guest.id, tabLabel, isFeminine, (panel) => {
                 const heading = document.createElement('div');
                 heading.className = 'guest-heading';
-                heading.innerHTML = isEnglishOnly
+                heading.innerHTML = pageEn
+                    ? '<div class="name">' + guest.name_en + '</div>' +
+                      '<div class="sub">' + (guest.hint_en || guest.hint) + '</div>'
+                    : isEnglishOnly
                     ? '<div class="name">' + guest.name_en + '</div>' +
                       '<div class="sub">' + guest.hint + ' · ' + formatTimeAr(guest.window) + '</div>' +
                       '<div class="lang-note">🌐 أجنبي — استخدم زر English بس معاه</div>'
@@ -517,7 +543,7 @@
 
                 let questionNumber = 0;
                 guest.questions.forEach((q) => {
-                    addCard(panel, { id: q.audio, label: q.label || 'سؤال ' + (++questionNumber), ar: q.ar, en: q.en },
+                    addCard(panel, { id: q.audio, label: (pageEn && q.label_en) || q.label || T('سؤال ', 'Question ') + (++questionNumber), ar: q.ar, en: q.en },
                         audioUrl(q.audio, 'ar'), audioUrl(q.audio, 'en'), true, guest.id, showArabic);
                 });
 
@@ -544,12 +570,13 @@
 
         // الرابط يحدد الضيف (?guest=haitham) عشان لما ينرسل لضيف يفتح على
         // أسئلته مباشرة، وإلا أول تبويب.
-        const requestedGuest = new URLSearchParams(location.search).get('guest');
         const initialTab = [...tabsBar.children].find((b) => b.dataset.tab === requestedGuest)
             || tabsBar.firstElementChild;
         if (initialTab) initialTab.click();
 
         function makeTab(id, label, isFeminine, build) {
+            if (focusGuest && id !== focusGuest.id) return;
+
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'tab-btn';
@@ -592,7 +619,7 @@
         async function sendAnswer(blob, questionId, meta, answerRow) {
             const status = document.createElement('div');
             status.className = 'send-status';
-            status.textContent = '⏳ جاري الإرسال للواتساب…';
+            status.textContent = T('⏳ جاري الإرسال للواتساب…', '⏳ Sending…');
             answerRow.appendChild(status);
 
             const body = new FormData();
@@ -614,16 +641,17 @@
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok || !result.success) throw new Error(result.message || ('HTTP ' + response.status));
 
-                status.textContent = '✅ انحفظت وانرسلت للواتساب';
+                status.textContent = T('✅ انحفظت وانرسلت للواتساب', '✅ Saved and sent — thank you!');
                 status.classList.add('is-ok');
             } catch (err) {
-                status.textContent = '⚠️ ما انرسلت (' + err.message + ') — اضغط ⬇ حفظ عشان ما تضيع';
+                status.textContent = T('⚠️ ما انرسلت (' + err.message + ') — اضغط ⬇ حفظ عشان ما تضيع',
+                    '⚠️ Not sent (' + err.message + ') — tap ⬇ Save so it isn’t lost');
                 status.classList.add('is-error');
 
                 const retry = document.createElement('button');
                 retry.type = 'button';
                 retry.className = 'btn';
-                retry.textContent = '🔁 إعادة الإرسال';
+                retry.textContent = T('🔁 إعادة الإرسال', '🔁 Send again');
                 retry.addEventListener('click', () => {
                     status.remove();
                     retry.remove();
@@ -689,7 +717,7 @@
                 (contextLabel ? '<span class="meta">' + contextLabel + '</span>' : '');
             card.appendChild(label);
 
-            if (q.ar) {
+            if (q.ar && !pageEn) {
                 const p = document.createElement('p');
                 p.className = 'q ar';
                 p.textContent = q.ar;
@@ -707,12 +735,12 @@
             actions.className = 'actions';
 
             if (showArabic) makePlayGroup(actions, 'عربي', arSrc);
-            makePlayGroup(actions, 'English', enSrc);
+            makePlayGroup(actions, pageEn ? 'Listen to the question' : 'English', enSrc);
 
             if (withRecord) {
                 const recordBtn = document.createElement('button');
                 recordBtn.className = 'record';
-                recordBtn.textContent = '🎙 تسجيل الإجابة';
+                recordBtn.textContent = T('🎙 تسجيل الإجابة', '🎙 Record your answer');
                 actions.appendChild(recordBtn);
 
                 card.appendChild(actions);
@@ -744,7 +772,7 @@
             const restartBtn = document.createElement('button');
             restartBtn.className = 'play restart';
             restartBtn.textContent = '⟲';
-            restartBtn.title = 'ابدأ من الصفر';
+            restartBtn.title = T('ابدأ من الصفر', 'Start over');
 
             let audio = null;
 
@@ -775,7 +803,7 @@
                 playBtn.textContent = '⏸ ' + label;
                 audio.play().catch(() => {
                     setPaused();
-                    alert('تعذّر تشغيل المقطع.');
+                    alert(T('تعذّر تشغيل المقطع.', 'Could not play this clip.'));
                 });
             };
 
@@ -820,7 +848,7 @@
                     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 } catch (err) {
                     starting = false;
-                    alert('ما قدرت أوصل للمايك. تأكد من صلاحية الوصول.');
+                    alert(T('ما قدرت أوصل للمايك. تأكد من صلاحية الوصول.', 'Microphone access is needed to record. Please allow it and try again.'));
                     return;
                 }
 
@@ -851,19 +879,19 @@
                     download.className = 'btn';
                     download.href = url;
                     download.download = 'answer-' + questionId + '.' + ext;
-                    download.textContent = '⬇ حفظ';
+                    download.textContent = T('⬇ حفظ', '⬇ Save');
                     answerRow.appendChild(download);
 
                     answerRow.classList.add('is-visible');
                     sendAnswer(blob, questionId, meta, answerRow);
 
-                    button.textContent = '🎙 إعادة التسجيل';
+                    button.textContent = T('🎙 إعادة التسجيل', '🎙 Record again');
                     button.classList.remove('is-recording');
                 });
 
                 mediaRecorder.start();
                 starting = false;
-                button.textContent = '⏹ إيقاف';
+                button.textContent = T('⏹ إيقاف', '⏹ Stop');
                 button.classList.add('is-recording');
             });
         }
