@@ -7,6 +7,7 @@ Disallow: /api/
 Disallow: /tools/
 Disallow: /cj
 Disallow: /locale/
+Disallow: /analytics/
 Disallow: /storage/cyberx-answers/
 Disallow: /setup-meta-whatsapp-token
 Disallow: /telescope

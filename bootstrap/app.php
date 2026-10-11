@@ -15,6 +15,7 @@ use App\Http\Middleware\PreferDeviceLocale;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackVisit;
+use App\Support\Analytics\CloudflareIps;
 use App\Support\WhatsAppAlerts;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -56,6 +57,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: [PreferDeviceLocale::COOKIE]);
 
         $middleware->append(SecurityHeaders::class);
+
+        // الموقع خلف Cloudflare ثم Hostinger CDN: REMOTE_ADDR يكون عنوان
+        // Cloudflare، والزائر بـ X-Forwarded-For. نثق بالهيدر فقط من نطاقات
+        // Cloudflare الرسمية، وفقط X-Forwarded-For (البروتوكول والدومين كما هم).
+        $middleware->trustProxies(at: CloudflareIps::RANGES, headers: Request::HEADER_X_FORWARDED_FOR);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {

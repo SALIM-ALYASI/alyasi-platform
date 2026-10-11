@@ -1138,6 +1138,24 @@ a.platform-status-badge:hover {
     background: var(--admin-warning-soft);
 }
 
+.platform-status-dot.is-danger {
+    background: var(--admin-danger, #c0392b);
+}
+
+.platform-status-dot.is-muted {
+    background: var(--admin-muted);
+}
+
+.platform-status-badge.is-danger {
+    color: var(--admin-danger, #c0392b);
+    background: var(--admin-danger-soft, rgba(192, 57, 43, 0.1));
+}
+
+.platform-status-badge.is-muted {
+    color: var(--admin-muted);
+    background: rgba(127, 127, 127, 0.12);
+}
+
 /* =========================================================
    Overlay
 ========================================================= */

@@ -190,7 +190,7 @@
                 </span>
 
                 <span class="stat-card-label">
-                    الزيارات
+                    زوار بشريون (مرجّح)
                 </span>
 
             </div>
@@ -198,11 +198,11 @@
             <div class="stat-card-content">
 
                 <strong>
-                    {{ number_format($visitsCount ?? 0) }}
+                    {{ number_format($humanStats['visitors']) }}
                 </strong>
 
                 <span>
-                    {{ number_format($visitsTodayCount ?? 0) }} زيارة اليوم
+                    {{ number_format($humanStats['visitors_today']) }} اليوم · منذ {{ $cleanSince->format('Y/m/d') }}
                 </span>
 
             </div>
@@ -572,7 +572,7 @@
                 </h3>
 
                 <p>
-                    توزيع الزيارات حسب بلد الزائر (يُحدَّد تلقائيًا).
+                    زوار بشريون مرجّحون حسب البلد، منذ {{ $cleanSince->format('Y/m/d') }}.
                 </p>
 
             </div>
@@ -619,7 +619,7 @@
                         </div>
 
                         <span class="platform-status-badge is-success">
-                            {{ number_format($country->visits_count) }} زيارة
+                            {{ number_format($country->visits_count) }} زائر
                         </span>
 
                     </div>
@@ -629,6 +629,90 @@
             </div>
 
         @endif
+
+    </section>
+
+
+    {{-- جودة الزيارات والتفاعل --}}
+    @php
+        $classLabels = [
+            'human' => ['بشري مرجّح', 'is-success'],
+            'suspect' => ['مشتبه به', 'is-warning'],
+            'bot' => ['بوت مؤكد', 'is-danger'],
+            'owner' => ['أجهزتك (مستبعدة)', 'is-muted'],
+            'internal' => ['فحوصات السيرفر (مستبعدة)', 'is-muted'],
+        ];
+        $eventLabels = [
+            'reached_end' => 'وصلوا لنهاية مقال/خبر',
+            'audio_play' => 'شغّلوا صوت',
+            'audio_complete' => 'أكملوا الصوت للنهاية',
+        ];
+    @endphp
+    <section class="dashboard-panel" style="margin-top: 24px;">
+
+        <header class="dashboard-panel-header">
+            <div>
+                <h3>جودة الزيارات والتفاعل</h3>
+                <p>
+                    قياس منقّى منذ {{ $cleanSince->format('Y/m/d') }}. «زائر» = متصفح (كوكي)، فالأرقام تقريبية.
+                    الوصول لنهاية المقال يعني إن الزائر نزل لآخر النص، مب إنه قرأه بالضرورة.
+                </p>
+            </div>
+        </header>
+
+        <div class="platform-status-list">
+
+            @foreach ($classLabels as $class => [$label, $tone])
+                <div class="platform-status-item">
+                    <div class="platform-status-info">
+                        <span class="platform-status-dot {{ $tone }}"></span>
+                        <div><strong>{{ $label }}</strong></div>
+                    </div>
+                    <span class="platform-status-badge {{ $tone }}">{{ number_format($trafficByClass[$class]) }} زيارة</span>
+                </div>
+            @endforeach
+
+            <div class="platform-status-item">
+                <div class="platform-status-info">
+                    <span class="platform-status-dot is-success"></span>
+                    <div><strong>زوار رجعوا بيوم ثاني</strong></div>
+                </div>
+                <span class="platform-status-badge is-success">{{ number_format($humanStats['returning']) }} من {{ number_format($humanStats['visitors']) }}</span>
+            </div>
+
+            @foreach ($eventLabels as $type => $label)
+                <div class="platform-status-item">
+                    <div class="platform-status-info">
+                        <span class="platform-status-dot is-success"></span>
+                        <div><strong>{{ $label }}</strong></div>
+                    </div>
+                    <span class="platform-status-badge is-success">{{ number_format($engagement[$type]) }}</span>
+                </div>
+            @endforeach
+
+        </div>
+
+        @if ($topPages->isNotEmpty())
+            <h4 style="margin: 20px 0 8px; font-size: 14px;">أكثر الصفحات (زوار بشريون)</h4>
+            <div class="platform-status-list">
+                @foreach ($topPages as $page)
+                    <div class="platform-status-item">
+                        <div class="platform-status-info">
+                            <div><strong dir="ltr" style="font-size: 13px;">{{ \Illuminate\Support\Str::limit(urldecode($page->path), 60) }}</strong></div>
+                        </div>
+                        <span class="platform-status-badge is-success">{{ number_format($page->visitors) }} زائر</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
+        <p style="color: var(--admin-muted); font-size: 12px; margin: 18px 0 0; line-height: 1.8;">
+            إحصائيات قديمة غير منقّاة: {{ number_format($legacyVisits['visits']) }} زيارة
+            @if ($legacyVisits['from'])
+                ({{ \Illuminate\Support\Carbon::parse($legacyVisits['from'])->format('Y/m/d') }} – {{ \Illuminate\Support\Carbon::parse($legacyVisits['to'])->format('Y/m/d') }})
+            @endif
+            — فيها زياراتك وفحوصات السيرفر وبوتات متخفية، ومن 3 سبتمبر أغلب العناوين عناوين Cloudflare بدل الزائر. لا تُقارن بالأرقام الجديدة.
+        </p>
 
     </section>
 

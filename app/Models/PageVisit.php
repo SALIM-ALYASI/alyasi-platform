@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Analytics\VisitClassifier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,10 +11,40 @@ class PageVisit extends Model
     protected $fillable = [
         'path',
         'ip_address',
+        'proxy_ip',
         'country_code',
         'country_name',
         'user_agent',
+        'traffic_class',
+        'class_reasons',
+        'visitor_id',
     ];
+
+    /**
+     * الزيارات المصنّفة (من بداية القياس المنقّى). القديمة traffic_class = null.
+     */
+    public function scopeClassified(Builder $query): Builder
+    {
+        return $query->whereNotNull('traffic_class');
+    }
+
+    /**
+     * يضيف سبب اشتباه ويحوّل «بشري مرجّح» إلى «مشتبه به» (ما يمس البوت/سالم).
+     */
+    public function markSuspect(string $reason): void
+    {
+        $reasons = array_filter(explode(',', (string) $this->class_reasons));
+
+        if (! in_array($reason, $reasons, true)) {
+            $reasons[] = $reason;
+        }
+
+        $this->class_reasons = implode(',', $reasons);
+
+        if ($this->traffic_class === VisitClassifier::HUMAN) {
+            $this->traffic_class = VisitClassifier::SUSPECT;
+        }
+    }
 
     /**
      * الزيارات اللي تحدد بلدها فعليًا (استبعاد المجهولة/المحلية).

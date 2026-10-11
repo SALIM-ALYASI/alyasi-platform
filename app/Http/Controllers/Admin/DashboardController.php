@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CommunityPost;
 use App\Models\NewsArticle;
-use App\Models\PageVisit;
 use App\Models\Service;
+use App\Support\Analytics\VisitStats;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -32,20 +32,16 @@ class DashboardController extends Controller
             ->active()
             ->count();
 
-        $visitsCount = PageVisit::query()
-            ->count();
-
-        $visitsTodayCount = PageVisit::query()
-            ->whereDate('created_at', today())
-            ->count();
-
-        $topCountries = PageVisit::query()
-            ->withKnownCountry()
-            ->selectRaw('country_name, country_code, count(*) as visits_count')
-            ->groupBy('country_name', 'country_code')
-            ->orderByDesc('visits_count')
-            ->limit(5)
-            ->get();
+        // الأرقام من القياس المنقّى فقط (بشري مرجّح)؛ القديمة تنعرض منفصلة كغير منقّاة.
+        $humanStats = VisitStats::humans();
+        $visitsCount = $humanStats['visits'];
+        $visitsTodayCount = $humanStats['visits_today'];
+        $topCountries = VisitStats::topCountries();
+        $trafficByClass = VisitStats::byClass();
+        $engagement = VisitStats::engagement();
+        $topPages = VisitStats::topPages();
+        $legacyVisits = VisitStats::legacy();
+        $cleanSince = VisitStats::cleanSince();
 
         return view(
             'admin.dashboard.index',
@@ -57,7 +53,13 @@ class DashboardController extends Controller
                 'communityCount',
                 'visitsCount',
                 'visitsTodayCount',
-                'topCountries'
+                'topCountries',
+                'humanStats',
+                'trafficByClass',
+                'engagement',
+                'topPages',
+                'legacyVisits',
+                'cleanSince'
             )
         );
     }

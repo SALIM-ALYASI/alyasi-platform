@@ -480,6 +480,11 @@
         defer
     ></script>
 
+    <script
+        src="{{ versioned_asset('js/shared/analytics.js') }}"
+        defer
+    ></script>
+
 
     {{-- =====================================================
          Page Specific Scripts
