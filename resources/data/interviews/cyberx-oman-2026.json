@@ -421,9 +421,9 @@
    "topic_en": "Digital trust, deepfakes and breach readiness",
    "quote_ar": "لا تعتمد على الصوت أو الفيديو لإثبات الهوية، ولو بدا حقيقيًا.",
    "quote_en": "Don't rely on voice or video to prove identity, even when it looks real.",
-   "intro_ar": "من سايبر إكس عُمان 2026، أنقل لكم هذا اللقاء الخاص مع الأستاذ يحيى العزري من المركز الوطني للسلامة المعلوماتية، عن الثقة الرقمية والاستعداد للاختراق.\n\nشكرًا أستاذ يحيى على وقتك وتعاونك مع منصة الياسي. فلنبدأ.",
+   "intro_ar": "في مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء الخاص مع أحد خبراء الأمن السيبراني في السلطنة.\n\nتحدثنا عن الهجمات التي يقودها الذكاء الاصطناعي، وعن الأصوات والفيديوهات المزيفة، وعن الخطوة الأولى التي يجب أن تتخذها أي مؤسسة بعد الاختراق.\n\nأشكره على وقته، وعلى تعاونه الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك له التعريف بنفسه.",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/yahya/intro-ar.m4a"
+    "ar": "/audio/interviews/cyberx-oman-2026/yahya/intro-v2-ar.m4a"
    },
    "og_image": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og.jpg",
    "items": [
