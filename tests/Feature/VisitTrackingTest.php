@@ -80,8 +80,9 @@ class VisitTrackingTest extends TestCase
         Bus::fake();
 
         $this->withHeader('User-Agent', 'Symfony')->get('/');
+        $this->browser(['User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.1612.0 Chrome/146.0.0.0 Electron/41 Safari/537.36'])->get('/');
 
-        $this->assertSame('internal', PageVisit::query()->value('traffic_class'));
+        $this->assertSame(['internal', 'internal'], PageVisit::query()->orderBy('id')->pluck('traffic_class')->all());
     }
 
     public function test_owner_device_is_classified_owner(): void

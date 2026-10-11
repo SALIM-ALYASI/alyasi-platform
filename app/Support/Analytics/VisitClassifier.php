@@ -54,6 +54,11 @@ final class VisitClassifier
             return [self::INTERNAL, ['server_check']];
         }
 
+        // متصفح المعاينة داخل تطبيق Claude (فحوصات Claude للموقع).
+        if (preg_match('#\bClaude/\d#', $agent)) {
+            return [self::INTERNAL, ['claude_preview']];
+        }
+
         if ($lower === '') {
             return [self::BOT, ['no_user_agent']];
         }
@@ -90,7 +95,8 @@ final class VisitClassifier
     }
 
     /**
-     * أقدم من سنتين تقريبًا (أكتوبر 2026: Chrome 141، Safari 27).
+     * أقدم من 3 سنوات تقريبًا (أكتوبر 2026: Chrome ~154، Safari 27) -- عتبة متحفّظة
+     * عشان ما نشتبه بناس حقيقيين ما حدّثوا أجهزتهم.
      */
     private static function isOutdatedBrowser(string $agent): bool
     {
