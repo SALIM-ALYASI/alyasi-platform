@@ -978,8 +978,8 @@
    "published": false,
    "name_ar": "خالد العمراني",
    "name_en": "Khalid Al Amrani",
-   "role_ar": "تدقيق أمن المعلومات والأمن السيبراني",
-   "role_en": "Information Security Audit & Cybersecurity",
+   "role_ar": "تدقيق التقنية وأمن المعلومات",
+   "role_en": "IT Audit & Information Security",
    "photo": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-photo.jpg",
    "initials": {
     "ar": "خ",
@@ -1206,7 +1206,8 @@
    "intro_audio": {
     "ar": "/audio/interviews/cyberx-oman-2026/khalid/intro-ar.m4a"
    },
-   "og_image": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og.jpg"
+   "og_image": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-v2.jpg",
+   "ai_voice_consent": "رفض -- خالد طلب تبقى المقابلة بالعربي فقط بدون صوت مولّد (12 أكتوبر 2026)"
   }
  ]
 }
