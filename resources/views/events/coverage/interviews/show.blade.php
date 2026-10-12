@@ -104,8 +104,14 @@
                 <span class="interview__length">{{ $guest['questions'] }} {{ $t('أسئلة', 'questions') }} · {{ $guest['minutes'] }} {{ $t('دقائق', 'min') }}</span>
             </div>
 
-            @if ($isEn)
-                <p class="interview__note">The answers below are Dr. Haitham Al Hajri’s own English text, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer.</p>
+            @if ($guest['note'])
+                <p class="interview__note">{{ $guest['note'] }}</p>
+            @endif
+
+            @if ($guest['translation'])
+                <button type="button" class="qa__mini interview__translate" id="interviewTranslate"
+                        data-label-en="🌐 English translation" data-label-ar="🌐 النص العربي">🌐 English translation</button>
+                <script type="application/json" id="interviewTranslation">@json($guest['translation'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>
             @endif
         </header>
 

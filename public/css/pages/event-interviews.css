@@ -160,6 +160,13 @@ a.interview-card:hover { transform: translateY(-3px); border-color: var(--color-
 .interview__length { color: var(--theme-muted); font-size: 13px; }
 .interview__note { margin: 16px 0 0; color: var(--theme-muted); font-size: 13px; }
 
+/* زر ترجمة النص بنفس الصفحة -- العناصر المبدّلة تختفي حتى لو لها display خاص */
+.interview__translate { margin-top: 14px; }
+.interview [hidden] { display: none !important; }
+.interview__intro-en { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.interview__intro-en p { margin: 0; font-size: 15.5px; line-height: 1.8; color: var(--color-text); }
+.qa [lang="en"] { text-align: left; }
+
 .interview__qa { margin: 30px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 26px; }
 
 .qa { scroll-margin-top: 90px; }

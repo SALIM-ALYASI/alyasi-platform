@@ -120,6 +120,32 @@ class CyberxInterviewsTest extends TestCase
             ->assertDontSee('AI-generated voice');
     }
 
+    public function test_khalid_arabic_page_has_an_in_page_english_translation_button(): void
+    {
+        $this->withHeader('Accept-Language', 'ar')
+            ->get('/events/cyberx-oman-2026/interviews/khalid-al-amrani')
+            ->assertOk()
+            ->assertSee('id="interviewTranslate"', false)
+            // الترجمة بيانات (JSON) مب نص ظاهر بالصفحة.
+            ->assertSee('<script type="application/json" id="interviewTranslation">', false)
+            ->assertSee('before you click any link, take two seconds and think', false);
+
+        // باقي المقابلات ما فيها الزر.
+        $this->withHeader('Accept-Language', 'ar')
+            ->get('/events/cyberx-oman-2026/interviews/yahya-al-azri')
+            ->assertDontSee('id="interviewTranslate"', false);
+    }
+
+    public function test_each_english_page_shows_its_own_guest_note(): void
+    {
+        $this->get('/en/events/cyberx-oman-2026/interviews/yahya-al-azri')
+            ->assertSee('English translation of Mr. Yahya Al Azri’s Arabic answers')
+            ->assertDontSee('Dr. Haitham Al Hajri’s own English text');
+
+        $this->get('/en/events/cyberx-oman-2026/interviews/ali-al-lawati')
+            ->assertDontSee('class="interview__note"', false);
+    }
+
     public function test_yahya_interview_is_published_in_arabic_with_intro_card_and_closing(): void
     {
         $this->withHeader('Accept-Language', 'ar')

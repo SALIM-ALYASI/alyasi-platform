@@ -401,7 +401,8 @@
    },
    "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026",
    "og_image_en": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og-en.jpg",
-   "ai_voice_label_en": "AI-generated voice, with Dr. Haitham’s consent"
+   "ai_voice_label_en": "AI-generated voice, with Dr. Haitham’s consent",
+   "note_en": "The answers below are Dr. Haitham Al Hajri’s own English text, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer."
   },
   {
    "slug": "yahya-al-azri",
@@ -711,7 +712,8 @@
    "ai_voice_consent": "موافقة الأستاذ يحيى الصريحة على الصوت والنص الإنجليزي (نقلها سالم) -- 12 أكتوبر 2026",
    "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the cybersecurity experts in the Sultanate.\n\nWe talked about AI-driven attacks, fake voices and videos, and the first step any organization must take after a breach.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
    "outro_en": "Wise words, Mr. Yahya. I thank you again for your time and your valuable answers.\n\nAnd about your last answer, on the limited media presence at the conference… I was there for exactly that reason.\n\nI came to bring part of this conference to the Omani audience, in their own language, and in a style close to them.\n\nGod willing, I'll be part of the coming editions, and ALYASI will be present every time.\n\nThank you for following. I'm Salem Al Hajri from ALYASI, and you can find the full interview at alyasi.dev",
-   "og_image_en": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-en-v2.jpg"
+   "og_image_en": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-en-v2.jpg",
+   "note_en": "The answers below are an English translation of Mr. Yahya Al Azri’s Arabic answers, reviewed and approved by him, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer."
   },
   {
    "slug": "ali-al-lawati",
@@ -971,7 +973,8 @@
    "og_image_en": "/images/interviews/cyberx-oman-2026/ali-al-lawati-og-en-v2.jpg",
    "original_language": "en",
    "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ علي اللواتي",
-   "ai_voice_consent": "موافقة الأستاذ علي على الترجمة العربية والصوت المولّد ونشرها (نقلها سالم) -- 12 أكتوبر 2026"
+   "ai_voice_consent": "موافقة الأستاذ علي على الترجمة العربية والصوت المولّد ونشرها (نقلها سالم) -- 12 أكتوبر 2026",
+   "note_ar": "الإجابات أدناه ترجمة عربية لإجابات الأستاذ علي اللواتي بالإنجليزية، راجعها واعتمدها، وتُقرأ بصوته المولّد بالذكاء الاصطناعي بموافقته. تسجيله الأصلي بالإنجليزية متاح تحت كل إجابة."
   },
   {
    "slug": "khalid-al-amrani",
@@ -1249,7 +1252,8 @@
    "og_image_en": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-en.jpg",
    "preview_languages": [
     "en"
-   ]
+   ],
+   "inline_translation": "en"
   }
  ]
 }

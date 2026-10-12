@@ -87,6 +87,22 @@ class CyberxInterviews
         }
         unset($item);
 
+        // زر «ترجمة النص» بالصفحة العربية (مثل خالد): الترجمة بيانات داخل
+        // الصفحة تنعرض بالضغط فقط -- مب نسخة إنجليزية منشورة، والصوت يبقى الأصلي.
+        $translation = null;
+
+        if ($locale === 'ar' && ($guest['inline_translation'] ?? null) === 'en') {
+            $translation = [
+                'intro' => $guest['intro_en'] ?? null,
+                'items' => array_map(fn (array $source, array $shown) => [
+                    'question_label' => ($source['label_en'] ?? 'Question '.$shown['number']).' · Salem Al Hajri',
+                    'answer_label' => ($source['label_en'] ?? 'Answer '.$shown['number']).' · '.($guest['name_en'] ?? ''),
+                    'question' => $source['q_en'] ?? '',
+                    'paragraphs' => $source['en_paragraphs'] ?? [],
+                ], $guestItems, $items),
+            ];
+        }
+
         return [
             'slug' => $guest['slug'],
             'published' => (bool) $guest['published'],
@@ -97,6 +113,9 @@ class CyberxInterviews
             'ai_voice_label' => $guest['ai_voice_label_'.$locale] ?? null,
             // لغة التسجيل الأصلي (أغلب الضيوف عربي، علي اللواتي إنجليزي).
             'original_language' => $guest['original_language'] ?? 'ar',
+            // ملاحظة فوق الإجابات بلغة الصفحة (مثلًا: ترجمة بصوت مولّد بموافقة الضيف).
+            'note' => $guest['note_'.$locale] ?? null,
+            'translation' => $translation,
             'name' => $pick('name'),
             'role' => $pick('role'),
             'topic' => $pick('topic'),
