@@ -141,7 +141,7 @@
 
                             @if ($item['paragraphs'])
                                 @if ($item['ai_voice'])
-                                    <span class="qa__orig">🤖 AI-generated voice, with Dr. Haitham’s consent</span>
+                                    <span class="qa__orig">🤖 {{ $guest['ai_voice_label'] ?? 'AI-generated voice' }}</span>
                                     <button type="button" class="qa__mini" data-play="o" data-item="{{ $i }}">
                                         <span class="qa__mini-icon" aria-hidden="true">▶</span> Original recording in Arabic
                                     </button>

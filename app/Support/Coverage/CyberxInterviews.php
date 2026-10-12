@@ -86,6 +86,10 @@ class CyberxInterviews
             'slug' => $guest['slug'],
             'published' => (bool) $guest['published'],
             'languages' => $guest['languages'] ?? ['ar'],
+            // لغة جاهزة بس تنتظر مراجعة (مثلًا صوت مولّد لسا ما وافق عليه الضيف):
+            // تنفتح برابط المعاينة الموقّع فقط، وما تطلع بالـ hreflang ولا الخريطة.
+            'preview_languages' => $guest['preview_languages'] ?? [],
+            'ai_voice_label' => $guest['ai_voice_label_'.$locale] ?? $guest['ai_voice_label_en'] ?? null,
             'name' => $pick('name'),
             'role' => $pick('role'),
             'topic' => $pick('topic'),

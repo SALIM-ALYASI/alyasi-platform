@@ -50,13 +50,18 @@ class EventCoverageController extends Controller
         $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
         $data = CyberxInterviews::guest($guest, $locale);
 
-        // مقابلة مخفية تنفتح برابط معاينة موقّع (URL::signedRoute بدون absolute -- التوقيع ما يتأثر بـ https خلف Cloudflare) عشان سالم يراجعها قبل النشر.
-        $preview = $data && ! $data['published'] && request()->hasValidRelativeSignature();
+        // مقابلة مخفية، أو لغة لسا تحت المراجعة، تنفتح برابط معاينة موقّع
+        // (URL::signedRoute بدون absolute -- التوقيع ما يتأثر بـ https خلف Cloudflare).
+        $preview = $data
+            && (! $data['published'] || ! in_array($locale, $data['languages'], true))
+            && request()->hasValidRelativeSignature();
 
         abort_unless($data && ($data['published'] || $preview), 404);
 
+        $languages = $preview ? [...$data['languages'], ...$data['preview_languages']] : $data['languages'];
+
         // المقابلة بلغة إجابات الضيف فقط -- رابط بلغة ثانية يروح للنسخة الموجودة.
-        if (! in_array($locale, $data['languages'], true)) {
+        if (! in_array($locale, $languages, true)) {
             $fallback = $data['languages'][0];
 
             return redirect()->to($fallback === 'en'

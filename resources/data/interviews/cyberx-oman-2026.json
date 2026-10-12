@@ -400,11 +400,12 @@
     "en": "/audio/interviews/cyberx-oman-2026/haitham/intro-v2-en.m4a"
    },
    "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026",
-   "og_image_en": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og-en.jpg"
+   "og_image_en": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og-en.jpg",
+   "ai_voice_label_en": "AI-generated voice, with Dr. Haitham’s consent"
   },
   {
    "slug": "yahya-al-azri",
-   "published": false,
+   "published": true,
    "name_ar": "يحيى العزري",
    "name_en": "Yahya Al-Azri",
    "role_ar": "خبير تقنية المعلومات والأمن السيبراني · Oman CERT",

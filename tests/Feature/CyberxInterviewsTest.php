@@ -16,13 +16,15 @@ class CyberxInterviewsTest extends TestCase
             ->assertOk()
             ->assertSee('د. هيثم الحجري')
             ->assertSee(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'), false)
-            ->assertDontSee('يحيى العزري')
+            ->assertSee('يحيى العزري')
+            ->assertDontSee('علي اللواتي')
             ->assertDontSee('قريبًا');
 
         $this->get('/en/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
-            ->assertDontSee('In Arabic')
+            // يحيى بالعربي بس لين يوافق على صوته الإنجليزي -- بطاقته عليها «In Arabic».
+            ->assertSeeInOrder(['Yahya Al-Azri', 'In Arabic'])
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
     }
@@ -63,18 +65,28 @@ class CyberxInterviewsTest extends TestCase
 
     public function test_unpublished_or_unknown_guest_is_not_found(): void
     {
-        $this->get('/events/cyberx-oman-2026/interviews/yahya-al-azri')->assertNotFound();
+        $this->get('/en/events/cyberx-oman-2026/interviews/ali-al-lawati')->assertNotFound();
         $this->get('/events/cyberx-oman-2026/interviews/nobody')->assertNotFound();
     }
 
     public function test_unpublished_interview_opens_with_a_signed_preview_link(): void
     {
-        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview', ['guest' => 'yahya-al-azri'], absolute: false);
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview.en', ['guest' => 'ali-al-lawati'], absolute: false);
 
         $this->get($url)
             ->assertOk()
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-            ->assertSee('يحيى العزري')
+            ->assertSee('Ali Al Lawati')
+            ->assertSeeInOrder(['Introduction · Salem Al Hajri', 'Question 1 · Salem Al Hajri', 'Question 4 · Salem Al Hajri']);
+
+        $this->get($url.'x')->assertNotFound();
+    }
+
+    public function test_yahya_interview_is_published_in_arabic_with_intro_card_and_closing(): void
+    {
+        $this->withHeader('Accept-Language', 'ar')
+            ->get('/events/cyberx-oman-2026/interviews/yahya-al-azri')
+            ->assertOk()
             ->assertSee('شرطة عُمان السلطانية')
             // التعريف أول بطاقة بدون رقم، والأسئلة بعده من 1 إلى 4.
             ->assertSeeInOrder(['تعريف الضيف · سالم الحجري', 'سؤال 1 · سالم الحجري', 'سؤال 4 · سالم الحجري'])
@@ -82,7 +94,5 @@ class CyberxInterviewsTest extends TestCase
             // خاتمة سالم بعد آخر إجابة، بصوته.
             ->assertSeeInOrder(['سؤال 4 · سالم الحجري', 'id="interviewOutro"', 'أنا كنت هناك لهذا السبب تحديدًا', 'استمع للخاتمة بصوتي'], false)
             ->assertSee('yahya\\/outro-ar.m4a', false);
-
-        $this->get($url.'x')->assertNotFound();
     }
 }
