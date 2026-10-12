@@ -986,7 +986,8 @@
     "en": "KA"
    },
    "languages": [
-    "ar"
+    "ar",
+    "en"
    ],
    "topic_ar": "الوعي الأمني، والاحتيال بالذكاء الاصطناعي، ودخول الشباب لمجال الأمن السيبراني",
    "topic_en": "Security awareness, AI-driven fraud, and starting a cybersecurity career",
@@ -1000,12 +1001,14 @@
      "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
      "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-intro-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-intro-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/khalid/q-intro-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/khalid/a0.m4a",
      "duration": 49.8,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -1020,18 +1023,24 @@
        "t": 24.5,
        "ar": "والأمن السيبراني اليوم لم يعد موضوعًا تقنيًا يخص المختصين في الأمن السيبراني وتقنية المعلومات فقط، بل أصبح جزءًا لا يتجزأ من حياتنا اليومية، وكل شخص في المجتمع له دور في حماية نفسه ومجتمعه في العالم الرقمي."
       }
+     ],
+     "en_paragraphs": [
+      "This is Khalid Al Amrani. My field is information security audit, information technology and cybersecurity. I have many years of experience in this field, especially in risk assessment, reviewing security controls, and strengthening the protection of systems and information.",
+      "Cybersecurity today is no longer a technical topic that concerns only cybersecurity and IT specialists; it has become an integral part of our daily lives, and every person in society has a role in protecting themselves and their community in the digital world."
      ]
     },
     {
      "q_ar": "أستاذ خالد، ما أكثر خطأ شائع يعرّض الأفراد والمؤسسات للاختراق، وكيف نتجنّبه؟",
      "q_en": "Mr. Khalid, what is the most common mistake that exposes individuals and organizations to hacking, and how can we avoid it?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q1-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q1-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/khalid/q-q1-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/khalid/a1.m4a",
      "duration": 85.2,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -1062,18 +1071,25 @@
        "t": 74,
        "ar": "فقبل ما تضغط أي رابط، خذ ثانيتين وفكّر؛ ممكن هذه الثواني تحميك من خسارة كبيرة."
       }
+     ],
+     "en_paragraphs": [
+      "I think one of the most common mistakes, honestly, is overconfidence, and sometimes haste. We may receive a message that, at first glance, seems to come from a bank or an official entity, and we immediately click the link and hand over our information without verifying the source.",
+      "The solution is simple but very important: don’t rush, don’t share your verification code with anyone, and don’t click any link before verifying it. That is for individuals; for organizations, it takes two things: strong protection systems, and employees with enough awareness in this area.",
+      "Because in the end, technology alone is not enough. Even if you have the latest devices and software, an aware person is the first line of defense. So before you click any link, take two seconds and think — those seconds could protect you from a big loss."
      ]
     },
     {
      "q_ar": "مع تطوّر الاحتيال باستخدام الذكاء الاصطناعي، كيف يتأكد الشخص من أن الرسالة أو الاتصال حقيقي؟",
      "q_en": "As AI-powered fraud evolves, how can a person make sure a message or a call is real?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q2-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q2-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/khalid/q-q2-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/khalid/a2.m4a",
      "duration": 122.3,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -1108,18 +1124,26 @@
        "t": 96,
        "ar": "حتى لو سمعت صوت شخص تعرفه، وتعرف صوته، يطلب منك تحويل مبلغ فقط برسالة صوتية، اتصل فيه وتأكد منه بنفسك أولًا، لأنه ممكن يكون الصوت مقلّدًا باستخدام الذكاء الاصطناعي."
       }
+     ],
+     "en_paragraphs": [
+      "Today, with the development of AI, it has become easy to imitate voices and write very convincing messages, and even impersonating someone we know has become easy. So we can’t rely only on the voice or the look of a message to judge that it is genuine.",
+      "If you receive a call from someone claiming to be a relative, an official at a certain entity, or an employee of a well-known organization, asking you to transfer money or share confidential information, don’t act right away. Hang up and contact them yourself on their known number if it is someone you know — especially if they called from an unknown number — or go back to the entity’s official channels.",
+      "Most importantly, don’t leave room for the haste, fear, or emotional and psychological pressure the caller uses to make the decision for you. Always remember: not everything that looks real at first glance is real. Verify, then verify, then verify — it is always better, so you avoid regret later.",
+      "Even if you hear the voice of someone you know asking you to transfer money through a voice message only, call them and confirm it yourself first, because the voice may have been imitated using AI."
      ]
     },
     {
      "q_ar": "ما نصيحتك للشباب العُماني الذي يريد دخول مجال الأمن السيبراني، ومن أين يبدأ؟",
      "q_en": "What is your advice for young Omanis who want to enter cybersecurity, and where should they start?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q3-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-q3-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/khalid/q-q3-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/khalid/a3.m4a",
      "duration": 110.4,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -1154,18 +1178,26 @@
        "t": 107,
        "ar": "ابدأ، لأنك لو انتظرت ما راح تبدأ."
       }
+     ],
+     "en_paragraphs": [
+      "My advice to young Omanis: don’t think cybersecurity is a difficult field, or that you need to be an expert from the start. Every expert today was once a beginner, a student.",
+      "Always start with the basics: networks and operating systems. Learn how these systems work, how attacks happen, how they can be detected, and how they can be prevented. Then test yourself in legal training labs, make use of courses and professional certifications, and apply what you learn in practice.",
+      "Don’t make getting a certificate your only goal; try to understand the problem and how to solve it. And it is always important to develop your English, your communication skills, and your analytical thinking.",
+      "Oman has young people with great abilities, and the field offers diverse opportunities — in cyber defense, incident response, governance, risk management, or IT audit and technical auditing. So start with what you can, keep learning, and don’t wait until you feel 100% ready. Start, because if you wait, you will never start."
      ]
     },
     {
      "q_ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
      "q_en": "In your view, is this conference about raising cybersecurity awareness in Omani society, or showing the world what Oman has achieved? And if it serves both, how do we bring its content to Omani audiences in Arabic?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-last-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/khalid/q-last-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/khalid/q-last-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/khalid/a4.m4a",
      "duration": 154.9,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -1200,6 +1232,12 @@
        "t": 132,
        "ar": "ودائمًا أجمل نتيجة لمثل هذه المؤتمرات أن نعرّف العالم بقدرات عُمان، وفي الوقت نفسه نجعل كل فرد في المجتمع أكثر وعيًا وأكثر أمانًا في العالم الرقمي."
       }
+     ],
+     "en_paragraphs": [
+      "In my view, the two goals complement each other, and I don’t think we need to choose between them. On one hand, conferences like this are an opportunity to showcase what the Sultanate has achieved in cybersecurity — its developments, expertise and efforts — and to strengthen its presence and exchange expertise, especially with cybersecurity specialists from around the world.",
+      "On the other hand, what matters most is that the benefit of these conferences reaches society, directly or indirectly. As I mentioned, cybersecurity is not the responsibility of a certain organization or of cybersecurity specialists alone; it is now the responsibility of society — of every person who uses a phone, the internet, a computer or any digital service.",
+      "I believe Arabic certainly plays a key role, because it is our mother tongue. We need to turn technical ideas and discussions into simple content close to people: short clips, examples from our daily lives, interviews in Arabic, awareness campaigns, and programs about cybersecurity and how to prevent attacks — and to rely mainly on social media.",
+      "The goal is not to make everyone in society a cybersecurity specialist or expert, but simply to help them make basic digital decisions safely. And the best outcome of conferences like this is that we show the world Oman’s capabilities, while making every person in society more aware and safer in the digital world."
      ]
     }
    ],
@@ -1207,7 +1245,9 @@
     "ar": "/audio/interviews/cyberx-oman-2026/khalid/intro-ar.m4a"
    },
    "og_image": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-v2.jpg",
-   "ai_voice_consent": "رفض -- خالد طلب تبقى المقابلة بالعربي فقط بدون صوت مولّد (12 أكتوبر 2026)"
+   "ai_voice_consent": "رفض الصوت المولّد -- العربي بصوته الأصلي، والإنجليزي ترجمة نصية فقط مع تسجيله العربي (12 أكتوبر 2026)",
+   "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the cybersecurity experts in the Sultanate.\n\nWe talked about the most common mistakes that expose individuals and organizations to breaches, how to verify calls and messages in the age of AI, and his advice to young Omanis who want to enter this field.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-en.jpg"
   }
  ]
 }

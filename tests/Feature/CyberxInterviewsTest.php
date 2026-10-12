@@ -25,8 +25,7 @@ class CyberxInterviewsTest extends TestCase
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
             ->assertSee('Yahya Al-Azri')
-            // خالد بالعربي فقط (بطلبه) -- ما يطلع بصفحة اللقاءات الإنجليزية.
-            ->assertDontSee('Khalid Al Amrani')
+            ->assertSee('Khalid Al Amrani')
             ->assertDontSee('In Arabic')
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
@@ -101,6 +100,18 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('yahya\\/en-a2.m4a', false)
             ->assertSee('yahya-al-azri-og-en-v2.jpg', false)
             ->assertSee('Listen to my closing');
+    }
+
+    public function test_khalid_english_page_is_a_text_translation_with_his_arabic_recording(): void
+    {
+        $this->get('/en/events/cyberx-oman-2026/interviews/khalid-al-amrani')
+            ->assertOk()
+            ->assertSee('Before you click any link, take two seconds and think')
+            ->assertSee('Original recording in Arabic')
+            ->assertDontSee('AI-generated voice')
+            // الصوت اللي يشتغل هو تسجيله العربي، مب صوت مولّد.
+            ->assertSee('khalid\\/a1.m4a', false)
+            ->assertDontSee('khalid\\/en-a', false);
     }
 
     public function test_yahya_interview_is_published_in_arabic_with_intro_card_and_closing(): void
