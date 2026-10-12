@@ -980,7 +980,7 @@
    "name_en": "Khalid Al Amrani",
    "role_ar": "تدقيق أمن المعلومات والأمن السيبراني",
    "role_en": "Information Security Audit & Cybersecurity",
-   "photo": null,
+   "photo": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-photo.jpg",
    "initials": {
     "ar": "خ",
     "en": "KA"
@@ -1205,7 +1205,8 @@
    ],
    "intro_audio": {
     "ar": "/audio/interviews/cyberx-oman-2026/khalid/intro-ar.m4a"
-   }
+   },
+   "og_image": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og.jpg"
   }
  ]
 }
