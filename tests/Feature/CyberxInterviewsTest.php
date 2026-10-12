@@ -18,7 +18,7 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'), false)
             ->assertSee('يحيى العزري')
             ->assertSee('علي اللواتي')
-            ->assertDontSee('خالد العمراني')
+            ->assertSee('خالد العمراني')
             ->assertDontSee('قريبًا');
 
         $this->get('/en/events/cyberx-oman-2026/interviews')
@@ -66,12 +66,11 @@ class CyberxInterviewsTest extends TestCase
 
     public function test_unpublished_or_unknown_guest_is_not_found(): void
     {
-        $this->get('/events/cyberx-oman-2026/interviews/khalid-al-amrani')->assertNotFound();
         $this->get('/events/cyberx-oman-2026/interviews/nobody')->assertNotFound();
 
-        // رابط معاينة بتوقيع غلط ما يفتح المخفي.
-        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview', ['guest' => 'khalid-al-amrani'], absolute: false);
-        $this->get($url.'x')->assertNotFound();
+        // حتى رابط معاينة موقّع ما يفتح ضيف غير موجود.
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview', ['guest' => 'nobody'], absolute: false);
+        $this->get($url)->assertNotFound();
     }
 
     public function test_ali_arabic_page_reads_the_translation_in_his_consented_ai_voice(): void
