@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -168,10 +169,22 @@ class ConferenceRecordingController extends Controller
      * ملف مشارك عبر رابط موقّع مؤقت (URL::temporarySignedRoute) -- الصوت
      * والنص يوصلون بالإيميل كروابط لأن المرفقات تتجاوز حد Gmail.
      */
-    public function sharedFile(string $name): StreamedResponse
+    public function sharedFile(string $name): StreamedResponse|BinaryFileResponse
     {
         $path = self::SHARED_DIRECTORY.'/'.basename($name);
         abort_unless(Storage::disk(self::DISK)->exists($path), 404);
+
+        // ملفات الصوت تشتغل بالمتصفح مباشرة (سفاري يرفض audio/x-m4a كمرفق
+        // تنزيل)، والباقي (نصوص، ملفات كبيرة) يبقى تنزيل.
+        $audioTypes = ['m4a' => 'audio/mp4', 'mp3' => 'audio/mpeg', 'wav' => 'audio/wav'];
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if (isset($audioTypes[$extension])) {
+            return response()->file(Storage::disk(self::DISK)->path($path), [
+                'Content-Type' => $audioTypes[$extension],
+                'Cache-Control' => 'private, no-store',
+            ]);
+        }
 
         return Storage::disk(self::DISK)->download($path, basename($name), [
             'Cache-Control' => 'private, no-store',
