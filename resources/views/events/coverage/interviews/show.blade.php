@@ -141,9 +141,14 @@
 
                             @if ($item['paragraphs'])
                                 @if ($item['ai_voice'])
-                                    <span class="qa__orig">🤖 {{ $guest['ai_voice_label'] ?? 'AI-generated voice' }}</span>
+                                    @php
+                                        $originalLabel = $guest['original_language'] === 'en'
+                                            ? $t('التسجيل الأصلي بالإنجليزية', 'Original recording in English')
+                                            : $t('التسجيل الأصلي بالعربية', 'Original recording in Arabic');
+                                    @endphp
+                                    <span class="qa__orig">🤖 {{ $guest['ai_voice_label'] ?? $t('صوت مولّد بالذكاء الاصطناعي', 'AI-generated voice') }}</span>
                                     <button type="button" class="qa__mini" data-play="o" data-item="{{ $i }}">
-                                        <span class="qa__mini-icon" aria-hidden="true">▶</span> Original recording in Arabic
+                                        <span class="qa__mini-icon" aria-hidden="true">▶</span> {{ $originalLabel }}
                                     </button>
                                 @else
                                     <span class="qa__orig">🎧 {{ $t('التسجيل الأصلي', 'Original recording in Arabic') }}</span>

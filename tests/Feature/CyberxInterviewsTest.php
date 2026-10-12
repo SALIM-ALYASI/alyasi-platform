@@ -17,7 +17,8 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('د. هيثم الحجري')
             ->assertSee(url('/events/cyberx-oman-2026/interviews/haitham-al-hajri'), false)
             ->assertSee('يحيى العزري')
-            ->assertDontSee('علي اللواتي')
+            ->assertSee('علي اللواتي')
+            ->assertDontSee('خالد العمراني')
             ->assertDontSee('قريبًا');
 
         $this->get('/en/events/cyberx-oman-2026/interviews')
@@ -65,21 +66,29 @@ class CyberxInterviewsTest extends TestCase
 
     public function test_unpublished_or_unknown_guest_is_not_found(): void
     {
-        $this->get('/en/events/cyberx-oman-2026/interviews/ali-al-lawati')->assertNotFound();
+        $this->get('/events/cyberx-oman-2026/interviews/khalid-al-amrani')->assertNotFound();
         $this->get('/events/cyberx-oman-2026/interviews/nobody')->assertNotFound();
+
+        // رابط معاينة بتوقيع غلط ما يفتح المخفي.
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview', ['guest' => 'khalid-al-amrani'], absolute: false);
+        $this->get($url.'x')->assertNotFound();
     }
 
-    public function test_unpublished_interview_opens_with_a_signed_preview_link(): void
+    public function test_ali_arabic_page_reads_the_translation_in_his_consented_ai_voice(): void
     {
-        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview.en', ['guest' => 'ali-al-lawati'], absolute: false);
-
-        $this->get($url)
+        $this->withHeader('Accept-Language', 'ar')
+            ->get('/events/cyberx-oman-2026/interviews/ali-al-lawati')
             ->assertOk()
-            ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-            ->assertSee('Ali Al Lawati')
-            ->assertSeeInOrder(['Introduction · Salem Al Hajri', 'Question 1 · Salem Al Hajri', 'Question 4 · Salem Al Hajri']);
+            ->assertSee('صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ علي اللواتي')
+            ->assertSee('التسجيل الأصلي بالإنجليزية')
+            ->assertSee('أكبر تحدٍّ هو الوعي')
+            ->assertSee('ali\\/ar-a2.m4a', false)
+            ->assertSeeInOrder(['تعريف الضيف · سالم الحجري', 'سؤال 1 · سالم الحجري', 'سؤال 4 · سالم الحجري']);
 
-        $this->get($url.'x')->assertNotFound();
+        $this->get('/en/events/cyberx-oman-2026/interviews/ali-al-lawati')
+            ->assertOk()
+            ->assertSee('The biggest challenge facing the spread of digital payments in Oman is basically awareness.')
+            ->assertDontSee('AI-generated voice');
     }
 
     public function test_yahya_english_page_uses_his_consented_ai_voice(): void

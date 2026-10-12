@@ -60,22 +60,27 @@ class CyberxInterviews
         // بطاقة بعنوان (مثل «تعريف الضيف») ما تنحسب ضمن ترقيم الأسئلة.
         $number = 0;
 
-        $items = array_map(fn (array $item) => [
-            'label' => $item['label_'.$locale] ?? $item['label_ar'] ?? null,
-            'number' => null,
-            'question' => $item['q_'.$locale] ?? $item['q_ar'],
-            'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'], '/')),
-            // بالإنجليزي: صوت الضيف المولّد (بموافقته) لو موجود، والتسجيل العربي الأصلي يبقى متاحًا.
-            'a_audio' => asset(ltrim($locale === 'en' && ! empty($item['a_audio_en']) ? $item['a_audio_en']['src'] : $item['a_audio'], '/')),
-            'a_audio_original' => $locale === 'en' && ! empty($item['a_audio_en']) ? asset(ltrim($item['a_audio'], '/')) : null,
-            'ai_voice' => $locale === 'en' && ! empty($item['a_audio_en']['ai_voice']),
-            'duration' => $locale === 'en' && ! empty($item['a_audio_en']) ? $item['a_audio_en']['duration'] : $item['duration'],
-            // النسخة الإنجليزية: نص الضيف نفسه (فقرات) لو كتبها -- ما تتزامن مع الصوت العربي.
-            'paragraphs' => $locale === 'en' && ! empty($item['en_paragraphs']) ? $item['en_paragraphs'] : [],
-            'segments' => $locale === 'en' && ! empty($item['en_paragraphs'])
-                ? []
-                : array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
-        ], $guestItems);
+        $items = array_map(function (array $item) use ($locale) {
+            // نسخة بلغة الصفحة غير لغة التسجيل الأصلي: صوت الضيف المولّد (بموافقته)
+            // ونصّه فقرات (ما تتزامن مع الصوت الأصلي)، والتسجيل الأصلي يبقى متاحًا.
+            $alt = $item['a_audio_'.$locale] ?? null;
+            $paragraphs = $item[$locale.'_paragraphs'] ?? [];
+
+            return [
+                'label' => $item['label_'.$locale] ?? $item['label_ar'] ?? null,
+                'number' => null,
+                'question' => $item['q_'.$locale] ?? $item['q_ar'],
+                'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'] ?? reset($item['q_audio']), '/')),
+                'a_audio' => asset(ltrim($alt ? $alt['src'] : $item['a_audio'], '/')),
+                'a_audio_original' => $alt ? asset(ltrim($item['a_audio'], '/')) : null,
+                'ai_voice' => ! empty($alt['ai_voice']),
+                'duration' => $alt['duration'] ?? $item['duration'],
+                'paragraphs' => $paragraphs,
+                'segments' => $paragraphs
+                    ? []
+                    : array_map(fn (array $s) => ['t' => $s['t'], 'text' => $s[$locale] ?? $s['ar']], $item['segments']),
+            ];
+        }, $guestItems);
 
         foreach ($items as &$item) {
             $item['number'] = $item['label'] === null ? ++$number : null;
@@ -89,7 +94,9 @@ class CyberxInterviews
             // لغة جاهزة بس تنتظر مراجعة (مثلًا صوت مولّد لسا ما وافق عليه الضيف):
             // تنفتح برابط المعاينة الموقّع فقط، وما تطلع بالـ hreflang ولا الخريطة.
             'preview_languages' => $guest['preview_languages'] ?? [],
-            'ai_voice_label' => $guest['ai_voice_label_'.$locale] ?? $guest['ai_voice_label_en'] ?? null,
+            'ai_voice_label' => $guest['ai_voice_label_'.$locale] ?? null,
+            // لغة التسجيل الأصلي (أغلب الضيوف عربي، علي اللواتي إنجليزي).
+            'original_language' => $guest['original_language'] ?? 'ar',
             'name' => $pick('name'),
             'role' => $pick('role'),
             'topic' => $pick('topic'),
