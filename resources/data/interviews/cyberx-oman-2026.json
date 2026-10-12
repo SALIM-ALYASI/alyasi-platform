@@ -416,7 +416,8 @@
     "en": "YA"
    },
    "languages": [
-    "ar"
+    "ar",
+    "en"
    ],
    "topic_ar": "الثقة الرقمية، والتزييف العميق، والاستعداد للاختراق",
    "topic_en": "Digital trust, deepfakes and breach readiness",
@@ -424,7 +425,8 @@
    "quote_en": "Don't rely on voice or video to prove identity, even when it looks real.",
    "intro_ar": "في مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء الخاص مع أحد خبراء الأمن السيبراني في السلطنة.\n\nتحدثنا عن الهجمات التي يقودها الذكاء الاصطناعي، وعن الأصوات والفيديوهات المزيفة، وعن الخطوة الأولى التي يجب أن تتخذها أي مؤسسة بعد الاختراق.\n\nأشكره على وقته، وعلى تعاونه الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك له التعريف بنفسه.",
    "intro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/yahya/intro-v2-ar.m4a"
+    "ar": "/audio/interviews/cyberx-oman-2026/yahya/intro-v2-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/yahya/intro-en.m4a"
    },
    "og_image": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og.jpg",
    "items": [
@@ -434,30 +436,42 @@
      "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
      "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-intro-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-intro-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/yahya/q-intro-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a0.m4a",
      "duration": 12.7,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
        "t": 0.0,
        "ar": "يحيى بن سالم العزري، خبير المركز الوطني للسلامة المعلوماتية، وزارة النقل والاتصالات وتقنية المعلومات."
       }
-     ]
+     ],
+     "en_paragraphs": [
+      "Yahya bin Salem Al Azri, expert at the Oman National CERT, Ministry of Transport, Communications and Information Technology."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/yahya/en-a0.m4a",
+      "duration": 10.1,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟",
      "q_en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai1-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai1-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/yahya/q-ai1-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a1.m4a",
      "duration": 75.0,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -492,18 +506,33 @@
        "t": 65.8,
        "ar": "لماذا؟ لاختبار قدرة المؤسسة على مواجهة هجمات مدعومة بالذكاء الاصطناعي."
       }
-     ]
+     ],
+     "en_paragraphs": [
+      "The most important step is for organizations to expand their threat models to include the risks of AI-powered attacks. They should then build corresponding defensive capabilities. This involves four key steps:",
+      "1. Risk assessment: Update risk assessments to include advanced social engineering, what is known as deepfake technology, and adaptive malware.",
+      "2. Use AI in defense as well, to improve cyber incident response.",
+      "3. Strengthen digital identity and multifactor authentication, and implement Zero Trust.",
+      "4. Train employees to recognize phishing and deepfake attacks.",
+      "5. Conduct what is known as red teaming, continuously. Why? To test the organization’s ability to withstand AI-powered attacks."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/yahya/en-a1.m4a",
+      "duration": 62.9,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "كيف نميّز الصوت أو الفيديو المزيَّف بالذكاء الاصطناعي، خصوصًا إذا استُخدم لانتحال شخصية مسؤول وطلب تحويل مالي؟",
      "q_en": "How can we spot a fake AI voice or video, especially when it is used to impersonate an official and request a money transfer?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai2-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai2-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/yahya/q-ai2-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a2.m4a",
      "duration": 95.1,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -546,18 +575,34 @@
        "t": 82.3,
        "ar": "وآخر نقطة: تدريب الموظفين على سيناريوهات متخصصة مثل CEO Fraud والـ AI Deepfake."
       }
-     ]
+     ],
+     "en_paragraphs": [
+      "The basic principle is not to rely on audio or video as proof of identity, even if it appears genuine. Why? Because as deepfake technology advances, judging by sight or hearing alone is no longer sufficient. We should treat it as untrusted, particularly when financial transfers are involved. We therefore need to establish certain controls:",
+      "1. Verify the request through an independent channel.",
+      "2. Do not authorize any sensitive transfer with approval from just one person, even if the request comes from the CEO.",
+      "3. Authorize transfers through a trusted application or digital identity. Here in Oman, we now have what is known as the Unified National Digital Identity.",
+      "4. Pause whenever a request is unusual.",
+      "5. Use specialized tools, such as deepfake detection, as an additional layer. They may detect mismatched lip movements or distortions in the audio or image.",
+      "And one final point: train employees using specific scenarios, such as CEO fraud and AI deepfakes."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/yahya/en-a2.m4a",
+      "duration": 72.7,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "إذا وقع اختراق بالفعل، ما أول إجراء يساعد المؤسسة على تقليل الضرر واستمرار خدماتها؟",
      "q_en": "If a breach has already happened, what is the first action that helps an organization limit the damage and keep its services running?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai3-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-ai3-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/yahya/q-ai3-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a3.m4a",
      "duration": 63.3,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -580,18 +625,29 @@
        "t": 51.4,
        "ar": "وإذا كانت الشركة أو المؤسسة تقدّم خدمات وطنية، فيجب عليها التنسيق مع الجهات المختصة."
       }
-     ]
+     ],
+     "en_paragraphs": [
+      "The first action is to activate the incident response plan and immediately isolate the affected systems in a carefully considered way. Why? To prevent the breach from spreading, and to move essential services to secure alternative systems to ensure service continuity.",
+      "Of course, isolation does not mean shutting down the entire organization. It means containing the affected part while preserving evidence and determining the scope of the breach. In critical infrastructure, isolation must be coordinated with operational teams to ensure safety. If the company or organization provides national services, it must coordinate with the relevant authorities."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/yahya/en-a3.m4a",
+      "duration": 40.5,
+      "ai_voice": true
+     }
     },
     {
      "q_ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
      "q_en": "In your view, is this conference about raising cybersecurity awareness in Omani society, or showing the world what Oman has achieved? And if it serves both, how do we bring its content to Omani audiences in Arabic?",
      "q_audio": {
-      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-last-ar.m4a"
+      "ar": "/audio/interviews/cyberx-oman-2026/yahya/q-last-ar.m4a",
+      "en": "/audio/interviews/cyberx-oman-2026/yahya/q-last-en.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/yahya/a4.m4a",
      "duration": 113.6,
      "languages": [
-      "ar"
+      "ar",
+      "en"
      ],
      "segments": [
       {
@@ -630,13 +686,32 @@
        "t": 100.3,
        "ar": "آخر نقطة هي جلسات مفتوحة للجمهور، ممكن أن تتيح الفرصة للآخرين لطرح الأسئلة والتفاعل مع المختصين."
       }
-     ]
+     ],
+     "en_paragraphs": [
+      "CyberX serves both purposes: raising cybersecurity awareness within the Sultanate, showcasing Oman’s experience, and exchanging expertise with specialists from around the world. The conference’s real value emerges when its discussions become knowledge and actions that benefit everyone, whether organizations or individuals.",
+      "To bring the content to the Omani public in Arabic:",
+      "1. We need more translated sessions and short Arabic videos explaining the importance of the speakers’ key messages, supported by everyday examples such as online fraud, identity impersonation, and deepfakes. The Royal Oman Police plays a very active role in this area.",
+      "2. We need practical summaries of the sessions and recommendations that explain what members of the public can do to protect themselves.",
+      "3. We need partnerships with Omani media, universities, and schools. Unfortunately, I have not noticed a media presence at this conference across its editions, so coordination with media organizations is also necessary.",
+      "4. Finally, we need sessions open to the public, giving people the opportunity to ask questions and interact with specialists."
+     ],
+     "a_audio_en": {
+      "src": "/audio/interviews/cyberx-oman-2026/yahya/en-a4.m4a",
+      "duration": 81.1,
+      "ai_voice": true
+     }
     }
    ],
    "outro_ar": "كلامك جميل يا أستاذ يحيى، وأجدد شكري لك على وقتك وإجاباتك القيّمة.\n\nوعن جوابك الأخير، عن محدودية الحضور الإعلامي في المؤتمر… أنا كنت هناك لهذا السبب تحديدًا.\n\nجئت لأحاول أن أنقل جزءًا من هذا المؤتمر إلى الجمهور العُماني، بلغته، وبأسلوب قريب منه.\n\nوإن شاء الله، أكون جزءًا من النسخ القادمة، وتكون منصة الياسي حاضرة في كل مرة.\n\nشكرًا لكم على المتابعة. أنا سالم الحجري، من منصة الياسي، وتجدون المقابلة كاملة على alyasi.dev",
    "outro_audio": {
-    "ar": "/audio/interviews/cyberx-oman-2026/yahya/outro-ar.m4a"
-   }
+    "ar": "/audio/interviews/cyberx-oman-2026/yahya/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/yahya/outro-en.m4a"
+   },
+   "ai_voice_label_en": "AI-generated voice, with Mr. Yahya Al Azri’s consent",
+   "ai_voice_consent": "موافقة الأستاذ يحيى الصريحة على الصوت والنص الإنجليزي (نقلها سالم) -- 12 أكتوبر 2026",
+   "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the cybersecurity experts in the Sultanate.\n\nWe talked about AI-driven attacks, fake voices and videos, and the first step any organization must take after a breach.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
+   "outro_en": "Wise words, Mr. Yahya. I thank you again for your time and your valuable answers.\n\nAnd about your last answer, on the limited media presence at the conference… I was there for exactly that reason.\n\nI came to bring part of this conference to the Omani audience, in their own language, and in a style close to them.\n\nGod willing, I'll be part of the coming editions, and ALYASI will be present every time.\n\nThank you for following. I'm Salem Al Hajri from ALYASI, and you can find the full interview at alyasi.dev",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-en.jpg"
   },
   {
    "slug": "ali-al-lawati",

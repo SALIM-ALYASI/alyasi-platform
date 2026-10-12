@@ -23,8 +23,8 @@ class CyberxInterviewsTest extends TestCase
         $this->get('/en/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
-            // يحيى بالعربي بس لين يوافق على صوته الإنجليزي -- بطاقته عليها «In Arabic».
-            ->assertSeeInOrder(['Yahya Al-Azri', 'In Arabic'])
+            ->assertSee('Yahya Al-Azri')
+            ->assertDontSee('In Arabic')
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
     }
@@ -80,6 +80,17 @@ class CyberxInterviewsTest extends TestCase
             ->assertSeeInOrder(['Introduction · Salem Al Hajri', 'Question 1 · Salem Al Hajri', 'Question 4 · Salem Al Hajri']);
 
         $this->get($url.'x')->assertNotFound();
+    }
+
+    public function test_yahya_english_page_uses_his_consented_ai_voice(): void
+    {
+        $this->get('/en/events/cyberx-oman-2026/interviews/yahya-al-azri')
+            ->assertOk()
+            ->assertSee('AI-generated voice, with Mr. Yahya Al Azri’s consent')
+            ->assertSee('Unified National Digital Identity')
+            ->assertSee('yahya\\/en-a2.m4a', false)
+            ->assertSee('yahya-al-azri-og-en.jpg', false)
+            ->assertSee('Listen to my closing');
     }
 
     public function test_yahya_interview_is_published_in_arabic_with_intro_card_and_closing(): void
