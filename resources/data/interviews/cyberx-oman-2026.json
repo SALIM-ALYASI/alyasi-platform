@@ -410,7 +410,7 @@
    "name_en": "Yahya Al-Azri",
    "role_ar": "خبير تقنية المعلومات والأمن السيبراني · Oman CERT",
    "role_en": "ICT and Cybersecurity Expert · Oman CERT",
-   "photo": "/images/events/cyberx-2026/yahya-al-azri.png",
+   "photo": "/images/interviews/cyberx-oman-2026/yahya-al-azri-photo.jpg",
    "initials": {
     "ar": "ي",
     "en": "YA"
@@ -428,7 +428,7 @@
     "ar": "/audio/interviews/cyberx-oman-2026/yahya/intro-v2-ar.m4a",
     "en": "/audio/interviews/cyberx-oman-2026/yahya/intro-en.m4a"
    },
-   "og_image": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og.jpg",
+   "og_image": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-v2.jpg",
    "items": [
     {
      "label_ar": "تعريف الضيف",
@@ -711,7 +711,7 @@
    "ai_voice_consent": "موافقة الأستاذ يحيى الصريحة على الصوت والنص الإنجليزي (نقلها سالم) -- 12 أكتوبر 2026",
    "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the cybersecurity experts in the Sultanate.\n\nWe talked about AI-driven attacks, fake voices and videos, and the first step any organization must take after a breach.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
    "outro_en": "Wise words, Mr. Yahya. I thank you again for your time and your valuable answers.\n\nAnd about your last answer, on the limited media presence at the conference… I was there for exactly that reason.\n\nI came to bring part of this conference to the Omani audience, in their own language, and in a style close to them.\n\nGod willing, I'll be part of the coming editions, and ALYASI will be present every time.\n\nThank you for following. I'm Salem Al Hajri from ALYASI, and you can find the full interview at alyasi.dev",
-   "og_image_en": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-en.jpg"
+   "og_image_en": "/images/interviews/cyberx-oman-2026/yahya-al-azri-og-en-v2.jpg"
   },
   {
    "slug": "ali-al-lawati",

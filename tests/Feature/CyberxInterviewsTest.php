@@ -98,7 +98,7 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('AI-generated voice, with Mr. Yahya Al Azri’s consent')
             ->assertSee('Unified National Digital Identity')
             ->assertSee('yahya\\/en-a2.m4a', false)
-            ->assertSee('yahya-al-azri-og-en.jpg', false)
+            ->assertSee('yahya-al-azri-og-en-v2.jpg', false)
             ->assertSee('Listen to my closing');
     }
 
