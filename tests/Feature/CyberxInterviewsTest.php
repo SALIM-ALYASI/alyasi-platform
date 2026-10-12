@@ -25,6 +25,8 @@ class CyberxInterviewsTest extends TestCase
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
             ->assertSee('Yahya Al-Azri')
+            // خالد بالعربي فقط (بطلبه) -- ما يطلع بصفحة اللقاءات الإنجليزية.
+            ->assertDontSee('Khalid Al Amrani')
             ->assertDontSee('In Arabic')
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
