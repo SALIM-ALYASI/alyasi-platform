@@ -25,7 +25,8 @@ class CyberxInterviewsTest extends TestCase
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
             ->assertSee('Yahya Al-Azri')
-            ->assertSee('Khalid Al Amrani')
+            // ترجمة خالد مخفية (معاينة فقط) -- ما يطلع بصفحة اللقاءات الإنجليزية.
+            ->assertDontSee('Khalid Al Amrani')
             ->assertDontSee('In Arabic')
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
@@ -102,16 +103,21 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('Listen to my closing');
     }
 
-    public function test_khalid_english_page_is_a_text_translation_with_his_arabic_recording(): void
+    public function test_khalid_english_translation_is_hidden_but_previewable(): void
     {
+        // الرابط العام يرجع للعربي.
         $this->get('/en/events/cyberx-oman-2026/interviews/khalid-al-amrani')
+            ->assertRedirect(route('event_coverage.cyberx_oman_2026.interview', ['guest' => 'khalid-al-amrani']));
+
+        // رابط المعاينة يفتح الترجمة النصية مع تسجيله العربي (بدون صوت مولّد).
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview.en', ['guest' => 'khalid-al-amrani'], absolute: false);
+
+        $this->get($url)
             ->assertOk()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
             ->assertSee('Before you click any link, take two seconds and think')
             ->assertSee('Original recording in Arabic')
-            ->assertDontSee('AI-generated voice')
-            // الصوت اللي يشتغل هو تسجيله العربي، مب صوت مولّد.
-            ->assertSee('khalid\\/a1.m4a', false)
-            ->assertDontSee('khalid\\/en-a', false);
+            ->assertDontSee('AI-generated voice');
     }
 
     public function test_yahya_interview_is_published_in_arabic_with_intro_card_and_closing(): void

@@ -986,8 +986,7 @@
     "en": "KA"
    },
    "languages": [
-    "ar",
-    "en"
+    "ar"
    ],
    "topic_ar": "الوعي الأمني، والاحتيال بالذكاء الاصطناعي، ودخول الشباب لمجال الأمن السيبراني",
    "topic_en": "Security awareness, AI-driven fraud, and starting a cybersecurity career",
@@ -1247,7 +1246,10 @@
    "og_image": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-v2.jpg",
    "ai_voice_consent": "رفض الصوت المولّد -- العربي بصوته الأصلي، والإنجليزي ترجمة نصية فقط مع تسجيله العربي (12 أكتوبر 2026)",
    "intro_en": "At the CyberX Oman 2026 conference, I had this special conversation with one of the cybersecurity experts in the Sultanate.\n\nWe talked about the most common mistakes that expose individuals and organizations to breaches, how to verify calls and messages in the age of AI, and his advice to young Omanis who want to enter this field.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
-   "og_image_en": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-en.jpg"
+   "og_image_en": "/images/interviews/cyberx-oman-2026/khalid-al-amrani-og-en.jpg",
+   "preview_languages": [
+    "en"
+   ]
   }
  ]
 }
