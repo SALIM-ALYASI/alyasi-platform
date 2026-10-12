@@ -171,14 +171,14 @@
         audio.paused ? audio.play() : audio.pause();
     });
 
-    // «English translation»: يبدّل النص المكتوب للإنجليزي بنفس الصفحة والصوت يبقى
-    // التسجيل الأصلي. ما ينحفظ الاختيار -- تحديث الصفحة يرجّع العربي.
-    var trButton = document.getElementById('interviewTranslate');
+    // ترجمة النص بنفس الصفحة (والصوت يبقى التسجيل الأصلي): زر عام يبدّل كل
+    // شي، وزر صغير تحت كل إجابة يبدّل نصها بس. ما ينحفظ -- التحديث يرجّع العربي.
     var trSource = document.getElementById('interviewTranslation');
-    if (trButton && trSource) {
+    if (trSource) {
         var translation = JSON.parse(trSource.textContent);
-        var twins = null;
-        var showingEnglish = false;
+        var trButton = document.getElementById('interviewTranslate');
+        var itemTwins = {};
+        var introTwins = null;
 
         var englishTwin = function (original, tag, className, texts) {
             var twin = document.createElement(tag);
@@ -199,35 +199,64 @@
             return [original, twin];
         };
 
-        var build = function () {
-            twins = [];
-            var intro = document.querySelector('.interview__intro > div');
-            if (intro && translation.intro) {
-                var introParas = intro.querySelectorAll(':scope > p');
-                var last = introParas[introParas.length - 1];
-                var block = englishTwin(last, 'div', 'interview__intro-en', translation.intro.split(/\n\s*\n/));
-                introParas.forEach(function (p) { twins.push([p, null]); });
-                twins.push([null, block[1]]);
-            }
-            document.querySelectorAll('.qa').forEach(function (li, i) {
-                var item = translation.items[i];
-                if (!item) return;
-                var labels = li.querySelectorAll('.qa__label');
-                twins.push(englishTwin(labels[0], 'span', 'qa__label', [item.question_label]));
-                twins.push(englishTwin(li.querySelector('.qa__bubble > p'), 'p', '', [item.question]));
-                twins.push(englishTwin(labels[1], 'span', 'qa__label', [item.answer_label]));
-                twins.push(englishTwin(li.querySelector('.qa__text'), 'div', 'qa__text qa__text--written', item.paragraphs));
+        var show = function (pairs, english) {
+            pairs.forEach(function (pair) {
+                if (pair[0]) pair[0].hidden = english;
+                if (pair[1]) pair[1].hidden = !english;
             });
         };
 
-        trButton.addEventListener('click', function () {
-            if (!twins) build();
-            showingEnglish = !showingEnglish;
-            twins.forEach(function (pair) {
-                if (pair[0]) pair[0].hidden = showingEnglish;
-                if (pair[1]) pair[1].hidden = !showingEnglish;
+        // full: السؤال والعناوين كمان (الزر العام)؛ بدونها نص الإجابة بس (زر الإجابة).
+        var twinsFor = function (i) {
+            if (itemTwins[i]) return itemTwins[i];
+            var li = document.querySelectorAll('.qa')[i];
+            var item = translation.items[i];
+            var labels = li.querySelectorAll('.qa__label');
+            itemTwins[i] = {
+                answer: [englishTwin(li.querySelector('.qa__text'), 'div', 'qa__text qa__text--written', item.paragraphs)],
+                rest: [
+                    englishTwin(labels[0], 'span', 'qa__label', [item.question_label]),
+                    englishTwin(li.querySelector('.qa__bubble > p'), 'p', '', [item.question]),
+                    englishTwin(labels[1], 'span', 'qa__label', [item.answer_label]),
+                ],
+            };
+            return itemTwins[i];
+        };
+
+        var setItem = function (i, english, full) {
+            var twins = twinsFor(i);
+            show(twins.answer, english);
+            if (full) show(twins.rest, english);
+            var button = document.querySelector('[data-translate-item="' + i + '"]');
+            if (button) button.textContent = english ? button.dataset.labelAr : button.dataset.labelEn;
+        };
+
+        document.querySelectorAll('[data-translate-item]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var i = Number(button.dataset.translateItem);
+                var english = twinsFor(i).answer[0][0].hidden === false;
+                setItem(i, english, false);
             });
-            trButton.textContent = showingEnglish ? trButton.dataset.labelAr : trButton.dataset.labelEn;
         });
+
+        var showingEnglish = false;
+        if (trButton) {
+            trButton.addEventListener('click', function () {
+                showingEnglish = !showingEnglish;
+                if (!introTwins) {
+                    introTwins = [];
+                    var intro = document.querySelector('.interview__intro > div');
+                    if (intro && translation.intro) {
+                        var introParas = intro.querySelectorAll(':scope > p');
+                        var block = englishTwin(introParas[introParas.length - 1], 'div', 'interview__intro-en', translation.intro.split(/\n\s*\n/));
+                        introParas.forEach(function (p) { introTwins.push([p, null]); });
+                        introTwins.push([null, block[1]]);
+                    }
+                }
+                show(introTwins, showingEnglish);
+                translation.items.forEach(function (_, i) { setItem(i, showingEnglish, true); });
+                trButton.textContent = showingEnglish ? trButton.dataset.labelAr : trButton.dataset.labelEn;
+            });
+        }
     }
 })();

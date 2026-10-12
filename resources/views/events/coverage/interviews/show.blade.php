@@ -170,6 +170,11 @@
                                         <span class="qa__seg" data-item="{{ $i }}" data-seg="{{ $s }}" data-t="{{ $segment['t'] }}">{{ $segment['text'] }}</span>
                                     @endforeach
                                 </p>
+                                @if ($guest['translation'])
+                                    {{-- ترجمة نص هذي الإجابة بس (الصوت يبقى الأصلي) --}}
+                                    <button type="button" class="qa__mini qa__translate" data-translate-item="{{ $i }}"
+                                            data-label-en="🌐 English" data-label-ar="🌐 العربية">🌐 English</button>
+                                @endif
                             @endif
                         </div>
                         @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 40])

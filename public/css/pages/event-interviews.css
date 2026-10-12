@@ -162,6 +162,7 @@ a.interview-card:hover { transform: translateY(-3px); border-color: var(--color-
 
 /* زر ترجمة النص بنفس الصفحة -- العناصر المبدّلة تختفي حتى لو لها display خاص */
 .interview__translate { margin-top: 14px; }
+.qa__translate { margin-top: 10px; font-size: 12px; }
 .interview [hidden] { display: none !important; }
 .interview__intro-en { display: flex; flex-direction: column; gap: 10px; text-align: left; }
 .interview__intro-en p { margin: 0; font-size: 15.5px; line-height: 1.8; color: var(--color-text); }

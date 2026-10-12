@@ -126,6 +126,8 @@ class CyberxInterviewsTest extends TestCase
             ->get('/events/cyberx-oman-2026/interviews/khalid-al-amrani')
             ->assertOk()
             ->assertSee('id="interviewTranslate"', false)
+            // زر صغير تحت كل إجابة يترجم نصها بس.
+            ->assertSee('data-translate-item="4"', false)
             // الترجمة بيانات (JSON) مب نص ظاهر بالصفحة.
             ->assertSee('<script type="application/json" id="interviewTranslation">', false)
             ->assertSee('before you click any link, take two seconds and think', false);
