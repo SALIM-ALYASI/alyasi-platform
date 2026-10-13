@@ -228,13 +228,13 @@
                 @foreach ($works as $work)
                     <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover home-work-card" data-reveal>
                         <div class="home-work-card__media">
-                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
+                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->localized('title') }}" loading="lazy">
                         </div>
                         <div class="home-work-card__body">
                             <div class="home-work-card__tag">{{ $work->service?->localizedTitle() ?? $work->type_label }}</div>
-                            <div class="home-work-card__title">{{ $work->title }}</div>
+                            <div class="home-work-card__title">{{ $work->localized('title') }}</div>
                             @if ($work->outcome)
-                                <div class="home-work-card__outcome">✓ {{ $work->outcome }}</div>
+                                <div class="home-work-card__outcome">✓ {{ $work->localized('outcome') }}</div>
                             @endif
                         </div>
                     </a>

@@ -154,7 +154,17 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'status' => [
+
+        'in_development' => 'In Development',
+
+    ],
+
     'show' => [
+
+        'status' => 'Status',
+
+        'illustrative_cover' => 'Promotional illustration — not an actual screenshot of the system.',
 
         'back_to_works' => 'Back to Works',
 

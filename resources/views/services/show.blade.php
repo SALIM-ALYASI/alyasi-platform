@@ -320,7 +320,7 @@
 
                             <img
                                 src="{{ media_url($work->cover_image) }}"
-                                alt="{{ $work->title }}"
+                                alt="{{ $work->localized('title') }}"
                                 loading="lazy"
                             >
 
@@ -343,7 +343,7 @@
                             </div>
 
                             <div class="service-detail__work-title">
-                                {{ $work->title }}
+                                {{ $work->localized('title') }}
                             </div>
 
                         </div>

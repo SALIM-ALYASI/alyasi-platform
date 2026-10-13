@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', $work->title.' — ALYASI')
+@section('title', $work->localized('title').' — ALYASI')
 
 @section(
     'meta_description',
     \Illuminate\Support\Str::limit(
-        strip_tags($work->short_description ?: $work->description),
+        strip_tags($work->localized('short_description') ?: $work->localized('description')),
         160
     )
 )
@@ -22,12 +22,12 @@
 ========================================================= --}}
 @section('og_type', 'website')
 
-@section('og_title', $work->title)
+@section('og_title', $work->localized('title'))
 
 @section(
     'og_description',
     \Illuminate\Support\Str::limit(
-        strip_tags($work->short_description ?: $work->description),
+        strip_tags($work->localized('short_description') ?: $work->localized('description')),
         160
     )
 )
@@ -44,20 +44,25 @@
 ========================================================= --}}
 @section('schema')
 <script type="application/ld+json">
-{!! json_encode([
+{!! json_encode(array_filter([
     '@'.'context' => 'https://schema.org',
     '@type' => 'CreativeWork',
 
-    'name' => $work->title,
+    'name' => $work->localized('title'),
+
+    'inLanguage' => app()->getLocale(),
 
     'description' => \Illuminate\Support\Str::limit(
-        strip_tags($work->short_description ?: $work->description),
+        strip_tags($work->localized('short_description') ?: $work->localized('description')),
         160
     ),
 
     'url' => localized_route('works.show', ['work' => $work]),
 
     'image' => media_url($work->cover_image),
+
+    // «قيد التطوير» لمحركات البحث بدل ما يبان كعمل منجز.
+    'creativeWorkStatus' => $work->status === 'in_development' ? 'In development' : null,
 
     'dateCreated' => optional(
         $work->completed_at
@@ -69,7 +74,7 @@
         'url' => url('/'),
     ],
 
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+], fn ($value) => $value !== null), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endsection
 
@@ -139,10 +144,16 @@
 
         <img
             src="{{ media_url($work->cover_image) }}"
-            alt="{{ $work->title }}"
+            alt="{{ $work->localized('title') }}"
         >
 
     </div>
+
+    @if ($work->cover_is_illustrative)
+        <p class="work-detail__cover-note">
+            {{ __('works.show.illustrative_cover') }}
+        </p>
+    @endif
 
 </section>
 
@@ -157,10 +168,16 @@
         {{ $work->type_label }}
     </span>
 
+    @if ($work->status_label)
+        <span class="badge badge--status-upcoming">
+            {{ $work->status_label }}
+        </span>
+    @endif
+
 
     {{-- Title --}}
     <h1 class="work-detail__title">
-        {{ $work->title }}
+        {{ $work->localized('title') }}
     </h1>
 
 
@@ -183,24 +200,26 @@
         </div>
 
 
-        {{-- Completion Date --}}
+        {{-- Completion Date / Status (مشروع قيد التطوير ما له تاريخ إنجاز) --}}
         <div class="work-detail__info-card">
-
-            <div class="work-detail__info-label">
-                {{ __('works.show.completion_date') }}
-            </div>
-
-            <div class="work-detail__info-value">
-
-                {{ optional(
-                    $work->completed_at
-                )->translatedFormat('d.m.Y') ?: '—' }}
-
-            </div>
-
+            @if ($work->status_label)
+                <div class="work-detail__info-label">
+                    {{ __('works.show.status') }}
+                </div>
+                <div class="work-detail__info-value">
+                    {{ $work->status_label }}
+                </div>
+            @else
+                <div class="work-detail__info-label">
+                    {{ __('works.show.completion_date') }}
+                </div>
+                <div class="work-detail__info-value">
+                    {{ optional(
+                        $work->completed_at
+                    )->translatedFormat('d.m.Y') ?: '—' }}
+                </div>
+            @endif
         </div>
-
-
         {{-- Work Type --}}
         <div class="work-detail__info-card">
 
@@ -220,12 +239,19 @@
     {{-- =====================================================
          Description
     ====================================================== --}}
-    <p class="work-detail__desc">
-
-        {{ $work->description
-            ?: __('works.show.no_description') }}
-
-    </p>
+@if (filled($work->title_en))
+        {{-- أعمال ثنائية اللغة مكتوبة بفقرات؛ القديمة تبقى فقرة واحدة مثل ما كانت --}}
+        @forelse ($work->localizedParagraphs() as $paragraph)
+            <p class="work-detail__desc">{{ $paragraph }}</p>
+        @empty
+            <p class="work-detail__desc">{{ __('works.show.no_description') }}</p>
+        @endforelse
+    @else
+        <p class="work-detail__desc">
+            {{ $work->description
+                ?: __('works.show.no_description') }}
+        </p>
+    @endif
 
 
     {{-- =====================================================
@@ -271,7 +297,7 @@
 
                     <img
                         src="{{ media_url($image->image) }}"
-                        alt="{{ $image->alt_text ?: $work->title }}"
+                        alt="{{ $image->alt_text ?: $work->localized('title') }}"
                         loading="lazy"
                     >
 
@@ -335,7 +361,7 @@
 
                             <img
                                 src="{{ media_url($related->cover_image) }}"
-                                alt="{{ $related->title }}"
+                                alt="{{ $related->localized('title') }}"
                                 loading="lazy"
                             >
 
@@ -349,7 +375,7 @@
                             </div>
 
                             <div class="work-detail__related-title-text">
-                                {{ $related->title }}
+                                {{ $related->localized('title') }}
                             </div>
 
                         </div>

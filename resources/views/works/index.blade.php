@@ -42,12 +42,15 @@
                 @foreach ($works as $work)
                     <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover works-card" data-reveal>
                         <div class="works-card__media">
-                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->title }}" loading="lazy">
+                            <img src="{{ media_url($work->cover_image) }}" alt="{{ $work->localized('title') }}" loading="lazy">
                         </div>
                         <div class="works-card__body">
                             <span class="badge">{{ $work->type_label }}</span>
-                            <h3 class="works-card__title">{{ $work->title }}</h3>
-                            <p class="works-card__excerpt">{{ $work->short_description }}</p>
+                            @if ($work->status_label)
+                                <span class="badge badge--status-upcoming">{{ $work->status_label }}</span>
+                            @endif
+                            <h3 class="works-card__title">{{ $work->localized('title') }}</h3>
+                            <p class="works-card__excerpt">{{ $work->localized('short_description') }}</p>
                             @if ($work->technologies->isNotEmpty())
                                 <div class="works-card__tags">
                                     @foreach ($work->technologies->take(3) as $tech)

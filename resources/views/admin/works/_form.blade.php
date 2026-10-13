@@ -347,6 +347,129 @@
 
     </div>
 
+    {{-- النسخة الإنجليزية (اختيارية): تظهر في /en/works، وإذا فاضية يظهر النص العربي --}}
+    <div class="form-group form-group--full">
+
+        <label for="title_en" class="form-label">
+            عنوان العمل بالإنجليزي
+        </label>
+
+        <input
+            type="text"
+            name="title_en"
+            id="title_en"
+            dir="ltr"
+            class="form-control @error('title_en') is-invalid @enderror" maxlength="255"
+            value="{{ old('title_en', $work?->title_en) }}"
+        >
+
+        <small class="form-hint">
+            اختياري. إذا تركته فاضي، الصفحة الإنجليزية تعرض العنوان العربي.
+        </small>
+
+        @error('title_en')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
+    <div class="form-group form-group--full">
+
+        <label for="short_description_en" class="form-label">
+            الوصف المختصر بالإنجليزي
+        </label>
+
+        <textarea
+            name="short_description_en"
+            id="short_description_en"
+            dir="ltr"
+            class="form-control @error('short_description_en') is-invalid @enderror"
+            rows="4" maxlength="500"
+        >{{ old('short_description_en', $work?->short_description_en) }}</textarea>
+
+        @error('short_description_en')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
+    <div class="form-group form-group--full">
+
+        <label for="outcome_en" class="form-label">
+            النتيجة الملموسة بالإنجليزي
+        </label>
+
+        <input
+            type="text"
+            name="outcome_en"
+            id="outcome_en"
+            dir="ltr"
+            class="form-control @error('outcome_en') is-invalid @enderror" maxlength="255"
+            value="{{ old('outcome_en', $work?->outcome_en) }}"
+        >
+
+        @error('outcome_en')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
+    <div class="form-group form-group--full">
+
+        <label for="description_en" class="form-label">
+            الوصف الكامل بالإنجليزي
+        </label>
+
+        <textarea
+            name="description_en"
+            id="description_en"
+            dir="ltr"
+            class="form-control @error('description_en') is-invalid @enderror"
+            rows="8"
+        >{{ old('description_en', $work?->description_en) }}</textarea>
+
+        <small class="form-hint">
+            اترك سطرًا فاضيًا بين كل فقرة.
+        </small>
+
+        @error('description_en')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
+    {{-- حالة المشروع --}}
+    <div class="form-group">
+
+        <label for="status" class="form-label">
+            حالة المشروع
+        </label>
+
+        <select
+            name="status"
+            id="status"
+            class="form-control @error('status') is-invalid @enderror"
+        >
+            <option value="">منجز (الافتراضي)</option>
+
+            <option
+                value="in_development"
+                @selected(old('status', $work?->status) === 'in_development')
+            >
+                قيد التطوير
+            </option>
+        </select>
+
+        <small class="form-hint">
+            «قيد التطوير» يظهر شارة على المشروع، ويعرض الحالة بدل تاريخ الإنجاز.
+        </small>
+
+        @error('status')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
     {{-- صورة الغلاف --}}
     <div class="form-group form-group--full">
 
@@ -593,6 +716,37 @@
                 </span>
 
             </label>
+
+            <label class="switch-card">
+
+                <input
+                    type="hidden"
+                    name="cover_is_illustrative"
+                    value="0"
+                >
+
+                <input
+                    type="checkbox"
+                    name="cover_is_illustrative"
+                    value="1"
+                    @checked((bool) old(
+                        'cover_is_illustrative',
+                        $work?->cover_is_illustrative ?? false
+                    ))
+                >
+
+                <span class="switch-card__content">
+
+                    <strong>صورة الغلاف ترويجية</strong>
+
+                    <small>
+                        يظهر تحتها تنبيه إنها صورة توضيحية وليست لقطة شاشة من النظام.
+                    </small>
+
+                </span>
+
+            </label>
+
 
         </div>
 

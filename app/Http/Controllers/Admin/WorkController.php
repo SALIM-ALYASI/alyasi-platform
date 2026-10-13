@@ -170,6 +170,10 @@ class WorkController extends Controller
                     'is_featured'
                 );
 
+                $validated['cover_is_illustrative'] = $request->boolean(
+                    'cover_is_illustrative'
+                );
+
                 $validated['is_active'] = $request->boolean(
                     'is_active'
                 );
@@ -308,6 +312,10 @@ class WorkController extends Controller
 
                 $validated['is_featured'] = $request->boolean(
                     'is_featured'
+                );
+
+                $validated['cover_is_illustrative'] = $request->boolean(
+                    'cover_is_illustrative'
                 );
 
                 $validated['is_active'] = $request->boolean(
@@ -527,6 +535,21 @@ class WorkController extends Controller
             'description' => [
                 'nullable',
                 'string',
+            ],
+
+            'title_en' => ['nullable', 'string', 'max:255'],
+            'short_description_en' => ['nullable', 'string', 'max:500'],
+            'outcome_en' => ['nullable', 'string', 'max:255'],
+            'description_en' => ['nullable', 'string'],
+
+            'status' => [
+                'nullable',
+                Rule::in(Work::STATUSES),
+            ],
+
+            'cover_is_illustrative' => [
+                'nullable',
+                'boolean',
             ],
 
             'client_name' => [
