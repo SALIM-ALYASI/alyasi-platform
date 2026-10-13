@@ -94,6 +94,7 @@ class CyberxInterviews
         if ($locale === 'ar' && ($guest['inline_translation'] ?? null) === 'en') {
             $translation = [
                 'intro' => $guest['intro_en'] ?? null,
+                'outro' => $guest['outro_en'] ?? null,
                 'items' => array_map(fn (array $source, array $shown) => [
                     'question_label' => ($source['label_en'] ?? 'Question '.$shown['number']).' · Salem Al Hajri',
                     'answer_label' => ($source['label_en'] ?? 'Answer '.$shown['number']).' · '.($guest['name_en'] ?? ''),

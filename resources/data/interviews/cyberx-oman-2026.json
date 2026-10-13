@@ -402,7 +402,13 @@
    "ai_voice_consent": "موافقة د. هيثم الصريحة (نقلها سالم) -- 10 أكتوبر 2026",
    "og_image_en": "/images/interviews/cyberx-oman-2026/haitham-al-hajri-og-en.jpg",
    "ai_voice_label_en": "AI-generated voice, with Dr. Haitham’s consent",
-   "note_en": "The answers below are Dr. Haitham Al Hajri’s own English text, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer."
+   "note_en": "The answers below are Dr. Haitham Al Hajri’s own English text, read in his voice generated with AI, with his consent. His original recording in Arabic is available under each answer.",
+   "outro_ar": "شكرًا جزيلًا دكتور هيثم على وقتك وإجاباتك القيّمة حول الأمن السيبراني وحوكمة الذكاء الاصطناعي. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "outro_en": "Thank you, Dr. Haitham, for your time and valuable insights into cybersecurity and AI governance. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/haitham/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/haitham/outro-en.m4a"
+   }
   },
   {
    "slug": "yahya-al-azri",
@@ -974,7 +980,13 @@
    "original_language": "en",
    "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ علي اللواتي",
    "ai_voice_consent": "موافقة الأستاذ علي على الترجمة العربية والصوت المولّد ونشرها (نقلها سالم) -- 12 أكتوبر 2026",
-   "note_ar": "الإجابات أدناه ترجمة عربية لإجابات الأستاذ علي اللواتي بالإنجليزية، راجعها واعتمدها، وتُقرأ بصوته المولّد بالذكاء الاصطناعي بموافقته. تسجيله الأصلي بالإنجليزية متاح تحت كل إجابة."
+   "note_ar": "الإجابات أدناه ترجمة عربية لإجابات الأستاذ علي اللواتي بالإنجليزية، راجعها واعتمدها، وتُقرأ بصوته المولّد بالذكاء الاصطناعي بموافقته. تسجيله الأصلي بالإنجليزية متاح تحت كل إجابة.",
+   "outro_ar": "شكرًا جزيلًا أستاذ علي على وقتك، وعلى مشاركة تجربتك في QPay وأفكارك حول المدفوعات الرقمية وحماية المستخدمين. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "outro_en": "Thank you, Mr. Ali, for your time and for sharing your experience at QPay, along with your insights into digital payments and protecting users. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/ali/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/ali/outro-en.m4a"
+   }
   },
   {
    "slug": "khalid-al-amrani",
@@ -1253,7 +1265,12 @@
    "preview_languages": [
     "en"
    ],
-   "inline_translation": "en"
+   "inline_translation": "en",
+   "outro_ar": "شكرًا جزيلًا أستاذ خالد على وقتك ونصائحك العملية حول حماية الأنظمة التشغيلية والبنية الأساسية الحيوية. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "outro_en": "Thank you, Mr. Khalid, for your time and your practical advice on protecting operational systems and critical infrastructure. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/khalid/outro-ar.m4a"
+   }
   }
  ]
 }

@@ -244,14 +244,16 @@
             trButton.addEventListener('click', function () {
                 showingEnglish = !showingEnglish;
                 if (!introTwins) {
+                    // المقدمة والخاتمة: فقرات سالم تتبدّل بترجمتها كلها مرة وحدة.
                     introTwins = [];
-                    var intro = document.querySelector('.interview__intro > div');
-                    if (intro && translation.intro) {
-                        var introParas = intro.querySelectorAll(':scope > p');
-                        var block = englishTwin(introParas[introParas.length - 1], 'div', 'interview__intro-en', translation.intro.split(/\n\s*\n/));
-                        introParas.forEach(function (p) { introTwins.push([p, null]); });
+                    [['.interview__intro:not(.interview__outro) > div', translation.intro], ['#interviewOutro > div', translation.outro]].forEach(function (part) {
+                        var box = document.querySelector(part[0]);
+                        if (!box || !part[1]) return;
+                        var paras = box.querySelectorAll(':scope > p');
+                        var block = englishTwin(paras[paras.length - 1], 'div', 'interview__intro-en', part[1].split(/\n\s*\n/));
+                        paras.forEach(function (p) { introTwins.push([p, null]); });
                         introTwins.push([null, block[1]]);
-                    }
+                    });
                 }
                 show(introTwins, showingEnglish);
                 translation.items.forEach(function (_, i) { setItem(i, showingEnglish, true); });
