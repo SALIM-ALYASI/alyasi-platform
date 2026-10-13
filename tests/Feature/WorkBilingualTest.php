@@ -70,6 +70,31 @@ class WorkBilingualTest extends TestCase
             ->assertSee('In Development');
     }
 
+    public function test_video_work_shows_player_instead_of_cover(): void
+    {
+        Work::query()->create([
+            'title' => 'إعلان كرم النخيل',
+            'title_en' => 'Karam Al Nakhil Ad',
+            'slug' => 'karam-ad',
+            'type' => 'advertisement',
+            'short_description' => 'إعلان فيديو',
+            'cover_image' => 'works/covers/karam.jpg',
+            'video_path' => 'works/videos/karam.mp4',
+            'completed_at' => '2026-10-08',
+            'is_active' => true,
+        ]);
+
+        $this->withHeaders($this->headers('ar'))->get('/works/karam-ad')
+            ->assertOk()
+            ->assertSee('<video', false)
+            ->assertSee('storage/works/videos/karam.mp4#t=0.1', false)
+            ->assertSee('controlslist="nodownload', false)
+            ->assertSee('"@type":"VideoObject"', false)
+            ->assertDontSee('class="work-detail__hero-media"', false);
+
+        $this->withHeaders($this->headers('ar'))->get('/works/star-pos-missing')->assertNotFound();
+    }
+
     public function test_existing_work_without_english_or_status_renders_as_before(): void
     {
         Work::query()->create([
@@ -90,6 +115,8 @@ class WorkBilingualTest extends TestCase
             ->assertSee('03.07.2025')
             ->assertDontSee('In Development')
             ->assertDontSee('not an actual screenshot')
-            ->assertDontSee('creativeWorkStatus', false);
+            ->assertDontSee('creativeWorkStatus', false)
+            ->assertDontSee('<video', false)
+            ->assertSee('class="work-detail__hero-media"', false);
     }
 }

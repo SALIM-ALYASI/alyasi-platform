@@ -68,6 +68,16 @@
         $work->completed_at
     )->toIso8601String(),
 
+    // أعمال الفيديو: VideoObject عشان تظهر بنتائج الفيديو في البحث.
+    'video' => $work->video_path ? [
+        '@type' => 'VideoObject',
+        'name' => $work->localized('title'),
+        'description' => \Illuminate\Support\Str::limit(strip_tags($work->localized('short_description') ?: $work->localized('description')), 160),
+        'thumbnailUrl' => media_url($work->cover_image),
+        'contentUrl' => media_url($work->video_path),
+        'uploadDate' => optional($work->completed_at ?? $work->created_at)->toIso8601String(),
+    ] : null,
+
     'creator' => [
         '@type' => 'Organization',
         'name' => 'ALYASI',
@@ -140,14 +150,31 @@
 ========================================================= --}}
 <section class="container work-detail__hero-wrap">
 
-    <div class="work-detail__hero-media">
+    @if ($work->video_path)
+        {{-- عمل فيديو (إعلان مثلًا): المشغّل مكان الغلاف، بمقاسه الأصلي (عمودي أو أفقي).
+             #t=0.1 يخلي سفاري يعرض أول لقطة بدل مربع أسود. --}}
+        <div class="work-detail__video-media">
+            <video
+                src="{{ media_url($work->video_path) }}#t=0.1"
+                controls
+                playsinline
+                preload="metadata"
+                controlslist="nodownload noplaybackrate"
+                disablepictureinpicture
+                oncontextmenu="return false;"
+                aria-label="{{ $work->localized('title') }}"
+            ></video>
+        </div>
+    @else
+        <div class="work-detail__hero-media">
 
-        <img
-            src="{{ media_url($work->cover_image) }}"
-            alt="{{ $work->localized('title') }}"
-        >
+            <img
+                src="{{ media_url($work->cover_image) }}"
+                alt="{{ $work->localized('title') }}"
+            >
 
-    </div>
+        </div>
+    @endif
 
     @if ($work->cover_is_illustrative)
         <p class="work-detail__cover-note">

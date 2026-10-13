@@ -552,6 +552,12 @@ class WorkController extends Controller
                 'boolean',
             ],
 
+            'video_path' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
+
             'client_name' => [
                 'nullable',
                 'string',

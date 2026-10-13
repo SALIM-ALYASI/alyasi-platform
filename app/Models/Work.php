@@ -44,6 +44,7 @@ class Work extends Model
         'description',
         'description_en',
         'cover_image',
+        'video_path',
         'cover_is_illustrative',
         'client_name',
         'work_url',

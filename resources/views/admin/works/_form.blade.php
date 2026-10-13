@@ -470,6 +470,34 @@
 
     </div>
 
+    {{-- فيديو العمل (اختياري) --}}
+    <div class="form-group form-group--full">
+
+        <label for="video_path" class="form-label">
+            فيديو العمل
+        </label>
+
+        <input
+            type="text"
+            name="video_path"
+            id="video_path"
+            dir="ltr"
+            class="form-control @error('video_path') is-invalid @enderror"
+            maxlength="500"
+            placeholder="works/videos/example.mp4"
+            value="{{ old('video_path', $work?->video_path) }}"
+        >
+
+        <small class="form-hint">
+            مسار ملف MP4 داخل التخزين (أو رابط مباشر). إذا تعبّى، يظهر مشغّل الفيديو مكان صورة الغلاف بصفحة العمل.
+        </small>
+
+        @error('video_path')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
     {{-- صورة الغلاف --}}
     <div class="form-group form-group--full">
 
