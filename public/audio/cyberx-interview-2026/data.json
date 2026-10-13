@@ -103,7 +103,8 @@
     }
    ],
    "followup": null,
-   "extra": []
+   "extra": [],
+   "hidden": true
   },
   {
    "id": "fatma",
@@ -185,7 +186,8 @@
      "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
     }
    ],
-   "extra": []
+   "extra": [],
+   "hidden": true
   },
   {
    "id": "ali",
@@ -225,7 +227,8 @@
     }
    ],
    "followup": null,
-   "extra": []
+   "extra": [],
+   "hidden": true
   },
   {
    "id": "bawazeer",
@@ -303,7 +306,8 @@
     }
    ],
    "followup": null,
-   "extra": []
+   "extra": [],
+   "hidden": true
   }
  ],
  "additional_guests": [
@@ -519,6 +523,60 @@
     }
    ],
    "final_question": true
+  },
+  {
+   "id": "rineel",
+   "name_ar": "رينيل وحيد",
+   "name_en": "Rineel Wahid",
+   "hint": "مدير تقنية المعلومات، SOFPITAL",
+   "hint_en": "IT Director, SOFPITAL",
+   "language": "en",
+   "gender": "m",
+   "questions": [
+    {
+     "audio": "rineel-intro",
+     "label": "تعريف الضيف",
+     "label_en": "Introduction",
+     "ar": "هل يمكنك تعريف نفسك، ودورك، وطبيعة عملك؟",
+     "en": "Could you introduce yourself, your role, and the work you do?"
+    },
+    {
+     "audio": "rineel-q1",
+     "label": "سلامة المرضى",
+     "label_en": "Patient safety",
+     "ar": "كيف يمكن أن يؤثر هجوم سيبراني على مستشفى في سلامة المرضى بشكل مباشر؟",
+     "en": "How can a cyberattack on a hospital directly affect patient safety?"
+    },
+    {
+     "audio": "rineel-q2",
+     "label": "البداية",
+     "label_en": "Getting started",
+     "ar": "بناءً على خارطة طريق الأمن السيبراني التي عرضتها في CyberX Oman، ما أول ما يجب أن يفعله مستشفى بميزانية محدودة؟",
+     "en": "Based on the cybersecurity roadmap you presented at CyberX Oman, what should a hospital with a limited budget do first?"
+    },
+    {
+     "audio": "rineel-q3",
+     "label": "استمرارية الرعاية",
+     "label_en": "Continuity of care",
+     "ar": "إذا عطّل هجوم سيبراني أنظمة المستشفى، كيف تواصل الفرق الصحية تقديم الرعاية بأمان؟",
+     "en": "If a cyberattack disrupts hospital systems, how can healthcare teams continue providing care safely?"
+    },
+    {
+     "audio": "rineel-q4",
+     "label": "رسالتك",
+     "label_en": "Your message",
+     "ar": "ما الرسالة الأهم التي تود توجيهها للجمهور العُماني بعد مشاركتك في المؤتمر؟",
+     "en": "What key message would you like to share with the Omani public following your participation in the conference?"
+    },
+    {
+     "audio": "rineel-q5",
+     "label": "سؤال خارج الصندوق",
+     "label_en": "An outside-the-box question",
+     "ar": "مع التقدم السريع في الذكاء الاصطناعي، هل تعرف مؤسسات صحية أو منظمات دولية تستخدم «مترجمًا بالذكاء الاصطناعي» لفهم الأشخاص الذين لديهم صعوبات في النطق ومساعدتهم على التواصل بوضوح مع الأطباء؟ وكيف يمكن إدخال هذا النهج في مستشفيات عُمان؟",
+     "en": "With the rapid progress in AI, do you know of any healthcare institutions or international organizations using an “AI interpreter” to understand people with speech difficulties and help them communicate clearly with doctors? How could this approach be introduced in hospitals in Oman?"
+    }
+   ],
+   "final_question": false
   }
  ],
  "interview_windows": [
