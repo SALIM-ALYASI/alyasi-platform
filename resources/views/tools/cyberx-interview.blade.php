@@ -663,14 +663,19 @@
 
         // السؤال الأخير المشترك (زر "السؤال الأخير" بالشريط السريع) كبطاقة
         // أخيرة داخل تبويب الضيف -- للضيوف اللي عندهم final_question بس.
-        // نفس التسجيل، والنسخة المؤنثة تلقائيًا للضيفات.
+        // نفس التسجيل، والنسخة المؤنثة تلقائيًا للضيفات. ضيف من خارج عُمان
+        // (final_question: "foreign") ياخذ سؤال دور المؤتمر وتقدّم السلطنة
+        // بدل سؤال توعية المجتمع العُماني.
         function addFinalQuestion(panel, guest, isFeminine, showArabic) {
             if (!guest.final_question) return;
 
-            const finalQuestion = (data.quick_buttons || []).find((qb) => qb.audio === 'shared-last');
+            const finalQuestion = guest.final_question === 'foreign'
+                ? data.final_question_foreign
+                : (data.quick_buttons || []).find((qb) => qb.audio === 'shared-last');
             if (!finalQuestion) return;
 
-            addCard(panel, { id: guest.id + '-last', label: 'السؤال الأخير', ar: finalQuestion.ar, en: finalQuestion.en },
+            addCard(panel, { id: guest.id + '-last', label: T('السؤال الأخير', 'Final question'),
+                    ar: (isFeminine && finalQuestion.ar_f) || finalQuestion.ar, en: finalQuestion.en },
                 audioUrl(finalQuestion.audio, 'ar', isFeminine), audioUrl(finalQuestion.audio, 'en'), true, guest.id, showArabic);
         }
 

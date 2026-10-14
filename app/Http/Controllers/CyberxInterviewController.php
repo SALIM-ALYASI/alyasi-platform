@@ -155,7 +155,8 @@ class CyberxInterviewController extends Controller
         }
 
         if ($guest && $rest === $guest['id'].'-last') {
-            $rest = 'shared-last';
+            // ضيف من خارج عُمان له سؤال أخير مختلف (final_question: "foreign").
+            $rest = ($guest['final_question'] ?? null) === 'foreign' ? 'shared-last-foreign' : 'shared-last';
         }
 
         // كل بطاقة سؤال بالملف (أسئلة الضيوف، الأزرار السريعة، المتابعات) معرّفها = audio.

@@ -237,7 +237,7 @@
    "hint": "Filigran",
    "window": "15:15",
    "gender": "m",
-   "final_question": true,
+   "final_question": "foreign",
    "core": [
     {
      "audio": "yahya-hello",
@@ -349,7 +349,7 @@
      "label_en": "Closing question"
     }
    ],
-   "final_question": false,
+   "final_question": "foreign",
    "language": "en",
    "hint_en": "When a breach happens… are we ready?"
   },
@@ -442,7 +442,7 @@
      "en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?"
     }
    ],
-   "final_question": false
+   "final_question": "foreign"
   },
   {
    "id": "hajar",
@@ -576,7 +576,7 @@
      "en": "With the rapid progress in AI, do you know of any healthcare institutions or international organizations using an “AI interpreter” to understand people with speech difficulties and help them communicate clearly with doctors? How could this approach be introduced in hospitals in Oman?"
     }
    ],
-   "final_question": false
+   "final_question": "foreign"
   }
  ],
  "interview_windows": [
@@ -690,5 +690,12 @@
    "ar": "الختام والتواصل",
    "en": "Official Closing & Networking"
   }
- ]
+ ],
+ "final_question_foreign": {
+  "audio": "shared-last-foreign",
+  "label": "السؤال الأخير (ضيف من خارج عُمان)",
+  "ar": "كيف تقيّم دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيك في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+  "ar_f": "كيف تقيّمين دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيكِ في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+  "en": "How do you assess the conference’s role in strengthening cybersecurity in Oman, and what is your view on the progress the Sultanate has made in this field?"
+ }
 }
