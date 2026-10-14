@@ -8,20 +8,24 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * رمز مستقل للوكيل اللي يقترح أخبار (روتين Grok) -- غير رمز بوت الأخبار،
- * فلو تسرّب يقدر بس يقترح روابط، وما يقدر ينشر ولا يقرأ شي.
+ * رمز مستقل لكل وكيل يقترح أخبار (Grok، Manus) -- غير رمز بوت الأخبار، فلو
+ * تسرّب يقدر بس يقترح روابط، وما يقدر ينشر ولا يقرأ شي. اسم الوكيل يوصل
+ * للكنترولر عبر attribute "news_suggester".
  */
 class AuthenticateNewsSuggester
 {
     public function handle(Request $request, Closure $next): Response|JsonResponse
     {
-        $token = config('services.news_suggester.token');
         $given = (string) ($request->bearerToken() ?: $request->header('X-Api-Key'));
 
-        if (blank($token) || ! hash_equals($token, $given)) {
-            return response()->json(['success' => false, 'message' => 'غير مصرح.'], 401);
+        foreach ((array) config('services.news_suggester.tokens') as $agent => $token) {
+            if (filled($token) && filled($given) && hash_equals((string) $token, $given)) {
+                $request->attributes->set('news_suggester', $agent);
+
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        return response()->json(['success' => false, 'message' => 'غير مصرح.'], 401);
     }
 }

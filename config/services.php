@@ -39,9 +39,13 @@ return [
         'token' => env('NEWS_BOT_TOKEN'),
     ],
 
-    // وكيل خارجي يقترح روابط أخبار (روتين Grok) -- رمز منفصل بصلاحية الاقتراح بس.
+    // وكلاء خارجيون يقترحون روابط أخبار -- رمز منفصل لكل وكيل بصلاحية الاقتراح بس،
+    // والاسم يتسجل مع كل اقتراح (للمقارنة بينهم وإيقاف واحد بدون الثاني).
     'news_suggester' => [
-        'token' => env('NEWS_SUGGESTER_TOKEN'),
+        'tokens' => [
+            'grok' => env('NEWS_SUGGESTER_TOKEN'),
+            'manus' => env('NEWS_SUGGESTER_TOKEN_MANUS'),
+        ],
     ],
 
     'n8n' => [

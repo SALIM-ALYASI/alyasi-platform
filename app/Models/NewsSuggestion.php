@@ -16,6 +16,8 @@ class NewsSuggestion extends Model
         'why_important',
         'source_name',
         'country',
+        'source_published_at',
+        'importance',
         'suggested_by',
         'status',
         'status_note',
@@ -28,6 +30,7 @@ class NewsSuggestion extends Model
         return [
             'candidate_id' => 'integer',
             'processed_at' => 'datetime',
+            'source_published_at' => 'datetime',
         ];
     }
 

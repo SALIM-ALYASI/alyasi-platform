@@ -11,23 +11,36 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 /**
- * حلقة الوصل مع وكيل الاكتشاف (روتين Grok كل ساعة):
- *  - store: الوكيل يرسل رابط خبر مميز (رمز news_suggester).
+ * حلقة الوصل مع وكلاء الاكتشاف (Grok، Manus):
+ *  - store: الوكيل يرسل رابط خبر مميز أو قائمة (رمز خاص بكل وكيل).
  *  - pending/ack: بوت الأخبار يسحب الروابط الجديدة ويرجّع النتيجة (رمز news_bot).
  * الرابط بس يدخل الأنابيب؛ العنوان والملخص من الوكيل للمراجعة وما ينشرون.
  */
 class NewsSuggestionController extends Controller
 {
+    /**
+     * خبر واحد (Grok) أو قائمة {"items": [...]} حتى 10 (Manus) -- نفس المنطق
+     * لكل خبر، والرد يفصّل نتيجة كل واحد. الوكيل يُعرف من رمزه (الـ middleware).
+     */
     public function store(Request $request): JsonResponse
     {
+        $agent = (string) $request->attributes->get('news_suggester', 'grok');
+
+        if (! $request->has('items')) {
+            $result = $this->ingest($request->all(), $agent);
+
+            return response()->json(
+                ['success' => $result['status'] !== 'invalid', ...$result],
+                match ($result['status']) {
+                    'invalid' => 422,
+                    'queued' => 202,
+                    default => 200,
+                }
+            );
+        }
+
         $validator = Validator::make($request->all(), [
-            'url' => ['required', 'string', 'url:https,http', 'max:2000'],
-            'title' => ['nullable', 'string', 'max:500'],
-            'summary' => ['nullable', 'string', 'max:3000'],
-            'why_important' => ['nullable', 'string', 'max:1000'],
-            'source_name' => ['nullable', 'string', 'max:255'],
-            // رمز الدولة (ISO، مثل OM أو AE)؛ GCC/MENA للخبر الإقليمي العام.
-            'country' => ['nullable', 'string', 'regex:/^([A-Za-z]{2}|GCC|MENA)$/'],
+            'items' => ['required', 'array', 'min:1', 'max:10'],
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +49,46 @@ class NewsSuggestionController extends Controller
                 'status' => 'invalid',
                 'errors' => $validator->errors(),
             ], 422);
+        }
+
+        $results = [];
+        foreach (array_values($request->input('items')) as $index => $item) {
+            $results[] = ['index' => $index, ...$this->ingest(is_array($item) ? $item : [], $agent)];
+        }
+
+        $counts = collect($results)->countBy('status');
+
+        return response()->json([
+            'success' => true,
+            'accepted' => true,
+            'received' => count($results),
+            'queued' => $counts->get('queued', 0),
+            'duplicates' => $counts->get('duplicate', 0),
+            'already_published' => $counts->get('already_published', 0),
+            'invalid' => $counts->get('invalid', 0),
+            'results' => $results,
+        ]);
+    }
+
+    /**
+     * @return array{status: string, id?: int, url?: string, errors?: mixed}
+     */
+    private function ingest(array $input, string $agent): array
+    {
+        $validator = Validator::make($input, [
+            'url' => ['required', 'string', 'url:https,http', 'max:2000'],
+            'title' => ['nullable', 'string', 'max:500'],
+            'summary' => ['nullable', 'string', 'max:3000'],
+            'why_important' => ['nullable', 'string', 'max:1000'],
+            'source_name' => ['nullable', 'string', 'max:255'],
+            // رمز الدولة (ISO، مثل OM أو AE)؛ GCC/MENA للخبر الإقليمي العام.
+            'country' => ['nullable', 'string', 'regex:/^([A-Za-z]{2}|GCC|MENA)$/'],
+            'published_at' => ['nullable', 'date'],
+            'importance' => ['nullable', 'string', 'max:20'],
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 'invalid', 'url' => $input['url'] ?? null, 'errors' => $validator->errors()];
         }
 
         $data = $validator->validated();
@@ -59,31 +112,30 @@ class NewsSuggestionController extends Controller
                 ->contains(fn ($url) => NewsSuggestion::hashUrl($url) === $hash);
 
         if ($published) {
-            return response()->json(['success' => true, 'status' => 'already_published'], 200);
+            return ['status' => 'already_published', 'url' => $data['url']];
         }
 
         $existing = NewsSuggestion::query()->where('url_hash', $hash)->first();
 
         if ($existing) {
-            return response()->json([
-                'success' => true,
-                'status' => 'duplicate',
-                'id' => $existing->id,
-            ], 200);
+            return ['status' => 'duplicate', 'id' => $existing->id, 'url' => $data['url']];
         }
 
         $suggestion = NewsSuggestion::query()->create([
-            ...$data,
+            'url' => $data['url'],
             'url_hash' => $hash,
-            'suggested_by' => 'grok',
+            'title' => $data['title'] ?? null,
+            'summary' => $data['summary'] ?? null,
+            'why_important' => $data['why_important'] ?? null,
+            'source_name' => $data['source_name'] ?? null,
+            'country' => $data['country'] ?? null,
+            'source_published_at' => $data['published_at'] ?? null,
+            'importance' => $data['importance'] ?? null,
+            'suggested_by' => $agent,
             'status' => 'pending',
         ]);
 
-        return response()->json([
-            'success' => true,
-            'status' => 'queued',
-            'id' => $suggestion->id,
-        ], 202);
+        return ['status' => 'queued', 'id' => $suggestion->id, 'url' => $data['url']];
     }
 
     public function pending(): JsonResponse

@@ -16,7 +16,7 @@ class NewsSuggestionTest extends TestCase
     {
         parent::setUp();
 
-        Config::set('services.news_suggester.token', 'grok-secret');
+        Config::set('services.news_suggester.tokens', ['grok' => 'grok-secret', 'manus' => 'manus-secret']);
         Config::set('services.news_bot.token', 'bot-secret');
     }
 
@@ -71,6 +71,40 @@ class NewsSuggestionTest extends TestCase
         $this->suggest(['url' => 'https://x.example/c', 'country' => 'Oman'])->assertStatus(422);
 
         $this->assertSame(['OM', 'XG'], NewsSuggestion::query()->orderBy('id')->pluck('country')->all());
+    }
+
+    public function test_manus_batch_reports_each_item_and_records_agent(): void
+    {
+        NewsArticle::factory()->create(['source_url' => 'https://example.com/old']);
+        $this->suggest(['url' => 'https://example.com/seen'])->assertStatus(202);
+
+        $response = $this->withToken('manus-secret')->postJson('/api/news-suggestions', [
+            'source' => 'manus',
+            'items' => [
+                ['url' => 'https://example.com/new', 'title' => 'جديد', 'published_at' => '2026-10-14T06:00:00Z',
+                 'importance' => 'high', 'country' => 'OM'],
+                ['url' => 'https://example.com/seen'],
+                ['url' => 'https://example.com/old?utm_source=m'],
+                ['title' => 'بدون رابط'],
+            ],
+        ])->assertOk();
+
+        $response->assertJson(['received' => 4, 'queued' => 1, 'duplicates' => 1, 'already_published' => 1, 'invalid' => 1]);
+        $this->assertSame(['queued', 'duplicate', 'already_published', 'invalid'], array_column($response->json('results'), 'status'));
+
+        $new = NewsSuggestion::query()->where('url', 'https://example.com/new')->firstOrFail();
+        $this->assertSame('manus', $new->suggested_by);
+        $this->assertSame('high', $new->importance);
+        $this->assertSame('OM', $new->country);
+        $this->assertNotNull($new->source_published_at);
+        $this->assertSame('grok', NewsSuggestion::query()->where('url', 'https://example.com/seen')->value('suggested_by'));
+    }
+
+    public function test_batch_is_limited(): void
+    {
+        $items = array_map(fn ($i) => ['url' => "https://example.com/{$i}"], range(1, 11));
+        $this->withToken('manus-secret')->postJson('/api/news-suggestions', ['items' => $items])->assertStatus(422);
+        $this->withToken('manus-secret')->postJson('/api/news-suggestions', ['items' => []])->assertStatus(422);
     }
 
     public function test_invalid_url_is_rejected(): void
