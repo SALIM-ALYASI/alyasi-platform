@@ -36,6 +36,7 @@ return [
     'phase' => [
         'upcoming' => 'قادم',
         'live' => 'مباشر الآن',
+        'remote' => 'تغطية عن بُعد',
         'concluded' => 'انتهى',
     ],
 

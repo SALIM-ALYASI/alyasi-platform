@@ -30,7 +30,7 @@
                 @foreach ($events as $event)
                     @php
                         $latestEdition = $event->editions->first();
-                        $phase = $latestEdition?->phase;
+                        $phase = $latestEdition?->badge_phase;
                     @endphp
 
                     <a href="{{ route(app()->getLocale() === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]) }}"
@@ -43,7 +43,7 @@
                             >
 
                             @if ($phase)
-                                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing', 'concluded' => 'ended'][$phase] }} community-card__badge">
+                                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing', 'remote' => 'upcoming', 'concluded' => 'ended'][$phase] }} community-card__badge">
                                     {{ __('events.phase.'.$phase) }}
                                 </span>
                             @endif

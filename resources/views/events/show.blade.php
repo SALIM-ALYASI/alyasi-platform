@@ -215,8 +215,8 @@
                 alt="{{ $edition->title }}"
             >
             @if ($phase !== 'concluded')
-                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing'][$phase] }} community-detail__hero-badge">
-                    {{ __('events.phase.'.$phase) }}
+                <span class="badge badge--status-{{ ['upcoming' => 'upcoming', 'live' => 'ongoing', 'remote' => 'upcoming'][$edition->badge_phase] }} community-detail__hero-badge">
+                    {{ __('events.phase.'.$edition->badge_phase) }}
                 </span>
             @endif
         </div>

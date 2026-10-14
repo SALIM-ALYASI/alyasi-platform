@@ -36,6 +36,7 @@ return [
     'phase' => [
         'upcoming' => 'Upcoming',
         'live' => 'Live Now',
+        'remote' => 'Remote coverage',
         'concluded' => 'Concluded',
     ],
 

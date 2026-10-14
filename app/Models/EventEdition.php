@@ -184,6 +184,22 @@ class EventEdition extends Model
     }
 
     /**
+     * الشارة المعروضة: مثل phase، بس وقت الحدث لو ما عندنا بث مباشر ولا
+     * حضور ميداني تصير «تغطية عن بُعد» بدل «مباشر الآن» -- محتوانا وقتها
+     * من المصادر المنشورة، مب تغطية لحظية.
+     */
+    public function getBadgePhaseAttribute(): string
+    {
+        $phase = $this->phase;
+
+        if ($phase === 'live' && blank($this->livestream_url) && ! $this->attended) {
+            return 'remote';
+        }
+
+        return $phase;
+    }
+
+    /**
      * النسخ المنشورة.
      */
     public function scopePublished(Builder $query): Builder
