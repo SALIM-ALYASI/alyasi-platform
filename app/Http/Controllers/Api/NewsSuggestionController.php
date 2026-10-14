@@ -26,6 +26,8 @@ class NewsSuggestionController extends Controller
             'summary' => ['nullable', 'string', 'max:3000'],
             'why_important' => ['nullable', 'string', 'max:1000'],
             'source_name' => ['nullable', 'string', 'max:255'],
+            // رمز الدولة (ISO، مثل OM أو AE)؛ GCC/MENA للخبر الإقليمي العام.
+            'country' => ['nullable', 'string', 'regex:/^([A-Za-z]{2}|GCC|MENA)$/'],
         ]);
 
         if ($validator->fails()) {
@@ -38,6 +40,15 @@ class NewsSuggestionController extends Controller
 
         $data = $validator->validated();
         $hash = NewsSuggestion::hashUrl($data['url']);
+
+        if (isset($data['country'])) {
+            // الإقليمي العام ينحفظ XG (خليجي) أو XM (المنطقة) ليناسب عمود من حرفين.
+            $data['country'] = match (strtoupper($data['country'])) {
+                'GCC' => 'XG',
+                'MENA' => 'XM',
+                default => strtoupper($data['country']),
+            };
+        }
 
         // منشور عندنا أصلًا (حتى لو مدموج أو محذوف) -- ما يحتاج يدخل الأنابيب.
         $published = NewsArticle::withTrashed()->where('source_url', $data['url'])->exists()

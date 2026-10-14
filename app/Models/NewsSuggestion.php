@@ -15,6 +15,7 @@ class NewsSuggestion extends Model
         'summary',
         'why_important',
         'source_name',
+        'country',
         'suggested_by',
         'status',
         'status_note',

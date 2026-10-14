@@ -64,6 +64,15 @@ class NewsSuggestionTest extends TestCase
         $this->withToken('grok-secret')->getJson('/api/news-suggestions/pending')->assertStatus(401);
     }
 
+    public function test_country_is_normalized(): void
+    {
+        $this->suggest(['url' => 'https://omannews.example/a', 'country' => 'om'])->assertStatus(202);
+        $this->suggest(['url' => 'https://gulf.example/b', 'country' => 'GCC'])->assertStatus(202);
+        $this->suggest(['url' => 'https://x.example/c', 'country' => 'Oman'])->assertStatus(422);
+
+        $this->assertSame(['OM', 'XG'], NewsSuggestion::query()->orderBy('id')->pluck('country')->all());
+    }
+
     public function test_invalid_url_is_rejected(): void
     {
         $this->suggest(['url' => 'not a url'])->assertStatus(422);
