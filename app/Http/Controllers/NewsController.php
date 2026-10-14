@@ -101,7 +101,13 @@ class NewsController extends Controller
          * يرجع 410 بدل 404 -- يخلي قوقل يشيله من الفهرس أسرع.
          */
         if (! $article instanceof NewsArticle) {
-            abort(NewsArticle::onlyTrashed()->whereKey($permalink->linkable_id)->exists() ? 410 : 404);
+            $trashed = NewsArticle::onlyTrashed()->whereKey($permalink->linkable_id)->first();
+
+            if ($merged = $this->redirectToMergedArticle($trashed, $locale)) {
+                return $merged;
+            }
+
+            abort($trashed ? 410 : 404);
         }
 
         /*
@@ -232,7 +238,11 @@ class NewsController extends Controller
             $deleted = NewsArticle::onlyTrashed()
                 ->whereDate('publication_date', $date)
                 ->where('daily_sequence', $sequenceNumber)
-                ->exists();
+                ->first();
+
+            if ($merged = $this->redirectToMergedArticle($deleted, $locale)) {
+                return $merged;
+            }
 
             abort($deleted ? 410 : 404);
         }
@@ -367,6 +377,26 @@ class NewsController extends Controller
     /**
      * تحويل الروابط القديمة إلى الرابط الحالي للخبر.
      */
+    /**
+     * خبر مكرر اندمج بخبر أصلي (news:merge): روابطه تتحوّل 301 للأصلي بنفس
+     * اللغة، بدل 410 -- اللي فتح الرابط من منشور قديم يوصل للقصة نفسها.
+     */
+    private function redirectToMergedArticle(?NewsArticle $trashed, string $locale): ?RedirectResponse
+    {
+        if (! $trashed?->merged_into_id) {
+            return null;
+        }
+
+        $target = NewsArticle::query()
+            ->published()
+            ->whereKey($trashed->merged_into_id)
+            ->first();
+
+        $url = $target?->url($locale) ?? $target?->url();
+
+        return $url ? redirect()->to($url, 301) : null;
+    }
+
     private function redirectFromOldSlug(string $slug, string $locale): RedirectResponse
     {
         $redirect = PermalinkRedirect::query()

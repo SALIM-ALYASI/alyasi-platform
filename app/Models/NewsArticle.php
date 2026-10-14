@@ -48,6 +48,7 @@ class NewsArticle extends Model
         'published_at',
         'publication_date',
         'daily_sequence',
+        'merged_into_id',
         'social_sent_at',
         'views_count',
         'seo_title_ar',
@@ -64,6 +65,7 @@ class NewsArticle extends Model
             'published_at' => 'datetime',
             'publication_date' => 'date',
             'daily_sequence' => 'integer',
+            'merged_into_id' => 'integer',
             'social_sent_at' => 'datetime',
             'views_count' => 'integer',
         ];
