@@ -39,6 +39,11 @@ return [
         'token' => env('NEWS_BOT_TOKEN'),
     ],
 
+    // وكيل خارجي يقترح روابط أخبار (روتين Grok) -- رمز منفصل بصلاحية الاقتراح بس.
+    'news_suggester' => [
+        'token' => env('NEWS_SUGGESTER_TOKEN'),
+    ],
+
     'n8n' => [
         'news_webhook_url' => env('N8N_NEWS_WEBHOOK_URL'),
         // نفس workflow "ALYASI — Gmail Send" اللي يستخدمه بوت الأخبار (نفس

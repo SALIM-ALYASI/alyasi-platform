@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthenticateEventBot;
 use App\Http\Middleware\AuthenticateManagerBot;
 use App\Http\Middleware\AuthenticateN8nGmail;
 use App\Http\Middleware\AuthenticateNewsBot;
+use App\Http\Middleware\AuthenticateNewsSuggester;
 use App\Http\Middleware\AuthenticateProductWatch;
 use App\Http\Middleware\AuthenticatePublishWebhook;
 use App\Http\Middleware\CheckMaintenanceMode;
@@ -36,6 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.auth' => AdminAuthenticate::class,
             'news-bot.auth' => AuthenticateNewsBot::class,
+            'news-suggester.auth' => AuthenticateNewsSuggester::class,
             'n8n-gmail.auth' => AuthenticateN8nGmail::class,
             'product-watch.auth' => AuthenticateProductWatch::class,
             'event-bot.auth' => AuthenticateEventBot::class,

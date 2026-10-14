@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ConferenceRecordingController;
 use App\Http\Controllers\Api\EventIngestController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
+use App\Http\Controllers\Api\NewsSuggestionController;
 use App\Http\Controllers\Api\PipelineAlertController;
 use App\Http\Controllers\Api\ProductLaunchIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
@@ -54,6 +55,24 @@ Route::post('news/digest-video', [NewsIngestController::class, 'storeDigestVideo
 Route::post('news/notify-whatsapp', [NewsIngestController::class, 'notifyWhatsAppEndpoint'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news.notify-whatsapp');
+
+/*
+|--------------------------------------------------------------------------
+| News Suggestions -- وكيل الاكتشاف (Grok) يقترح روابط، والبوت يسحبها
+|--------------------------------------------------------------------------
+*/
+
+Route::post('news-suggestions', [NewsSuggestionController::class, 'store'])
+    ->middleware(['news-suggester.auth', 'throttle:20,1'])
+    ->name('api.news-suggestions.store');
+
+Route::get('news-suggestions/pending', [NewsSuggestionController::class, 'pending'])
+    ->middleware(['news-bot.auth', 'throttle:60,1'])
+    ->name('api.news-suggestions.pending');
+
+Route::patch('news-suggestions/{newsSuggestion}', [NewsSuggestionController::class, 'ack'])
+    ->middleware(['news-bot.auth', 'throttle:120,1'])
+    ->name('api.news-suggestions.ack');
 
 /*
 |--------------------------------------------------------------------------
