@@ -7,6 +7,7 @@ return [
         'services' => 'الخدمات',
         'works' => 'أعمالي',
         'news' => 'الأخبار',
+        'oman_pulse' => '🇴🇲 نبض عُمان',
         'product_launches' => 'إطلاقات المنتجات',
         'tech_history' => 'تاريخ التقنية',
         'articles' => 'مقالاتي',

@@ -7,6 +7,7 @@ return [
         'services' => 'Services',
         'works' => 'Our Work',
         'news' => 'News',
+        'oman_pulse' => 'Oman Pulse',
         'product_launches' => 'Product Launches',
         'tech_history' => 'Tech History',
         'articles' => 'My Articles',

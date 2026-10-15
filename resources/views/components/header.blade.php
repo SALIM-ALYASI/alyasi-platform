@@ -8,12 +8,21 @@
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
-        'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*')],
+        'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*') && ! request()->routeIs('news.oman')],
         'tech_history' => ['route' => 'tech-history.index', 'active' => request()->routeIs('tech-history.*')],
         // إطلاقات المنتجات مخفي مؤقتًا من القائمة (طلب صريح) لحين إعادة
         // صياغته -- الكود والبيانات باقية كما هي، بس الرابط يرجع لصفحة
         // البداية مؤقتًا (routes/web.php).
     ];
+
+    // «نبض عُمان» بعد الأخبار مباشرة -- عربي فقط (نص رسمي حرفي بدون ترجمة).
+    if (app()->getLocale() === 'ar') {
+        $navItems = array_merge(
+            array_slice($navItems, 0, array_search('news', array_keys($navItems), true) + 1, true),
+            ['oman_pulse' => ['route' => 'news.oman', 'active' => request()->routeIs('news.oman')]],
+            array_slice($navItems, array_search('news', array_keys($navItems), true) + 1, null, true),
+        );
+    }
 
     if ($showArticlesNav) {
         $navItems['articles'] = ['route' => 'articles.index', 'active' => request()->routeIs('articles.*')];
