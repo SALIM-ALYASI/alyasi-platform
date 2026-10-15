@@ -237,6 +237,9 @@
             </div>
         @endif
 
+        {{-- معلومات المؤتمر (الموعد والحالة) قبل انعقاده بس؛ بعد ما ينتهي تبقى
+             تغطيتنا وحدها -- الموعد مذكور في المحتوى نفسه. --}}
+        @if ($phase !== 'concluded')
         <div class="grid-2 community-detail__info-grid">
             <div class="event-detail__date-card-row{{ $phase === 'concluded' ? ' event-detail__date-card-row--concluded' : '' }}">
                 <div class="community-detail__info-card">
@@ -271,6 +274,7 @@
                 </div>
             @endif
         </div>
+        @endif
 
         @if ($phase === 'live' && $edition->livestream_url)
             <div class="event-detail__live-banner">
