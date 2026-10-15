@@ -111,4 +111,20 @@ class EventStructureTest extends TestCase
         $this->withHeaders($en)->get('/en/community')->assertRedirect(url('/en/events'))->assertStatus(301);
         $this->withHeaders($this->headers())->get('/community')->assertRedirect(url('/events'));
     }
+
+    public function test_list_is_ordered_by_event_date_upcoming_first(): void
+    {
+        $this->edition('far-future', 'far-future-2027', now()->addMonths(4), now()->addMonths(4)->addDay());
+        $this->edition('old-past', 'old-past-2026', now()->subMonths(2), now()->subMonths(2)->addDay());
+        $this->edition('next-soon', 'next-soon-2026', now()->addWeeks(2), now()->addWeeks(2)->addDay());
+        $this->edition('recent-past', 'recent-past-2026', now()->subWeek(), now()->subWeek()->addDay());
+
+        $html = $this->withHeaders($this->headers())->get('/events')->assertOk()->getContent();
+
+        $positions = array_map(fn ($slug) => strpos($html, '/events/'.$slug.'"'), ['next-soon', 'far-future', 'recent-past', 'old-past']);
+        $this->assertNotContains(false, $positions);
+        $sorted = $positions;
+        sort($sorted);
+        $this->assertSame($sorted, $positions);
+    }
 }

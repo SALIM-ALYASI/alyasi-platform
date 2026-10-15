@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventEdition;
 use Illuminate\View\View;
 
 class EventController extends Controller
@@ -13,7 +14,16 @@ class EventController extends Controller
      */
     public function index(): View
     {
+        // الترتيب بموعد المؤتمر (مو بالاسم أو تاريخ الإضافة): القادم أولًا
+        // والأقرب موعدًا قبل، بعده المنتهي والأحدث قبل. الموعد = آخر نسخة منشورة.
+        $latestStart = EventEdition::query()
+            ->selectRaw('MAX(event_start_at)')
+            ->whereColumn('event_editions.event_id', 'events.id')
+            ->published();
+
         $events = Event::query()
+            ->select('events.*')
+            ->selectSub($latestStart, 'latest_start_at')
             ->whereHas('editions', fn ($query) => $query->published())
             ->with([
                 'editions' => fn ($query) => $query
@@ -22,7 +32,9 @@ class EventController extends Controller
                     ->orderByDesc('year')
                     ->orderByDesc('event_start_at'),
             ])
-            ->orderBy('name')
+            ->orderByRaw('CASE WHEN (latest_start_at) >= ? THEN 0 ELSE 1 END', [now()])
+            ->orderByRaw('CASE WHEN (latest_start_at) >= ? THEN latest_start_at END ASC', [now()])
+            ->orderByDesc('latest_start_at')
             ->paginate(12)
             ->withQueryString();
 
