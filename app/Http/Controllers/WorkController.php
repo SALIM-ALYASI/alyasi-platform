@@ -169,16 +169,9 @@ class WorkController extends Controller
      */
     private function workTypes(): array
     {
-        return [
-            'website' => 'موقع إلكتروني',
-            'application' => 'تطبيق',
-            'design' => 'تصميم',
-            'advertisement' => 'إعلان',
-            'video' => 'فيديو ومونتاج',
-            'photography' => 'تصوير',
-            'event' => 'فعالية أو مشاركة',
-            'personal' => 'عمل شخصي',
-            'other' => 'أعمال أخرى',
-        ];
+        // بلغة الصفحة (lang/*/works.php) -- كانت عربية ثابتة حتى بالصفحة الإنجليزية.
+        $keys = ['website', 'application', 'design', 'advertisement', 'video', 'photography', 'event', 'personal', 'other'];
+
+        return array_combine($keys, array_map(fn (string $key) => __("works.types.{$key}"), $keys));
     }
 }
