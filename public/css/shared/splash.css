@@ -1,5 +1,6 @@
 /*
- * ALYASI intro splash — plays on every page load.
+ * ALYASI intro splash — first visit, then once every 24 hours
+ * (motion-calm is set on <html> by partials/motion-once before paint).
  */
 
 #alyasi-splash {
@@ -37,4 +38,8 @@
 @media (prefers-reduced-motion: reduce) {
     #alyasi-splash { animation-duration: 1ms; animation-delay: 0s; }
     #alyasi-splash img { animation: none; opacity: 1; transform: scale(3); }
+}
+
+.motion-calm #alyasi-splash {
+    display: none;
 }
