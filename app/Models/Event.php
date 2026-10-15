@@ -15,6 +15,7 @@ class Event extends Model
         'name_en',
         'slug',
         'organizer',
+        'image',
     ];
 
     /**

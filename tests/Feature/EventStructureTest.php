@@ -75,4 +75,25 @@ class EventStructureTest extends TestCase
             ->assertSee('نسخة cyberx-like-2026')
             ->assertDontSee('coverage-links', false);
     }
+
+    public function test_series_cover_only_on_list_card_and_posters_on_year_cards(): void
+    {
+        $edition = $this->edition('cysec-like', 'cysec-like-2026', now()->addMonth(), now()->addMonth()->addHours(8));
+        $edition->event->update(['image' => 'uploads/events/partnership.jpg']);
+        $edition->update(['image' => 'uploads/events/poster-ar.jpg', 'image_en' => 'uploads/events/poster-en.jpg']);
+
+        $this->withHeaders($this->headers())->get('/events')
+            ->assertOk()
+            ->assertSee('uploads/events/partnership.jpg', false);
+
+        $this->withHeaders($this->headers())->get('/events/cysec-like')
+            ->assertOk()
+            ->assertSee('uploads/events/poster-ar.jpg', false)
+            ->assertDontSee('uploads/events/partnership.jpg', false);
+
+        $this->withHeaders(['Accept-Language' => 'en'] + $this->headers())->get('/en/events/cysec-like')
+            ->assertOk()
+            ->assertSee('uploads/events/poster-en.jpg', false)
+            ->assertDontSee('uploads/events/partnership.jpg', false);
+    }
 }

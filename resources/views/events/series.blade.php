@@ -11,7 +11,7 @@
 @section('og_url', $seriesUrl)
 @section('hreflang_ar', route('event_editions.show', ['slug' => $event->slug]))
 @section('hreflang_en', route('event_editions.show.en', ['slug' => $event->slug]))
-@section('og_image', $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg'))
+@section('og_image', $latestEdition?->displayImage() ? media_url($latestEdition->displayImage()) : asset('images/events/og-cover.jpg'))
 @section('og_image_width', 1200)
 @section('og_image_height', 630)
 
@@ -26,7 +26,7 @@
         :badge="__('events.series_badge')"
         :title="$event->localizedName()"
         :description="__('events.series_intro', ['name' => $event->localizedName()])"
-        :image="$latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg')"
+        :image="$latestEdition?->displayImage() ? media_url($latestEdition->displayImage()) : asset('images/events/og-cover.jpg')"
         :image-width="1672"
         :image-height="941"
     />
@@ -47,7 +47,7 @@
                 <a href="{{ $permalink?->url() }}" class="card card--hover community-card" data-reveal>
                     <div class="community-card__media">
                         <img
-                            src="{{ $edition->image ? media_url($edition->image) : asset('images/events/og-cover.jpg') }}"
+                            src="{{ $edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg') }}"
                             alt="{{ $edition->title }}"
                             loading="lazy"
                         >

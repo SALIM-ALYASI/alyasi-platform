@@ -37,7 +37,7 @@
                        class="card card--hover community-card" data-reveal>
                         <div class="community-card__media">
                             <img
-                                src="{{ $latestEdition?->image ? media_url($latestEdition->image) : asset('images/events/og-cover.jpg') }}"
+                                src="{{ ($cardImage = $event->image ?: $latestEdition?->displayImage()) ? media_url($cardImage) : asset('images/events/og-cover.jpg') }}"
                                 alt="{{ $event->localizedName() }}"
                                 loading="lazy"
                             >
