@@ -36,9 +36,3 @@ body.admin-body.alyasi-page-enter .admin-content {
         animation: none;
     }
 }
-
-/* زيارة ثانية خلال 24 ساعة (partials/motion-once): بدون حركة فتح الصفحة */
-.motion-calm body.alyasi-page-enter > main,
-.motion-calm body.admin-body.alyasi-page-enter .admin-content {
-    animation: none;
-}

@@ -303,8 +303,6 @@ textarea.field__control { min-height: 130px; resize: vertical; }
     transition: opacity .7s ease, transform .7s ease;
 }
 [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
-/* زيارة ثانية خلال 24 ساعة: العناصر ظاهرة من البداية بدون حركة */
-.motion-calm [data-reveal] { opacity: 1; transform: none; transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
     [data-reveal] { opacity: 1; transform: none; transition: none; }
