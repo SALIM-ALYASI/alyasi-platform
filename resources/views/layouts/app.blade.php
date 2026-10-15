@@ -60,6 +60,18 @@
         ?: asset('images/logo/favicon-navy.png');
 
     $seoLocale = $isArabic ? 'ar_OM' : 'en_US';
+
+    // قياس الصورة الحقيقي إذا كانت من ملفات الموقع؛ القياس المعلن غلط يخلي
+    // بعض المنصات تقص الصورة أو ما تعرضها في بطاقة الرابط.
+    $seoImageWidth = trim($__env->yieldContent('og_image_width'));
+    $seoImageHeight = trim($__env->yieldContent('og_image_height'));
+    $seoImagePath = str_starts_with($seoImage, url('/').'/')
+        ? public_path(rawurldecode(parse_url($seoImage, PHP_URL_PATH) ?? ''))
+        : null;
+
+    if ($seoImagePath && is_file($seoImagePath) && ($seoImageSize = @getimagesize($seoImagePath))) {
+        [$seoImageWidth, $seoImageHeight] = [$seoImageSize[0], $seoImageSize[1]];
+    }
 @endphp
 
 
@@ -230,17 +242,15 @@
         content="{{ $seoTitle }}"
     >
 
-    @hasSection('og_image_width')
+    @if ($seoImageWidth && $seoImageHeight)
         <meta
             property="og:image:width"
-            content="@yield('og_image_width')"
+            content="{{ $seoImageWidth }}"
         >
-    @endif
 
-    @hasSection('og_image_height')
         <meta
             property="og:image:height"
-            content="@yield('og_image_height')"
+            content="{{ $seoImageHeight }}"
         >
     @endif
 
