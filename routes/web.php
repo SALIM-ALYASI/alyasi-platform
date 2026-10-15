@@ -333,8 +333,13 @@ Route::middleware('force.locale:en')
 |--------------------------------------------------------------------------
 */
 
-Route::get('/events', [EventController::class, 'index'])
+Route::middleware('force.locale:ar')
+    ->get('/events', [EventController::class, 'index'])
     ->name('events.index');
+
+Route::middleware('force.locale:en')
+    ->get('/en/events', [EventController::class, 'index'])
+    ->name('events.index.en');
 
 // تغطية «خمس محطات» -- قبل مسار /events/{slug} (ما يتعارض لأن الـ slug بدون /).
 Route::get('/events/cyberx-oman-2026/coverage', [EventCoverageController::class, 'cyberxOman2026'])

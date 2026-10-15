@@ -13,7 +13,8 @@ class CommunityController extends Controller
      */
     public function index(): RedirectResponse
     {
-        return redirect()->route('events.index', [], 301);
+        // /en/community -> /en/events (بلغة الرابط القديم نفسه).
+        return redirect()->to(localized_route('events.index'), 301);
     }
 
     /**

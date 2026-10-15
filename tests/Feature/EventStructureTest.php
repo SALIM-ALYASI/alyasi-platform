@@ -96,4 +96,18 @@ class EventStructureTest extends TestCase
             ->assertSee('uploads/events/poster-en.jpg', false)
             ->assertDontSee('uploads/events/partnership.jpg', false);
     }
+
+    public function test_english_conference_list_exists_and_old_community_links_follow_language(): void
+    {
+        $this->edition('any-conf', 'any-conf-2026', now()->subDays(10), now()->subDays(9));
+        $en = ['Accept-Language' => 'en'] + $this->headers();
+
+        $this->withHeaders($en)->get('/en/events')
+            ->assertOk()
+            ->assertSee('any-conf')
+            ->assertSee('href="'.url('/en/events').'"', false);
+
+        $this->withHeaders($en)->get('/en/community')->assertRedirect(url('/en/events'))->assertStatus(301);
+        $this->withHeaders($this->headers())->get('/community')->assertRedirect(url('/events'));
+    }
 }

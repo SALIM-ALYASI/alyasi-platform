@@ -2,8 +2,10 @@
 
 @section('title', __('events.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('events.meta_description'))
-@section('canonical', paginated_canonical(route('events.index')))
-@section('og_url', route('events.index'))
+@section('canonical', paginated_canonical(localized_route('events.index')))
+@section('og_url', localized_route('events.index'))
+@section('hreflang_ar', localized_route('events.index', [], 'ar'))
+@section('hreflang_en', localized_route('events.index', [], 'en'))
 @section('og_image', asset('images/events/og-cover.jpg'))
 @section('og_image_width', 1200)
 @section('og_image_height', 630)

@@ -227,7 +227,10 @@ class GenerateSitemap extends Command
      */
     private function addEvents(Sitemap $sitemap): void
     {
-        $sitemap->add(Url::create(route('events.index')));
+        $eventsAr = route('events.index');
+        $eventsEn = route('events.index.en');
+        $sitemap->add(Url::create($eventsAr)->addAlternate($eventsEn, 'en')->addAlternate($eventsAr, 'ar'));
+        $sitemap->add(Url::create($eventsEn)->addAlternate($eventsAr, 'ar')->addAlternate($eventsEn, 'en'));
 
         \App\Models\Event::query()
             ->whereHas('editions', fn ($query) => $query->published())

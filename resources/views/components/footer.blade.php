@@ -97,7 +97,7 @@
 
             <div class="site-footer__links">
 
-                <a href="{{ route('events.index') }}">
+                <a href="{{ localized_route('events.index') }}">
                     {{ __('layout.nav.events') }}
                 </a>
 
