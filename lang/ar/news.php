@@ -23,6 +23,12 @@ return [
     'related_badge' => 'أخبار',
     'related_title' => 'أخبار مشابهة',
 
+    'watch_video' => '▶ شاهد فيديو الخبر',
+    'analysis_badge' => 'تحليل ALYASI',
+    'analysis_gulf' => 'زاوية الخليج',
+    'analysis_in_arabic' => 'تحليلنا لهذا الخبر متاح بالعربية.',
+    'analysis_in_arabic_link' => 'اقرأ التحليل ←',
+
     'cta_badge' => 'ابدأ الآن',
     'cta_title' => 'هل لديك فكرة؟',
     'cta_title_highlight' => 'لنحوّلها إلى واقع.',

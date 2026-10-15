@@ -23,6 +23,12 @@ return [
     'related_badge' => 'News',
     'related_title' => 'Related Articles',
 
+    'watch_video' => '▶ Watch the news video',
+    'analysis_badge' => 'ALYASI Analysis',
+    'analysis_gulf' => 'Gulf angle',
+    'analysis_in_arabic' => 'Our analysis of this story, including its Gulf angle, is available in Arabic.',
+    'analysis_in_arabic_link' => 'Read the analysis in Arabic →',
+
     'cta_badge' => 'Get Started',
     'cta_title' => 'Have an idea?',
     'cta_title_highlight' => 'Let us make it real.',

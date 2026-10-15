@@ -384,7 +384,7 @@
                 rel="noopener"
                 class="btn btn--primary"
             >
-                ▶ شاهد فيديو الخبر
+                {{ __('news.watch_video') }}
             </a>
         </div>
     @endif
@@ -396,9 +396,24 @@
         $article->analysis_status === 'ready'
         && filled($article->analysis_ar)
     )
+        @if (app()->getLocale() === 'en')
+            {{-- التحليل مكتوب بالعربي بس: الصفحة الإنجليزية ما تعرض نصه (كانت صفحة
+                 مخلوطة اللغتين بـ216 خبر)، وتعطي رابط للتحليل بالصفحة العربية. --}}
+            <aside class="news-detail__analysis news-detail__analysis--elsewhere" id="analysis">
+                <div class="news-detail__analysis-badge">
+                    {{ __('news.analysis_badge') }}
+                </div>
+                <p class="news-detail__analysis-content">
+                    {{ __('news.analysis_in_arabic') }}
+                    @if ($arabicUrl = $article->url('ar', exact: true))
+                        <a href="{{ $arabicUrl }}#analysis" hreflang="ar">{{ __('news.analysis_in_arabic_link') }}</a>
+                    @endif
+                </p>
+            </aside>
+        @else
         <aside class="news-detail__analysis" id="analysis">
             <div class="news-detail__analysis-badge">
-                تحليل ALYASI
+                {{ __('news.analysis_badge') }}
             </div>
 
             @if (filled($article->analysis_title_ar))
@@ -413,13 +428,14 @@
 
             @if (filled($article->analysis_regional_angle_ar))
                 <div class="news-detail__analysis-regional">
-                    <strong>زاوية الخليج</strong>
+                    <strong>{{ __('news.analysis_gulf') }}</strong>
                     <p>
                         {{ strip_tags($article->analysis_regional_angle_ar) }}
                     </p>
                 </div>
             @endif
         </aside>
+        @endif
     @endif
 
 
