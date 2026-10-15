@@ -76,6 +76,7 @@
         rel="stylesheet"
         href="{{ versioned_asset('css/shared/theme.css') }}"
     >
+    @include('partials.motion-once')
 </head>
 
 <body class="admin-body alyasi-page-enter">

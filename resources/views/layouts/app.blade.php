@@ -88,6 +88,8 @@
         })();
     </script>
 
+    @include('partials.motion-once')
+
     <link
         rel="stylesheet"
         href="{{ versioned_asset('css/shared/splash.css') }}"
