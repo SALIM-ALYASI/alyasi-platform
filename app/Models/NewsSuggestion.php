@@ -19,6 +19,8 @@ class NewsSuggestion extends Model
         'source_published_at',
         'importance',
         'suggested_by',
+        'section',
+        'category',
         'status',
         'status_note',
         'candidate_id',

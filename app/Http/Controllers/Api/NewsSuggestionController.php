@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessOmanPulseSuggestion;
 use App\Models\NewsArticle;
 use App\Models\NewsSuggestion;
+use App\Models\OmanPulseItem;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +87,9 @@ class NewsSuggestionController extends Controller
             'country' => ['nullable', 'string', 'regex:/^([A-Za-z]{2}|GCC|MENA)$/'],
             'published_at' => ['nullable', 'date'],
             'importance' => ['nullable', 'string', 'max:20'],
+            // «نبض عُمان»: بيان رسمي يُنشر بنصّه الأصلي (ما يمر على البوت والذكاء الاصطناعي).
+            'section' => ['nullable', Rule::in(['oman-pulse'])],
+            'category' => ['nullable', Rule::in(array_keys(OmanPulseItem::TAGS))],
         ]);
 
         if ($validator->fails()) {
@@ -104,7 +109,10 @@ class NewsSuggestionController extends Controller
         }
 
         // منشور عندنا أصلًا (حتى لو مدموج أو محذوف) -- ما يحتاج يدخل الأنابيب.
-        $published = NewsArticle::withTrashed()->where('source_url', $data['url'])->exists()
+        $isPulse = ($data['section'] ?? null) === 'oman-pulse';
+
+        $published = OmanPulseItem::query()->where('source_url_hash', $hash)->exists()
+            || NewsArticle::withTrashed()->where('source_url', $data['url'])->exists()
             || NewsArticle::withTrashed()
                 ->where('created_at', '>=', now()->subDays(60))
                 ->whereNotNull('source_url')
@@ -132,8 +140,14 @@ class NewsSuggestionController extends Controller
             'source_published_at' => $data['published_at'] ?? null,
             'importance' => $data['importance'] ?? null,
             'suggested_by' => $agent,
+            'section' => $isPulse ? 'oman-pulse' : null,
+            'category' => $data['category'] ?? null,
             'status' => 'pending',
         ]);
+
+        if ($isPulse) {
+            ProcessOmanPulseSuggestion::dispatchAfterResponse($suggestion->id);
+        }
 
         return ['status' => 'queued', 'id' => $suggestion->id, 'url' => $data['url']];
     }
@@ -142,6 +156,7 @@ class NewsSuggestionController extends Controller
     {
         $items = NewsSuggestion::query()
             ->where('status', 'pending')
+            ->whereNull('section') // نبض عُمان ما يمر على البوت
             ->orderBy('id')
             ->limit(20)
             ->get(['id', 'url', 'title', 'source_name', 'created_at']);

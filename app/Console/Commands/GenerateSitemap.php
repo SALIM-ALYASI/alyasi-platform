@@ -227,6 +227,9 @@ class GenerateSitemap extends Command
      */
     private function addEvents(Sitemap $sitemap): void
     {
+        // «نبض عُمان» (عربي فقط -- نص رسمي حرفي بدون ترجمة).
+        $sitemap->add(Url::create(route('news.oman')));
+
         $eventsAr = route('events.index');
         $eventsEn = route('events.index.en');
         $sitemap->add(Url::create($eventsAr)->addAlternate($eventsEn, 'en')->addAlternate($eventsAr, 'ar'));

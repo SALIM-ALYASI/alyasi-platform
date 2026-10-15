@@ -26,6 +26,14 @@
     />
 
     <section class="container news-section">
+        @if (app()->getLocale() === 'ar')
+            {{-- مدخل «نبض عُمان»: الأخبار الرسمية العُمانية بنصّها الأصلي --}}
+            <a href="{{ route('news.oman') }}" class="news-pulse-link">
+                <strong>🇴🇲 نبض عُمان</strong>
+                <span>أخبار عُمان الرسمية من مصادرها، بنصّها الأصلي ←</span>
+            </a>
+        @endif
+
         @if ($categories->isNotEmpty())
             <div class="filters">
                 <a href="{{ localized_route('news.index') }}" class="filters__btn @if(!request('category')) is-active @endif">

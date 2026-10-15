@@ -15,3 +15,9 @@
 @media (max-width: 767px) {
     .news-section { padding-top: 56px; padding-bottom: 56px; }
 }
+
+/* مدخل «نبض عُمان» أعلى صفحة الأخبار */
+.news-pulse-link { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 14px 18px; margin-bottom: 22px;
+    border: 1px solid var(--color-divider); border-radius: var(--radius-md); background: var(--color-surface); }
+.news-pulse-link strong { font-size: 16px; }
+.news-pulse-link span { font-size: 14px; color: var(--color-accent-500); font-weight: 700; }

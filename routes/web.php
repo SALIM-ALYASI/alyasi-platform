@@ -177,6 +177,10 @@ Route::middleware('force.locale:ar')
         Route::get('/', 'index')
             ->name('index');
 
+        // «نبض عُمان» -- قبل /{slug} عشان ما ينقرأ كرابط خبر.
+        Route::get('/oman', [\App\Http\Controllers\OmanPulseController::class, 'index'])
+            ->name('oman');
+
         Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
             ->where([
                 'year' => '[0-9]{4}',
