@@ -297,6 +297,9 @@
             color: var(--gold);
             padding: 8px 0;
         }
+        /* رسالة خاصة للضيف: صورة بعرض البطاقة وتحتها مشغّل الصوت */
+        .guest-message img { display: block; width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px; }
+        .guest-message audio { display: block; width: 100%; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -500,6 +503,8 @@
 
                 addFinalQuestion(panel, guest, isFeminine, showArabic);
 
+                addGuestMessage(panel, guest);
+
                 if (guest.extra && guest.extra.length) {
                     const details = document.createElement('details');
                     details.className = 'extra-questions';
@@ -677,6 +682,37 @@
             addCard(panel, { id: guest.id + '-last', label: T('السؤال الأخير', 'Final question'),
                     ar: (isFeminine && finalQuestion.ar_f) || finalQuestion.ar, en: finalQuestion.en },
                 audioUrl(finalQuestion.audio, 'ar', isFeminine), audioUrl(finalQuestion.audio, 'en'), true, guest.id, showArabic);
+        }
+
+        // رسالة خاصة للضيف (مثل دعاء بالشفاء): صورة وتحتها تسجيل بصوت سالم.
+        // تنعرض بس للضيف اللي عنده "message" بالبيانات.
+        function addGuestMessage(panel, guest) {
+            const message = guest.message;
+            if (!message || !message.image) return;
+
+            const card = document.createElement('div');
+            card.className = 'card guest-message';
+
+            const img = document.createElement('img');
+            img.src = baseUrl + '/' + message.image;
+            img.alt = message.alt || '';
+            img.loading = 'lazy';
+            card.appendChild(img);
+
+            if (message.audio) {
+                const label = document.createElement('div');
+                label.className = 'label';
+                label.innerHTML = '<span>' + (message.audio_label || 'بصوتي') + '</span>';
+                card.appendChild(label);
+
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.preload = 'metadata';
+                audio.src = baseUrl + '/' + message.audio;
+                card.appendChild(audio);
+            }
+
+            panel.appendChild(card);
         }
 
         function audioUrl(id, lang, feminine) {

@@ -141,7 +141,13 @@
      "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟",
      "en": "What is the most common mistake in recovery plans, and how can it be avoided?"
     }
-   ]
+   ],
+   "message": {
+    "image": "fatma-get-well.jpg",
+    "audio": "fatma-get-well-ar.m4a",
+    "audio_label": "🤲 الدعاء بصوتي",
+    "alt": "دعاء بالشفاء لفاطمة اللواتي"
+   }
   },
   {
    "id": "sara",
