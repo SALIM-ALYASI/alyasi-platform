@@ -76,7 +76,7 @@ class EventStructureTest extends TestCase
             ->assertDontSee('coverage-links', false);
     }
 
-    public function test_series_cover_only_on_list_card_and_posters_on_year_cards(): void
+    public function test_series_cover_on_list_and_series_hero_posters_on_year_cards(): void
     {
         $edition = $this->edition('cysec-like', 'cysec-like-2026', now()->addMonth(), now()->addMonth()->addHours(8));
         $edition->event->update(['image' => 'uploads/events/partnership.jpg']);
@@ -86,15 +86,16 @@ class EventStructureTest extends TestCase
             ->assertOk()
             ->assertSee('uploads/events/partnership.jpg', false);
 
+        // أعلى صفحة المؤتمر: صورة الشراكة؛ بطاقة السنة تحتها: البوستر بلغة الصفحة.
         $this->withHeaders($this->headers())->get('/events/cysec-like')
             ->assertOk()
-            ->assertSee('uploads/events/poster-ar.jpg', false)
-            ->assertDontSee('uploads/events/partnership.jpg', false);
+            ->assertSee('uploads/events/partnership.jpg', false)
+            ->assertSee('uploads/events/poster-ar.jpg', false);
 
         $this->withHeaders(['Accept-Language' => 'en'] + $this->headers())->get('/en/events/cysec-like')
             ->assertOk()
-            ->assertSee('uploads/events/poster-en.jpg', false)
-            ->assertDontSee('uploads/events/partnership.jpg', false);
+            ->assertSee('uploads/events/partnership.jpg', false)
+            ->assertSee('uploads/events/poster-en.jpg', false);
     }
 
     public function test_english_conference_list_exists_and_old_community_links_follow_language(): void

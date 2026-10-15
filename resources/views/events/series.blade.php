@@ -2,6 +2,8 @@
 
 @php
     $latestEdition = $editions->first();
+    // أعلى صفحة المؤتمر: صورته الخاصة (مثل شعار الياسي مع المنظّم) لو موجودة، وإلا صورة آخر سنة.
+    $seriesImage = $event->image ?: $latestEdition?->displayImage();
     $seriesUrl = route(app()->getLocale() === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]);
 @endphp
 
@@ -11,7 +13,7 @@
 @section('og_url', $seriesUrl)
 @section('hreflang_ar', route('event_editions.show', ['slug' => $event->slug]))
 @section('hreflang_en', route('event_editions.show.en', ['slug' => $event->slug]))
-@section('og_image', $latestEdition?->displayImage() ? media_url($latestEdition->displayImage()) : asset('images/events/og-cover.jpg'))
+@section('og_image', $seriesImage ? media_url($seriesImage) : asset('images/events/og-cover.jpg'))
 @section('og_image_width', 1200)
 @section('og_image_height', 630)
 
@@ -26,7 +28,7 @@
         :badge="__('events.series_badge')"
         :title="$event->localizedName()"
         :description="__('events.series_intro', ['name' => $event->localizedName()])"
-        :image="$latestEdition?->displayImage() ? media_url($latestEdition->displayImage()) : asset('images/events/og-cover.jpg')"
+        :image="$seriesImage ? media_url($seriesImage) : asset('images/events/og-cover.jpg')"
         :image-width="1672"
         :image-height="941"
     />
