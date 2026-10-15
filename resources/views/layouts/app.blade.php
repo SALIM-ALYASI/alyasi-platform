@@ -11,8 +11,18 @@
 
     $pageTitle = trim($__env->yieldContent('title')) ?: 'ALYASI';
 
-    $pageDescription = trim($__env->yieldContent('meta_description'))
-        ?: __('home.hero_description');
+    // الوصف يظهر بنتائج البحث حتى ~160 حرف: نقصّه عند نهاية كلمة. والقسم
+    // المُمرَّر بـ @section('x', $value) يجي مُهرَّب أصلًا، فنفك الترميز قبل
+    // القص حتى ما يطلع «&amp;amp;» (الطباعة بـ {{ }} تهرّبه مرة وحدة).
+    $capDescription = fn (string $text) => \Illuminate\Support\Str::limit(
+        trim(preg_replace('/\s+/u', ' ', html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'))),
+        160,
+        '…',
+        preserveWords: true,
+    );
+
+    $pageDescription = $capDescription(trim($__env->yieldContent('meta_description'))
+        ?: __('home.hero_description'));
 
     /*
     |--------------------------------------------------------------------------
@@ -37,8 +47,8 @@
     $seoTitle = trim($__env->yieldContent('og_title'))
         ?: $pageTitle;
 
-    $seoDescription = trim($__env->yieldContent('og_description'))
-        ?: $pageDescription;
+    $seoDescription = $capDescription(trim($__env->yieldContent('og_description'))
+        ?: $pageDescription);
 
     $seoType = trim($__env->yieldContent('og_type'))
         ?: 'website';
