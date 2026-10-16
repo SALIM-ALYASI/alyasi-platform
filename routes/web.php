@@ -181,6 +181,10 @@ Route::middleware('force.locale:ar')
         Route::get('/oman', [\App\Http\Controllers\OmanPulseController::class, 'index'])
             ->name('oman');
 
+        Route::get('/oman/{item}', [\App\Http\Controllers\OmanPulseController::class, 'show'])
+            ->whereNumber('item')
+            ->name('oman.show');
+
         Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
             ->where([
                 'year' => '[0-9]{4}',

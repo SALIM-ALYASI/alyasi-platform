@@ -45,6 +45,11 @@ class OmanPulseItem extends Model
         return $query->where('status', 'published');
     }
 
+    public function url(): string
+    {
+        return route('news.oman.show', ['item' => $this->id]);
+    }
+
     public function getTagLabelAttribute(): string
     {
         return self::TAGS[$this->tag] ?? self::TAGS['services'];

@@ -229,6 +229,9 @@ class GenerateSitemap extends Command
     {
         // «نبض عُمان» (عربي فقط -- نص رسمي حرفي بدون ترجمة).
         $sitemap->add(Url::create(route('news.oman')));
+        foreach (\App\Models\OmanPulseItem::query()->published()->get(['id', 'updated_at']) as $pulse) {
+            $sitemap->add(Url::create($pulse->url())->setLastModificationDate($pulse->updated_at));
+        }
 
         $eventsAr = route('events.index');
         $eventsEn = route('events.index.en');

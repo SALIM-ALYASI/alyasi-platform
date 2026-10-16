@@ -33,9 +33,9 @@
         @forelse ($items as $item)
             <article class="pulse-card" id="pulse-{{ $item->id }}" data-reveal>
                 @if ($item->image)
-                    <div class="pulse-card__media">
-                        <img src="{{ media_url($item->image) }}" alt="{{ $item->title }}" loading="lazy">
-                    </div>
+                    <a href="{{ $item->url() }}" class="pulse-card__media" tabindex="-1" aria-hidden="true">
+                        <img src="{{ media_url($item->image) }}" alt="" loading="lazy">
+                    </a>
                 @endif
 
                 <div class="pulse-card__body">
@@ -47,22 +47,16 @@
                         @endif
                     </div>
 
-                    <h2 class="pulse-card__title">{{ $item->title }}</h2>
+                    <h2 class="pulse-card__title"><a href="{{ $item->url() }}">{{ $item->title }}</a></h2>
 
                     <p class="pulse-card__lead">{{ $item->lead }}</p>
 
-                    @if (! empty($item->paragraphs))
-                        <details class="pulse-card__details">
-                            <summary>التفاصيل</summary>
-                            @foreach ($item->paragraphs as $paragraph)
-                                <p>{{ $paragraph }}</p>
-                            @endforeach
-                        </details>
-                    @endif
-
-                    <a class="pulse-card__source" href="{{ $item->source_url }}" target="_blank" rel="noopener noreferrer">
-                        البيان الأصلي: {{ $item->source_name }} ←
-                    </a>
+                    <div class="pulse-card__actions">
+                        <a class="pulse-card__read" href="{{ $item->url() }}">اقرأ الخبر ←</a>
+                        <a class="pulse-card__source" href="{{ $item->source_url }}" target="_blank" rel="noopener noreferrer">
+                            البيان الأصلي: {{ $item->source_name }}
+                        </a>
+                    </div>
                 </div>
             </article>
         @empty

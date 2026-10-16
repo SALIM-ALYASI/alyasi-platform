@@ -30,4 +30,21 @@ class OmanPulseController extends Controller
             'activeTag' => $tag,
         ]);
     }
+
+    /**
+     * صفحة قراءة الخبر: النص الرسمي كامل كما هو، مع رابط البيان الأصلي.
+     */
+    public function show(int $item): View
+    {
+        $item = OmanPulseItem::query()->published()->findOrFail($item);
+
+        $related = OmanPulseItem::query()
+            ->published()
+            ->whereKeyNot($item->id)
+            ->orderByRaw('COALESCE(source_published_at, created_at) DESC')
+            ->take(3)
+            ->get();
+
+        return view('news.oman-pulse-show', compact('item', 'related'));
+    }
 }

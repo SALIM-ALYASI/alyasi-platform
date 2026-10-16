@@ -68,6 +68,19 @@ class OmanPulseTest extends TestCase
             ->assertSee('دون صياغة أو إضافة');
 
         $this->get('/news/oman?tag=cyber')->assertOk()->assertDontSee('إطلاق خدمة رقمية جديدة للمعاملات');
+
+        // البطاقة تفتح صفحة قراءة فيها النص الرسمي كامل ورابط البيان.
+        $this->get('/news/oman')->assertSee('/news/oman/'.$item->id, false);
+        $this->get('/news/oman/'.$item->id)
+            ->assertOk()
+            ->assertSee('<h1 class="pulse-read__title">إطلاق خدمة رقمية جديدة للمعاملات</h1>', false)
+            ->assertSee('وتتيح الخدمة إنجاز المعاملات إلكترونيًا')
+            ->assertSee('https://omannews.gov.om/topics/ar/1/show/1', false)
+            ->assertSee('"@type":"NewsArticle"', false)
+            ->assertSee('property="og:type"', false);
+
+        $item->update(['status' => 'hidden']);
+        $this->get('/news/oman/'.$item->id)->assertNotFound();
     }
 
     public function test_daily_limit_duplicates_and_old_news_are_skipped(): void
