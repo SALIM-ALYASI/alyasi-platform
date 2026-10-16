@@ -26,7 +26,7 @@ return [
 
     'hero_title_2' => 'من الفكرة إلى الإطلاق',
 
-    'hero_description' => 'منصة تجمع الخدمات، والأخبار التقنية، والمجتمع الرقمي في تجربة واحدة متكاملة.',
+    'hero_description' => 'منصة تجمع الخدمات الرقمية، والأخبار التقنية، وتغطية المؤتمرات في تجربة واحدة متكاملة.',
 
     'hero_audience' => 'لأفراد يبنون فكرتهم الأولى، رواد أعمال يطوّرون مشروعهم، وشركات تحتاج حلول تقنية متكاملة.',
 
@@ -162,7 +162,7 @@ return [
 
     'platform_section_title_highlight' => 'منصة واحدة',
 
-    'platform_section_description' => 'صُممت ALYASI لتجمع الخدمات الرقمية، والأخبار التقنية، والمجتمع في تجربة واحدة سهلة وسريعة.',
+    'platform_section_description' => 'صُممت ALYASI لتجمع الخدمات الرقمية، والأخبار التقنية، وتغطية المؤتمرات في تجربة واحدة سهلة وسريعة.',
 
     'platform_services_label' => 'الخدمات',
     'platform_services_title' => 'خدمات رقمية',
@@ -172,9 +172,9 @@ return [
     'platform_news_title' => 'أخبار تقنية',
     'platform_news_description' => 'متابعة أحدث أخبار التقنية والذكاء الاصطناعي والبرمجة أولاً بأول.',
 
-    'platform_community_label' => 'المجتمع',
-    'platform_community_title' => 'مجتمع ALYASI',
-    'platform_community_description' => 'تواصل، شارك أفكارك، وابنِ علاقات مع المبدعين والمطورين.',
+    'platform_community_label' => 'المؤتمرات',
+    'platform_community_title' => 'تغطية المؤتمرات',
+    'platform_community_description' => 'تغطيات ومقابلات من المؤتمرات والفعاليات التقنية في عُمان والخليج.',
 
     'explore_services' => 'استكشف خدماتنا',
     'technology_badge' => 'التقنيات',

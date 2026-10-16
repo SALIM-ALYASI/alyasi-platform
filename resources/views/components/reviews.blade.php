@@ -5,9 +5,17 @@
 
 <link rel="stylesheet" href="{{ versioned_asset('css/shared/reviews.css') }}">
 
-<div class="reviews-block" data-reveal>
-    <div class="section-head__eyebrow">{{ __('reviews.badge') }}</div>
-    <h2 class="section-head__title reviews-block__title">{{ __('reviews.title', ['count' => $reviews->count()]) }}</h2>
+@php
+    // بدون تقييمات: ما نعرض «التقييمات (0)» بشكل بارز؛ رابط صغير يفتح النموذج بس.
+    $hasReviews = $reviews->isNotEmpty();
+    $formOpen = $errors->hasAny(['rating', 'name', 'email', 'body']);
+@endphp
+
+<div class="reviews-block {{ $hasReviews ? '' : 'reviews-block--empty' }}" data-reveal>
+    @if ($hasReviews)
+        <div class="section-head__eyebrow">{{ __('reviews.badge') }}</div>
+        <h2 class="section-head__title reviews-block__title">{{ __('reviews.title', ['count' => $reviews->count()]) }}</h2>
+    @endif
 
     @if (session('success'))
         <div class="form-alert form-alert--success">{{ session('success') }}</div>
@@ -30,9 +38,13 @@
                 </div>
             @endforeach
         </div>
-    @else
-        <p class="reviews-block__empty">{{ __('reviews.empty') }}</p>
     @endif
+
+    <details class="reviews-block__compose" @if ($formOpen) open @endif>
+    <summary class="reviews-block__compose-toggle">
+        <i class="fa-regular fa-star" aria-hidden="true"></i>
+        {{ $hasReviews ? __('reviews.write_review') : __('reviews.write_first') }}
+    </summary>
 
     <form method="POST" action="{{ $action }}" class="reviews-block__form">
         @csrf
@@ -71,4 +83,5 @@
         <button type="submit" class="btn btn--primary">{{ __('reviews.submit') }}</button>
         <p class="reviews-block__note">{{ __('reviews.moderation_note') }}</p>
     </form>
+    </details>
 </div>

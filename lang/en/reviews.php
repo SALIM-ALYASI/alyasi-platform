@@ -6,6 +6,8 @@ return [
 
     'title' => 'Reviews (:count)',
 
+    'write_review' => 'Write a review',
+    'write_first' => 'Worked with us? Share your review',
     'empty' => 'No reviews yet. Be the first to share your thoughts.',
 
     'rating_label' => 'Your Rating',

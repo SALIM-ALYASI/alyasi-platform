@@ -38,7 +38,7 @@
                     @php $slug = $service->slug(); @endphp
                     <div class="card services-card" data-reveal>
                         <div class="services-card__media">
-                            <img src="{{ media_url($service->image) }}" alt="{{ $service->localizedTitle() }}" loading="lazy">
+                            <img src="{{ media_url($service->image) }}" @if ($srcset = media_srcset($service->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 400px" @endif alt="{{ $service->localizedTitle() }}" loading="lazy" decoding="async">
                             <span class="services-card__number">{{ sprintf('%02d', $loop->iteration) }}</span>
                         </div>
                         <div class="services-card__body">
@@ -52,7 +52,7 @@
                                 </a>
                             @endif
                             <div class="services-card__actions">
-                                <a href="{{ localized_route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
+                                <a href="{{ $service->requestUrl() }}" class="services-card__link">{{ __('services.request_service') }}</a>
                                 <span class="services-card__sep"></span>
                                 <a href="{{ $slug ? localized_route('services.show', ['slug' => $slug]) : localized_route('services.index') }}" class="services-card__link services-card__link--muted">{{ __('services.view_details') }}</a>
                             </div>

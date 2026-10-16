@@ -207,7 +207,14 @@ class ServiceController extends Controller
 
         $image->move($directory, $fileName);
 
-        return 'uploads/services/'.$fileName;
+        // صور الخدمات كانت PNG بحجم ~1.7MB: نحفظ نسخة WebP (ونسخة جوال) ونستخدمها، والأصل يبقى.
+        try {
+            return \App\Support\Images\WebpOptimizer::optimize('uploads/services/'.$fileName);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return 'uploads/services/'.$fileName;
+        }
     }
 
     /**

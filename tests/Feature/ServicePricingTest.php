@@ -78,5 +78,20 @@ class ServicePricingTest extends TestCase
             ->assertSee('و<bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 7</bdi> للحالات الخاصة.', false)
             ->assertSee('"priceCurrency":"OMR"', false)
             ->assertSee('"minPrice":3', false);
+
+        // الصفحة الإنجليزية بنصوص حقيقية، مو مفاتيح ترجمة خام.
+        $this->get('/en/services/mac')
+            ->assertOk()
+            ->assertSee('Why choose')
+            ->assertSee('Request this service')
+            ->assertDontSee('services.show.')
+            ->assertSee('<title>Mac &amp; iPhone Software Support — ALYASI</title>', false)
+            ->assertDontSee('&amp;amp;', false)
+            // زر الطلب ينقل اسم الخدمة لنموذج التواصل.
+            ->assertSee('/en/contact?subject=Service%20request%3A%20Mac%20%26%20iPhone%20Software%20Support', false);
+
+        $this->get('/en/contact?subject='.rawurlencode('Service request: Mac & iPhone Software Support'))
+            ->assertOk()
+            ->assertSee('value="Service request: Mac &amp; iPhone Software Support"', false);
     }
 }

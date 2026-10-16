@@ -26,7 +26,7 @@ return [
 
     'hero_title_2' => 'from idea to launch',
 
-    'hero_description' => 'A platform that brings together services, tech news, and a digital community in one seamless experience.',
+    'hero_description' => 'A platform that brings together digital services, tech news, and conference coverage in one seamless experience.',
 
     'hero_audience' => 'For individuals building their first idea, entrepreneurs growing their business, and companies that need complete technical solutions.',
 
@@ -124,7 +124,7 @@ return [
 
     'platform_section_title_highlight' => 'One Platform',
 
-    'platform_section_description' => 'ALYASI is designed to bring digital services, tech news, and community together in one fast, easy experience.',
+    'platform_section_description' => 'ALYASI is designed to bring digital services, tech news, and conference coverage together in one fast, easy experience.',
 
     'platform_services_label' => 'Services',
     'platform_services_title' => 'Digital Services',
@@ -134,9 +134,9 @@ return [
     'platform_news_title' => 'Tech News',
     'platform_news_description' => 'Stay up to date with the latest news in tech, AI, and programming.',
 
-    'platform_community_label' => 'Community',
-    'platform_community_title' => 'ALYASI Community',
-    'platform_community_description' => 'Connect, share your ideas, and build relationships with creators and developers.',
+    'platform_community_label' => 'Events',
+    'platform_community_title' => 'Conference coverage',
+    'platform_community_description' => 'Coverage and interviews from tech conferences and events in Oman and the Gulf.',
 
     /*
     |--------------------------------------------------------------------------

@@ -147,6 +147,16 @@ class Service extends Model
         return $this->description_ar;
     }
 
+    /**
+     * رابط التواصل مع الخدمة معبّأة في الموضوع، عشان ما يعيد الزائر شرح طلبه.
+     */
+    public function requestUrl(?string $locale = null): string
+    {
+        return localized_route('contact', [
+            'subject' => __('services.request_subject', ['service' => $this->localizedTitle($locale)], $locale),
+        ], $locale);
+    }
+
     public function hasPrice(): bool
     {
         return $this->price_from !== null;

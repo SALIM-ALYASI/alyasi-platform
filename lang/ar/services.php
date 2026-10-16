@@ -30,6 +30,8 @@ return [
 
     'digital_service' => 'خدمة رقمية',
 
+    'request_subject' => 'طلب خدمة: :service',
+
     'view_details' => 'عرض تفاصيل الخدمة',
 
     'request_service' => 'اطلب الخدمة',

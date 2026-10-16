@@ -163,3 +163,25 @@ if (! function_exists('omr_text')) {
         return new Illuminate\Support\HtmlString($html);
     }
 }
+
+if (! function_exists('media_srcset')) {
+    /**
+     * srcset لصورة WebP لها نسخة جوال ({name}-640.webp) جنبها، أو null.
+     */
+    function media_srcset(?string $path): ?string
+    {
+        if (blank($path) || ! str_ends_with(strtolower($path), '.webp') || str_contains($path, '://')) {
+            return null;
+        }
+
+        $small = preg_replace('/\.webp$/i', '-'.App\Support\Images\WebpOptimizer::SMALL_WIDTH.'.webp', ltrim($path, '/'));
+
+        if (! is_file(public_path($small))) {
+            return null;
+        }
+
+        $full = @getimagesize(public_path(ltrim($path, '/')))[0] ?? 1400;
+
+        return media_url($small).' '.App\Support\Images\WebpOptimizer::SMALL_WIDTH.'w, '.media_url($path).' '.$full.'w';
+    }
+}

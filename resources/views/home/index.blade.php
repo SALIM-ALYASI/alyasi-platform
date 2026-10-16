@@ -88,7 +88,7 @@
     @if ($spotlightService)
         <section class="container home-spotlight" data-reveal>
             <div class="home-spotlight__media">
-                <img src="{{ media_url($spotlightService->image) }}" alt="{{ $spotlightService->localizedTitle() }}" loading="lazy">
+                <img src="{{ media_url($spotlightService->image) }}" @if ($srcset = media_srcset($spotlightService->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 50vw" @endif alt="{{ $spotlightService->localizedTitle() }}" loading="lazy" decoding="async">
                 <span class="home-spotlight__number">01</span>
             </div>
             <div class="home-spotlight__body">
@@ -100,7 +100,7 @@
                 <p class="home-spotlight__desc">{{ $spotlightService->localizedDescription() }}</p>
                 <div class="home-spotlight__actions">
                     <a href="{{ $spotlightService->slug() ? localized_route('services.show', ['slug' => $spotlightService->slug()]) : localized_route('services.index') }}" class="btn btn--primary">{{ __('home.view_service_details') }}</a>
-                    <a href="{{ localized_route('contact') }}" class="btn btn--outline">{{ __('home.request_service') }}</a>
+                    <a href="{{ $spotlightService->requestUrl() }}" class="btn btn--outline">{{ __('home.request_service') }}</a>
                 </div>
             </div>
         </section>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="home-pillar" data-reveal>
                     <div class="home-pillar__icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.5 2.9-6 6.5-6s6.5 2.5 6.5 6"></path><circle cx="18" cy="9" r="2.4"></circle><path d="M15.8 14.2c2.6.4 4.7 2.3 4.7 5"></path></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path><path d="M8 14h3v3H8z"></path></svg>
                     </div>
                     <h3>{{ __('home.platform_community_title') }}</h3>
                     <p>{{ __('home.platform_community_description') }}</p>
@@ -157,14 +157,14 @@
             <div class="grid-3">
                 @foreach ($gridServices as $service)
                     <div class="home-service-card" data-reveal>
-                        <img src="{{ media_url($service->image) }}" alt="{{ $service->localizedTitle() }}" loading="lazy">
+                        <img src="{{ media_url($service->image) }}" @if ($srcset = media_srcset($service->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 400px" @endif alt="{{ $service->localizedTitle() }}" loading="lazy" decoding="async">
                         <div class="home-service-card__scrim"></div>
                         <div class="home-service-card__text">
                             <span>{{ sprintf('%02d', $loop->iteration) }}</span>
                             <strong>{{ $service->localizedTitle() }}</strong>
                             <div class="home-service-card__actions">
                                 <a href="{{ $service->slug() ? localized_route('services.show', ['slug' => $service->slug()]) : localized_route('services.index') }}" class="home-service-card__link">{{ __('home.view_service_details') }} ←</a>
-                                <a href="{{ localized_route('contact') }}" class="btn btn--light">{{ __('home.request_service') }}</a>
+                                <a href="{{ $service->requestUrl() }}" class="btn btn--light">{{ __('home.request_service') }}</a>
                             </div>
                         </div>
                     </div>

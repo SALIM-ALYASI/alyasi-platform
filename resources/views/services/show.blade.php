@@ -153,7 +153,9 @@
 
         <img
             src="{{ media_url($service->image) }}"
+            @if ($srcset = media_srcset($service->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 100vw, 1200px" @endif
             alt="{{ $service->localizedTitle() }}"
+            decoding="async"
         >
 
     </div>
@@ -306,7 +308,7 @@
 
 
         <a
-            href="{{ localized_route('contact') }}"
+            href="{{ $service->requestUrl() }}"
             class="btn btn--light"
         >
             {{ __('services.show.request_service') }}

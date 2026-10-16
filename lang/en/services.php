@@ -16,6 +16,8 @@ return [
     'section_description' => 'Choose the service that suits you and explore its details and available solutions.',
 
     'digital_service' => 'Digital Service',
+    'request_subject' => 'Service request: :service',
+
     'view_details' => 'View Service Details',
     'request_service' => 'Request Service',
 
@@ -34,6 +36,32 @@ return [
     'related_works_title' => 'Examples of This Service in Action',
     'related_works_featured' => 'Featured',
     'related_works_view' => 'View Details',
+
+    'show' => [
+        'hero_badge' => 'Service Details',
+        'request_service' => 'Request this service',
+        'all_services' => 'All services',
+        'service_badge' => 'Service',
+        'why_choose' => 'Why choose',
+        'description' => 'We deliver professional solutions built on modern technology, ensuring quality, performance and room to grow.',
+        'quality_label' => 'Quality',
+        'quality_title' => 'Professional delivery',
+        'quality_description' => 'Built following modern best practices and quality standards.',
+        'performance_label' => 'Performance',
+        'performance_title' => 'Fast and efficient',
+        'performance_description' => 'Fast, secure solutions that scale as your project grows.',
+        'support_label' => 'Support',
+        'support_title' => 'Ongoing support',
+        'support_description' => 'Follow-up, improvements and maintenance to keep your project running well.',
+        'cta_badge' => 'Ready to start?',
+        'cta_title' => "Let's turn your idea into a",
+        'cta_title_highlight' => 'successful project',
+        'cta_description' => 'Contact us now for a consultation and to start building your project.',
+        'related_works_badge' => 'Real work',
+        'related_works_title' => 'Examples of this service in our work',
+        'related_works_featured' => 'Featured',
+        'related_works_view' => 'View details',
+    ],
 
     'pricing' => [
         'starts_from' => 'From :price',

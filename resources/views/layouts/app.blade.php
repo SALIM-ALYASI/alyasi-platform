@@ -9,7 +9,8 @@
     |--------------------------------------------------------------------------
     */
 
-    $pageTitle = trim($__env->yieldContent('title')) ?: 'ALYASI';
+    // @section('title', $value) يرجع مُهرَّب، والعرض يهرّب مرة ثانية (&amp;amp;): نفك مرة وحدة.
+    $pageTitle = html_entity_decode(trim($__env->yieldContent('title')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: 'ALYASI';
 
     // الوصف يظهر بنتائج البحث حتى ~160 حرف: نقصّه عند نهاية كلمة. والقسم
     // المُمرَّر بـ @section('x', $value) يجي مُهرَّب أصلًا، فنفك الترميز قبل
@@ -44,7 +45,7 @@
             ? route($currentRoute->getName(), $currentRoute->parameters())
             : url()->current());
 
-    $seoTitle = trim($__env->yieldContent('og_title'))
+    $seoTitle = html_entity_decode(trim($__env->yieldContent('og_title')), ENT_QUOTES | ENT_HTML5, 'UTF-8')
         ?: $pageTitle;
 
     $seoDescription = $capDescription(trim($__env->yieldContent('og_description'))

@@ -22,6 +22,17 @@ class SecurityHeaders
         $microphone = $request->is('cj') ? 'microphone=(self)' : 'microphone=()';
         $response->headers->set('Permissions-Policy', "camera=(), {$microphone}, geolocation=()");
 
+        // نطاق ‎.dev كله HTTPS إجباري بالمتصفحات أصلًا؛ الترويسة تثبّت هذا صراحة.
+        if ($request->isSecure()) {
+            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+        }
+
+        // ما نكشف إصدار PHP للزوار.
+        $response->headers->remove('X-Powered-By');
+        if (! headers_sent()) {
+            header_remove('X-Powered-By');
+        }
+
         return $response;
     }
 }
