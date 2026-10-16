@@ -30,3 +30,7 @@ Thumbs.db
 
 # نسخ صور المشاركة (og:image) يجهّزها الموقع تلقائيًا على السيرفر
 /public/**/*-share.jpg
+
+# صور يرفعها الموقع بنفسه على السيرفر (نبض عُمان، لوحة التحكم)
+/public/uploads/*
+!/public/uploads/services/
