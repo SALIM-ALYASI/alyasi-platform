@@ -76,6 +76,24 @@ Route::patch('news-suggestions/{newsSuggestion}', [NewsSuggestionController::cla
 
 /*
 |--------------------------------------------------------------------------
+| News Cards -- صور الأخبار للمنصات: مسار الصور يرفعها، وGrok يسحبها لـX
+|--------------------------------------------------------------------------
+*/
+
+Route::post('news-cards', [\App\Http\Controllers\Api\NewsCardController::class, 'store'])
+    ->middleware(['news-bot.auth', 'throttle:30,1'])
+    ->name('api.news-cards.store');
+
+Route::get('news-cards/pending', [\App\Http\Controllers\Api\NewsCardController::class, 'pending'])
+    ->middleware(['news-suggester.auth', 'throttle:30,1'])
+    ->name('api.news-cards.pending');
+
+Route::post('news-cards/{newsCard}/result', [\App\Http\Controllers\Api\NewsCardController::class, 'result'])
+    ->middleware(['news-suggester.auth', 'throttle:60,1'])
+    ->name('api.news-cards.result');
+
+/*
+|--------------------------------------------------------------------------
 | ALYASI Analysis -- Human reply ingestion (n8n Gmail watcher)
 |--------------------------------------------------------------------------
 */
