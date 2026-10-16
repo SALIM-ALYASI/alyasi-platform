@@ -90,6 +90,9 @@ class EventEditionController extends Controller
             $gulfPricing->localizeRows($edition->pricing_table ?? [], $displayCurrency),
         );
 
+        // الموعد من الموقع الرسمي: فحص يومي بعد الاستجابة (بدون جدولة سيرفر).
+        \App\Support\Events\OfficialDateChecker::checkLaterIfDue($edition);
+
         return view('events.show', compact('edition', 'displayCurrency'));
     }
 

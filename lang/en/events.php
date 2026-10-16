@@ -85,4 +85,5 @@ return [
     'empty_description' => 'Check back soon for the latest tech events and conferences.',
     'contact_us' => 'Contact Us',
 
+    'official_website' => 'Official website',
 ];

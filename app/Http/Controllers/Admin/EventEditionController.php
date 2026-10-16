@@ -247,6 +247,7 @@ class EventEditionController extends Controller
             'event_start_at' => ['nullable', 'date'],
             'event_end_at' => ['nullable', 'date', 'after_or_equal:event_start_at'],
             'livestream_url' => ['nullable', 'url', 'max:1000'],
+            'official_url' => ['nullable', 'url', 'max:1000'],
             'image' => ['nullable', 'image', 'max:5120'],
             'image_en' => ['nullable', 'image', 'max:5120'],
             'kept_gallery' => ['nullable', 'array'],

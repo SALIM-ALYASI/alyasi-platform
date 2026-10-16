@@ -265,6 +265,15 @@
                 @endif
             </div>
 
+            @if ($edition->official_url)
+                <div class="community-detail__info-card">
+                    <div class="community-detail__info-label">{{ __('events.official_website') }}</div>
+                    <div class="community-detail__info-value">
+                        <a href="{{ $edition->official_url }}" target="_blank" rel="noopener">{{ parse_url($edition->official_url, PHP_URL_HOST) }} ←</a>
+                    </div>
+                </div>
+            @endif
+
             @if ($edition->livestream_url && in_array($phase, ['upcoming', 'live'], true))
                 <div class="community-detail__info-card">
                     <div class="community-detail__info-label">{{ __('events.watch_live') }}</div>

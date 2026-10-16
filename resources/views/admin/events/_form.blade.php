@@ -116,6 +116,15 @@
         </div>
 
         <div class="form-group form-group-full">
+            <label for="official_url">الموقع الرسمي للمؤتمر</label>
+            <input type="url" id="official_url" name="official_url" value="{{ old('official_url', $edition->official_url ?? '') }}" dir="ltr" placeholder="https://">
+            <small style="display:block;margin-top:6px;color:#555;">يظهر للزوار، ويتحقق منه الموقع مرة باليوم: إذا تغيّر الموعد فيه يتحدّث هنا تلقائيًا ويوصلك تنبيه.
+                @if (! empty($edition?->official_check_note)) <br>آخر فحص: {{ $edition->official_check_note }} ({{ optional($edition->official_checked_at)->timezone('Asia/Muscat')?->format('Y-m-d H:i') }}) @endif
+            </small>
+            @error('official_url')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group form-group-full">
             <label class="check-option">
                 <input type="checkbox" name="attended" value="1" @checked(old('attended', $edition->attended ?? false))>
                 <span>حضرنا الحدث ميدانيًا (يسمح بصيغة الشاهد بالكتابة)</span>
