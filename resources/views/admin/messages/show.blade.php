@@ -72,6 +72,16 @@
                 </form>
             @endif
 
+            <form action="{{ route('admin.messages.retain', $message) }}" method="POST">
+                @csrf
+                @method('PATCH')
+
+                <button type="submit" class="admin-action-button" title="الرسائل غير المرتبطة بعقد تنحذف تلقائيًا بعد 12 شهرًا من آخر تواصل">
+                    <i class="fa-solid {{ $message->is_retained ? 'fa-lock' : 'fa-lock-open' }}" aria-hidden="true"></i>
+                    {{ $message->is_retained ? 'مرتبطة بعقد (محفوظة) — إلغاء' : 'مرتبطة بعقد؟ احتفظ بها' }}
+                </button>
+            </form>
+
             <form
                 action="{{ route('admin.messages.destroy', $message) }}"
                 method="POST"

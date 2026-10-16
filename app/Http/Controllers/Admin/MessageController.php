@@ -15,6 +15,8 @@ class MessageController extends Controller
      */
     public function index(Request $request): View
     {
+        ContactMessage::pruneExpired();
+
         $status = $request->string('status')->toString();
 
         $messages = ContactMessage::query()
@@ -55,6 +57,18 @@ class MessageController extends Controller
         $message->update(['status' => 'replied']);
 
         return back()->with('success', 'تم تحديد الرسالة كمردود عليها.');
+    }
+
+    /**
+     * تعليم الرسالة كمرتبطة بعقد أو مشروع (تُستثنى من الحذف بعد 12 شهرًا)، أو إلغاؤه.
+     */
+    public function toggleRetained(ContactMessage $message): RedirectResponse
+    {
+        $message->update(['is_retained' => ! $message->is_retained]);
+
+        return back()->with('success', $message->is_retained
+            ? 'تم تعليم الرسالة كمرتبطة بعقد، ولن تُحذف تلقائيًا.'
+            : 'تم إلغاء الاحتفاظ؛ تنحذف الرسالة بعد 12 شهرًا من آخر تواصل.');
     }
 
     /**

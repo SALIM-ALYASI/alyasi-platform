@@ -76,7 +76,7 @@ return [
         ],
         [
             'title' => '14. Retention',
-            'body' => 'Data is retained only for as long as necessary for the purpose for which it was collected, to perform a contract, protect rights and legal claims, or comply with legal and accounting retention periods. When no longer required, data will be deleted, destroyed, or anonymized unless retention is required by law.',
+            'body' => 'Data is retained only for as long as necessary for the purpose for which it was collected, to perform a contract, protect rights and legal claims, or comply with legal and accounting retention periods. When no longer required, data will be deleted, destroyed, or anonymized unless retention is required by law. Contact form messages not linked to a contract or project are kept for 12 months from the last contact, then deleted.',
         ],
         [
             'title' => '15. Security',

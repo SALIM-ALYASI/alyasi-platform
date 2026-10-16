@@ -990,6 +990,9 @@ Route::prefix('admin')
                         Route::patch('/{message}/mark-replied', 'markReplied')
                             ->name('mark-replied');
 
+                        Route::patch('/{message}/retain', 'toggleRetained')
+                            ->name('retain');
+
                         Route::delete('/{message}', 'destroy')
                             ->name('destroy');
                     });

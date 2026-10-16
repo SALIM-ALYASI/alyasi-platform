@@ -64,6 +64,8 @@ class ContactMessageController extends Controller
             'device_token' => $deviceToken,
         ]);
 
+        ContactMessage::pruneExpired();
+
         $this->notifyManagerBot(
             "✉️ رسالة تواصل جديدة\n".
             "من: {$validated['name']}\n".
