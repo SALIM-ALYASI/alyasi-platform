@@ -145,6 +145,12 @@ class ServiceController extends Controller
                 'price_unit_en' => ['nullable', 'string', 'max:255'],
                 'price_note_ar' => ['nullable', 'string', 'max:500'],
                 'price_note_en' => ['nullable', 'string', 'max:500'],
+                'deliverables_ar' => ['nullable', 'string', 'max:2000'],
+                'deliverables_en' => ['nullable', 'string', 'max:2000'],
+                'revisions_ar' => ['nullable', 'string', 'max:255'],
+                'revisions_en' => ['nullable', 'string', 'max:255'],
+                'support_ar' => ['nullable', 'string', 'max:255'],
+                'support_en' => ['nullable', 'string', 'max:255'],
                 'slug_ar' => ['required', 'string', 'max:180', new CleanSlug],
                 'slug_en' => ['nullable', 'string', 'max:180', new CleanSlug, 'required_with:title_en'],
             ],
@@ -178,7 +184,10 @@ class ServiceController extends Controller
         $validated['is_active'] = $request->boolean('is_active');
         $validated['price_is_starting'] = $request->boolean('price_is_starting');
 
-        foreach (['price_from', 'price_unit_ar', 'price_unit_en', 'price_note_ar', 'price_note_en'] as $field) {
+        foreach ([
+            'price_from', 'price_unit_ar', 'price_unit_en', 'price_note_ar', 'price_note_en',
+            'deliverables_ar', 'deliverables_en', 'revisions_ar', 'revisions_en', 'support_ar', 'support_en',
+        ] as $field) {
             $validated[$field] = filled($validated[$field] ?? null) ? trim((string) $validated[$field]) : null;
         }
 

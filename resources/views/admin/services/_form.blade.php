@@ -279,6 +279,110 @@
         @enderror
     </div>
 
+    <div class="form-group">
+        <label for="deliverables_ar">ماذا يستلم العميل؟ بالعربية (سطر لكل بند)</label>
+
+        <textarea
+            id="deliverables_ar"
+            name="deliverables_ar"
+            rows="5"
+            class="form-control"
+            maxlength="2000"
+        >{{ old('deliverables_ar', $service?->deliverables_ar) }}</textarea>
+
+        @error('deliverables_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="deliverables_en">ماذا يستلم العميل؟ بالإنجليزية (سطر لكل بند)</label>
+
+        <textarea
+            id="deliverables_en"
+            name="deliverables_en"
+            rows="5"
+            class="form-control"
+            maxlength="2000" dir="ltr"
+        >{{ old('deliverables_en', $service?->deliverables_en) }}</textarea>
+
+        @error('deliverables_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="revisions_ar">جولات التعديل بالعربية (اختياري)</label>
+
+        <input
+            type="text"
+            id="revisions_ar"
+            name="revisions_ar"
+            class="form-control"
+            value="{{ old('revisions_ar', $service?->revisions_ar) }}"
+            maxlength="255"
+            placeholder="مثال: جولتا تعديل"
+        >
+
+        @error('revisions_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="revisions_en">جولات التعديل بالإنجليزية (اختياري)</label>
+
+        <input
+            type="text"
+            id="revisions_en"
+            name="revisions_en"
+            class="form-control"
+            value="{{ old('revisions_en', $service?->revisions_en) }}"
+            maxlength="255"
+            placeholder="e.g. Two revision rounds" dir="ltr"
+        >
+
+        @error('revisions_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="support_ar">الدعم بعد التسليم بالعربية (اختياري)</label>
+
+        <input
+            type="text"
+            id="support_ar"
+            name="support_ar"
+            class="form-control"
+            value="{{ old('support_ar', $service?->support_ar) }}"
+            maxlength="255"
+            placeholder="مثال: 30 يومًا لإصلاح الأخطاء"
+        >
+
+        @error('support_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="support_en">الدعم بعد التسليم بالإنجليزية (اختياري)</label>
+
+        <input
+            type="text"
+            id="support_en"
+            name="support_en"
+            class="form-control"
+            value="{{ old('support_en', $service?->support_en) }}"
+            maxlength="255"
+            placeholder="e.g. 30 days of bug fixes" dir="ltr"
+        >
+
+        @error('support_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
     <div class="form-group full">
         <label style="display:inline-flex;align-items:center;gap:10px;">
             <input

@@ -75,4 +75,24 @@ return [
         'card_label' => 'Price',
     ],
 
+    'scope' => [
+        'badge' => 'Service scope',
+        'title' => 'What you',
+        'title_highlight' => 'receive',
+        'revisions' => 'Revisions',
+        'support' => 'After-delivery support',
+        'duration' => 'Timeline',
+        'duration_text' => 'Set after reviewing your request details, stated in the quote or agreement before work begins, and dependent on how quickly the client responds.',
+        'terms_title' => 'Terms',
+        'terms' => [
+            'The timeline is set after reviewing your request details, and stated in the quote or agreement before work begins.',
+            'The timeline depends on how quickly the client sends materials and feedback; any delay in replying delays delivery by the same amount.',
+            'Every update is sent through the agreed communication channel and counts as delivered from the date it is sent.',
+            'A revision round covers changes to what was agreed, not new pages or features.',
+            'Projects from OMR 25: half upfront and the rest on delivery.',
+            'Final files and source code are handed over after full payment.',
+            'After-delivery support covers fixing bugs in our work; new development is quoted separately.',
+        ],
+    ],
+
 ];

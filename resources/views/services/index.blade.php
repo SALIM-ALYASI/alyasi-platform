@@ -107,6 +107,15 @@
                 {{ __('services.pricing.disclaimer') }}
             </p>
 
+            <details class="service-scope__terms services-pricing__terms">
+                <summary>{{ __('services.scope.terms_title') }}</summary>
+                <ul>
+                    @foreach (__('services.scope.terms') as $term)
+                        <li>{{ omr_text($term) }}</li>
+                    @endforeach
+                </ul>
+            </details>
+
             <div class="services-pricing__actions">
                 <a href="{{ localized_route('contact') }}" class="btn btn--outline">{{ __('services.pricing.request') }}</a>
             </div>

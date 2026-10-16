@@ -96,3 +96,32 @@
     .services-pricing__price { align-items: flex-start; text-align: start; }
     .services-pricing__price > span { max-width: none; }
 }
+
+/* شروط التنفيذ (مطوية) */
+.service-scope__terms { max-width: 920px; margin: 18px auto 0; }
+.service-scope__terms summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-accent-600);
+    text-align: center;
+    list-style: none;
+}
+.service-scope__terms summary::-webkit-details-marker { display: none; }
+.service-scope__terms summary::after { content: ' ▾'; font-size: 11px; }
+.service-scope__terms[open] summary::after { content: ' ▴'; }
+.service-scope__terms ul {
+    margin: 14px 0 0;
+    padding: 16px 22px;
+    border: 1px solid var(--color-divider);
+    border-radius: 14px;
+    display: grid;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: rgba(20, 32, 46, .72);
+    list-style: disc;
+    padding-inline-start: 34px;
+}
+:root[data-theme="dark"] .service-scope__terms summary { color: var(--color-accent-300); }
+:root[data-theme="dark"] .service-scope__terms ul { color: rgba(255, 255, 255, .7); }

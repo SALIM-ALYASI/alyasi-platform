@@ -202,6 +202,47 @@
 
 
     {{-- =====================================================
+         ماذا تستلم؟
+    ====================================================== --}}
+    @php $deliverables = $service->localizedDeliverables(); @endphp
+    @if ($deliverables)
+        <div class="service-scope">
+            <div class="section-head service-scope__head">
+                <div class="section-head__eyebrow">{{ __('services.scope.badge') }}</div>
+                <h2 class="section-head__title">{{ __('services.scope.title') }} <em>{{ __('services.scope.title_highlight') }}</em></h2>
+            </div>
+
+            <div class="service-scope__grid">
+                <ul class="service-scope__list">
+                    @foreach ($deliverables as $item)
+                        <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ $item }}</li>
+                    @endforeach
+                </ul>
+
+                <dl class="service-scope__facts">
+                    @if ($revisions = $service->localizedRevisions())
+                        <div><dt>{{ __('services.scope.revisions') }}</dt><dd>{{ $revisions }}</dd></div>
+                    @endif
+                    @if ($support = $service->localizedSupport())
+                        <div><dt>{{ __('services.scope.support') }}</dt><dd>{{ $support }}</dd></div>
+                    @endif
+                    <div><dt>{{ __('services.scope.duration') }}</dt><dd>{{ __('services.scope.duration_text') }}</dd></div>
+                </dl>
+            </div>
+
+            <details class="service-scope__terms">
+                <summary>{{ __('services.scope.terms_title') }}</summary>
+                <ul>
+                    @foreach (__('services.scope.terms') as $term)
+                        <li>{{ omr_text($term) }}</li>
+                    @endforeach
+                </ul>
+            </details>
+        </div>
+    @endif
+
+
+    {{-- =====================================================
          Why ALYASI
     ====================================================== --}}
     <div class="section-head service-detail__why-head">

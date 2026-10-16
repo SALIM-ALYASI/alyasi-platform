@@ -25,6 +25,12 @@ class Service extends Model
         'price_unit_en',
         'price_note_ar',
         'price_note_en',
+        'deliverables_ar',
+        'deliverables_en',
+        'revisions_ar',
+        'revisions_en',
+        'support_ar',
+        'support_en',
     ];
 
     /**
@@ -226,6 +232,28 @@ class Service extends Model
     public function localizedPriceNote(?string $locale = null): ?string
     {
         return $this->localizedPriceField('price_note', $locale);
+    }
+
+    /**
+     * بنود «ماذا تستلم؟» (سطر لكل بند).
+     *
+     * @return list<string>
+     */
+    public function localizedDeliverables(?string $locale = null): array
+    {
+        $text = $this->localizedPriceField('deliverables', $locale);
+
+        return array_values(array_filter(array_map('trim', preg_split('/\R/u', (string) $text))));
+    }
+
+    public function localizedRevisions(?string $locale = null): ?string
+    {
+        return $this->localizedPriceField('revisions', $locale);
+    }
+
+    public function localizedSupport(?string $locale = null): ?string
+    {
+        return $this->localizedPriceField('support', $locale);
     }
 
     private function localizedPriceField(string $field, ?string $locale): ?string

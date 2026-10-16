@@ -69,6 +69,9 @@ class ServicePricingTest extends TestCase
             'title_en' => 'Mac & iPhone Software Support',
             'price_from' => 3,
             'price_note_ar' => 'الحالات المعقدة تُقيّم منفصلًا، و7 ر.ع للحالات الخاصة.',
+            'deliverables_ar' => "تشخيص المشكلة عن بُعد\nحل مشكلة برمجية واحدة",
+            'deliverables_en' => "Remote diagnosis\nA fix for one software issue",
+            'support_ar' => '3 أيام لنفس المشكلة',
         ], 'mac-ar', 'mac');
 
         $this->get('/services/mac-ar')
@@ -77,13 +80,19 @@ class ServicePricingTest extends TestCase
             // «7 ر.ع» داخل الملاحظة يتحول للرمز.
             ->assertSee('و<bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 7</bdi> للحالات الخاصة.', false)
             ->assertSee('"priceCurrency":"OMR"', false)
-            ->assertSee('"minPrice":3', false);
+            ->assertSee('"minPrice":3', false)
+            // ماذا تستلم؟ والمدة نص عام، وشرط الدفعة بالرمز الرسمي.
+            ->assertSeeInOrder(['ماذا', 'تشخيص المشكلة عن بُعد', 'حل مشكلة برمجية واحدة', '3 أيام لنفس المشكلة', 'تُحدَّد بعد مراجعة تفاصيل الطلب'])
+            ->assertSee('المشاريع من <bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 25</bdi> فأكثر', false);
 
         // الصفحة الإنجليزية بنصوص حقيقية، مو مفاتيح ترجمة خام.
         $this->get('/en/services/mac')
             ->assertOk()
             ->assertSee('Why choose')
             ->assertSee('Request this service')
+            ->assertSee('A fix for one software issue')
+            // الدعم بدون ترجمة إنجليزية: ما يطلع نص عربي.
+            ->assertDontSee('3 أيام لنفس المشكلة')
             ->assertDontSee('services.show.')
             ->assertSee('<title>Mac &amp; iPhone Software Support — ALYASI</title>', false)
             ->assertDontSee('&amp;amp;', false)
