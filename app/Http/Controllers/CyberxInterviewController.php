@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\NotifiesWhatsApp;
 use App\Support\Analytics\CloudflareIps;
 use App\Support\Analytics\DeviceSummary;
 use App\Support\Analytics\VisitClassifier;
+use App\Support\Interviews\GuestLinkExpiry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -52,6 +53,15 @@ class CyberxInterviewController extends Controller
             'ملف بيانات المقابلة تالف: '.json_last_error_msg()
         );
 
+        // الضيف اللي انتهت مهلة رابطه (10 أيام بدون فتح ولا إجابة) ينشال من الأداة.
+        // ما نرسل بياناته للصفحة أصلًا (لا تبويب ولا أسئلة ولا رسالة).
+        foreach (['priority_guests', 'additional_guests'] as $group) {
+            $data[$group] = array_values(array_filter(
+                $data[$group] ?? [],
+                fn (array $guest) => ! (isset($guest['id']) && GuestLinkExpiry::isExpired($guest['id']))
+            ));
+        }
+
         return view('tools.cyberx-interview', ['data' => $data]);
     }
 
@@ -70,6 +80,11 @@ class CyberxInterviewController extends Controller
             'audio' => ['required', 'file', 'max:51200'],
             'question_id' => ['required', 'string', 'max:120', 'regex:/^[A-Za-z0-9_-]+$/'],
         ]);
+
+        $guestId = strtok($data['question_id'], '-') ?: '';
+        if ($guestId !== '' && GuestLinkExpiry::isExpired($guestId)) {
+            return response()->json(['success' => false, 'message' => 'انتهت صلاحية رابط المقابلة.'], 410);
+        }
 
         $file = $request->file('audio');
         // النوع من محتوى الملف نفسه (finfo) -- مب من الاسم ولا من اللي يقوله المتصفح.
