@@ -185,3 +185,66 @@ if (! function_exists('media_srcset')) {
         return media_url($small).' '.App\Support\Images\WebpOptimizer::SMALL_WIDTH.'w, '.media_url($path).' '.$full.'w';
     }
 }
+
+if (! function_exists('share_image_url')) {
+    /**
+     * صورة مشاركة الروابط (og:image) بصيغة يقبلها واتساب وغيره: لو الصورة من ملفات
+     * الموقع وكانت WebP/PNG أو أكبر من 500KB، نجهّز نسخة JPG بعرض 1200 جنبها
+     * ({name}-share.jpg) مرة وحدة ونرجّع رابطها. أي خطأ يرجّع الرابط الأصلي.
+     */
+    function share_image_url(string $url): string
+    {
+        if (! str_starts_with($url, url('/').'/')) {
+            return $url;
+        }
+
+        $relative = ltrim(rawurldecode((string) parse_url($url, PHP_URL_PATH)), '/');
+        $source = public_path($relative);
+
+        if ($relative === '' || ! is_file($source)) {
+            return $url;
+        }
+
+        $isJpeg = (bool) preg_match('/\.jpe?g$/i', $relative);
+        if ($isJpeg && filesize($source) <= 500 * 1024) {
+            return $url;
+        }
+
+        $targetRelative = preg_replace('/\.[a-z0-9]+$/i', '', $relative).'-share.jpg';
+        $target = public_path($targetRelative);
+
+        if (! is_file($target) || filemtime($target) < filemtime($source)) {
+            try {
+                $image = match (@getimagesize($source)[2] ?? null) {
+                    IMAGETYPE_PNG => imagecreatefrompng($source),
+                    IMAGETYPE_JPEG => imagecreatefromjpeg($source),
+                    IMAGETYPE_WEBP => imagecreatefromwebp($source),
+                    default => false,
+                };
+
+                if (! $image) {
+                    return $url;
+                }
+
+                $width = imagesx($image);
+                $height = imagesy($image);
+                $newWidth = min(1200, $width);
+                $newHeight = (int) round($height * $newWidth / $width);
+
+                // JPG بدون شفافية: خلفية كحلية للشعارات والصور الشفافة.
+                $canvas = imagecreatetruecolor($newWidth, $newHeight);
+                imagefill($canvas, 0, 0, imagecolorallocate($canvas, 0x0B, 0x1F, 0x3A));
+                imagecopyresampled($canvas, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                imagejpeg($canvas, $target, 82);
+                imagedestroy($image);
+                imagedestroy($canvas);
+            } catch (\Throwable $exception) {
+                report($exception);
+
+                return $url;
+            }
+        }
+
+        return asset($targetRelative);
+    }
+}

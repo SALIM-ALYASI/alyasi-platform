@@ -4,7 +4,6 @@
 @section('meta_description', 'أخبار رسمية من سلطنة عُمان بنصّها الأصلي ومنسوبة لمصادرها: الخدمات، والتقنية، والاقتصاد، والأمن السيبراني.')
 @section('canonical', paginated_canonical(route('news.oman')))
 @section('og_url', route('news.oman'))
-@section('og_image', asset('images/news/oman-hero.webp'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">

@@ -8,6 +8,13 @@
     'imageHeight' => null,
 ])
 
+@php
+    // غلاف القسم هو صورة مشاركة الرابط، إذا ما حددت الصفحة صورة غيرها.
+    if ($image && ! $__env->hasSection('og_image')) {
+        $__env->startSection('og_image', $image);
+    }
+@endphp
+
 <section class="page-hero @unless($image) page-hero--solid @endunless">
     @if ($image)
         <div class="page-hero__bg">

@@ -27,3 +27,6 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# نسخ صور المشاركة (og:image) يجهّزها الموقع تلقائيًا على السيرفر
+/public/**/*-share.jpg
