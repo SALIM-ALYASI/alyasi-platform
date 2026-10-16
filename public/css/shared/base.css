@@ -303,6 +303,13 @@ textarea.field__control { min-height: 130px; resize: vertical; }
     transition: opacity .7s ease, transform .7s ease;
 }
 [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+/* صعود تلقائي للبطاقات وفقرات المقالات (shared/reveal.js) */
+.reveal-auto {
+    transition: opacity .65s cubic-bezier(.2, .7, .2, 1), transform .65s cubic-bezier(.2, .7, .2, 1) !important;
+    will-change: opacity, transform;
+}
+.reveal-auto--hidden { opacity: 0 !important; transform: translateY(32px) !important; }
+@media print { .reveal-auto--hidden { opacity: 1 !important; transform: none !important; } }
 
 @media (prefers-reduced-motion: reduce) {
     [data-reveal] { opacity: 1; transform: none; transition: none; }
