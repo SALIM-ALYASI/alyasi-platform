@@ -213,7 +213,8 @@
     ====================================================== --}}
     <div class="grid-3 work-detail__info-grid">
 
-        {{-- Client --}}
+        {{-- Client (الخانة الفاضية ما تنعرض) --}}
+        @if (filled($work->localized('client_name')))
         <div class="work-detail__info-card">
 
             <div class="work-detail__info-label">
@@ -221,13 +222,15 @@
             </div>
 
             <div class="work-detail__info-value">
-                {{ $work->localized('client_name') ?: '—' }}
+                {{ $work->localized('client_name') }}
             </div>
 
         </div>
+        @endif
 
 
         {{-- Completion Date / Status (مشروع قيد التطوير ما له تاريخ إنجاز) --}}
+        @if ($work->status_label || $work->completed_at)
         <div class="work-detail__info-card">
             @if ($work->status_label)
                 <div class="work-detail__info-label">
@@ -241,12 +244,11 @@
                     {{ __('works.show.completion_date') }}
                 </div>
                 <div class="work-detail__info-value">
-                    {{ optional(
-                        $work->completed_at
-                    )->translatedFormat('d.m.Y') ?: '—' }}
+                    {{ $work->completed_at->translatedFormat('d.m.Y') }}
                 </div>
             @endif
         </div>
+        @endif
         {{-- Work Type --}}
         <div class="work-detail__info-card">
 
@@ -268,15 +270,12 @@
     ====================================================== --}}
 @if (filled($work->title_en))
         {{-- أعمال ثنائية اللغة مكتوبة بفقرات؛ القديمة تبقى فقرة واحدة مثل ما كانت --}}
-        @forelse ($work->localizedParagraphs() as $paragraph)
+        @foreach ($work->localizedParagraphs() as $paragraph)
             <p class="work-detail__desc">{{ $paragraph }}</p>
-        @empty
-            <p class="work-detail__desc">{{ __('works.show.no_description') }}</p>
-        @endforelse
-    @else
+        @endforeach
+    @elseif (filled($work->description))
         <p class="work-detail__desc">
-            {{ $work->description
-                ?: __('works.show.no_description') }}
+            {{ $work->description }}
         </p>
     @endif
 

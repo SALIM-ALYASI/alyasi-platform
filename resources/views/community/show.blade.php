@@ -235,6 +235,7 @@
             </div>
 
 
+            @if (filled($communityPost->location))
             <div class="community-detail__info-card">
 
                 <div class="community-detail__info-label">
@@ -242,10 +243,11 @@
                 </div>
 
                 <div class="community-detail__info-value">
-                    {{ $communityPost->location ?: '—' }}
+                    {{ $communityPost->location }}
                 </div>
 
             </div>
+            @endif
 
         </div>
 

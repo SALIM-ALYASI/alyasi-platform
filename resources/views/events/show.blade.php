@@ -239,8 +239,10 @@
 
         {{-- معلومات المؤتمر (الموعد والحالة) قبل انعقاده بس؛ بعد ما ينتهي تبقى
              تغطيتنا وحدها -- الموعد مذكور في المحتوى نفسه. --}}
-        @if ($phase !== 'concluded')
+        @php $hasEventDate = $isAppleEvent2026 || $edition->event_start_at; @endphp
+        @if ($phase !== 'concluded' && ($hasEventDate || $edition->official_url || ($edition->livestream_url && in_array($phase, ['upcoming', 'live'], true))))
         <div class="grid-2 community-detail__info-grid">
+            @if ($hasEventDate)
             <div class="event-detail__date-card-row{{ $phase === 'concluded' ? ' event-detail__date-card-row--concluded' : '' }}">
                 <div class="community-detail__info-card">
                     <div class="community-detail__info-label">
@@ -249,10 +251,8 @@
                     <div class="community-detail__info-value">
                         @if ($isAppleEvent2026)
                             09.09.2026 — 22:00
-                        @elseif ($edition->event_start_at)
-                            {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
                         @else
-                            —
+                            {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat($phase === 'concluded' ? 'd.m.Y' : 'd.m.Y — H:i') }}
                         @endif
                     </div>
                 </div>
@@ -264,6 +264,7 @@
                     </span>
                 @endif
             </div>
+            @endif
 
             @if ($edition->official_url)
                 <div class="community-detail__info-card">

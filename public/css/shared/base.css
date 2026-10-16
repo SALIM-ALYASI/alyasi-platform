@@ -359,3 +359,6 @@ body:has(.coverage-dock, .interview-dock) .wa-float { bottom: calc(96px + env(sa
     .wa-float { width: 50px; height: 50px; font-size: 27px; inset-inline-end: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); }
 }
 @media print { .wa-float { display: none; } }
+
+/* أي بطاقة معلومات (…__info-card) قيمتها فاضية ما تنعرض، بكل صفحات الموقع */
+[class*="__info-card"]:has(> [class*="__info-value"]:empty) { display: none; }
