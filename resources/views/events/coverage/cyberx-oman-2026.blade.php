@@ -233,7 +233,7 @@
                     <p id="coverageModalRole"></p>
                 </div>
             </div>
-            <h1 class="coverage-modal__title" id="coverageModalTitle"></h1>
+            <h2 class="coverage-modal__title" id="coverageModalTitle"></h2>
             <p class="coverage-modal__sub" id="coverageModalSub" hidden></p>
             <div class="coverage-article" id="coverageModalArticle"></div>
         </div>

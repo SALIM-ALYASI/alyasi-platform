@@ -564,6 +564,12 @@ class WorkController extends Controller
                 'max:255',
             ],
 
+            'client_name_en' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
             'work_url' => [
                 'nullable',
                 'url',

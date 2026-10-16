@@ -22,6 +22,8 @@ class Work extends Model
         'short_description',
         'description',
         'outcome',
+        'client_name',
+        'client_name_en',
     ];
 
     /**

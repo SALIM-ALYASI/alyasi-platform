@@ -204,6 +204,29 @@
 
     </div>
 
+    {{-- اسم العميل بالإنجليزية --}}
+    <div class="form-group">
+
+        <label for="client_name_en" class="form-label">
+            اسم العميل بالإنجليزية
+        </label>
+
+        <input
+            type="text"
+            name="client_name_en"
+            id="client_name_en"
+            class="form-control @error('client_name_en') is-invalid @enderror"
+            value="{{ old('client_name_en', $work?->client_name_en) }}"
+            maxlength="255"
+            dir="ltr"
+        >
+
+        @error('client_name_en')
+            <span class="form-error">{{ $message }}</span>
+        @enderror
+
+    </div>
+
     {{-- رابط العمل --}}
     <div class="form-group">
 

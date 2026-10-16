@@ -325,6 +325,10 @@
         href="{{ asset('images/logo/favicon-navy.png') }}"
     >
 
+    {{-- أيقونة الشاشة الرئيسية بالآيفون، وملف التطبيق للأندرويد --}}
+    <link rel="apple-touch-icon" href="{{ asset('images/logo/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
 
     {{-- =====================================================
          Fonts

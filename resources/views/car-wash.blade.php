@@ -77,6 +77,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $t['title'] }}</title>
     <meta name="description" content="{{ $t['description'] }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $t['title'] }}">
+    <meta property="og:description" content="{{ $t['description'] }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/car-wash/logo.png') }}">
+    <meta name="twitter:card" content="summary">
     <meta name="theme-color" content="#0B1F3A">
     <link rel="canonical" href="{{ route('car-wash') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/car-wash/logo.png') }}">

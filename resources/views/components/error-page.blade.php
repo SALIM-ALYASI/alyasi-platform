@@ -9,7 +9,9 @@
 ])
 
 @php
-    $isArabic = app()->getLocale() === 'ar';
+    // الروابط غير الموجودة ما تمر على وسيط اللغة، فنحدد اللغة من بادئة /en.
+    $isArabic = request()->is('en', 'en/*') ? false : app()->getLocale() === 'ar';
+    $homeUrl = $isArabic ? localized_route('home', [], 'ar') : localized_route('home', [], 'en');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $isArabic ? 'ar' : 'en' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
@@ -49,7 +51,7 @@
         <p>{{ $isArabic ? $messageAr : $messageEn }}</p>
 
         @if ($showHomeButton)
-            <a href="{{ localized_route('home') }}" class="btn btn--primary">
+            <a href="{{ $homeUrl }}" class="btn btn--primary">
                 {{ $isArabic ? 'العودة إلى الرئيسية' : 'Back to Homepage' }}
             </a>
         @endif

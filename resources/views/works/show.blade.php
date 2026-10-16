@@ -221,7 +221,7 @@
             </div>
 
             <div class="work-detail__info-value">
-                {{ $work->client_name ?: '—' }}
+                {{ $work->localized('client_name') ?: '—' }}
             </div>
 
         </div>

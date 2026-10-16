@@ -50,6 +50,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $t['title'] }}</title>
     <meta name="description" content="{{ $t['description'] }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $t['title'] }}">
+    <meta property="og:description" content="{{ $t['description'] }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('markify-assets/img/markify/profile.jpg') }}">
+    <meta name="twitter:card" content="summary">
     <link rel="canonical" href="{{ route('markify') }}">
     <link rel="icon" type="image/jpeg" href="{{ asset('markify-assets/img/markify/profile.jpg') }}">
 <!--
