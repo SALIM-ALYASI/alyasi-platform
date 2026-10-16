@@ -336,6 +336,21 @@
         const focusGuest = [...(data.priority_guests || []), ...(data.additional_guests || [])]
             .find((g) => g.id === requestedGuest && !g.hidden) || null;
         const pageEn = !!focusGuest && focusGuest.language === 'en';
+
+        // نسجّل فتح رابط الضيف (مرة لكل تحميل) عشان نعرف مين فتح رابطه.
+        if (focusGuest) {
+            try {
+                const body = new FormData();
+                body.append('type', 'guest_open');
+                body.append('path', location.pathname);
+                body.append('label', focusGuest.id);
+                if (!(navigator.sendBeacon && navigator.sendBeacon('/analytics/event', body))) {
+                    fetch('/analytics/event', { method: 'POST', body, keepalive: true, credentials: 'same-origin' }).catch(() => {});
+                }
+            } catch (error) {
+                // القياس ما يوقف الصفحة.
+            }
+        }
         const T = (ar, en) => (pageEn ? en : ar);
 
         if (focusGuest) {

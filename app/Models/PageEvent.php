@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PageEvent extends Model
 {
-    public const TYPES = ['reached_end', 'audio_play', 'audio_complete'];
+    public const TYPES = ['reached_end', 'audio_play', 'audio_complete', 'guest_open'];
 
     protected $fillable = [
         'visitor_id',
