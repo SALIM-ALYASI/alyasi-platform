@@ -39,11 +39,24 @@
         }
 
         var observer = new IntersectionObserver(function (entries) {
+            var shown = 0;
+
             entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
+                if (!entry.isIntersecting) {
+                    return;
                 }
+
+                var el = entry.target;
+                var delay = Math.min(shown, STAGGER_MAX) * STAGGER_MS;
+                shown++;
+
+                observer.unobserve(el);
+                if (delay) {
+                    // تتابع بين البطاقات اللي تدخل الشاشة مع بعض، وبعدها يرجع التأخير صفر (hover).
+                    el.style.transitionDelay = delay + 'ms';
+                    setTimeout(function () { el.style.removeProperty('transition-delay'); }, 800 + delay);
+                }
+                el.classList.add('is-visible');
             });
         }, { threshold: 0.12 });
 
