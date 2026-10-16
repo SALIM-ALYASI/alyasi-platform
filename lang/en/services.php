@@ -88,7 +88,7 @@ return [
             'The timeline is set after reviewing your request details, and stated in the quote or agreement before work begins.',
             'The timeline depends on how quickly the client sends materials and feedback; any delay in replying delays delivery by the same amount.',
             'Every update is sent through the agreed communication channel and counts as delivered from the date it is sent.',
-            'A revision round covers changes to what was agreed, not new pages or features.',
+            'Revisions cover what was agreed, not new pages or features, and are accepted within the period set for each service.',
             'Projects from OMR 25: half upfront and the rest on delivery.',
             'Final files and source code are handed over after full payment.',
             'After-delivery support covers fixing bugs in our work; new development is quoted separately.',
