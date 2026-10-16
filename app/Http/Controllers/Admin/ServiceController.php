@@ -139,6 +139,12 @@ class ServiceController extends Controller
                 'description_en' => ['nullable', 'string', 'min:10', 'max:5000', 'required_with:title_en'],
                 'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
                 'is_active' => ['nullable', 'boolean'],
+                'price_from' => ['nullable', 'numeric', 'min:0', 'max:99999'],
+                'price_is_starting' => ['nullable', 'boolean'],
+                'price_unit_ar' => ['nullable', 'string', 'max:255'],
+                'price_unit_en' => ['nullable', 'string', 'max:255'],
+                'price_note_ar' => ['nullable', 'string', 'max:500'],
+                'price_note_en' => ['nullable', 'string', 'max:500'],
                 'slug_ar' => ['required', 'string', 'max:180', new CleanSlug],
                 'slug_en' => ['nullable', 'string', 'max:180', new CleanSlug, 'required_with:title_en'],
             ],
@@ -170,6 +176,11 @@ class ServiceController extends Controller
             ? trim($validated['description_en'])
             : null;
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['price_is_starting'] = $request->boolean('price_is_starting');
+
+        foreach (['price_from', 'price_unit_ar', 'price_unit_en', 'price_note_ar', 'price_note_en'] as $field) {
+            $validated[$field] = filled($validated[$field] ?? null) ? trim((string) $validated[$field]) : null;
+        }
 
         unset($validated['image'], $validated['slug_ar'], $validated['slug_en']);
 

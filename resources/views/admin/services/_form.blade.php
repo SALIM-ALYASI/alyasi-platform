@@ -176,6 +176,109 @@
         @endif
     </div>
 
+    <div class="form-group">
+        <label for="price_from">السعر بالريال العُماني (اختياري)</label>
+
+        <input
+            type="number"
+            id="price_from"
+            name="price_from"
+            class="form-control"
+            value="{{ old('price_from', $service?->price_from !== null ? rtrim(rtrim($service->price_from, '0'), '.') : '') }}"
+            min="0"
+            step="0.001"
+            dir="ltr"
+            placeholder="مثال: 2.5"
+        >
+
+        <small style="display:block;margin-top:6px;color:#555;">اتركه فاضي إذا ما تبي يظهر سعر للخدمة.</small>
+
+        @error('price_from')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label style="display:inline-flex;align-items:center;gap:10px;margin-top:34px;">
+            <input
+                type="checkbox"
+                name="price_is_starting"
+                value="1"
+                @checked(old('price_is_starting', $service?->price_is_starting ?? true))
+            >
+
+            <span>سعر ابتدائي (يظهر «يبدأ من»)</span>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="price_unit_ar">وحدة السعر بالعربية (اختياري)</label>
+
+        <input
+            type="text"
+            id="price_unit_ar"
+            name="price_unit_ar"
+            class="form-control"
+            value="{{ old('price_unit_ar', $service?->price_unit_ar) }}"
+            maxlength="255" placeholder="مثال: للدقيقة، للبوت البسيط"
+        >
+
+        @error('price_unit_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="price_unit_en">وحدة السعر بالإنجليزية (اختياري)</label>
+
+        <input
+            type="text"
+            id="price_unit_en"
+            name="price_unit_en"
+            class="form-control"
+            value="{{ old('price_unit_en', $service?->price_unit_en) }}"
+            maxlength="255" dir="ltr" placeholder="e.g. per minute"
+        >
+
+        @error('price_unit_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="price_note_ar">ملاحظة السعر بالعربية (اختياري)</label>
+
+        <input
+            type="text"
+            id="price_note_ar"
+            name="price_note_ar"
+            class="form-control"
+            value="{{ old('price_note_ar', $service?->price_note_ar) }}"
+            maxlength="500" placeholder="مثال: تكلفة السيرفر والنطاق منفصلة."
+        >
+
+        @error('price_note_ar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="price_note_en">ملاحظة السعر بالإنجليزية (اختياري)</label>
+
+        <input
+            type="text"
+            id="price_note_en"
+            name="price_note_en"
+            class="form-control"
+            value="{{ old('price_note_en', $service?->price_note_en) }}"
+            maxlength="500" dir="ltr"
+        >
+
+        @error('price_note_en')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
     <div class="form-group full">
         <label style="display:inline-flex;align-items:center;gap:10px;">
             <input

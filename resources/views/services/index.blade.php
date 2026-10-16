@@ -45,6 +45,12 @@
                             <div class="services-card__eyebrow">{{ __('services.digital_service') }}</div>
                             <h3 class="services-card__title">{{ $service->localizedTitle() }}</h3>
                             <p class="services-card__desc">{{ \Illuminate\Support\Str::limit($service->localizedDescription(), 130) }}</p>
+                            @if ($service->hasPrice())
+                                <a href="#pricing" class="services-card__price">
+                                    <span class="services-card__price-label">{{ __('services.pricing.card_label') }}</span>
+                                    <strong>{{ $service->priceLabel() }}</strong>
+                                </a>
+                            @endif
                             <div class="services-card__actions">
                                 <a href="{{ localized_route('contact') }}" class="services-card__link">{{ __('services.request_service') }}</a>
                                 <span class="services-card__sep"></span>
@@ -65,6 +71,47 @@
             </div>
         @endif
     </section>
+
+    @if ($pricedServices->isNotEmpty())
+        <section class="container services-pricing" id="pricing">
+            <div class="section-head" data-reveal>
+                <div class="section-head__eyebrow">{{ __('services.pricing.badge') }}</div>
+                <h2 class="section-head__title">{{ __('services.pricing.title') }} <em>{{ __('services.pricing.title_highlight') }}</em></h2>
+                <p class="section-head__desc">{{ __('services.pricing.description') }}</p>
+            </div>
+
+            <div class="services-pricing__list">
+                @foreach ($pricedServices as $service)
+                    @php $slug = $service->slug(); @endphp
+                    <div class="services-pricing__row" data-reveal>
+                        <div class="services-pricing__info">
+                            <h3 class="services-pricing__name">
+                                <a href="{{ $slug ? localized_route('services.show', ['slug' => $slug]) : localized_route('services.index') }}">{{ $service->localizedTitle() }}</a>
+                            </h3>
+                            @if ($note = $service->localizedPriceNote())
+                                <p class="services-pricing__note">{{ $note }}</p>
+                            @endif
+                        </div>
+                        <div class="services-pricing__price">
+                            <strong>{{ $service->priceLabel() }}</strong>
+                            @if ($unit = $service->localizedPriceUnit())
+                                <span>{{ $unit }}</span>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <p class="services-pricing__disclaimer">
+                <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                {{ __('services.pricing.disclaimer') }}
+            </p>
+
+            <div class="services-pricing__actions">
+                <a href="{{ localized_route('contact') }}" class="btn btn--outline">{{ __('services.pricing.request') }}</a>
+            </div>
+        </section>
+    @endif
 
     <section class="container">
         <div class="cta-band" data-reveal>

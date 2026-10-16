@@ -35,4 +35,16 @@ return [
     'related_works_featured' => 'Featured',
     'related_works_view' => 'View Details',
 
+    'pricing' => [
+        'starts_from' => 'From :price',
+        'badge' => 'Pricing',
+        'title' => 'Service',
+        'title_highlight' => 'Pricing',
+        'description' => 'Starting prices in Omani rials. The final price depends on the details of your request.',
+        'disclaimer' => 'Prices are in Omani rials (OMR). "From" is the starting price; the final price depends on the details and scope of your request.',
+        'request' => 'Request a quote',
+        'view_all' => 'All prices',
+        'card_label' => 'Price',
+    ],
+
 ];

@@ -19,6 +19,12 @@ class Service extends Model
         'description_en',
         'image',
         'is_active',
+        'price_from',
+        'price_is_starting',
+        'price_unit_ar',
+        'price_unit_en',
+        'price_note_ar',
+        'price_note_en',
     ];
 
     /**
@@ -28,6 +34,8 @@ class Service extends Model
     {
         return [
             'is_active' => 'boolean',
+            'price_from' => 'decimal:3',
+            'price_is_starting' => 'boolean',
         ];
     }
 
@@ -137,6 +145,65 @@ class Service extends Model
         }
 
         return $this->description_ar;
+    }
+
+    public function hasPrice(): bool
+    {
+        return $this->price_from !== null;
+    }
+
+    /**
+     * السعر بالريال العُماني: «2.50 ر.ع» / «OMR 2.50»، والعدد الصحيح بدون كسور.
+     */
+    public function formattedPrice(?string $locale = null): ?string
+    {
+        if (! $this->hasPrice()) {
+            return null;
+        }
+
+        $locale ??= app()->getLocale();
+        $amount = (float) $this->price_from;
+        $number = fmod($amount, 1.0) === 0.0
+            ? number_format($amount, 0)
+            : number_format($amount, 2);
+
+        return $locale === 'en' ? "OMR {$number}" : "{$number} ر.ع";
+    }
+
+    /**
+     * «يبدأ من 10 ر.ع» للسعر الابتدائي، أو السعر وحده إذا كان ثابتًا.
+     */
+    public function priceLabel(?string $locale = null): ?string
+    {
+        $price = $this->formattedPrice($locale);
+
+        if ($price === null) {
+            return null;
+        }
+
+        return $this->price_is_starting
+            ? __('services.pricing.starts_from', ['price' => $price], $locale)
+            : $price;
+    }
+
+    public function localizedPriceUnit(?string $locale = null): ?string
+    {
+        return $this->localizedPriceField('price_unit', $locale);
+    }
+
+    public function localizedPriceNote(?string $locale = null): ?string
+    {
+        return $this->localizedPriceField('price_note', $locale);
+    }
+
+    private function localizedPriceField(string $field, ?string $locale): ?string
+    {
+        $locale ??= app()->getLocale();
+
+        // الصفحة الإنجليزية ما تعرض نص عربي إذا ما فيه ترجمة.
+        $value = $this->{$field.'_'.($locale === 'en' ? 'en' : 'ar')};
+
+        return filled($value) ? $value : null;
     }
 
     public function works(): HasMany

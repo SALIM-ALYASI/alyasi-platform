@@ -24,9 +24,18 @@ class ServiceController extends Controller
             ->paginate(12)
             ->withQueryString();
 
+        // قسم الأسعار: كل الخدمات المسعّرة من الأرخص، بدون تقسيم صفحات.
+        $pricedServices = Service::query()
+            ->with('permalinks')
+            ->where('is_active', true)
+            ->whereNotNull('price_from')
+            ->orderBy('price_from')
+            ->orderBy('id')
+            ->get();
+
         return view(
             'services.index',
-            compact('services')
+            compact('services', 'pricedServices')
         );
     }
 

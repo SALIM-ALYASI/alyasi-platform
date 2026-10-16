@@ -50,7 +50,7 @@
 ========================================================= --}}
 @section('schema')
 <script type="application/ld+json">
-{!! json_encode([
+{!! json_encode(array_filter([
     '@'.'context' => 'https://schema.org',
     '@type' => 'Service',
 
@@ -71,7 +71,18 @@
         'url' => url('/'),
     ],
 
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    'offers' => $service->hasPrice() ? [
+        '@type' => 'Offer',
+        'priceCurrency' => 'OMR',
+        'price' => (float) $service->price_from,
+        'priceSpecification' => [
+            '@type' => 'PriceSpecification',
+            'priceCurrency' => 'OMR',
+            ($service->price_is_starting ? 'minPrice' : 'price') => (float) $service->price_from,
+        ],
+    ] : null,
+
+]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endsection
 
@@ -168,6 +179,24 @@
     <p class="service-detail__desc">
         {{ $service->localizedDescription() }}
     </p>
+
+
+    @if ($service->hasPrice())
+        <div class="service-detail__price">
+            <div class="service-detail__price-main">
+                <span class="service-detail__price-label">{{ __('services.pricing.card_label') }}</span>
+                <strong>{{ $service->priceLabel() }}</strong>
+                @if ($unit = $service->localizedPriceUnit())
+                    <span class="service-detail__price-unit">{{ $unit }}</span>
+                @endif
+            </div>
+            @if ($note = $service->localizedPriceNote())
+                <p class="service-detail__price-note">{{ $note }}</p>
+            @endif
+            <p class="service-detail__price-disclaimer">{{ __('services.pricing.disclaimer') }}</p>
+            <a href="{{ localized_route('services.index') }}#pricing" class="service-detail__price-link">{{ __('services.pricing.view_all') }}</a>
+        </div>
+    @endif
 
 
     {{-- =====================================================
