@@ -4,6 +4,7 @@
 @section('meta_description', 'أخبار رسمية من سلطنة عُمان بنصّها الأصلي ومنسوبة لمصادرها: الخدمات، والتقنية، والاقتصاد، والأمن السيبراني.')
 @section('canonical', paginated_canonical(route('news.oman')))
 @section('og_url', route('news.oman'))
+@section('og_image', asset('images/news/oman-hero.webp'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
@@ -17,6 +18,9 @@
         title="أخبار عُمان"
         highlight="من مصادرها الرسمية"
         description="بيانات رسمية من سلطنة عُمان بنصّها الأصلي، منسوبة لمصدرها مع رابط البيان كاملًا."
+        :image="asset('images/news/oman-hero.webp')"
+        :image-width="1829"
+        :image-height="860"
     />
 
     <section class="container pulse">
