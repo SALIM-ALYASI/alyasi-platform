@@ -17,6 +17,12 @@ final class GuestLinkExpiry
 
     public const DAYS = 10;
 
+    /**
+     * الأداة كلها تنقفل بعد شهر من المؤتمر (6 أكتوبر ← 6 نوفمبر 2026): ما تفتح
+     * لأي ضيف وما تقبل إجابات. المقابلات المنشورة والتسجيلات تبقى.
+     */
+    public const TOOL_CLOSES_AT = '2026-11-06 00:00:00';
+
     /** مقابلاتهم منشورة -- ما تنطبق عليهم المهلة. */
     public const EXEMPT = ['yahya', 'haitham', 'ali', 'khalid'];
 
@@ -25,8 +31,17 @@ final class GuestLinkExpiry
         return Carbon::parse(self::TRACKING_STARTED, 'Asia/Muscat')->addDays(self::DAYS);
     }
 
+    public static function toolClosed(): bool
+    {
+        return now()->gte(Carbon::parse(self::TOOL_CLOSES_AT, 'Asia/Muscat'));
+    }
+
     public static function isExpired(string $guestId): bool
     {
+        if (self::toolClosed()) {
+            return true;
+        }
+
         if (in_array($guestId, self::EXEMPT, true) || now()->lt(self::deadline())) {
             return false;
         }

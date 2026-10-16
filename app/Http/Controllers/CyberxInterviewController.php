@@ -9,6 +9,7 @@ use App\Support\Analytics\VisitClassifier;
 use App\Support\Interviews\GuestLinkExpiry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -39,8 +40,13 @@ class CyberxInterviewController extends Controller
      * صوتيًا بدل نطقه، ثم يسجّل إجابة الضيف مباشرة من المتصفح. ما تُستخدم
      * كصفحة محتوى عامة، فما تمتد من layouts.app (بدون هيدر/فوتر/سبلاش).
      */
-    public function index(): View
+    public function index(): View|Response
     {
+        // شهر بعد المؤتمر: الأداة انقفلت.
+        if (GuestLinkExpiry::toolClosed()) {
+            return response()->view('tools.cyberx-interview-closed', [], 410);
+        }
+
         $path = public_path('audio/cyberx-interview-2026/data.json');
 
         abort_unless(is_file($path), 500, 'ملف بيانات المقابلة غير موجود.');

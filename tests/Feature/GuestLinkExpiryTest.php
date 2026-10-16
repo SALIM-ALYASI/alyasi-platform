@@ -31,6 +31,16 @@ class GuestLinkExpiryTest extends TestCase
         $this->assertFalse(GuestLinkExpiry::isExpired('sara'), 'فتح الرابط يبقيه');
     }
 
+    public function test_the_whole_tool_closes_one_month_after_the_conference(): void
+    {
+        Carbon::setTestNow(Carbon::parse(GuestLinkExpiry::TOOL_CLOSES_AT, 'Asia/Muscat')->subMinute());
+        $this->get('/tools/cyberx-interview')->assertOk();
+
+        Carbon::setTestNow(Carbon::parse(GuestLinkExpiry::TOOL_CLOSES_AT, 'Asia/Muscat')->addMinute());
+        $this->get('/tools/cyberx-interview?guest=haitham')->assertStatus(410)->assertSee('انتهت فترة المقابلات');
+        $this->assertTrue(GuestLinkExpiry::isExpired('haitham'));
+    }
+
     public function test_expired_guest_is_removed_from_the_tool(): void
     {
         Carbon::setTestNow(GuestLinkExpiry::deadline()->addDay());
