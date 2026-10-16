@@ -2,6 +2,8 @@
 
 return [
 
+    'whatsapp_chat' => 'Chat with us on WhatsApp',
+
     'nav' => [
         'home' => 'Home',
         'services' => 'Services',

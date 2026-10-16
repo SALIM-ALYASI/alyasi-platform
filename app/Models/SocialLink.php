@@ -76,6 +76,17 @@ class SocialLink extends Model
      * من قاعدة البيانات لو موجودة ومفعّلة، أو بالرابط الرسمي الثابت
      * كاحتياط - تليها بقية الحسابات المفعّلة حسب ترتيبها.
      */
+    /**
+     * رابط واتساب الرسمي (من قاعدة البيانات لو مفعّل، وإلا الثابت) لزر واتساب العائم.
+     */
+    public static function whatsappUrl(): string
+    {
+        return once(fn () => static::query()
+            ->active()
+            ->where('platform', 'whatsapp')
+            ->value('url') ?: self::CORE_DEFAULTS['whatsapp']['url']);
+    }
+
     public static function forDisplay(): Collection
     {
         $active = static::query()->active()->ordered()->get();

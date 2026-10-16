@@ -2,6 +2,8 @@
 
 return [
 
+    'whatsapp_chat' => 'تواصل معنا على واتساب',
+
     'nav' => [
         'home' => 'الرئيسية',
         'services' => 'الخدمات',

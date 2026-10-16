@@ -332,3 +332,30 @@ textarea.field__control { min-height: 130px; resize: vertical; }
     mask-image: url("../../images/currency/omr-symbol-bold.svg");
 }
 @media (forced-colors: active) { .omr__sign { background-color: CanvasText; } }
+
+/* زر واتساب العائم (partials/whatsapp-float): أسفل الشاشة بجهة نهاية السطر (يسار بالعربي) */
+.wa-float {
+    position: fixed;
+    inset-inline-end: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 900; /* تحت النوافذ المنبثقة وعارض الصور */
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #25d366;
+    color: #fff;
+    font-size: 29px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.wa-float:hover,
+.wa-float:focus-visible { transform: translateY(-2px) scale(1.04); box-shadow: 0 12px 28px rgba(0, 0, 0, .24); color: #fff; }
+.wa-float:focus-visible { outline: 3px solid var(--color-accent-300); outline-offset: 3px; }
+/* صفحات التغطية والمقابلات فيها شريط سفلي: نرفع الزر فوقه */
+body:has(.coverage-dock, .interview-dock) .wa-float { bottom: calc(96px + env(safe-area-inset-bottom)); }
+@media (max-width: 767px) {
+    .wa-float { width: 50px; height: 50px; font-size: 27px; inset-inline-end: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); }
+}
+@media print { .wa-float { display: none; } }

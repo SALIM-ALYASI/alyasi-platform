@@ -483,6 +483,8 @@
 
     <x-footer />
 
+    @include('partials.whatsapp-float')
+
 
     {{-- =====================================================
          Shared Scripts
