@@ -48,7 +48,7 @@
                             @if ($service->hasPrice())
                                 <a href="#pricing" class="services-card__price">
                                     <span class="services-card__price-label">{{ __('services.pricing.card_label') }}</span>
-                                    <strong>{{ $service->priceLabel() }}</strong>
+                                    <strong>{{ $service->priceHtml() }}</strong>
                                 </a>
                             @endif
                             <div class="services-card__actions">
@@ -89,13 +89,13 @@
                                 <a href="{{ $slug ? localized_route('services.show', ['slug' => $slug]) : localized_route('services.index') }}">{{ $service->localizedTitle() }}</a>
                             </h3>
                             @if ($note = $service->localizedPriceNote())
-                                <p class="services-pricing__note">{{ $note }}</p>
+                                <p class="services-pricing__note">{{ omr_text($note) }}</p>
                             @endif
                         </div>
                         <div class="services-pricing__price">
-                            <strong>{{ $service->priceLabel() }}</strong>
+                            <strong>{{ $service->priceHtml() }}</strong>
                             @if ($unit = $service->localizedPriceUnit())
-                                <span>{{ $unit }}</span>
+                                <span>{{ omr_text($unit) }}</span>
                             @endif
                         </div>
                     </div>

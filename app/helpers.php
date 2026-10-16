@@ -129,3 +129,37 @@ if (! function_exists('versioned_asset')) {
         return asset($path).'?v='.filemtime($fullPath);
     }
 }
+
+if (! function_exists('omr_amount')) {
+    /**
+     * مبلغ بالريال العُماني برمزه الرسمي (البنك المركزي العُماني): الرمز دائمًا
+     * يسار الرقم وبينهم مسافة، بكل اللغات وبدون انعكاس (dir="ltr" معزول).
+     */
+    function omr_amount(float|int|string $amount, ?string $locale = null): Illuminate\Support\HtmlString
+    {
+        $locale ??= app()->getLocale();
+        $value = (float) $amount;
+        $number = fmod($value, 1.0) === 0.0 ? number_format($value, 0) : number_format($value, 2);
+        $label = $locale === 'en' ? 'Omani rial' : 'ريال عُماني';
+
+        return new Illuminate\Support\HtmlString(
+            '<bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="'.e($label).'"></span> '.$number.'</bdi>'
+        );
+    }
+}
+
+if (! function_exists('omr_text')) {
+    /**
+     * نص عادي فيه «7 ر.ع» أو «OMR 7»: يتهرّب النص ويتبدل المبلغ بالرمز الرسمي.
+     */
+    function omr_text(?string $text, ?string $locale = null): Illuminate\Support\HtmlString
+    {
+        $html = preg_replace_callback(
+            '/(\d+(?:\.\d+)?)\s*ر\.ع\.?|OMR\s*(\d+(?:\.\d+)?)/u',
+            fn (array $m) => (string) omr_amount($m[1] !== '' ? $m[1] : $m[2], $locale),
+            e((string) $text)
+        );
+
+        return new Illuminate\Support\HtmlString($html);
+    }
+}

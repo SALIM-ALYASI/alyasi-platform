@@ -186,6 +186,28 @@ class Service extends Model
             : $price;
     }
 
+    /**
+     * نفس priceLabel بس بالرمز الرسمي للريال (للعرض في الصفحات).
+     */
+    public function priceHtml(?string $locale = null): ?\Illuminate\Support\HtmlString
+    {
+        if (! $this->hasPrice()) {
+            return null;
+        }
+
+        $amount = (string) omr_amount($this->price_from, $locale);
+
+        if (! $this->price_is_starting) {
+            return new \Illuminate\Support\HtmlString($amount);
+        }
+
+        return new \Illuminate\Support\HtmlString(str_replace(
+            '%price%',
+            $amount,
+            e(__('services.pricing.starts_from', ['price' => '%price%'], $locale))
+        ));
+    }
+
     public function localizedPriceUnit(?string $locale = null): ?string
     {
         return $this->localizedPriceField('price_unit', $locale);

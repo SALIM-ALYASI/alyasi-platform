@@ -185,13 +185,13 @@
         <div class="service-detail__price">
             <div class="service-detail__price-main">
                 <span class="service-detail__price-label">{{ __('services.pricing.card_label') }}</span>
-                <strong>{{ $service->priceLabel() }}</strong>
+                <strong>{{ $service->priceHtml() }}</strong>
                 @if ($unit = $service->localizedPriceUnit())
-                    <span class="service-detail__price-unit">{{ $unit }}</span>
+                    <span class="service-detail__price-unit">{{ omr_text($unit) }}</span>
                 @endif
             </div>
             @if ($note = $service->localizedPriceNote())
-                <p class="service-detail__price-note">{{ $note }}</p>
+                <p class="service-detail__price-note">{{ omr_text($note) }}</p>
             @endif
             <p class="service-detail__price-disclaimer">{{ __('services.pricing.disclaimer') }}</p>
             <a href="{{ localized_route('services.index') }}#pricing" class="service-detail__price-link">{{ __('services.pricing.view_all') }}</a>

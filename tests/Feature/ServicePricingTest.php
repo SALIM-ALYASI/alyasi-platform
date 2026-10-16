@@ -47,14 +47,16 @@ class ServicePricingTest extends TestCase
         $this->get('/services')
             ->assertOk()
             ->assertSee('id="pricing"', false)
-            ->assertSeeInOrder(['2.50 ر.ع', 'يبدأ من 60 ر.ع', 'لموقع تعريفي بسيط من صفحة واحدة'])
-            ->assertDontSee('يبدأ من 2.50 ر.ع')
+            // الرمز الرسمي يسار الرقم (dir=ltr)، والاستشارة سعر ثابت بدون «يبدأ من».
+            ->assertSeeInOrder(['aria-label="ريال عُماني"></span> 2.50</bdi>', 'يبدأ من <bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 60</bdi>', 'لموقع تعريفي بسيط من صفحة واحدة'], false)
+            ->assertDontSee('يبدأ من <bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 2.50', false)
+            ->assertDontSee('ر.ع')
             ->assertSee('الصفحات والميزات الإضافية تُسعّر منفصلًا.')
             ->assertSee('السعر النهائي يعتمد على تفاصيل الطلب');
 
         $this->get('/en/services')
             ->assertOk()
-            ->assertSee('From OMR 60')
+            ->assertSee('From <bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="Omani rial"></span> 60</bdi>', false)
             ->assertSee('for a simple one-page website')
             // ما فيه ترجمة للملاحظة: الصفحة الإنجليزية ما تعرض النص العربي.
             ->assertDontSee('الصفحات والميزات الإضافية');
@@ -66,13 +68,14 @@ class ServicePricingTest extends TestCase
             'title_ar' => 'صيانة أجهزة ماك وآيفون برمجيًا',
             'title_en' => 'Mac & iPhone Software Support',
             'price_from' => 3,
-            'price_note_ar' => 'الحالات المعقدة واستعادة البيانات تُقيّم منفصلًا.',
+            'price_note_ar' => 'الحالات المعقدة تُقيّم منفصلًا، و7 ر.ع للحالات الخاصة.',
         ], 'mac-ar', 'mac');
 
         $this->get('/services/mac-ar')
             ->assertOk()
-            ->assertSee('يبدأ من 3 ر.ع')
-            ->assertSee('الحالات المعقدة واستعادة البيانات تُقيّم منفصلًا.')
+            ->assertSee('يبدأ من <bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 3</bdi>', false)
+            // «7 ر.ع» داخل الملاحظة يتحول للرمز.
+            ->assertSee('و<bdi class="omr" dir="ltr"><span class="omr__sign" role="img" aria-label="ريال عُماني"></span> 7</bdi> للحالات الخاصة.', false)
             ->assertSee('"priceCurrency":"OMR"', false)
             ->assertSee('"minPrice":3', false);
     }

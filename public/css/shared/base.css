@@ -315,3 +315,20 @@ textarea.field__control { min-height: 130px; resize: vertical; }
     [data-reveal] { opacity: 1; transform: none; transition: none; }
     .pill__dot { animation: none; }
 }
+
+/* رمز الريال العُماني الرسمي (omr_amount): يسار الرقم دائمًا، بارتفاع الأرقام، بلون النص */
+.omr { display: inline-flex; align-items: baseline; gap: .28em; white-space: nowrap; unicode-bidi: isolate; }
+.omr__sign {
+    display: inline-block;
+    width: 1.07em;
+    height: .72em;
+    background-color: currentColor;
+    -webkit-mask: url("../../images/currency/omr-symbol.svg") no-repeat center / contain;
+    mask: url("../../images/currency/omr-symbol.svg") no-repeat center / contain;
+}
+/* النص العريض ياخذ الوزن العريض من الرمز (حسب الدليل الإرشادي) */
+:where(strong, b, h1, h2, h3, h4, .omr--bold) .omr__sign {
+    -webkit-mask-image: url("../../images/currency/omr-symbol-bold.svg");
+    mask-image: url("../../images/currency/omr-symbol-bold.svg");
+}
+@media (forced-colors: active) { .omr__sign { background-color: CanvasText; } }
