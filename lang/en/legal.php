@@ -116,7 +116,8 @@ return [
         ],
         [
             'title' => '24. Contact and Privacy Requests',
-            'body' => 'Privacy requests, inquiries, and complaints may be submitted through the official contact channels published on the Platform. Users should identify the type of request and provide sufficient contact information for verification and response.',
+            'body' => 'For privacy requests, such as accessing, correcting, or deleting your data, and for inquiries or complaints, message ALYASI on WhatsApp or use the contact form, stating the type of request and the contact details needed for verification. We respond to privacy requests within 30 days.',
+            'link' => ['label' => 'Message us on WhatsApp', 'url' => 'https://wa.me/message/WJELG5R5UVIBO1'],
         ],
         [
             'title' => '25. Google User Data (ALYASI Platform Publisher)',

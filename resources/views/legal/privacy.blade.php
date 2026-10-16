@@ -26,6 +26,14 @@
                 <div class="legal-item">
                     <h2>{{ $section['title'] }}</h2>
                     <p>{{ $section['body'] }}</p>
+                    @if (! empty($section['link']))
+                        <p>
+                            <a href="{{ $section['link']['url'] }}" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                                {{ $section['link']['label'] }}
+                            </a>
+                        </p>
+                    @endif
                 </div>
             @endforeach
         </div>
