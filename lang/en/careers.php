@@ -3,12 +3,12 @@
 return [
 
     'title' => 'Careers',
-    'meta_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who might join the ALYASI team down the road.',
+    'meta_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who might work with ALYASI down the road.',
 
     'hero_badge' => 'Join Us',
     'hero_title' => 'Always Looking',
     'hero_title_highlight' => 'For Great Talent',
-    'hero_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who want to join the ALYASI team in the future.',
+    'hero_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who want to work with ALYASI in the future.',
 
     'values_badge' => 'Why ALYASI',
     'values_title' => 'How We Work',

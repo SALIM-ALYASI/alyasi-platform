@@ -2,10 +2,10 @@
 
 return [
 
-    'meta_title' => 'My Articles | :brand',
+    'meta_title' => 'Articles | :brand',
     'meta_description' => 'Articles and personal perspectives on technology, design, and entrepreneurship — beyond the news feed.',
 
-    'hero_badge' => 'My Articles',
+    'hero_badge' => 'Articles',
     'hero_title' => 'Personal Views',
     'hero_title_highlight' => '& Experiences',
     'hero_description' => 'Articles and personal perspectives on technology, design, and entrepreneurship — beyond the news feed.',
@@ -18,7 +18,7 @@ return [
     'empty_title' => 'No articles available right now',
     'empty_description' => 'New articles will be published soon.',
 
-    'breadcrumb_articles' => 'My Articles',
+    'breadcrumb_articles' => 'Articles',
     'share' => 'Share Article',
     'related_badge' => 'Articles',
     'related_title' => 'Related Articles',

@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'meta_title' => 'Our Works | ALYASI',
+    'meta_title' => 'ALYASI Work',
 
     'meta_description' => 'Explore a selection of ALYASI projects in web development, applications, design, and digital solutions.',
 

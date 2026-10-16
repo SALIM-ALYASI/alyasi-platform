@@ -8,7 +8,7 @@ return [
 
     'hero_title_highlight' => 'That Make a Real Difference',
 
-    'hero_description' => 'ALYASI is an integrated digital platform combining web and app development, AI solutions, and digital design, alongside tech news and a vibrant community of creators and developers.',
+    'hero_description' => 'ALYASI is a digital platform combining web and app development, AI solutions, and digital design, alongside tech news and conference coverage. Founded and run by Salem Al Hajri.',
 
     'story_badge' => 'Our Story',
 
@@ -53,7 +53,7 @@ return [
     'cta_services' => 'Explore Our Services',
 
     // My certificates -- images in public/images/about/certificates
-    'certificates_badge' => 'My certificates',
+    'certificates_badge' => 'Founder\'s certificates',
     'certificates_title' => 'Certificates & appearances',
     'certificates_view' => 'View certificate',
     'certificates_close' => 'Close',

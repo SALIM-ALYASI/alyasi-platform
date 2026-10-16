@@ -20,7 +20,7 @@ return [
 
     'submit' => 'Submit Review',
 
-    'moderation_note' => 'Your review will appear after review by the ALYASI team.',
+    'moderation_note' => 'Your review will appear after moderation.',
 
     'review_submitted' => 'Your review has been received and will appear after review. Thanks for sharing.',
 

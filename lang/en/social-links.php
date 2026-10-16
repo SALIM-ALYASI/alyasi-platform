@@ -8,7 +8,7 @@ return [
 
     'hero_title' => 'Connect With Us Through Our Official Platforms',
 
-    'hero_description' => 'Stay up to date with our latest news, updates, and services, and choose the right platform to connect with the ALYASI team.',
+    'hero_description' => 'Stay up to date with our latest news, updates, and services, and choose the right platform to connect with ALYASI.',
 
     'section_badge' => 'Our Official Accounts',
 

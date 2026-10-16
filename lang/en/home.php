@@ -227,7 +227,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'portfolio_badge' => 'My Works',
+    'portfolio_badge' => 'ALYASI Work',
 
     'portfolio_title' => 'Latest',
 
@@ -283,7 +283,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'articles_badge' => 'My Articles',
+    'articles_badge' => 'Articles',
 
     'articles_title' => 'Latest',
 

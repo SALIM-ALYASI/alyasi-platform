@@ -178,7 +178,7 @@ return [
 
     'comment_submit' => 'إرسال التعليق',
 
-    'comment_moderation_note' => 'يظهر تعليقك بعد مراجعته من فريق ALYASI.',
+    'comment_moderation_note' => 'يظهر تعليقك بعد مراجعته.',
 
     'comment_submitted' => 'تم استلام تعليقك، سيظهر بعد المراجعة. شكرًا لمشاركتك.',
 

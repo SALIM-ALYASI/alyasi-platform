@@ -32,7 +32,7 @@ return [
 
     'hero_cta_primary' => 'اطلب خدمتك الآن',
 
-    'hero_cta_secondary' => 'شاهد أعمالي',
+    'hero_cta_secondary' => 'شاهد أعمال ALYASI',
 
     'explore_services' => 'استكشف الخدمات',
 
@@ -222,7 +222,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'portfolio_badge' => 'أعمالي',
+    'portfolio_badge' => 'أعمال ALYASI',
 
     'portfolio_title' => 'أحدث',
 
@@ -278,7 +278,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'articles_badge' => 'مقالاتي',
+    'articles_badge' => 'المقالات',
 
     'articles_title' => 'آخر',
 

@@ -2,10 +2,10 @@
 
 return [
 
-    'meta_title' => 'مقالاتي | :brand',
+    'meta_title' => 'المقالات | :brand',
     'meta_description' => 'مقالات ووجهات نظر حول التقنية والتصميم وريادة الأعمال، بعيدًا عن نشرة الأخبار.',
 
-    'hero_badge' => 'مقالاتي',
+    'hero_badge' => 'المقالات',
     'hero_title' => 'آراء وتجارب',
     'hero_title_highlight' => 'شخصية',
     'hero_description' => 'مقالات ووجهات نظر حول التقنية والتصميم وريادة الأعمال، بعيدًا عن نشرة الأخبار.',
@@ -18,7 +18,7 @@ return [
     'empty_title' => 'لا توجد مقالات متاحة حاليًا',
     'empty_description' => 'سيتم نشر مقالات جديدة قريبًا.',
 
-    'breadcrumb_articles' => 'مقالاتي',
+    'breadcrumb_articles' => 'المقالات',
     'share' => 'مشاركة المقال',
     'related_badge' => 'مقالات',
     'related_title' => 'مقالات مشابهة',

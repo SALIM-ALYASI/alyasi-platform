@@ -178,7 +178,7 @@ return [
 
     'comment_submit' => 'Submit Comment',
 
-    'comment_moderation_note' => 'Your comment will appear after review by the ALYASI team.',
+    'comment_moderation_note' => 'Your comment will appear after moderation.',
 
     'comment_submitted' => 'Your comment has been received and will appear after review. Thanks for sharing.',
 

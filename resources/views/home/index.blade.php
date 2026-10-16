@@ -151,7 +151,7 @@
                     <div class="section-head__eyebrow">{{ __('home.services_badge') }}</div>
                     <h2 class="section-head__title">{{ __('home.services_title') }}</h2>
                 </div>
-                <a href="{{ localized_route('services.index') }}" class="btn btn--outline">{{ __('home.all_services') }}</a>
+                <a href="{{ localized_route('services.index') }}" class="btn btn--outline">{{ __('home.all_services') }} ({{ $servicesCount }})</a>
             </div>
 
             <div class="grid-3">

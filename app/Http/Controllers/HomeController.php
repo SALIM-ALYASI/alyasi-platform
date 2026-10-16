@@ -22,8 +22,10 @@ class HomeController extends Controller
             ->with('permalinks')
             ->active()
             ->ordered()
-            ->take(6)
+            ->take(4) // خدمة مميزة + 3 بطاقات؛ الباقي برابط «جميع الخدمات»
             ->get();
+
+        $servicesCount = Service::query()->active()->count();
 
         $works = Work::query()
             ->active()
@@ -35,7 +37,7 @@ class HomeController extends Controller
             ->with('permalinks')
             ->published()
             ->latestPublished()
-            ->take(2)
+            ->take(3)
             ->get();
 
         $technologies = Technology::query()
@@ -62,7 +64,7 @@ class HomeController extends Controller
                 ->availableIn(app()->getLocale())
                 ->excludingTechHistory()
                 ->ordered()
-                ->take(2)
+                ->take(3)
                 ->get()
             : collect();
 
@@ -70,6 +72,7 @@ class HomeController extends Controller
             'home.index',
             compact(
                 'services',
+                'servicesCount',
                 'works',
                 'latestNews',
                 'technologies',

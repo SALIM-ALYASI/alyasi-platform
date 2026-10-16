@@ -10,7 +10,7 @@ return [
         'oman_pulse' => 'Oman Pulse',
         'product_launches' => 'Product Launches',
         'tech_history' => 'Tech History',
-        'articles' => 'My Articles',
+        'articles' => 'Articles',
         'events' => 'Events',
         'community' => 'Community Events',
     ],
@@ -27,7 +27,7 @@ return [
     ],
 
     'footer' => [
-        'about' => 'A platform bringing together digital services, tech news, conferences, and events in one integrated experience.',
+        'about' => 'A platform bringing together digital services, tech news, conferences, and events in one integrated experience. Founded and run by Salem Al Hajri.',
         'quick_links' => 'Quick Links',
         'community_title' => 'Community',
         'explore_title' => 'Explore',
