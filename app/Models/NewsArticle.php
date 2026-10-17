@@ -55,6 +55,7 @@ class NewsArticle extends Model
         'seo_title_en',
         'seo_description_ar',
         'seo_description_en',
+        'is_oman',
     ];
 
     protected function casts(): array
@@ -68,6 +69,7 @@ class NewsArticle extends Model
             'merged_into_id' => 'integer',
             'social_sent_at' => 'datetime',
             'views_count' => 'integer',
+            'is_oman' => 'boolean',
         ];
     }
 
@@ -131,6 +133,28 @@ class NewsArticle extends Model
     | Query Scopes
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * هل الخبر يخص سلطنة عُمان؟ الإنجليزي أوضح (Oman/Muscat...)، والعربي بكلمات
+     * ما تلتبس بـ«عمّان» عاصمة الأردن: «عُمان» بالضمة، «سلطنة عمان»، «العماني/ة»،
+     * ومدن عُمانية.
+     */
+    public static function detectOman(?string ...$texts): bool
+    {
+        $text = implode(' ', array_filter($texts));
+
+        return (bool) preg_match('/\b(Oman|Omani|Omanis|Muscat|Sohar|Salalah|Duqm|Nizwa)\b/i', $text)
+            || (bool) preg_match('/(عُمان|سلطنة\s+عمان|العُ?ماني(ة|ون|ين)?|مسقط|صلالة|صحار|الدقم|نزوى)/u', $text);
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (self $article): void {
+            if ($article->isDirty(['title_ar', 'title_en', 'excerpt_ar', 'excerpt_en']) || ! $article->exists) {
+                $article->is_oman = self::detectOman($article->title_ar, $article->title_en, $article->excerpt_ar, $article->excerpt_en);
+            }
+        });
+    }
 
     public function scopePublished(Builder $query): Builder
     {

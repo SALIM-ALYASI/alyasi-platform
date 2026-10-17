@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\NewsArticle;
+use App\Models\NewsCategory;
 use App\Models\NewsSuggestion;
+use App\Models\Permalink;
 use App\Models\OmanPulseItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
@@ -103,6 +106,50 @@ class OmanPulseTest extends TestCase
 
         $this->assertSame(3, OmanPulseItem::query()->count());
         $this->assertStringContainsString('حصة', NewsSuggestion::query()->where('url', 'https://gov.om/news/4')->value('status_note'));
+    }
+
+    public function test_oman_detection_does_not_confuse_amman(): void
+    {
+        $this->assertTrue(NewsArticle::detectOman('عُمان للكابلات تضع حجر الأساس لمصنعها الثالث', null));
+        $this->assertTrue(NewsArticle::detectOman('إطلاق منصة لإدارة العقود', 'AI platform targets Oman construction claims'));
+        $this->assertTrue(NewsArticle::detectOman('افتتاح مركز بيانات في مسقط', null));
+        $this->assertFalse(NewsArticle::detectOman('مؤتمر تقني في عمان الأردنية', 'Tech summit in Amman, Jordan'));
+        $this->assertFalse(NewsArticle::detectOman('GitHub تتيح ميزة AI Scan', 'GitHub makes AI Scan generally available'));
+    }
+
+    public function test_omani_platform_news_also_appears_in_pulse_with_its_own_label(): void
+    {
+        $category = NewsCategory::query()->create(['name_ar' => 'تقنية', 'name_en' => 'Tech', 'slug' => 'tech', 'is_active' => true]);
+        $make = function (string $titleAr, string $titleEn, string $slug) use ($category) {
+            $article = NewsArticle::factory()->create([
+                'news_category_id' => $category->id,
+                'title_ar' => $titleAr,
+                'title_en' => $titleEn,
+                'publication_date' => now()->toDateString(),
+                'daily_sequence' => random_int(1, 999),
+            ]);
+            Permalink::query()->create(['linkable_type' => 'news_article', 'linkable_id' => $article->id, 'locale' => 'ar', 'slug' => $slug]);
+
+            return $article;
+        };
+
+        $oman = $make('عُمان للكابلات تضع حجر الأساس لمصنعها الثالث', 'Oman Cables breaks ground on third plant', 'oman-cables');
+        $global = $make('GitHub تتيح ميزة AI Scan', 'GitHub makes AI Scan generally available', 'github-ai');
+
+        $this->assertTrue($oman->fresh()->is_oman);
+        $this->assertFalse($global->fresh()->is_oman);
+
+        $this->get('/news/oman')
+            ->assertOk()
+            ->assertSee('عُمان للكابلات تضع حجر الأساس لمصنعها الثالث')
+            ->assertSee('خبر ALYASI')
+            ->assertDontSee('GitHub تتيح ميزة AI Scan');
+
+        // تظهر بعد بصفحة الأخبار العامة
+        $this->get('/news')->assertOk()->assertSee('عُمان للكابلات تضع حجر الأساس لمصنعها الثالث');
+
+        // وسم «خدمات» يخص البيانات الرسمية بس
+        $this->get('/news/oman?tag=services')->assertOk()->assertDontSee('عُمان للكابلات');
     }
 
     public function test_old_statement_is_rejected(): void

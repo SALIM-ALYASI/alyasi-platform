@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'نبض عُمان — أخبار عُمان الرسمية | ALYASI')
-@section('meta_description', 'أخبار رسمية من سلطنة عُمان بنصّها الأصلي ومنسوبة لمصادرها: الخدمات، والتقنية، والاقتصاد، والأمن السيبراني.')
+@section('meta_description', 'أخبار سلطنة عُمان: بيانات رسمية بنصّها الأصلي منسوبة لمصادرها، وأخبار التقنية والاقتصاد العُمانية من تغطية ALYASI.')
 @section('canonical', paginated_canonical(route('news.oman')))
 @section('og_url', route('news.oman'))
 
@@ -15,8 +15,8 @@
     <x-page-hero
         badge="🇴🇲 نبض عُمان"
         title="أخبار عُمان"
-        highlight="من مصادرها الرسمية"
-        description="بيانات رسمية من سلطنة عُمان بنصّها الأصلي، منسوبة لمصدرها مع رابط البيان كاملًا."
+        highlight="أولًا بأول"
+        description="بيانات رسمية من سلطنة عُمان بنصّها الأصلي، وأخبار التقنية والاقتصاد العُمانية من تغطية ALYASI."
         :image="asset('images/news/oman-hero.webp')"
         :image-width="1829"
         :image-height="860"
@@ -30,39 +30,75 @@
             @endforeach
         </div>
 
-        @forelse ($items as $item)
-            <article class="pulse-card" id="pulse-{{ $item->id }}" data-reveal>
-                @if ($item->image)
-                    <a href="{{ $item->url() }}" class="pulse-card__media" tabindex="-1" aria-hidden="true">
-                        <img src="{{ media_url($item->image) }}" alt="" loading="lazy">
-                    </a>
-                @endif
+        @forelse ($items as $entry)
+            @php $item = $entry['item']; @endphp
 
-                <div class="pulse-card__body">
-                    <div class="pulse-card__meta">
-                        <span class="badge">{{ $item->tag_label }}</span>
-                        <span>{{ $item->source_name }}</span>
-                        @if ($item->source_published_at)
-                            <time datetime="{{ $item->source_published_at->toIso8601String() }}">{{ $item->source_published_at->timezone('Asia/Muscat')->translatedFormat('d.m.Y') }}</time>
-                        @endif
-                    </div>
-
-                    <h2 class="pulse-card__title"><a href="{{ $item->url() }}">{{ $item->title }}</a></h2>
-
-                    <p class="pulse-card__lead">{{ $item->lead }}</p>
-
-                    <div class="pulse-card__actions">
-                        <a class="pulse-card__read" href="{{ $item->url() }}">اقرأ الخبر ←</a>
-                        <a class="pulse-card__source" href="{{ $item->source_url }}" target="_blank" rel="noopener noreferrer">
-                            البيان الأصلي: {{ $item->source_name }}
+            @if ($entry['kind'] === 'official')
+                <article class="pulse-card" id="pulse-{{ $item->id }}" data-reveal>
+                    @if ($item->image)
+                        <a href="{{ $item->url() }}" class="pulse-card__media" tabindex="-1" aria-hidden="true">
+                            <img src="{{ media_url($item->image) }}" alt="" loading="lazy">
                         </a>
+                    @endif
+
+                    <div class="pulse-card__body">
+                        <div class="pulse-card__meta">
+                            <span class="badge pulse-kind pulse-kind--official">بيان رسمي</span>
+                            <span class="badge">{{ $item->tag_label }}</span>
+                            <span>{{ $item->source_name }}</span>
+                            @if ($item->source_published_at)
+                                <time datetime="{{ $item->source_published_at->toIso8601String() }}">{{ $item->source_published_at->timezone('Asia/Muscat')->translatedFormat('d.m.Y') }}</time>
+                            @endif
+                        </div>
+
+                        <h2 class="pulse-card__title"><a href="{{ $item->url() }}">{{ $item->title }}</a></h2>
+
+                        <p class="pulse-card__lead">{{ $item->lead }}</p>
+
+                        <div class="pulse-card__actions">
+                            <a class="pulse-card__read" href="{{ $item->url() }}">اقرأ الخبر ←</a>
+                            <a class="pulse-card__source" href="{{ $item->source_url }}" target="_blank" rel="noopener noreferrer">
+                                البيان الأصلي: {{ $item->source_name }}
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </article>
+                </article>
+            @else
+                {{-- خبر من تغطية ALYASI يخص عُمان (يظهر بصفحة الأخبار بعد) --}}
+                <article class="pulse-card" id="news-{{ $item->id }}" data-reveal>
+                    @if ($item->image)
+                        <a href="{{ $item->url('ar') }}" class="pulse-card__media" tabindex="-1" aria-hidden="true">
+                            <img src="{{ media_url($item->image) }}" alt="" loading="lazy">
+                        </a>
+                    @endif
+
+                    <div class="pulse-card__body">
+                        <div class="pulse-card__meta">
+                            <span class="badge pulse-kind pulse-kind--news">خبر ALYASI</span>
+                            @if ($item->source_name)
+                                <span>{{ $item->source_name }}</span>
+                            @endif
+                            @if ($item->published_at)
+                                <time datetime="{{ $item->published_at->toIso8601String() }}">{{ $item->published_at->timezone('Asia/Muscat')->translatedFormat('d.m.Y') }}</time>
+                            @endif
+                        </div>
+
+                        <h2 class="pulse-card__title"><a href="{{ $item->url('ar') }}">{{ $item->title_ar }}</a></h2>
+
+                        @if ($item->excerpt_ar)
+                            <p class="pulse-card__lead">{{ \Illuminate\Support\Str::limit(strip_tags($item->excerpt_ar), 260) }}</p>
+                        @endif
+
+                        <div class="pulse-card__actions">
+                            <a class="pulse-card__read" href="{{ $item->url('ar') }}">اقرأ الخبر ←</a>
+                        </div>
+                    </div>
+                </article>
+            @endif
         @empty
             <div class="empty-state">
                 <div class="empty-state__title">لا توجد أخبار بعد</div>
-                <p class="empty-state__desc">أول الأخبار الرسمية بتظهر هنا قريبًا.</p>
+                <p class="empty-state__desc">أول الأخبار بتظهر هنا قريبًا.</p>
             </div>
         @endforelse
 
@@ -70,7 +106,7 @@
             {{ $items->links() }}
         </div>
 
-        <p class="pulse__note">نبض عُمان ينقل البيانات الرسمية بنصّها كما نُشرت، دون صياغة أو إضافة من منصة الياسي، والمرجع هو المصدر الرسمي.</p>
+        <p class="pulse__note">ما يحمل وسم «بيان رسمي» منقول بنصّه كما نُشر، دون صياغة أو إضافة من منصة الياسي، والمرجع هو المصدر الرسمي. وما يحمل وسم «خبر ALYASI» تغطية تحريرية من المنصة منسوبة لمصادرها.</p>
     </section>
 
 @endsection

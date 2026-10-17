@@ -59,3 +59,9 @@
 .pulse-read__related-item strong { font-size: 15px; line-height: 1.7; }
 .pulse-read__all { display: inline-block; margin-top: 14px; font-weight: 700; color: var(--color-accent-500); }
 :root[data-theme="dark"] :where(.pulse-read__crumbs, .pulse-read__media figcaption, .pulse-read__source p, .pulse-read__related-item small, .pulse-card__actions .pulse-card__source) { color: rgba(255, 255, 255, .65); }
+
+/* نوع البطاقة: بيان رسمي (بنصه) أو خبر من تغطية ALYASI */
+.pulse-kind--official { background: #0f7a5f1f; color: #0b6b53; border: 1px solid #0f7a5f55; }
+.pulse-kind--news { background: #1e6bff1a; color: #1d4fbf; border: 1px solid #1e6bff4d; }
+:root[data-theme="dark"] .pulse-kind--official { color: #5fe0bd; }
+:root[data-theme="dark"] .pulse-kind--news { color: #8fbaff; }
