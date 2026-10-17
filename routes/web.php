@@ -588,6 +588,9 @@ Route::post(
 Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
     ->name('tools.cyberx-interview');
 
+Route::get('/tools/cyberx-interview/upload', [CyberxInterviewController::class, 'upload'])
+    ->name('tools.cyberx-interview.upload');
+
 Route::post('/tools/cyberx-interview/answers', [CyberxInterviewController::class, 'storeAnswer'])
     ->middleware('throttle:30,1')
     ->name('tools.cyberx-interview.answers');

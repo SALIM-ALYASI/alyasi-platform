@@ -93,4 +93,48 @@ class CyberxAnswerUploadTest extends TestCase
         $this->assertEmpty(Storage::disk('public')->allFiles());
         Http::assertNothingSent();
     }
+
+    public function test_upload_page_lists_the_guests_questions_in_english(): void
+    {
+        // قبل مهلة الأيام العشرة وإقفال الأداة، عشان الاختبار ما يتغير مع التاريخ.
+        $this->travelTo('2026-10-20 12:00:00');
+
+        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'ahmed']))
+            ->assertOk()
+            ->assertSee('lang="en"', false)
+            ->assertSee('Hi Ahmed Reza')
+            ->assertSeeInOrder([
+                'data-question="ahmed-ahmed-app-intro"',
+                'data-question="ahmed-ahmed-v3-q1"',
+                'data-question="ahmed-ahmed-app-closing"',
+                'data-question="ahmed-ahmed-last"',
+                'data-question="ahmed-upload-other"',
+            ], false)
+            ->assertSee('what is your view on the progress the Sultanate has made');
+
+        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'nobody']))->assertNotFound();
+    }
+
+    public function test_uploaded_file_is_marked_and_names_the_question(): void
+    {
+        $this->travelTo('2026-10-20 12:00:00');
+
+        $this->post(route('tools.cyberx-interview.answers'), [
+            'audio' => $this->audio(),
+            'question_id' => 'ahmed-ahmed-last',
+            'source' => 'upload',
+        ])->assertOk()->assertJson(['success' => true]);
+
+        Http::assertSent(function ($request) {
+            $message = json_encode($request->data(), JSON_UNESCAPED_UNICODE);
+
+            return str_contains($message, 'الضيف: أحمد رضا')
+                && str_contains($message, 'دور المؤتمر')
+                && str_contains($message, '📤 ملف رفعه الضيف من جهازه');
+        });
+
+        $meta = json_decode(Storage::disk('local')->get(collect(Storage::disk('local')->allFiles('cyberx-answers-meta'))->first()), true);
+        $this->assertSame('upload', $meta['source']);
+        $this->assertSame('answer.m4a', $meta['original_name']);
+    }
 }

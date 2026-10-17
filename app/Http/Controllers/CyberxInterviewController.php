@@ -33,7 +33,18 @@ class CyberxInterviewController extends Controller
         'audio/mpeg' => 'mp3',
         'audio/wav' => 'wav',
         'audio/x-wav' => 'wav',
+        // ملفات مسجّلة بتطبيقات الجوال وترفع من صفحة الرفع.
+        'audio/x-hx-aac-adts' => 'aac',
+        'audio/flac' => 'flac',
+        'audio/x-flac' => 'flac',
+        'audio/amr' => 'amr',
+        'audio/3gpp' => '3gp',
+        'video/3gpp' => '3gp',
+        'video/quicktime' => 'mov',
     ];
+
+    /** حد Cloudflare للطلب 100MB، فنوقف قبله بشوي. */
+    public const MAX_UPLOAD_KB = 95 * 1024;
 
     /**
      * أداة داخلية لمقابلات CyberX عُمان 2026 -- سالم يشغّل سؤالاً مسجّلاً
@@ -72,6 +83,59 @@ class CyberxInterviewController extends Controller
     }
 
     /**
+     * صفحة رفع لضيف سجّل إجاباته بجواله (خارج الأداة) وعنده ملفات: كل سؤال
+     * له زر يختار منه الملف، والرفع يمر بنفس مسار حفظ الإجابات (نفس
+     * التحقق والحفظ وإشعار الواتساب).
+     */
+    public function upload(Request $request): View|Response
+    {
+        if (GuestLinkExpiry::toolClosed()) {
+            return response()->view('tools.cyberx-interview-closed', [], 410);
+        }
+
+        $id = (string) $request->query('guest', '');
+        $data = json_decode((string) @file_get_contents(public_path('audio/cyberx-interview-2026/data.json')), true) ?: [];
+        $guest = collect(array_merge($data['priority_guests'] ?? [], $data['additional_guests'] ?? []))
+            ->first(fn (array $g) => ($g['id'] ?? null) === $id);
+
+        abort_if($guest === null, 404);
+
+        if (GuestLinkExpiry::isExpired($id)) {
+            return response()->view('tools.cyberx-interview-closed', [], 410);
+        }
+
+        $en = ($guest['language'] ?? null) === 'en';
+        $feminine = ($guest['gender'] ?? null) === 'f';
+        $text = fn (array $q) => $en ? ($q['en'] ?? $q['ar'] ?? '') : (($feminine ? ($q['ar_f'] ?? null) : null) ?? $q['ar'] ?? '');
+
+        // نفس معرّفات الأداة: «<الضيف>-<السؤال>»، والأخير «<الضيف>-<الضيف>-last».
+        $questions = [];
+        foreach ($guest['questions'] ?? [] as $q) {
+            if (! empty($q['audio'])) {
+                $questions[] = ['id' => $id.'-'.$q['audio'], 'text' => $text($q)];
+            }
+        }
+
+        $final = match ($guest['final_question'] ?? null) {
+            'foreign' => $data['final_question_foreign'] ?? null,
+            null, false => null,
+            default => collect($data['quick_buttons'] ?? [])->firstWhere('audio', 'shared-last'),
+        };
+
+        if ($final) {
+            $questions[] = ['id' => $id.'-'.$id.'-last', 'text' => $text($final)];
+        }
+
+        return view('tools.cyberx-interview-upload', [
+            'guest' => $guest,
+            'en' => $en,
+            'questions' => $questions,
+            'otherId' => $id.'-upload-other',
+            'maxBytes' => self::MAX_UPLOAD_KB * 1024,
+        ]);
+    }
+
+    /**
      * إجابة ضيف مسجّلة من الأداة: تنحفظ على السيرفر (نسخة ما تضيع لو
      * انسكرت الصفحة) وتوصل لسالم بالواتساب المجاني مع السؤال ورابط
      * الإجابة -- الجسر يرسل نص بس، فالصوت يوصل كرابط يتشغّل مباشرة.
@@ -83,9 +147,11 @@ class CyberxInterviewController extends Controller
     public function storeAnswer(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'audio' => ['required', 'file', 'max:51200'],
+            'audio' => ['required', 'file', 'max:'.self::MAX_UPLOAD_KB],
             'question_id' => ['required', 'string', 'max:120', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'source' => ['nullable', 'in:upload'],
         ]);
+        $uploaded = ($data['source'] ?? null) === 'upload';
 
         $guestId = strtok($data['question_id'], '-') ?: '';
         if ($guestId !== '' && GuestLinkExpiry::isExpired($guestId)) {
@@ -128,6 +194,8 @@ class CyberxInterviewController extends Controller
             'device' => $device,
             'accept_language' => $request->header('Accept-Language'),
             'mime' => $mime,
+            'source' => $uploaded ? 'upload' : 'recorder',
+            'original_name' => Str::limit((string) $file->getClientOriginalName(), 150, ''),
             'size_bytes' => $file->getSize(),
             'traffic_class' => $class,
             'class_reasons' => $reasons,
@@ -138,6 +206,12 @@ class CyberxInterviewController extends Controller
 
         if ($question !== null) {
             $lines[] = 'السؤال: '.$question;
+        } elseif ($uploaded) {
+            $lines[] = 'السؤال: ملف إضافي (ما حدد له سؤال)';
+        }
+
+        if ($uploaded) {
+            $lines[] = '📤 ملف رفعه الضيف من جهازه';
         }
 
         $lines[] = '📱 '.$device.($country ? ' — '.$country : '');
