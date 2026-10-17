@@ -1271,6 +1271,201 @@
    "outro_audio": {
     "ar": "/audio/interviews/cyberx-oman-2026/khalid/outro-ar.m4a"
    }
+  },
+  {
+   "slug": "mohammed-tajuddin",
+   "published": false,
+   "name_ar": "محمد تاج الدين",
+   "name_en": "Mohammed Tajuddin",
+   "role_ar": "مدير المنتجات لأمن الشبكات والمحتوى والبيانات · Securado",
+   "role_en": "Product Director – Network, Content & Data Security · Securado",
+   "photo": null,
+   "initials": {
+    "ar": "م",
+    "en": "MT"
+   },
+   "languages": [
+    "en"
+   ],
+   "preview_languages": [
+    "ar"
+   ],
+   "original_language": "en",
+   "topic_ar": "اكتشاف الذكاء الاصطناعي الخفي، وضمانات وكلاء الذكاء الاصطناعي، والتبنّي الآمن في المؤسسات العُمانية",
+   "topic_en": "Discovering hidden AI, safeguards for AI agents, and safe AI adoption in Omani organizations",
+   "quote_ar": "التبنّي الآمن يبدأ بالرؤية.",
+   "quote_en": "Safe adoption starts with visibility.",
+   "intro_en": "After the CyberX Oman 2026 conference, I had this conversation with one of the speakers on the conference's AI governance panel. He kindly recorded his answers to my questions after the event.\n\nWe talked about how organizations can discover the AI tools their employees use without their knowledge, the most important safeguard before giving an AI agent access to company systems, and the first step an Omani organization should take to use AI safely.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
+   "intro_ar": "بعد مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء مع أحد المتحدثين في جلسة حوكمة الذكاء الاصطناعي بالمؤتمر، وتكرّم بتسجيل إجاباته على أسئلتي بعد المؤتمر.\n\nتحدثنا عن كيف تكتشف المؤسسات أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها، وأهم ضمانة قبل منح وكيل الذكاء الاصطناعي صلاحية الوصول إلى أنظمة الشركة، وأول خطوة تتخذها المؤسسة العُمانية لاستخدام الذكاء الاصطناعي بأمان.\n\nأشكره على وقته، وعلى تعاونه الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك له التعريف بنفسه.",
+   "outro_en": "Thank you, Mr. Mohammed, for your time and for sharing your practical insights on AI visibility, securing AI agents and safe adoption. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_ar": "شكرًا جزيلًا أستاذ محمد على وقتك، وعلى أفكارك العملية حول رؤية استخدام الذكاء الاصطناعي وتأمين وكلائه وتبنّيه بأمان. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "note_ar": "الإجابات أدناه ترجمة عربية نصية لإجابات الأستاذ محمد تاج الدين بالإنجليزية، والتسجيل الصوتي بصوته الأصلي بالإنجليزية.",
+   "ai_voice_consent": "ما انطلب صوت مولّد. وافق محمد على نشر النص الإنجليزي (PDF) -- 18 أكتوبر 2026؛ الترجمة العربية تنتظر موافقته",
+   "og_image": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og.jpg",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og-en.jpg",
+   "items": [
+    {
+     "label_ar": "تعريف الضيف",
+     "label_en": "Introduction",
+     "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك ومنصبك وطبيعة عملك؟",
+     "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-intro-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a0.m4a",
+     "duration": 70.0,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "My name is Mohammed Tajuddin, and I'm the Product Director for Network Security, Content Security and Data Security at Securado. My role involves managing the end-to-end business of cybersecurity solutions, from the vendors to the distributors to the end users. On the end-user side, I meet customers, understand their requirements, and design the right solutions to support sales, technical delivery and long-term customer success.",
+      "I also work closely with organizations to help them strengthen their security posture, protect their critical data and adopt emerging technologies in a secure and practical way. With AI becoming increasingly integrated into business operations, I am particularly interested in how organizations can embrace AI innovation while ensuring that security, governance and trust remain at the core of their journey."
+     ],
+     "ar_paragraphs": [
+      "اسمي محمد تاج الدين، وأعمل مدير المنتجات لأمن الشبكات وأمن المحتوى وأمن البيانات في شركة Securado. يشمل دوري إدارة أعمال حلول الأمن السيبراني من البداية إلى النهاية، من الشركات المصنّعة إلى الموزّعين ثم إلى المستخدمين النهائيين. ومن جهة المستخدمين، ألتقي العملاء وأفهم احتياجاتهم وأصمّم الحلول المناسبة لدعم المبيعات والتنفيذ الفني ونجاح العملاء على المدى الطويل.",
+      "كما أعمل عن قرب مع المؤسسات لمساعدتها على تعزيز وضعها الأمني وحماية بياناتها الحساسة وتبنّي التقنيات الناشئة بطريقة آمنة وعملية. ومع اندماج الذكاء الاصطناعي المتزايد في أعمال المؤسسات، يهمني بشكل خاص كيف يمكن للمؤسسات أن تتبنّى ابتكارات الذكاء الاصطناعي، مع بقاء الأمن والحوكمة والثقة في صميم رحلتها."
+     ]
+    },
+    {
+     "q_ar": "في مؤتمر سايبر إكس عُمان، طُرحت في الجلسة فكرة «لا يمكنك حوكمة ما لا تراه». كيف يمكن للمؤسسة أن تبدأ في اكتشاف أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها؟",
+     "q_en": "At CyberX Oman, the panel raised the idea that “you can’t govern what you can’t see.” How can an organization start discovering AI tools its employees use without its knowledge?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q1-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a1.m4a",
+     "duration": 307.3,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Yes — you can't govern what you can't see. This is absolutely true, and I think it is one of the most important challenges organizations are facing today. AI is no longer just a standalone software or application. It is increasingly embedded into existing software, business applications, subscriptions, development tools and everyday employee workflows. An employee might use an AI assistant to summarize a document, prepare a presentation, analyze customer information or write code, without the organization necessarily having visibility into that activity.",
+      "So I wouldn't start by asking employees to list the AI tools they are using. Instead, I would start by looking at the organization's existing technology environment — what technologies they already have in their data center. That is where the journey starts. To gain visibility over the AI in use, I would consider three to four steps.",
+      "First, organizations can use network security tools — DNS, web proxy logs and endpoint monitoring — to identify connections to known AI services. In other words, we look at endpoint telemetry, network telemetry and logs to see which AI services are connecting to our environment. This shows us which AI tools are in use, whether approved or not. If they are not approved, that is shadow AI. If they are approved, there is no problem using them. Either way, we have a starting point: these are the services our organization is connecting to. That is the infrastructure side.",
+      "Second, applications. Many of the internal applications we use have API connectivity to the outside. Very often they come with built-in AI modules, features or functionalities, or we connect them through APIs to external AI applications. So we also need application and API telemetry, to see where AI is talking to our applications.",
+      "The third step is also very important: we need to understand what type of data is being fed to AI models. An employee might prepare a presentation for the public, which is general information, or he might use sensitive or confidential data to complete a task or produce some output. The data can be personal, confidential or simply public, so we need to know what is being fed to AI.",
+      "These three things help us understand which AI services the organization is currently using, or which are communicating with it. And one more thing: we need to do this regularly. Every day we see new AI tools, new AI subscriptions and new AI services, and some of them arrive by default when we update our applications and software, or come built in when we purchase a new application. So these steps need to be followed continuously, to keep visibility of all the AI tools and services connecting to our environment.",
+      "Ultimately, our goal is not to stop people from using AI. It is to make sure we are using it efficiently."
+     ],
+     "ar_paragraphs": [
+      "نعم، لا يمكنك حوكمة ما لا تراه. هذا صحيح تمامًا، وأعتقد أنه من أهم التحديات التي تواجهها المؤسسات اليوم. لم يعد الذكاء الاصطناعي برنامجًا أو تطبيقًا مستقلًا، بل أصبح مدمجًا بشكل متزايد في البرمجيات الحالية وتطبيقات الأعمال والاشتراكات وأدوات التطوير وسير العمل اليومي للموظفين. فقد يستخدم الموظف مساعدًا ذكيًا لتلخيص مستند أو إعداد عرض تقديمي أو تحليل بيانات العملاء أو كتابة برمجيات، دون أن تكون لدى المؤسسة رؤية لهذا النشاط.",
+      "لذلك لن أبدأ بمطالبة الموظفين بإعداد قائمة بأدوات الذكاء الاصطناعي التي يستخدمونها، بل أبدأ بالنظر في البيئة التقنية الحالية للمؤسسة، أي التقنيات الموجودة لديها في مركز بياناتها. من هنا تبدأ الرحلة. وللحصول على رؤية واضحة لاستخدام الذكاء الاصطناعي، أرى ثلاث إلى أربع خطوات.",
+      "أولًا، يمكن للمؤسسات استخدام أدوات أمن الشبكات، مثل سجلات DNS والوكيل الشبكي (web proxy) ومراقبة الأجهزة الطرفية، لرصد الاتصالات بخدمات الذكاء الاصطناعي المعروفة. أي إننا ننظر في بيانات الأجهزة الطرفية والشبكة والسجلات لنرى أي خدمات ذكاء اصطناعي تتصل ببيئتنا. وهذا يكشف لنا الأدوات المستخدمة، سواء كانت معتمدة أم لا. فإن لم تكن معتمدة، فهذا ما يسمى «الذكاء الاصطناعي الخفي»، وإن كانت معتمدة فلا مشكلة في استخدامها. وفي الحالتين تكون لدينا نقطة بداية: هذه هي الخدمات التي تتصل بها مؤسستنا. هذا هو جانب البنية التحتية.",
+      "ثانيًا، التطبيقات. كثير من التطبيقات الداخلية التي نستخدمها متصلة بالخارج عبر واجهات برمجية (API)، وكثيرًا ما تأتي بوحدات أو ميزات ذكاء اصطناعي مدمجة، أو نربطها عبر هذه الواجهات بتطبيقات ذكاء اصطناعي خارجية. لذلك نحتاج أيضًا إلى مراقبة التطبيقات والواجهات البرمجية لنعرف أين يتواصل الذكاء الاصطناعي مع تطبيقاتنا.",
+      "الخطوة الثالثة مهمة جدًا أيضًا: أن نفهم نوع البيانات التي تُعطى لنماذج الذكاء الاصطناعي. فقد يُعدّ الموظف عرضًا تقديميًا للجمهور، وهي معلومات عامة، وقد يستخدم بيانات حساسة أو سرية لإنجاز مهمة أو الحصول على نتيجة ما. البيانات قد تكون شخصية أو سرية أو عامة، ولذلك يجب أن نعرف ما الذي يُعطى للذكاء الاصطناعي.",
+      "هذه الأمور الثلاثة تساعدنا على فهم خدمات الذكاء الاصطناعي التي تستخدمها المؤسسة حاليًا، أو التي تتواصل معها. وأمر آخر: يجب أن نقوم بذلك بانتظام. ففي كل يوم نرى أدوات واشتراكات وخدمات ذكاء اصطناعي جديدة، وبعضها يصل تلقائيًا عند تحديث تطبيقاتنا وبرامجنا، أو يأتي مدمجًا عند شراء تطبيق جديد. لذلك يجب اتباع هذه الخطوات باستمرار، لنحافظ على رؤية كل أدوات وخدمات الذكاء الاصطناعي التي تتصل ببيئتنا.",
+      "في النهاية، هدفنا ليس منع الناس من استخدام الذكاء الاصطناعي، بل التأكد من أننا نستخدمه بكفاءة."
+     ]
+    },
+    {
+     "q_ar": "عندما يستطيع وكيل الذكاء الاصطناعي تنفيذ إجراءات داخل أنظمة المؤسسة، ما أهم ضمانة يجب وضعها قبل منحه هذه الصلاحية؟",
+     "q_en": "When an AI agent can take actions within an organization’s systems, what is the most important safeguard to put in place before granting it that access?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q2-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a2.m4a",
+     "duration": 230.1,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "If you ask me, the most important safeguard is to establish a clear identity and enforce least-privilege access before allowing an agent to interact with any system.",
+      "Traditionally, we used chatbots: we ask a question and it gives an answer. It is one-way. Agents are different. When we ask something, the AI can respond and reason with us. Not only that, agents also have access to databases; they can connect to APIs, create tickets, make changes, send emails and at times even change configurations. The AI agents we are talking about can take decisions by themselves. With earlier chatbots, the decision came from the human side; with agents, the decisions are taken by the agents themselves.",
+      "So before granting any access, we need to check a few things. First, who is the owner of this agent? Is it a single individual user, or a shared account with multiple users? Second, what is it allowed to access — a database, an application or a specific network? And third, what actions is it authorized to perform? This is very important, because it changes the entire structure. If an agent can take any action, that is a much bigger risk.",
+      "Every agent should have its own unique, traceable identity, with the minimum permissions required for its specific purpose. We should never give an AI agent administrative privileges simply because it needs to perform a task. Beyond that, we need continuous monitoring of its activities at runtime, clear audit trails, and a human approval process for any changes, especially modifications. We should also be able to suspend or stop the agent and close all its access immediately if something goes wrong.",
+      "My view is that we shouldn't judge an AI agent's risk only by how intelligent it is. We should also think about the authority we have given it. The more autonomy we give AI, the stronger our identity, access control and monitoring mechanisms must become."
+     ],
+     "ar_paragraphs": [
+      "برأيي، أهم ضمانة هي تحديد هوية واضحة وتطبيق مبدأ «أقل صلاحية ممكنة» قبل السماح للوكيل بالتعامل مع أي نظام.",
+      "في السابق كنا نستخدم روبوتات المحادثة: نسأل سؤالًا فتعطينا إجابة، في اتجاه واحد. أما الوكلاء فمختلفون؛ فعندما نسأل، يستطيع الذكاء الاصطناعي أن يجيب ويحلّل ويستنتج معنا. وليس هذا فقط، بل يمكن للوكلاء الوصول إلى قواعد البيانات، والاتصال بالواجهات البرمجية، وفتح التذاكر، وإجراء التغييرات، وإرسال الرسائل، بل وتغيير الإعدادات أحيانًا. وكلاء الذكاء الاصطناعي الذين نتحدث عنهم يستطيعون اتخاذ القرارات بأنفسهم؛ ففي روبوتات المحادثة السابقة كان القرار من جهة الإنسان، أما مع الوكلاء فالقرار يتخذه الوكيل نفسه.",
+      "لذلك قبل منح أي صلاحية، علينا التحقق من عدة أمور. أولًا: من مالك هذا الوكيل؟ هل هو مستخدم واحد، أم حساب مشترك بين عدة مستخدمين؟ ثانيًا: ما الذي يُسمح له بالوصول إليه؟ قاعدة بيانات، أم تطبيق، أم شبكة محددة؟ وثالثًا: ما الإجراءات المصرّح له بتنفيذها؟ وهذا مهم جدًا لأنه يغيّر البنية كلها، فإذا كان الوكيل قادرًا على تنفيذ أي إجراء، فالخطر أكبر بكثير.",
+      "يجب أن تكون لكل وكيل هوية فريدة يمكن تتبّعها، مع أقل الصلاحيات اللازمة لغرضه المحدد. ولا ينبغي أبدًا منح وكيل الذكاء الاصطناعي صلاحيات إدارية لمجرد أنه يحتاج إلى أداء مهمة. وإلى جانب ذلك، نحتاج إلى مراقبة مستمرة لنشاطه أثناء التشغيل، وسجلات تدقيق واضحة، وموافقة بشرية على أي تغييرات، خصوصًا التعديلات. ويجب أن نتمكن من إيقاف الوكيل وإغلاق كل صلاحياته فورًا إذا حدث خطأ.",
+      "رأيي أننا لا ينبغي أن نقيس خطر وكيل الذكاء الاصطناعي بمدى ذكائه فقط، بل أيضًا بحجم الصلاحيات التي منحناه إياها. فكلما منحنا الذكاء الاصطناعي استقلالية أكبر، وجب أن تكون آليات الهوية والتحكم في الوصول والمراقبة أقوى."
+     ]
+    },
+    {
+     "q_ar": "لو أوصيت بخطوة واحدة تتخذها المؤسسة العُمانية اليوم لاستخدام الذكاء الاصطناعي بأمان، فما هي؟",
+     "q_en": "If you could recommend one step an Omani organization should take today to use AI safely, what would it be?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q3-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a3.m4a",
+     "duration": 221.5,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "This is one of the questions organizations ask most today, and I would recommend just one single action: conduct an AI visibility and risk assessment across the organization.",
+      "Before buying new AI technologies or more AI services, we need to see where AI is already being used in the organization: the applications we already have, whether they talk to other AI services through APIs, and whether the software comes with AI services and subscriptions enabled by default. There are also the tools employees use independently for their day-to-day work. Organizations should then identify what information these tools can access and whether they can take actions within business systems.",
+      "This part — what data is being accessed and what actions are being taken — is crucial for organizations that handle sensitive customer information, government data, financial data and other critical information. They need to assess their data exposure, the access permissions in place, their regulatory obligations, and whether information is being sent to external AI services. For Omani organizations, data sovereignty and the applicable national regulations are very important, and should be considered when selecting AI services and designing the architecture.",
+      "Once an organization has visibility, it can establish practical rules. From the list of AI services assessed, it can highlight which are approved and which are not, define what data employees can share, and decide what controls are required for AI systems that can make decisions or take actions.",
+      "I would not recommend banning or stopping AI. That could push its use further underground and prevent organizations from benefiting from it. My recommendation is very simple: before asking how quickly you can adopt AI, understand where you are already using it and what risks come with it. Safe adoption starts with visibility."
+     ],
+     "ar_paragraphs": [
+      "هذا من أكثر الأسئلة التي تطرحها المؤسسات اليوم، وأوصي بإجراء واحد فقط: تقييم شامل لاستخدام الذكاء الاصطناعي ومخاطره على مستوى المؤسسة كلها.",
+      "قبل شراء تقنيات أو خدمات ذكاء اصطناعي جديدة، يجب أن نرى أين يُستخدم الذكاء الاصطناعي أصلًا داخل المؤسسة: التطبيقات الموجودة لدينا، وهل تتواصل مع خدمات ذكاء اصطناعي أخرى عبر واجهات برمجية، وهل تأتي البرمجيات بخدمات واشتراكات ذكاء اصطناعي مفعّلة تلقائيًا. وهناك أيضًا الأدوات التي يستخدمها الموظفون بأنفسهم في عملهم اليومي. ثم على المؤسسات أن تحدد ما المعلومات التي تستطيع هذه الأدوات الوصول إليها، وهل يمكنها تنفيذ إجراءات داخل أنظمة العمل.",
+      "هذا الجزء، أي البيانات التي يُوصل إليها والإجراءات التي تُنفّذ، بالغ الأهمية للمؤسسات التي تتعامل مع بيانات العملاء الحساسة والبيانات الحكومية والمالية وغيرها من المعلومات الحرجة. عليها أن تقيّم مدى انكشاف بياناتها، والصلاحيات الممنوحة، والتزاماتها التنظيمية، وهل تُرسل المعلومات إلى خدمات ذكاء اصطناعي خارجية. وبالنسبة للمؤسسات العُمانية، فإن سيادة البيانات والأنظمة الوطنية المعمول بها مهمة جدًا، ويجب مراعاتها عند اختيار خدمات الذكاء الاصطناعي وتصميم البنية التقنية.",
+      "وعندما تتضح الرؤية للمؤسسة، يمكنها وضع قواعد عملية: فمن قائمة خدمات الذكاء الاصطناعي التي جرى تقييمها، تحدد المعتمد منها وغير المعتمد، وتحدد البيانات التي يُسمح للموظفين بمشاركتها، والضوابط المطلوبة لأنظمة الذكاء الاصطناعي القادرة على اتخاذ القرارات أو تنفيذ الإجراءات.",
+      "لا أنصح بحظر الذكاء الاصطناعي أو إيقافه، فقد يدفع ذلك استخدامه إلى الخفاء أكثر ويحرم المؤسسات من الاستفادة منه. توصيتي بسيطة جدًا: قبل أن تسأل كم بسرعة يمكنك تبنّي الذكاء الاصطناعي، اعرف أين تستخدمه أصلًا وما المخاطر المصاحبة له. فالتبنّي الآمن يبدأ بالرؤية."
+     ]
+    },
+    {
+     "q_ar": "ما الاعتقاد الشائع عن الذكاء الاصطناعي في بيئة العمل الذي تتمنى أن يتوقف القادة والموظفون عن تصديقه؟",
+     "q_en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-closing-en.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a4.m4a",
+     "duration": 120.9,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Two things, basically. First, we should stop believing that AI is going to replace everyone. Second, we should not trust it completely, thinking it will do everything on its own. Both views miss the real opportunity.",
+      "AI's real value is in helping people make better decisions, within a structured framework where we can reduce repetitive work, analyze information faster, and focus on the activities where our experience and judgment matter most. At the same time, just because an AI system gives us an answer we couldn't reach ourselves doesn't mean the answer is always correct. AI can make mistakes. It can expose sensitive information, and it can take wrong actions if it has been given excessive access or insufficient controls.",
+      "So the right approach is to combine AI capabilities with human judgment, along with security controls and clear accountability. For me, the future is not about choosing between people and AI. It is about building organizations where people and AI work together effectively, with humans retaining appropriate visibility, accountability, responsibility and oversight."
+     ],
+     "ar_paragraphs": [
+      "أمران في الأساس. أولًا، يجب أن نتوقف عن الاعتقاد بأن الذكاء الاصطناعي سيحل محل الجميع. وثانيًا، لا ينبغي أن نثق به ثقة كاملة ظنًا أنه سيفعل كل شيء وحده. كلا الرأيين يُضيّع الفرصة الحقيقية.",
+      "القيمة الحقيقية للذكاء الاصطناعي هي مساعدة الناس على اتخاذ قرارات أفضل، ضمن إطار منظّم نقلّل فيه الأعمال المتكررة، ونحلّل المعلومات بسرعة أكبر، ونركّز على المهام التي تهم فيها خبرتنا وحكمنا أكثر. وفي الوقت نفسه، كون نظام الذكاء الاصطناعي يعطينا إجابة لم نكن لنصل إليها بأنفسنا لا يعني أن الإجابة صحيحة دائمًا. فالذكاء الاصطناعي قد يخطئ، وقد يكشف معلومات حساسة، وقد ينفّذ إجراءات خاطئة إذا مُنح صلاحيات زائدة أو ضوابط غير كافية.",
+      "لذلك فالنهج الصحيح هو الجمع بين قدرات الذكاء الاصطناعي والحكم البشري، مع ضوابط أمنية ومسؤولية واضحة. بالنسبة لي، المستقبل ليس اختيارًا بين الإنسان والذكاء الاصطناعي، بل بناء مؤسسات يعمل فيها الإنسان والذكاء الاصطناعي معًا بفاعلية، مع احتفاظ الإنسان بالرؤية والمساءلة والمسؤولية والإشراف المناسب."
+     ]
+    },
+    {
+     "q_ar": "كيف تقيّم دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيك في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+     "q_en": "How do you assess the conference’s role in strengthening cybersecurity in Oman, and what is your view on the progress the Sultanate has made in this field?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-last-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-last-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a5.m4a",
+     "duration": 160.8,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "I believe conferences like CyberX Oman play a very important role in strengthening the cybersecurity ecosystem, because cybersecurity cannot be addressed by technology alone. It requires awareness, collaboration, knowledge sharing and a shared understanding of emerging threats. Events like this bring together businesses, technology providers, cybersecurity professionals and decision makers, creating an opportunity to exchange practical experience, understand new threats and discuss how organizations can strengthen their security posture.",
+      "As for Oman's progress, I believe the Sultanate has been moving in the right direction: developing its digital infrastructure, strengthening its cybersecurity capabilities, and placing greater importance on information protection and trust. However, the threat landscape is also evolving. Organizations now face AI-driven attacks, ransomware, supply chain risks, data exposure and increasingly autonomous AI systems. Cybersecurity therefore needs to evolve from simply protecting network boundaries to securing identities, applications, data and AI-driven activities.",
+      "I also believe Oman has a big opportunity to build on its local cybersecurity talent, strengthen collaboration between the public and private sectors, and develop secure AI capabilities aligned with the country's data protection and sovereignty requirements. Ultimately, the objective should not just be to respond to cyberattacks more effectively, but to build organizations that are resilient, trusted and ready to adopt new technologies securely. Cybersecurity is no longer just a technology investment; it is an essential foundation for Oman's digital transformation and economic growth."
+     ],
+     "ar_paragraphs": [
+      "أعتقد أن مؤتمرات مثل سايبر إكس عُمان تؤدي دورًا مهمًا جدًا في تعزيز منظومة الأمن السيبراني، لأن الأمن السيبراني لا يمكن معالجته بالتقنية وحدها؛ فهو يتطلب الوعي والتعاون وتبادل المعرفة والفهم المشترك للتهديدات الناشئة. فعاليات كهذه تجمع الشركات ومزوّدي التقنية ومتخصصي الأمن السيبراني وصنّاع القرار، فتتيح فرصة لتبادل الخبرات العملية، وفهم التهديدات الجديدة، ومناقشة كيف تعزز المؤسسات وضعها الأمني.",
+      "أما عن تقدّم عُمان، فأرى أن السلطنة تسير في الاتجاه الصحيح: في تطوير بنيتها الرقمية، وتعزيز قدراتها في الأمن السيبراني، وإيلاء أهمية أكبر لحماية المعلومات والثقة. لكن مشهد التهديدات يتطور أيضًا؛ فالمؤسسات تواجه اليوم هجمات مدعومة بالذكاء الاصطناعي، وبرامج الفدية، ومخاطر سلاسل الإمداد، وانكشاف البيانات، وأنظمة ذكاء اصطناعي تزداد استقلالية. لذلك يجب أن يتطور الأمن السيبراني من مجرد حماية حدود الشبكة إلى تأمين الهويات والتطبيقات والبيانات والأنشطة التي يقودها الذكاء الاصطناعي.",
+      "وأعتقد أيضًا أن أمام عُمان فرصة كبيرة للبناء على كفاءاتها المحلية في الأمن السيبراني، وتعزيز التعاون بين القطاعين العام والخاص، وتطوير قدرات ذكاء اصطناعي آمنة تتوافق مع متطلبات حماية البيانات وسيادتها في البلاد. وفي النهاية، لا ينبغي أن يكون الهدف مجرد الاستجابة للهجمات السيبرانية بفاعلية أكبر، بل بناء مؤسسات مرنة وموثوقة ومستعدة لتبنّي التقنيات الجديدة بأمان. فالأمن السيبراني لم يعد مجرد استثمار تقني، بل أساس جوهري للتحول الرقمي والنمو الاقتصادي في عُمان."
+     ]
+    }
+   ]
   }
  ]
 }
