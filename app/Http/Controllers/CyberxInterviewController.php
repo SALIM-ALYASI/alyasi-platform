@@ -100,7 +100,8 @@ class CyberxInterviewController extends Controller
 
         abort_if($guest === null, 404);
 
-        if (GuestLinkExpiry::isExpired($id)) {
+        // ضيف مقابلته منشورة (hidden بالأداة) خلص تسجيله: صفحة الرفع تنقفل له.
+        if (! empty($guest['hidden']) || GuestLinkExpiry::isExpired($id)) {
             return response()->view('tools.cyberx-interview-closed', [], 410);
         }
 

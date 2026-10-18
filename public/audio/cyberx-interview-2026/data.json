@@ -147,7 +147,8 @@
     "audio": "fatma-get-well-ar.m4a",
     "audio_label": "🤲 الدعاء بصوتي",
     "alt": "دعاء بالشفاء لفاطمة اللواتي"
-   }
+   },
+   "hidden": true
   },
   {
    "id": "sara",
@@ -357,7 +358,8 @@
    ],
    "final_question": "foreign",
    "language": "en",
-   "hint_en": "When a breach happens… are we ready?"
+   "hint_en": "When a breach happens… are we ready?",
+   "hidden": true
   },
   {
    "id": "abhishek",
@@ -448,7 +450,8 @@
      "en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?"
     }
    ],
-   "final_question": "foreign"
+   "final_question": "foreign",
+   "hidden": true
   },
   {
    "id": "hajar",

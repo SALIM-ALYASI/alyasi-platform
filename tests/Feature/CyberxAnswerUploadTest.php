@@ -99,16 +99,19 @@ class CyberxAnswerUploadTest extends TestCase
         // قبل مهلة الأيام العشرة وإقفال الأداة، عشان الاختبار ما يتغير مع التاريخ.
         $this->travelTo('2026-10-20 12:00:00');
 
-        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'ahmed']))
+        // أحمد مقابلته منشورة وصفحته مقفولة -- الاختبار على ضيف ما سجّل بعد.
+        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'ahmed']))->assertStatus(410);
+
+        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'rineel']))
             ->assertOk()
             ->assertSee('lang="en"', false)
-            ->assertSee('Hi Ahmed Reza')
+            ->assertSee('Hi Rineel Wahid')
             ->assertSeeInOrder([
-                'data-question="ahmed-ahmed-app-intro"',
-                'data-question="ahmed-ahmed-v3-q1"',
-                'data-question="ahmed-ahmed-app-closing"',
-                'data-question="ahmed-ahmed-last"',
-                'data-question="ahmed-upload-other"',
+                'data-question="rineel-rineel-intro"',
+                'data-question="rineel-rineel-q1"',
+                'data-question="rineel-rineel-q5"',
+                'data-question="rineel-rineel-last"',
+                'data-question="rineel-upload-other"',
             ], false)
             ->assertSee('what is your view on the progress the Sultanate has made');
 
