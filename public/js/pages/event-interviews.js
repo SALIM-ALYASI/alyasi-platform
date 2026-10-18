@@ -183,8 +183,9 @@
         var englishTwin = function (original, tag, className, texts) {
             var twin = document.createElement(tag);
             twin.className = className;
-            twin.lang = 'en';
-            twin.dir = 'ltr';
+            // لغة الترجمة: إنجليزي (خالد) أو عربي (فاطمة) -- واتجاه النص حسبها.
+            twin.lang = translation.lang || 'en';
+            twin.dir = twin.lang === 'ar' ? 'rtl' : 'ltr';
             twin.hidden = true;
             texts.forEach(function (text) {
                 if (tag === 'div') {

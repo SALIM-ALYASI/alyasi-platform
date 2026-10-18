@@ -1769,10 +1769,11 @@
     "en": "FL"
    },
    "languages": [
-    "en",
+    "en"
+   ],
+   "preview_languages": [
     "ar"
    ],
-   "preview_languages": [],
    "original_language": "en",
    "topic_ar": "الامتثال مقابل المرونة السيبرانية، واستمرارية أعمال المؤسسات الصغيرة، وإيصال الوعي السيبراني بالعربية",
    "topic_en": "Compliance versus resilience, keeping small organizations running, and cyber awareness in Arabic",
@@ -1782,7 +1783,6 @@
    "intro_ar": "بعد مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء مع إحدى القيادات النسائية في مجال الأمن السيبراني بالمنطقة، وتكرّمت بتسجيل إجاباتها على أسئلتي بعد المؤتمر.\n\nتحدثنا عن الفرق بين الامتثال والمرونة السيبرانية الحقيقية، وكيف تحافظ المؤسسات الصغيرة على استمرار خدماتها أثناء الاختراق، وأكثر الأخطاء شيوعًا في خطط التعافي، وكيف نوصل المعرفة بالأمن السيبراني إلى الناس في عُمان باللغة العربية.\n\nأشكرها على وقتها، وعلى تعاونها الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك لها التعريف بنفسها.",
    "outro_en": "Thank you, Ms. Fatma, for your time and for sharing your practical insights on cyber resilience, recovery and bringing cybersecurity knowledge to everyone in Oman. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
    "outro_ar": "شكرًا جزيلًا أستاذة فاطمة على وقتك، وعلى أفكارك العملية حول المرونة السيبرانية والتعافي وإيصال المعرفة بالأمن السيبراني إلى الجميع في عُمان. سعدنا بهذا الحوار معكِ عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
-   "note_ar": "الإجابات أدناه ترجمة عربية نصية لإجابات الأستاذة فاطمة اللواتي بالإنجليزية، والتسجيل الصوتي بصوتها الأصلي بالإنجليزية.",
    "ai_voice_consent": "رفضت الصوت المولّد -- العربي ترجمة نصية فقط مع تسجيلها الإنجليزي (مثل خالد). راجعت النص الإنجليزي ووافقت -- 18 أكتوبر 2026، نقلها سالم",
    "og_image": "/images/interviews/cyberx-oman-2026/fatma-al-lawati-og.jpg",
    "og_image_en": "/images/interviews/cyberx-oman-2026/fatma-al-lawati-og-en.jpg",
@@ -1802,9 +1802,19 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "Thank you, Salem. It's a pleasure to speak with you. I'm delighted to be part of this conference and to share some perspective on cybersecurity and the future of Oman's digital economy."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "Thank you, Salem."
+      },
+      {
+       "t": 1.36,
+       "en": "It's a pleasure to speak with you."
+      },
+      {
+       "t": 3.1,
+       "en": "I'm delighted to be part of this conference and to share some perspective on cybersecurity and the future of Oman's digital economy."
+      }
      ],
      "ar_paragraphs": [
       "شكرًا لك سالم، يسعدني التحدث معك. وأنا سعيدة بالمشاركة في هذا المؤتمر ومشاركة بعض الرؤى حول الأمن السيبراني ومستقبل الاقتصاد الرقمي في سلطنة عُمان."
@@ -1825,10 +1835,23 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "My name is Fatma Al Lawati. I'm a cybersecurity executive and the Speakers Lead at Women in Cybersecurity Middle East (WiCSME). Through WiCSME, we work to amplify cybersecurity expertise, create opportunities for professionals to share their knowledge, and connect experts with regional and international platforms.",
-      "I am particularly passionate about the intersection of cybersecurity, innovation and digital transformation, and how we can build a digital economy that is not only innovative, but also secure and resilient."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "My name is Fatma Al Lawati."
+      },
+      {
+       "t": 3.44,
+       "en": "I'm a cybersecurity executive and the Speakers Lead at Women in Cybersecurity Middle East (WiCSME)."
+      },
+      {
+       "t": 10.98,
+       "en": "Through WiCSME, we work to amplify cybersecurity expertise, create opportunities for professionals to share their knowledge, and connect experts with regional and international platforms."
+      },
+      {
+       "t": 23.0,
+       "en": "I am particularly passionate about the intersection of cybersecurity, innovation and digital transformation, and how we can build a digital economy that is not only innovative, but also secure and resilient."
+      }
      ],
      "ar_paragraphs": [
       "اسمي فاطمة اللواتي، وأنا قيادية تنفيذية في مجال الأمن السيبراني، ومسؤولة المتحدثين في منظمة المرأة في الأمن السيبراني بالشرق الأوسط (WiCSME).",
@@ -1849,11 +1872,43 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "I believe there is a fundamental difference between being compliant and being resilient. Compliance tells us whether we have the required policies, controls and procedures in place. Resilience tells us whether those controls actually work when something goes wrong.",
-      "An organization can have excellent policies on paper, but the real question is: Can it detect an attack? Can it respond effectively? Can it continue delivering critical services? And how quickly can it recover?",
-      "The best way to know is through regular testing — cyberattack simulations, incident response exercises and recovery drills that involve not only IT teams, but also business leaders. Because ultimately, compliance is something you demonstrate; resilience is something you prove."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "I believe there is a fundamental difference between being compliant and being resilient."
+      },
+      {
+       "t": 7.84,
+       "en": "Compliance tells us whether we have the required policies, controls and procedures in place."
+      },
+      {
+       "t": 14.94,
+       "en": "Resilience tells us whether those controls actually work when something goes wrong."
+      },
+      {
+       "t": 20.8,
+       "en": "An organization can have excellent policies on paper, but the real question is: Can it detect an attack?"
+      },
+      {
+       "t": 29.02,
+       "en": "Can it respond effectively?"
+      },
+      {
+       "t": 31.16,
+       "en": "Can it continue delivering critical services?"
+      },
+      {
+       "t": 34.4,
+       "en": "And how quickly can it recover?"
+      },
+      {
+       "t": 36.92,
+       "en": "The best way to know is through regular testing — cyberattack simulations, incident response exercises and recovery drills that involve not only IT teams, but also business leaders."
+      },
+      {
+       "t": 52.22,
+       "en": "Because ultimately, compliance is something you demonstrate; resilience is something you prove."
+      }
      ],
      "ar_paragraphs": [
       "أعتقد أن هناك فرقًا جوهريًا بين الامتثال والمرونة السيبرانية.",
@@ -1876,11 +1931,31 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "For small organizations, my advice is simple: know what matters most to your business, and have a tested plan to keep it running.",
-      "Not every system or service carries the same importance. Organizations should first identify their critical services — those they cannot afford to lose — and understand what they need to restore them. Then they should ensure their essential data is securely backed up, that recovery is tested, and that employees know who to contact and what to do during an incident.",
-      "You don't necessarily need a large cybersecurity budget to start building resilience. Start with your most critical service, protect it, and practice how you would recover."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "For small organizations, my advice is simple: know what matters most to your business, and have a tested plan to keep it running."
+      },
+      {
+       "t": 10.32,
+       "en": "Not every system or service carries the same importance."
+      },
+      {
+       "t": 15.28,
+       "en": "Organizations should first identify their critical services — those they cannot afford to lose — and understand what they need to restore them."
+      },
+      {
+       "t": 25.26,
+       "en": "Then they should ensure their essential data is securely backed up, that recovery is tested, and that employees know who to contact and what to do during an incident."
+      },
+      {
+       "t": 36.78,
+       "en": "You don't necessarily need a large cybersecurity budget to start building resilience."
+      },
+      {
+       "t": 42.4,
+       "en": "Start with your most critical service, protect it, and practice how you would recover."
+      }
      ],
      "ar_paragraphs": [
       "نصيحتي للمؤسسات الصغيرة بسيطة: حددوا ما هو الأكثر أهمية لأعمالكم، وضعوا خطة مجرّبة تضمن استمراره.",
@@ -1903,10 +1978,27 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "One of the most common mistakes is assuming that having a recovery plan means being ready to recover. Many organizations document their recovery procedures, but they don't test them under realistic conditions. Then, when an incident happens, they discover that backups cannot be restored quickly enough, responsibilities are unclear, or critical systems depend on other services they hadn't considered.",
-      "My recommendation is to test the plan regularly and learn from every exercise. Because during a cyber crisis, you don't want to discover for the first time whether your recovery plan actually works."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "One of the most common mistakes is assuming that having a recovery plan means being ready to recover."
+      },
+      {
+       "t": 8.42,
+       "en": "Many organizations document their recovery procedures, but they don't test them under realistic conditions."
+      },
+      {
+       "t": 16.34,
+       "en": "Then, when an incident happens, they discover that backups cannot be restored quickly enough, responsibilities are unclear, or critical systems depend on other services they hadn't considered."
+      },
+      {
+       "t": 28.12,
+       "en": "My recommendation is to test the plan regularly and learn from every exercise."
+      },
+      {
+       "t": 35.26,
+       "en": "Because during a cyber crisis, you don't want to discover for the first time whether your recovery plan actually works."
+      }
      ],
      "ar_paragraphs": [
       "أحد أكثر الأخطاء شيوعًا هو الاعتقاد بأن مجرد امتلاك خطة للتعافي يعني أن المؤسسة أصبحت مستعدة بالفعل للتعافي.",
@@ -1929,11 +2021,35 @@
       "en",
       "ar"
      ],
-     "segments": [],
-     "en_paragraphs": [
-      "I believe it's both, and the two objectives complement each other. Conferences like this provide an opportunity to strengthen cybersecurity awareness and knowledge within Oman, while also showcasing the expertise, innovation and progress taking place in our cybersecurity ecosystem.",
-      "But I think the real value comes from what happens after the conference. We need to take these discussions beyond conference halls and make cybersecurity knowledge accessible to everyone, not just cybersecurity professionals. That means creating Arabic content, short educational videos, practical guidance, community discussions, and simplified messages that explain cybersecurity in a way that is relevant to people's daily lives.",
-      "We need to engage students, entrepreneurs, small businesses and the wider community, because cybersecurity awareness shouldn't be limited to people who understand technical terminology. If we want to build a resilient digital Oman, cybersecurity knowledge must reach every part of our society — in the language people understand."
+     "segments": [
+      {
+       "t": 0.0,
+       "en": "I believe it's both, and the two objectives complement each other."
+      },
+      {
+       "t": 5.68,
+       "en": "Conferences like this provide an opportunity to strengthen cybersecurity awareness and knowledge within Oman, while also showcasing the expertise, innovation and progress taking place in our cybersecurity ecosystem."
+      },
+      {
+       "t": 20.08,
+       "en": "But I think the real value comes from what happens after the conference."
+      },
+      {
+       "t": 24.28,
+       "en": "We need to take these discussions beyond conference halls and make cybersecurity knowledge accessible to everyone, not just cybersecurity professionals."
+      },
+      {
+       "t": 36.02,
+       "en": "That means creating Arabic content, short educational videos, practical guidance, community discussions, and simplified messages that explain cybersecurity in a way that is relevant to people's daily lives."
+      },
+      {
+       "t": 50.02,
+       "en": "We need to engage students, entrepreneurs, small businesses and the wider community, because cybersecurity awareness shouldn't be limited to people who understand technical terminology."
+      },
+      {
+       "t": 62.6,
+       "en": "If we want to build a resilient digital Oman, cybersecurity knowledge must reach every part of our society — in the language people understand."
+      }
      ],
      "ar_paragraphs": [
       "أعتقد أنه يحقق الهدفين معًا، وهما هدفان يكمل أحدهما الآخر.",
@@ -1945,7 +2061,16 @@
       "فإذا أردنا بناء عُمان رقمية قادرة على الصمود أمام التهديدات، فلا بد أن تصل المعرفة بالأمن السيبراني إلى جميع فئات المجتمع، وباللغة التي يفهمونها."
      ]
     }
-   ]
+   ],
+   "inline_translation": "ar",
+   "intro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/fatma/intro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/fatma/intro-en.m4a"
+   },
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/fatma/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/fatma/outro-en.m4a"
+   }
   }
  ]
 }

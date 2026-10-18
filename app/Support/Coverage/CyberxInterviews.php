@@ -87,19 +87,25 @@ class CyberxInterviews
         }
         unset($item);
 
-        // زر «ترجمة النص» بالصفحة العربية (مثل خالد): الترجمة بيانات داخل
-        // الصفحة تنعرض بالضغط فقط -- مب نسخة إنجليزية منشورة، والصوت يبقى الأصلي.
+        // زر «ترجمة النص» بصفحة لغة الضيف الأصلية: خالد (عربي ← ترجمة إنجليزية)،
+        // وفاطمة (إنجليزي ← ترجمة عربية). الترجمة بيانات داخل الصفحة تنعرض
+        // بالضغط فقط -- مب نسخة منشورة باللغة الثانية، والصوت يبقى الأصلي.
         $translation = null;
+        $target = $guest['inline_translation'] ?? null;
 
-        if ($locale === 'ar' && ($guest['inline_translation'] ?? null) === 'en') {
+        if ($target !== null && $target !== $locale) {
+            $isAr = $target === 'ar';
             $translation = [
-                'intro' => $guest['intro_en'] ?? null,
-                'outro' => $guest['outro_en'] ?? null,
+                'lang' => $target,
+                'intro' => $guest['intro_'.$target] ?? null,
+                'outro' => $guest['outro_'.$target] ?? null,
                 'items' => array_map(fn (array $source, array $shown) => [
-                    'question_label' => ($source['label_en'] ?? 'Question '.$shown['number']).' · Salem Al Hajri',
-                    'answer_label' => ($source['label_en'] ?? 'Answer '.$shown['number']).' · '.($guest['name_en'] ?? ''),
-                    'question' => $source['q_en'] ?? '',
-                    'paragraphs' => $source['en_paragraphs'] ?? [],
+                    'question_label' => ($source['label_'.$target] ?? ($isAr ? 'سؤال ' : 'Question ').$shown['number'])
+                        .' · '.($isAr ? 'سالم الحجري' : 'Salem Al Hajri'),
+                    'answer_label' => ($source['label_'.$target] ?? ($isAr ? 'إجابة ' : 'Answer ').$shown['number'])
+                        .' · '.($guest['name_'.$target] ?? ''),
+                    'question' => $source['q_'.$target] ?? '',
+                    'paragraphs' => $source[$target.'_paragraphs'] ?? [],
                 ], $guestItems, $items),
             ];
         }

@@ -109,8 +109,11 @@
             @endif
 
             @if ($guest['translation'])
+                @php $toArabic = $guest['translation']['lang'] === 'ar'; @endphp
+                {{-- data-label-en: زر عرض الترجمة، data-label-ar: زر الرجوع للنص الأصلي --}}
                 <button type="button" class="qa__mini interview__translate" id="interviewTranslate"
-                        data-label-en="🌐 English translation" data-label-ar="🌐 النص العربي">🌐 English translation</button>
+                        data-label-en="{{ $toArabic ? '🌐 الترجمة العربية' : '🌐 English translation' }}"
+                        data-label-ar="{{ $toArabic ? '🌐 Original English' : '🌐 النص العربي' }}">{{ $toArabic ? '🌐 الترجمة العربية' : '🌐 English translation' }}</button>
                 <script type="application/json" id="interviewTranslation">@json($guest['translation'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG)</script>
             @endif
         </header>
@@ -176,7 +179,8 @@
                                 @if ($guest['translation'])
                                     {{-- ترجمة نص هذي الإجابة بس (الصوت يبقى الأصلي) --}}
                                     <button type="button" class="qa__mini qa__translate" data-translate-item="{{ $i }}"
-                                            data-label-en="🌐 English" data-label-ar="🌐 العربية">🌐 English</button>
+                                            data-label-en="{{ $toArabic ? '🌐 العربية' : '🌐 English' }}"
+                                            data-label-ar="{{ $toArabic ? '🌐 English' : '🌐 العربية' }}">{{ $toArabic ? '🌐 العربية' : '🌐 English' }}</button>
                                 @endif
                             @endif
                         </div>

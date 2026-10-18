@@ -138,6 +138,20 @@ class CyberxInterviewsTest extends TestCase
             ->assertDontSee('id="interviewTranslate"', false);
     }
 
+    public function test_fatma_english_page_has_an_in_page_arabic_translation_button(): void
+    {
+        // نفس فكرة خالد بالعكس: صفحتها الإنجليزية الأصلية (نص متزامن مع صوتها) وزر ترجمة عربية.
+        $url = URL::signedRoute('event_coverage.cyberx_oman_2026.interview.en', ['guest' => 'fatma-al-lawati'], absolute: false);
+
+        $this->get($url)
+            ->assertOk()
+            ->assertSee('id="interviewTranslate"', false)
+            ->assertSee('data-label-en="🌐 الترجمة العربية"', false)
+            ->assertSee('class="qa__seg"', false)
+            ->assertSee('resilience is something you prove', false)
+            ->assertSee('بين الامتثال والمرونة السيبرانية', false);
+    }
+
     public function test_each_english_page_shows_its_own_guest_note(): void
     {
         $this->get('/en/events/cyberx-oman-2026/interviews/yahya-al-azri')
