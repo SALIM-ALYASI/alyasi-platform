@@ -1,5 +1,5 @@
-{{-- زر واتساب عائم بكل صفحات الموقع العامة (ما يطلع بالأدوات الداخلية). --}}
-@unless (request()->is('tools/*', 'cj', 'cj/*'))
+{{-- زر واتساب عائم بالصفحة الرئيسية بس (بباقي الصفحات كان يغطي النص). --}}
+@if (request()->routeIs('home', 'home.en'))
     <a
         href="{{ \App\Models\SocialLink::whatsappUrl() }}"
         class="wa-float"
@@ -11,4 +11,4 @@
     >
         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
     </a>
-@endunless
+@endif
