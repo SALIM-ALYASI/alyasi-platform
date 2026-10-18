@@ -1504,17 +1504,16 @@
    "name_en": "Ahmed Reza",
    "role_ar": "رئيس تطوير البرمجيات والأمن السيبراني · PIPWISE",
    "role_en": "Head of Software Development & Cybersecurity · PIPWISE",
-   "photo": null,
+   "photo": "/images/interviews/cyberx-oman-2026/ahmed-reza-photo.jpg",
    "initials": {
     "ar": "أ",
     "en": "AR"
    },
    "languages": [
-    "en"
-   ],
-   "preview_languages": [
+    "en",
     "ar"
    ],
+   "preview_languages": [],
    "original_language": "en",
    "topic_ar": "هويات الأنظمة الآلية، ومبدأ انعدام الثقة، وأمن البرمجيات المكتوبة بالذكاء الاصطناعي",
    "topic_en": "Machine identities, zero trust, and securing AI-written software",
@@ -1525,7 +1524,7 @@
    "outro_en": "Thank you, Mr. Ahmed, for your time and for sharing your practical insights on machine identities, zero trust and building software that is secure by design. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
    "outro_ar": "شكرًا جزيلًا أستاذ أحمد على وقتك، وعلى أفكارك العملية حول هويات الأنظمة الآلية ومبدأ انعدام الثقة وبناء برمجيات آمنة منذ التصميم. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
    "note_ar": "الإجابات أدناه ترجمة عربية نصية لإجابات الأستاذ أحمد رضا بالإنجليزية، والتسجيل الصوتي بصوته الأصلي بالإنجليزية.",
-   "ai_voice_consent": "لا صوت مولّد. أحمد وافق على النص الإنجليزي مع تصحيحاته ونشره (18 أكتوبر 2026)؛ ما رد على سؤال النسخة العربية",
+   "ai_voice_consent": "لا صوت مولّد. أحمد وافق على النص الإنجليزي مع تصحيحاته ونشره، وعلى الترجمة العربية النصية («You can translate to Arabic») -- 18 أكتوبر 2026، نقلها سالم",
    "og_image": "/images/interviews/cyberx-oman-2026/ahmed-reza-og.jpg",
    "og_image_en": "/images/interviews/cyberx-oman-2026/ahmed-reza-og-en.jpg",
    "items": [
