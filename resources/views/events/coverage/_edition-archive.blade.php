@@ -1,5 +1,6 @@
 {{-- صفحة CyberX Oman 2026 بعد انتهاء المؤتمر: أرشيف التغطية بدل الجدول والتفاصيل --
-     المحطات الخمس (كل بطاقة تفتح محطتها بصفحة التغطية)، وتحتها اللقاءات المسجّلة المنشورة. --}}
+     المحطات الخمس (كل بطاقة تفتح محطتها بصفحة التغطية)، وتحتها اللقاءات المسجّلة المنشورة،
+     ثم مقالات سالم عن المؤتمر. --}}
 @php
     $isEn = app()->getLocale() === 'en';
     $t = fn (string $ar, string $en) => $isEn ? $en : $ar;
@@ -9,6 +10,17 @@
         fn ($guest) => $guest['published']
     ));
     $coverageLink = localized_route('event_coverage.cyberx_oman_2026');
+
+    // مقالات المؤتمر بالترتيب (قبله ثم بعده)، بالرابط العربي الدائم. المنشور بلغة الصفحة بس.
+    $archiveArticleSlugs = ['kbl-an-ygtmaa-alhras-rhl-al-alaaalm-almthlm-althy-yharbonh', 'from-the-corner-cyberx-oman-2026'];
+    $archiveArticles = \App\Models\Article::query()
+        ->published()
+        ->availableIn($isEn ? 'en' : 'ar')
+        ->whereHas('permalinks', fn ($q) => $q->where('locale', 'ar')->whereIn('slug', $archiveArticleSlugs))
+        ->with('permalinks')
+        ->get()
+        ->sortBy(fn ($article) => array_search($article->slug('ar'), $archiveArticleSlugs, true))
+        ->values();
 @endphp
 
 <p class="cyberx-archive__intro">
@@ -56,6 +68,31 @@
                         @endif
                     </span>
                     <span class="cyberx-interview__play" aria-hidden="true">▶</span>
+                </a>
+            @endforeach
+        </div>
+    </section>
+@endif
+
+@if ($archiveArticles->isNotEmpty())
+    <section class="cyberx-archive">
+        <div class="cyberx-archive__head">
+            <h2>{{ $t('مقالات', 'Articles') }}</h2>
+        </div>
+
+        <div class="cyberx-articles">
+            @foreach ($archiveArticles as $article)
+                <a class="cyberx-article" href="{{ article_route('show', [$article->slug()]) }}">
+                    @if ($article->displayImage())
+                        <span class="cyberx-article__photo"><img src="{{ media_url($article->displayImage()) }}" alt="" loading="lazy"></span>
+                    @endif
+                    <span class="cyberx-article__body">
+                        <strong>{{ $article->title }}</strong>
+                        @if ($article->excerpt)
+                            <span class="cyberx-article__excerpt">{{ $article->excerpt }}</span>
+                        @endif
+                        <span class="cyberx-article__more">{{ $t('اقرأ المقال', 'Read the article') }} {{ $isEn ? '→' : '←' }}</span>
+                    </span>
                 </a>
             @endforeach
         </div>

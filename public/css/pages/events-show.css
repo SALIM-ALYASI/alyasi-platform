@@ -752,3 +752,38 @@
 }
 
 .cyberx-interview .interview-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+
+.cyberx-articles { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+.cyberx-article {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-lg);
+    background: var(--theme-card);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.cyberx-article:hover { transform: translateY(-2px); border-color: var(--color-accent-500); box-shadow: var(--shadow-md); }
+.cyberx-article__photo { display: block; aspect-ratio: 16 / 9; background: var(--color-divider); }
+.cyberx-article__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cyberx-article__body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 14px 16px 16px; }
+.cyberx-article__body strong { font-family: var(--font-heading); font-size: 16.5px; line-height: 1.6; }
+
+.cyberx-article__excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--theme-muted);
+    font-size: 14px;
+    line-height: 1.8;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.cyberx-article__more { margin-top: auto; color: var(--color-accent-500); font-size: 14px; font-weight: 700; }
+
+/* آخر قسم بالأرشيف (قبل الفوتر) يحتاج مسافة تحته. */
+.cyberx-archive:last-child { margin-bottom: clamp(44px, 7vw, 72px); }
