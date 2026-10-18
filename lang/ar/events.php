@@ -111,4 +111,7 @@ return [
     'featured_title' => 'تغطية مميزة',
     'featured_interviews' => 'المقابلات',
     'featured_page' => 'صفحة المؤتمر',
+    'all_events' => 'عرض كل المؤتمرات',
+    'filter_by_year' => 'تصفية حسب السنة',
+    'editions_label' => 'سنوات :name',
 ];

@@ -13,7 +13,7 @@ class EventController extends Controller
      * مركز المؤتمرات: «تغطية مميزة» أولًا، بعدها الفعاليات القادمة (الأقرب
      * موعدًا أول)، بعدها المنتهية (الأحدث أول). موعد كل مؤتمر = آخر نسخة منشورة.
      */
-    public function index(): View
+    public function index(\Illuminate\Http\Request $request): View
     {
         InterviewIndex::syncIfStale();
 
@@ -28,21 +28,30 @@ class EventController extends Controller
             ])
             ->get();
 
-        $rows = $events->map(function (Event $event) {
-            $edition = $event->editions->first();
+        // شريط السنوات: كل سنة فيها نسخة منشورة، والأحدث أول. ?year= يعرض
+        // مؤتمرات تلك السنة بنسختها، وبدونه «كل المؤتمرات» بآخر نسخة لكل مؤتمر.
+        $years = $events->flatMap(fn (Event $event) => $event->editions->pluck('year'))->unique()->sortDesc()->values();
+        $year = $years->contains((int) $request->query('year')) ? (int) $request->query('year') : null;
 
-            return (object) [
+        $rows = $events->map(function (Event $event) use ($year) {
+            $edition = $year
+                ? $event->editions->firstWhere('year', $year)
+                : $event->editions->first();
+
+            return $edition ? (object) [
                 'event' => $event,
                 'edition' => $edition,
-                'start' => $edition?->event_start_at,
+                'start' => $edition->event_start_at,
                 'highlights' => EventHighlights::for($edition),
-            ];
-        });
+            ] : null;
+        })->filter();
 
         [$upcoming, $past] = $rows->partition(fn ($row) => $row->edition && $row->edition->phase !== 'concluded');
 
         return view('events.index', [
-            'featured' => $this->featured($events),
+            'years' => $years,
+            'year' => $year,
+            'featured' => $year ? null : $this->featured($events),
             'upcoming' => $upcoming->sortBy(fn ($row) => $row->start?->getTimestamp() ?? PHP_INT_MAX)->values(),
             'past' => $past->sortByDesc(fn ($row) => $row->start?->getTimestamp() ?? 0)->values(),
         ]);

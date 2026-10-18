@@ -9,6 +9,7 @@
 
 @section('title', __('events.meta_title', ['brand' => 'ALYASI']))
 @section('meta_description', __('events.meta_description'))
+{{-- صفحة السنة (?year=) نسخة مفلترة من نفس الصفحة: canonical للصفحة الكاملة --}}
 @section('canonical', localized_route('events.index'))
 @section('og_url', localized_route('events.index'))
 @section('hreflang_ar', localized_route('events.index', [], 'ar'))
@@ -92,6 +93,15 @@
         </section>
     @endif
 
+    @if ($years->count() > 1 || $year)
+        <nav class="container events-years" aria-label="{{ __('events.filter_by_year') }}">
+            <a href="{{ localized_route('events.index') }}" @class(['is-active' => ! $year]) @unless ($year) aria-current="page" @endunless>{{ __('events.all_events') }}</a>
+            @foreach ($years as $y)
+                <a href="{{ localized_route('events.index') }}?year={{ $y }}" @class(['is-active' => $year === $y]) @if ($year === $y) aria-current="page" @endif>{{ $y }}</a>
+            @endforeach
+        </nav>
+    @endif
+
     @foreach ([['upcoming', $upcoming], ['past', $past]] as [$group, $rows])
         @continue($rows->isEmpty())
 
@@ -149,8 +159,14 @@
                                 @foreach ($row->highlights['links'] as $link)
                                     <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
                                 @endforeach
-                                <a href="{{ $seriesUrl($event) }}">{{ __('events.archive_link') }}</a>
                             </div>
+
+                            {{-- سنوات المؤتمر: كل سنة تفتح نسختها (بدل «الأرشيف») --}}
+                            <nav class="event-card__years" aria-label="{{ __('events.editions_label', ['name' => $event->localizedName()]) }}">
+                                @foreach ($event->editions->sortByDesc('year') as $yearEdition)
+                                    <a href="{{ $editionUrl($yearEdition) ?? $seriesUrl($event) }}" @class(['is-current' => $yearEdition->is($edition)]) @if ($yearEdition->is($edition)) aria-current="page" @endif>{{ $yearEdition->year }}</a>
+                                @endforeach
+                            </nav>
                         </div>
                     </article>
                 @endforeach

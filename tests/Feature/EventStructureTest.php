@@ -121,7 +121,8 @@ class EventStructureTest extends TestCase
 
         $html = $this->withHeaders($this->headers())->get('/events')->assertOk()->getContent();
 
-        $positions = array_map(fn ($slug) => strpos($html, '/events/'.$slug.'"'), ['next-soon', 'far-future', 'recent-past', 'old-past']);
+        // البطاقة تودّي لتغطية آخر نسخة (رابط السلسلة صار بسنوات المؤتمر).
+        $positions = array_map(fn ($slug) => strpos($html, '/events/'.$slug.'"'), ['next-soon-2026', 'far-future-2027', 'recent-past-2026', 'old-past-2026']);
         $this->assertNotContains(false, $positions);
         $sorted = $positions;
         sort($sorted);

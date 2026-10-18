@@ -111,4 +111,7 @@ return [
     'featured_title' => 'Featured coverage',
     'featured_interviews' => 'Interviews',
     'featured_page' => 'Event page',
+    'all_events' => 'All conferences',
+    'filter_by_year' => 'Filter by year',
+    'editions_label' => ':name editions',
 ];
