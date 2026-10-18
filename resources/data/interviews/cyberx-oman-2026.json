@@ -1496,6 +1496,190 @@
     }
    ],
    "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ محمد تاج الدين"
+  },
+  {
+   "slug": "ahmed-reza",
+   "published": false,
+   "name_ar": "أحمد رضا",
+   "name_en": "Ahmed Reza",
+   "role_ar": "رئيس تطوير البرمجيات والأمن السيبراني · PIPWISE",
+   "role_en": "Head of Software Development & Cybersecurity · PIPWISE",
+   "photo": null,
+   "initials": {
+    "ar": "أ",
+    "en": "AR"
+   },
+   "languages": [
+    "en"
+   ],
+   "preview_languages": [
+    "ar"
+   ],
+   "original_language": "en",
+   "topic_ar": "هويات الأنظمة الآلية، ومبدأ انعدام الثقة، وأمن البرمجيات المكتوبة بالذكاء الاصطناعي",
+   "topic_en": "Machine identities, zero trust, and securing AI-written software",
+   "quote_ar": "إذا لم تستطع تسميته، فلن تستطيع حوكمته.",
+   "quote_en": "If you cannot name it, you cannot govern it.",
+   "intro_en": "After the CyberX Oman 2026 conference, I had this conversation with one of the conference speakers, who spoke about machine identity and zero trust. He kindly recorded his answers to my questions after the event.\n\nWe talked about what really makes an organization ready for a breach, how to make sure software written with AI is secure and not just working, and the first step a small company can take today.\n\nI thank him for his time, and for his generous cooperation with ALYASI.\n\nAnd before we begin… I'll let him introduce himself.",
+   "intro_ar": "بعد مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء مع أحد المتحدثين في المؤتمر، الذي تحدّث عن هويات الأنظمة الآلية ومبدأ «انعدام الثقة»، وتكرّم بتسجيل إجاباته على أسئلتي بعد المؤتمر.\n\nتحدثنا عن ما يجعل المؤسسة مستعدة فعلًا للاختراق، وكيف نتأكد أن البرمجيات المكتوبة بالذكاء الاصطناعي آمنة وليست فقط تعمل، وأول خطوة تتخذها الشركة الصغيرة اليوم.\n\nأشكره على وقته، وعلى تعاونه الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك له التعريف بنفسه.",
+   "outro_en": "Thank you, Mr. Ahmed, for your time and for sharing your practical insights on machine identities, zero trust and building software that is secure by design. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_ar": "شكرًا جزيلًا أستاذ أحمد على وقتك، وعلى أفكارك العملية حول هويات الأنظمة الآلية ومبدأ انعدام الثقة وبناء برمجيات آمنة منذ التصميم. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "note_ar": "الإجابات أدناه ترجمة عربية نصية لإجابات الأستاذ أحمد رضا بالإنجليزية، والتسجيل الصوتي بصوته الأصلي بالإنجليزية.",
+   "ai_voice_consent": "لا صوت مولّد. أحمد وافق على النص الإنجليزي مع تصحيحاته ونشره (18 أكتوبر 2026)؛ ما رد على سؤال النسخة العربية",
+   "og_image": "/images/interviews/cyberx-oman-2026/ahmed-reza-og.jpg",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/ahmed-reza-og-en.jpg",
+   "items": [
+    {
+     "label_ar": "تعريف الضيف",
+     "label_en": "Introduction",
+     "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك ومنصبك وطبيعة عملك؟",
+     "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-intro-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-intro-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a0.m4a",
+     "duration": 66.3,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Hello, my name is Ahmed Reza. I am Head of Software Development and Cybersecurity at PIPWISE. My work is two jobs in one: I build the platforms, and I also defend them.",
+      "I build the client systems, the payment connections, the risk tools and the automation that keeps our platform running. I put AI into that work so we can see problems early and react faster. On the security side, I test our systems the way an attacker would, and then I fix them too. I watch the network, I stop attacks, and I harden the software before it goes live.",
+      "I have been in computer science for more than 18 years. I studied computer science and network security in Sweden, and I also worked as a system developer at Ericsson. The platforms I build have to stay on all the time.",
+      "At CyberX Oman, I spoke about machine identity and zero trust. That talk is one part of a bigger job. The full job is to build systems that stay up, and to keep them safe."
+     ],
+     "ar_paragraphs": [
+      "مرحبًا، اسمي أحمد رضا، وأعمل رئيسًا لتطوير البرمجيات والأمن السيبراني في شركة PIPWISE. عملي وظيفتان في وظيفة واحدة: أبني المنصات، وأدافع عنها أيضًا.",
+      "أبني أنظمة العملاء، وروابط الدفع، وأدوات إدارة المخاطر، والأتمتة التي تُبقي منصتنا تعمل. وأدمج الذكاء الاصطناعي في هذا العمل لنكتشف المشكلات مبكرًا ونستجيب أسرع. ومن جهة الأمن، أختبر أنظمتنا كما يفعل المهاجم، ثم أصلحها بنفسي. أراقب الشبكة، وأوقف الهجمات، وأحصّن البرمجيات قبل إطلاقها.",
+      "أعمل في علوم الحاسب منذ أكثر من 18 عامًا. درست علوم الحاسب وأمن الشبكات في السويد، وعملت أيضًا مطوّر أنظمة في شركة إريكسون. والمنصات التي أبنيها يجب أن تبقى تعمل طوال الوقت.",
+      "في مؤتمر سايبر إكس عُمان، تحدثت عن هويات الأنظمة الآلية ومبدأ «انعدام الثقة». وتلك المحاضرة جزء من مهمة أكبر: أن نبني أنظمة تبقى تعمل، وأن نُبقيها آمنة."
+     ]
+    },
+    {
+     "q_ar": "في مشاركتك في سايبر إكس عُمان، ما أهم رسالة أردت إيصالها عن قدرة المؤسسات على مواجهة الاختراق والتعافي منه؟",
+     "q_en": "In your participation at CyberX Oman, what was the most important message you wanted to share about organizations' ability to withstand a breach and recover from it?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-q1-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-q1-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a1.m4a",
+     "duration": 53.7,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Here is the most important message: you cannot recover well from a breach if you do not know who is inside your systems.",
+      "Most organizations have done good work on MFA, API keys and allow lists. Those are necessary, and I use them too. But they only check a secret and a place. If a thief already has a valid key, the door says yes. That is not zero trust; that is only a locked door.",
+      "So readiness is not only backups and a plan after the attack. Readiness starts earlier. Count the machine identities. Give each one a human owner. Shorten how long they live. Watch what they do. If you can name the key, you can stop it — and you can recover faster."
+     ],
+     "ar_paragraphs": [
+      "أهم رسالة هي: لا يمكنك أن تتعافى جيدًا من اختراق إذا كنت لا تعرف من الموجود داخل أنظمتك.",
+      "أغلب المؤسسات أنجزت عملًا جيدًا في التحقق متعدد العوامل، ومفاتيح الواجهات البرمجية، وقوائم السماح. وهذه ضرورية، وأنا أستخدمها أيضًا. لكنها تتحقق فقط من سرٍّ ومن مكان. فإذا كان اللص يملك مفتاحًا صالحًا، يقول الباب: نعم. هذا ليس «انعدام ثقة»، بل مجرد باب مقفل.",
+      "لذلك فالاستعداد ليس فقط نسخًا احتياطية وخطة بعد الهجوم، بل يبدأ قبل ذلك: أحصِ هويات الأنظمة الآلية، وأعطِ كل واحدة منها مالكًا بشريًا، وقصّر مدة صلاحيتها، وراقب ما تفعله. إذا استطعت أن تسمّي المفتاح، استطعت أن توقفه، وأن تتعافى أسرع."
+     ]
+    },
+    {
+     "q_ar": "مع استخدام الذكاء الاصطناعي في البرمجة، كيف نتأكد أن التطبيق آمن، وليس فقط يعمل؟",
+     "q_en": "With AI being used in programming, how do we make sure an app is secure, and not just working?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-q2-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-q2-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a2.m4a",
+     "duration": 48.5,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Here's the difference: an app that works is not the same as an app that is safe. AI can write code very fast. It can also create new keys, new connectors and even new agents very fast. If we only test that the button works, we miss the real risk.",
+      "We must ask: Who is this software acting as? What can this key do? How long will this key live? And who owns it? A working feature with a permanent secret is a working door for the attacker. So we should not only test the happy path; we should test identity, least privilege, and what happens when that key is stolen."
+     ],
+     "ar_paragraphs": [
+      "الفرق هنا: التطبيق الذي يعمل ليس هو نفسه التطبيق الآمن. الذكاء الاصطناعي يكتب البرمجيات بسرعة كبيرة، ويستطيع أيضًا أن ينشئ مفاتيح جديدة وروابط جديدة، بل ووكلاء جددًا، بسرعة كبيرة. فإذا اختبرنا فقط أن الزر يعمل، فاتنا الخطر الحقيقي.",
+      "يجب أن نسأل: بصفة من يعمل هذا البرنامج؟ وماذا يستطيع هذا المفتاح أن يفعل؟ وكم سيعيش؟ ومن يملكه؟ الميزة التي تعمل بسرٍّ دائم هي باب يعمل لصالح المهاجم. لذلك لا يكفي أن نختبر المسار السليم، بل يجب أن نختبر الهوية، ومبدأ أقل صلاحية ممكنة، وما يحدث عندما يُسرق ذلك المفتاح."
+     ]
+    },
+    {
+     "q_ar": "ما أول خطوة تنصح بها شركة صغيرة اليوم لتكون أكثر استعدادًا لأي اختراق؟",
+     "q_en": "What first step would you advise a small company to take today to be better prepared for any breach?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-q3-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-q3-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a3.m4a",
+     "duration": 50.4,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Here is my advice: start with a simple count. Ask one question this week: how many machine identities do we have compared with how many people? API keys, service accounts, tokens, certificates. You will come up with a guess — and the size of that guess is the size of the problem.",
+      "Then give every important key a named person, not only an application. If nobody will claim a key, revoke it. That costs almost nothing, and it usually removes more risk than buying a new tool. After that, make the remaining keys live for a short time, and watch them.",
+      "So: count them, own them, shorten them, and watch them."
+     ],
+     "ar_paragraphs": [
+      "نصيحتي: ابدأ بعدٍّ بسيط. اطرح سؤالًا واحدًا هذا الأسبوع: كم عدد هويات الأنظمة الآلية لدينا مقارنةً بعدد الأشخاص؟ مفاتيح الواجهات البرمجية، وحسابات الخدمات، والرموز، والشهادات. ستصل إلى رقم تقديري، وحجم هذا التقدير هو حجم المشكلة.",
+      "ثم أعطِ كل مفتاح مهم شخصًا مسؤولًا باسمه، لا تطبيقًا فقط. وإذا لم يطالب أحد بمفتاح، فألغِه. هذا لا يكلّف شيئًا تقريبًا، وغالبًا يزيل من المخاطر أكثر مما يزيله شراء أداة جديدة. بعد ذلك، اجعل المفاتيح المتبقية تعيش مدة قصيرة، وراقبها.",
+      "إذن: أحصِها، وحدّد مالكها، وقصّر عمرها، وراقبها."
+     ]
+    },
+    {
+     "q_ar": "ما الاعتقاد الشائع عن أمن التطبيقات الذي تتمنى أن يتوقف المطوّرون وأصحاب المشاريع عن تصديقه؟",
+     "q_en": "What common belief about application security do you wish developers and project owners would stop believing?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-closing-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-closing-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a4.m4a",
+     "duration": 45.7,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "I wish we would stop believing that a login page means we have zero trust. Many teams think: we have multi-factor authentication, we have API keys, we have an allow list, so we are safe. Those controls are good, but they are still not enough. They trust a secret and a location.",
+      "A stolen key from an allowed address looks like normal business. It does not fail a prompt. It does not travel. It works at 3 a.m., because that is its job. The most privileged user in your company may not have a name — and if you cannot name it, you cannot govern it. Then you have a login page, not zero trust."
+     ],
+     "ar_paragraphs": [
+      "أتمنى أن نتوقف عن الاعتقاد بأن وجود صفحة تسجيل دخول يعني أننا نطبّق مبدأ «انعدام الثقة». كثير من الفرق تقول: لدينا تحقق متعدد العوامل، ولدينا مفاتيح واجهات برمجية، ولدينا قائمة سماح، إذن نحن بأمان. هذه الضوابط جيدة، لكنها لا تكفي، لأنها تثق بسرٍّ وبمكان.",
+      "المفتاح المسروق من عنوان مسموح به يبدو كأنه عمل طبيعي: لا يفشل في أي تحقق، ولا يسافر، ويعمل في الثالثة فجرًا لأن هذا عمله. وقد يكون أكثر مستخدم يملك صلاحيات في شركتك بلا اسم، وإذا لم تستطع تسميته، فلن تستطيع حوكمته. عندها تكون لديك صفحة تسجيل دخول، لا «انعدام ثقة»."
+     ]
+    },
+    {
+     "q_ar": "كيف تقيّم دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيك في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+     "q_en": "How do you assess the conference’s role in strengthening cybersecurity in Oman, and what is your view on the progress the Sultanate has made in this field?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/ahmed/q-last-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/ahmed/q-last-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/ahmed/a5.m4a",
+     "duration": 78.4,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "CyberX Oman is important because it brings the right people into one room — not only vendors, but also the people who build, operate and defend real systems. That mix makes the conversation practical. I was invited to speak last year, and I was invited again this year. For me, that simply means the discussion did not stop after one event. People come back because the work is still needed.",
+      "On Oman, my view is clear: the Sultanate is already doing serious work in this field. Under Vision 2040 and the Tahawul framework, Oman is building a digital government that must be trusted by design. Trusted means more than a citizen login; it also means the software behind that login cannot be borrowed by someone who found the key. The same is true for banks, platforms, energy operators and public bodies.",
+      "The progress is real. The next step is to include machine identities in that trust. If Oman does that well, it can set a strong example in this region. And inshallah, Oman will be secure and safe."
+     ],
+     "ar_paragraphs": [
+      "سايبر إكس عُمان مهم لأنه يجمع الأشخاص المناسبين في قاعة واحدة: ليس الشركات المزوّدة فقط، بل أيضًا من يبنون الأنظمة الحقيقية ويشغّلونها ويدافعون عنها. وهذا المزيج يجعل النقاش عمليًا. دُعيت للحديث في العام الماضي، ودُعيت مرة أخرى هذا العام، وهذا يعني ببساطة أن النقاش لم يتوقف بعد فعالية واحدة. الناس يعودون لأن العمل ما زال مطلوبًا.",
+      "أما عن عُمان، فرأيي واضح: السلطنة تقوم بعمل جاد في هذا المجال. ففي إطار رؤية عُمان 2040 وبرنامج «تحوّل»، تبني عُمان حكومة رقمية يجب أن تكون موثوقة منذ التصميم. والموثوقية تعني أكثر من تسجيل دخول المواطن؛ تعني أيضًا أن البرمجيات خلف ذلك الدخول لا يمكن أن يستعيرها شخص عثر على المفتاح. والأمر نفسه ينطبق على البنوك والمنصات ومشغّلي الطاقة والجهات الحكومية.",
+      "التقدّم حقيقي، والخطوة التالية هي إدخال هويات الأنظمة الآلية في منظومة الثقة هذه. وإذا أحسنت عُمان ذلك، فيمكنها أن تقدّم نموذجًا قويًا في المنطقة. وإن شاء الله تبقى عُمان آمنة ومطمئنة."
+     ]
+    }
+   ]
   }
  ]
 }
