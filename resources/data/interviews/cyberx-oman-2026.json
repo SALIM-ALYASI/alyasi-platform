@@ -1279,17 +1279,16 @@
    "name_en": "Mohammed Tajuddin",
    "role_ar": "مدير المنتجات لأمن الشبكات والمحتوى والبيانات · Securado",
    "role_en": "Product Director – Network, Content & Data Security · Securado",
-   "photo": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-photo.png",
+   "photo": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-photo.jpg",
    "initials": {
     "ar": "م",
     "en": "MT"
    },
    "languages": [
-    "en"
-   ],
-   "preview_languages": [
+    "en",
     "ar"
    ],
+   "preview_languages": [],
    "original_language": "en",
    "topic_ar": "اكتشاف الذكاء الاصطناعي الخفي، وضمانات وكلاء الذكاء الاصطناعي، والتبنّي الآمن في المؤسسات العُمانية",
    "topic_en": "Discovering hidden AI, safeguards for AI agents, and safe AI adoption in Omani organizations",
@@ -1301,8 +1300,8 @@
    "outro_ar": "شكرًا جزيلًا أستاذ محمد على وقتك، وعلى أفكارك العملية حول رؤية استخدام الذكاء الاصطناعي وتأمين وكلائه وتبنّيه بأمان. سعدنا بهذا الحوار معك عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
    "note_ar": "الإجابات أدناه ترجمة عربية لإجابات الأستاذ محمد تاج الدين بالإنجليزية، وتُقرأ بصوته المولّد بالذكاء الاصطناعي بموافقته. تسجيله الأصلي بالإنجليزية متاح تحت كل إجابة.",
    "ai_voice_consent": "موافقة الأستاذ محمد على نشر النص الإنجليزي (18 أكتوبر 2026)، وعلى الترجمة العربية والصوت العربي المولّد (نقلها سالم، 18 أكتوبر 2026)",
-   "og_image": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og.jpg",
-   "og_image_en": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og-en.jpg",
+   "og_image": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og-v2.jpg",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/mohammed-tajuddin-og-en-v2.jpg",
    "items": [
     {
      "label_ar": "تعريف الضيف",
