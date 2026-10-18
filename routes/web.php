@@ -591,6 +591,12 @@ Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'
 Route::get('/tools/cyberx-interview/upload', [CyberxInterviewController::class, 'upload'])
     ->name('tools.cyberx-interview.upload');
 
+// نص مقابلة ضيف للمراجعة قبل النشر: رابط موقّع مؤقت يرسله سالم للضيف (بدل ملف PDF).
+Route::get('/tools/cyberx-interview/review/{name}', [CyberxInterviewController::class, 'review'])
+    ->where('name', '[a-z0-9-]+')
+    ->middleware(['signed:relative', 'throttle:30,1'])
+    ->name('tools.cyberx-interview.review');
+
 Route::post('/tools/cyberx-interview/answers', [CyberxInterviewController::class, 'storeAnswer'])
     ->middleware('throttle:30,1')
     ->name('tools.cyberx-interview.answers');

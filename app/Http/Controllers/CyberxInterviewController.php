@@ -136,6 +136,22 @@ class CyberxInterviewController extends Controller
     }
 
     /**
+     * نص مقابلة الضيف للمراجعة (صفحة HTML جاهزة بمجلد خاص، مب عام): يفتح بس
+     * برابط موقّع مؤقت، وما تفهرسه محركات البحث.
+     */
+    public function review(string $name): Response
+    {
+        $path = 'cyberx-transcripts/'.$name.'.html';
+
+        abort_unless(Storage::disk('local')->exists($path), 404);
+
+        return response(Storage::disk('local')->get($path))
+            ->header('Content-Type', 'text/html; charset=UTF-8')
+            ->header('X-Robots-Tag', 'noindex, nofollow')
+            ->header('Cache-Control', 'no-store, private');
+    }
+
+    /**
      * إجابة ضيف مسجّلة من الأداة: تنحفظ على السيرفر (نسخة ما تضيع لو
      * انسكرت الصفحة) وتوصل لسالم بالواتساب المجاني مع السؤال ورابط
      * الإجابة -- الجسر يرسل نص بس، فالصوت يوصل كرابط يتشغّل مباشرة.
