@@ -803,3 +803,11 @@
 
 /* آخر قسم بالأرشيف (قبل الفوتر) يحتاج مسافة تحته. */
 .cyberx-archive:last-child { margin-bottom: clamp(44px, 7vw, 72px); }
+
+/* روابط التنقل وسطر المواعيد تحت عنوان صفحة النسخة */
+.event-detail__crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; font-size: 13.5px; color: var(--theme-muted); }
+.event-detail__crumbs a { color: var(--color-accent-600); font-weight: 700; text-decoration: none; }
+.event-detail__crumbs a:hover { text-decoration: underline; }
+.event-detail__dates { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: -10px 0 22px; padding: 0; list-style: none; color: var(--theme-muted); font-size: 13.5px; }
+.event-detail__dates li { display: inline-flex; align-items: center; gap: 6px; }
+.event-detail__dates time { color: var(--color-text); font-weight: 700; }

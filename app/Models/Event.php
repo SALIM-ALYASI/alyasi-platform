@@ -16,6 +16,8 @@ class Event extends Model
         'slug',
         'organizer',
         'image',
+        'description_ar',
+        'description_en',
     ];
 
     /**
@@ -26,6 +28,16 @@ class Event extends Model
         return app()->getLocale() === 'en' && filled($this->name_en)
             ? $this->name_en
             : $this->name;
+    }
+
+    /**
+     * وصف المؤتمر حسب مجاله (أعلى صفحة أرشيفه) بلغة الصفحة.
+     */
+    public function localizedDescription(): ?string
+    {
+        $value = app()->getLocale() === 'en' ? ($this->description_en ?: $this->description_ar) : ($this->description_ar ?: $this->description_en);
+
+        return filled($value) ? $value : null;
     }
 
     /**

@@ -167,37 +167,17 @@
 @section('og_image_width', 1200)
 @section('og_image_height', 630)
 
-{{--
-    Event JSON-LD — لا تُفعَّل تلقائياً. جاهزة بالكود بس مُعطَّلة (@if(false))
-    لحد ما يتأكد المستخدم صراحة إنه يبيها تُنشر، حسب شرط الملف المرجعي.
---}}
-@if (false)
+{{-- بيانات Event المنظمة: بس للنسخ اللي مكانها مؤكد (App\Support\Events\EventFacts). --}}
+@php
+    $eventSchema = \App\Support\Events\EventFacts::schema(
+        $edition,
+        $ogDescription,
+        $edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg')
+    );
+@endphp
+@if ($eventSchema)
     @section('schema')
-    <script type="application/ld+json">
-    {!! json_encode([
-        '@context' => 'https://schema.org',
-        '@type' => 'Event',
-        'name' => $edition->title,
-        'description' => $ogDescription,
-        'startDate' => optional($edition->event_start_at)->toIso8601String(),
-        'endDate' => optional($edition->event_end_at)->toIso8601String(),
-        'eventAttendanceMode' => $edition->coverage_type === 'global_remote'
-            ? 'https://schema.org/OnlineEventAttendanceMode'
-            : 'https://schema.org/OfflineEventAttendanceMode',
-        'eventStatus' => 'https://schema.org/EventScheduled',
-        'image' => [$edition->displayImage() ? media_url($edition->displayImage()) : asset('images/events/og-cover.jpg')],
-        'url' => $edition->permalink()?->url(),
-        'organizer' => [
-            '@type' => 'Organization',
-            'name' => $edition->event->organizer ?? $edition->event->localizedName(),
-        ],
-        'publisher' => [
-            '@type' => 'Organization',
-            'name' => 'ALYASI',
-            'url' => url('/'),
-        ],
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
-    </script>
+    <script type="application/ld+json">{!! json_encode($eventSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
     @endsection
 @endif
 
@@ -224,7 +204,26 @@
 
     <section class="container community-detail__body">
 
+        <nav class="event-detail__crumbs" aria-label="{{ __('events.back_to_events') }}">
+            <a href="{{ localized_route('events.index') }}">{{ __('events.back_to_events') }}</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ route(app()->getLocale() === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $edition->event->slug]) }}">{{ $edition->event->localizedName() }}</a>
+        </nav>
+
         <h1 class="community-detail__title">{{ $edition->title }}</h1>
+
+        {{-- موعد انعقاد المؤتمر شي، وتاريخ نشر صفحتنا شي ثاني --}}
+        <ul class="event-detail__dates">
+            @if ($edition->event_start_at)
+                <li><i class="fa-regular fa-calendar" aria-hidden="true"></i> {{ __('events.event_date') }}: <time datetime="{{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $edition->dateRangeLabel() }}</time></li>
+            @endif
+            @if ($edition->published_at)
+                <li><i class="fa-regular fa-newspaper" aria-hidden="true"></i> {{ __('events.page_published') }}: <time datetime="{{ $edition->published_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $edition->published_at->copy()->timezone('Asia/Muscat')->locale(app()->getLocale())->translatedFormat('j F Y') }}</time></li>
+            @endif
+            @if ($edition->updated_at && $edition->published_at && $edition->updated_at->copy()->timezone('Asia/Muscat')->toDateString() !== $edition->published_at->copy()->timezone('Asia/Muscat')->toDateString())
+                <li>{{ __('events.page_updated') }}: <time datetime="{{ $edition->updated_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $edition->updated_at->copy()->timezone('Asia/Muscat')->locale(app()->getLocale())->translatedFormat('j F Y') }}</time></li>
+            @endif
+        </ul>
 
         @if ($coverageUrl)
             {{-- المؤتمر انتهى: نعرض أرشيف تغطية الياسي بدل التفاصيل والجدول --}}
@@ -322,7 +321,35 @@
              جدول الأسعار الكامل — يُقرأ مباشرة من pricing_table
              في قاعدة البيانات ويجمع سعات كل منتج في جدول واحد.
         ====================================================== --}}
-        @if ($pricingRows->isNotEmpty())
+        @php
+            // الصفوف اللي طلعت أسعارها داخل بطاقات المنتجات فوق ما تتكرر هنا --
+            // نفس مطابقة events._announcement-item (الاسم الأساسي، أو «الاسم مع ...»).
+            $cardLabels = collect($edition->announcements ?? [])->flatMap(fn ($item) => array_filter([
+                $normalize($item['label_ar'] ?? null), $normalize($item['label_en'] ?? null),
+            ]))->unique();
+            $inCard = function (array $row) use ($cardLabels, $normalize, $baseNameForRow): bool {
+                foreach (['ar' => ' مع ', 'en' => ' with '] as $lang => $joiner) {
+                    $base = $normalize($baseNameForRow($row, $lang));
+                    foreach ($cardLabels as $label) {
+                        if ($base === $label || str_starts_with($base, $label.$joiner)) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            };
+            $tableRows = $pricingRows->reject($inCard)->values();
+            $pricingGroups = $pricingGroups
+                ->map(fn ($rows) => collect($rows)->reject($inCard)->values())
+                ->filter(fn ($rows) => $rows->isNotEmpty());
+        @endphp
+
+        @if ($pricingRows->isNotEmpty() && $tableRows->isEmpty())
+            <p class="event-detail__pricing-disclaimer">{{ __('events.pricing_table_disclaimer') }}</p>
+        @endif
+
+        @if ($tableRows->isNotEmpty())
             <h2 class="event-detail__section-title">{{ __('events.pricing_table_title') }}</h2>
 
             <div class="event-pricing-grid">

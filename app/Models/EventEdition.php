@@ -202,6 +202,34 @@ class EventEdition extends Model
     }
 
     /**
+     * موعد انعقاد المؤتمر بتوقيت مسقط: «6 أكتوبر 2026» ليوم واحد،
+     * «12 إلى 14 أكتوبر 2026» لأيام بنفس الشهر (12–14 October بالإنجليزي).
+     */
+    public function dateRangeLabel(?string $locale = null): ?string
+    {
+        if (! $this->event_start_at) {
+            return null;
+        }
+
+        $locale ??= app()->getLocale();
+        $start = $this->event_start_at->copy()->timezone('Asia/Muscat')->locale($locale);
+        $end = ($this->event_end_at ?? $this->event_start_at)->copy()->timezone('Asia/Muscat')->locale($locale);
+
+        if ($start->isSameDay($end)) {
+            return $start->translatedFormat('j F Y');
+        }
+
+        // بالعربي «إلى» بدل الشرطة: «1–4» بصفحة من اليمين لليسار تنقلب بصريًا لـ«4–1».
+        $to = $locale === 'ar' ? ' إلى ' : '–';
+
+        if ($start->isSameMonth($end)) {
+            return $start->format('j').$to.$end->translatedFormat('j F Y');
+        }
+
+        return $start->translatedFormat($start->isSameYear($end) ? 'j F' : 'j F Y').($locale === 'ar' ? ' إلى ' : ' – ').$end->translatedFormat('j F Y');
+    }
+
+    /**
      * النسخ المنشورة.
      */
     public function scopePublished(Builder $query): Builder

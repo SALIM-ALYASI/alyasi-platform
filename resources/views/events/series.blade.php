@@ -8,7 +8,7 @@
 @endphp
 
 @section('title', $event->localizedName().' — ALYASI')
-@section('meta_description', __('events.series_meta_description', ['name' => $event->localizedName()]))
+@section('meta_description', $event->localizedDescription() ?: __('events.series_meta_description', ['name' => $event->localizedName()]))
 @section('canonical', $seriesUrl)
 @section('og_url', $seriesUrl)
 @section('hreflang_ar', route('event_editions.show', ['slug' => $event->slug]))
@@ -20,6 +20,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/shared/page-hero.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/community-index.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/events-index.css') }}">
 @endpush
 
 @section('content')
@@ -27,13 +28,15 @@
     <x-page-hero
         :badge="__('events.series_badge')"
         :title="$event->localizedName()"
-        :description="__('events.series_intro', ['name' => $event->localizedName()])"
+        :description="$event->localizedDescription() ?: __('events.series_intro', ['name' => $event->localizedName()])"
         :image="$seriesImage ? media_url($seriesImage) : asset('images/events/og-cover.jpg')"
         :image-width="1672"
         :image-height="941"
     />
 
     <section class="container community-section">
+        <a class="events-back" href="{{ localized_route('events.index') }}">{{ app()->getLocale() === 'en' ? '←' : '→' }} {{ __('events.back_to_events') }}</a>
+
         <div class="section-head">
             <div class="section-head__eyebrow">{{ __('events.series_archive') }}</div>
             <h2 class="section-head__title">{{ __('events.all_editions') }}</h2>
@@ -61,9 +64,12 @@
 
                     <div class="community-card__body">
                         <div class="community-card__meta">
-                            {{ $edition->year }}
+                            {{-- موعد انعقاد المؤتمر (بتوقيت مسقط)، مب تاريخ نشر التغطية --}}
                             @if ($edition->event_start_at)
-                                · {{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->translatedFormat('d.m.Y') }}
+                                <span class="visually-hidden">{{ __('events.event_date') }}:</span>
+                                <time datetime="{{ $edition->event_start_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $edition->dateRangeLabel() }}</time>
+                            @else
+                                {{ $edition->year }}
                             @endif
                         </div>
 
@@ -73,7 +79,7 @@
                             {{ $edition->short_description ?: __('events.edition_default_description') }}
                         </p>
 
-                        <span class="community-card__link">{{ __('events.view_coverage') }} ←</span>
+                        <span class="community-card__link">{{ $phase === 'concluded' ? __('events.view_coverage') : __('events.view_details') }} {{ app()->getLocale() === 'en' ? '→' : '←' }}</span>
                     </div>
                 </a>
             @endforeach
