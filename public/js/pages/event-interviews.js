@@ -20,6 +20,8 @@
     document.body.appendChild(dock);
 
     var current = null;   // { item, kind: 'q' | 'a' }
+    // لما تنعرض الترجمة: تسجيلات سالم بلغتها بدل الأصلية (السؤال، المقدمة، الخاتمة).
+    var override = { q: {}, i: null, x: null };
     var queueMode = false;
     var activeSeg = null;
 
@@ -72,9 +74,9 @@
 
     function load(track, seek) {
         current = track;
-        var src = track.kind === 'i' ? data.intro
-            : track.kind === 'x' ? data.outro
-            : track.kind === 'q' ? items[track.item].q
+        var src = track.kind === 'i' ? (override.i || data.intro)
+            : track.kind === 'x' ? (override.x || data.outro)
+            : track.kind === 'q' ? (override.q[track.item] || items[track.item].q)
             : track.kind === 'o' ? items[track.item].o
             : items[track.item].a;
         if (audio.getAttribute('src') !== src) {
@@ -224,13 +226,32 @@
             return itemTwins[i];
         };
 
+        var setQuestion = function (i, english) {
+            var twins = twinsFor(i);
+            show(twins.rest.slice(0, 2), english);
+            var url = translation.items[i].q_audio;
+            if (english && url) override.q[i] = url; else delete override.q[i];
+            var button = document.querySelector('[data-translate-question="' + i + '"]');
+            if (button) button.textContent = english ? button.dataset.labelAr : button.dataset.labelEn;
+        };
+
         var setItem = function (i, english, full) {
             var twins = twinsFor(i);
             show(twins.answer, english);
-            if (full) show(twins.rest, english);
+            if (full) {
+                setQuestion(i, english);
+                show(twins.rest.slice(2), english);
+            }
             var button = document.querySelector('[data-translate-item="' + i + '"]');
             if (button) button.textContent = english ? button.dataset.labelAr : button.dataset.labelEn;
         };
+
+        document.querySelectorAll('[data-translate-question]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var i = Number(button.dataset.translateQuestion);
+                setQuestion(i, twinsFor(i).rest[1][0].hidden === false);
+            });
+        });
 
         document.querySelectorAll('[data-translate-item]').forEach(function (button) {
             button.addEventListener('click', function () {
@@ -257,6 +278,8 @@
                     });
                 }
                 show(introTwins, showingEnglish);
+                override.i = showingEnglish ? translation.intro_audio : null;
+                override.x = showingEnglish ? translation.outro_audio : null;
                 translation.items.forEach(function (_, i) { setItem(i, showingEnglish, true); });
                 trButton.textContent = showingEnglish ? trButton.dataset.labelAr : trButton.dataset.labelEn;
             });

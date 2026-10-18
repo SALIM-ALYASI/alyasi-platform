@@ -99,12 +99,16 @@ class CyberxInterviews
                 'lang' => $target,
                 'intro' => $guest['intro_'.$target] ?? null,
                 'outro' => $guest['outro_'.$target] ?? null,
+                // تسجيلات سالم بلغة الترجمة: لما تنعرض الترجمة، «بصوتي» والمقدمة والخاتمة تتبدّل لها.
+                'intro_audio' => ! empty($guest['intro_audio'][$target] ?? null) ? asset(ltrim($guest['intro_audio'][$target], '/')) : null,
+                'outro_audio' => ! empty($guest['outro_audio'][$target] ?? null) ? asset(ltrim($guest['outro_audio'][$target], '/')) : null,
                 'items' => array_map(fn (array $source, array $shown) => [
                     'question_label' => ($source['label_'.$target] ?? ($isAr ? 'سؤال ' : 'Question ').$shown['number'])
                         .' · '.($isAr ? 'سالم الحجري' : 'Salem Al Hajri'),
                     'answer_label' => ($source['label_'.$target] ?? ($isAr ? 'إجابة ' : 'Answer ').$shown['number'])
                         .' · '.($guest['name_'.$target] ?? ''),
                     'question' => $source['q_'.$target] ?? '',
+                    'q_audio' => ! empty($source['q_audio'][$target] ?? null) ? asset(ltrim($source['q_audio'][$target], '/')) : null,
                     'paragraphs' => $source[$target.'_paragraphs'] ?? [],
                 ], $guestItems, $items),
             ];

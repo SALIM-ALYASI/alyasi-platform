@@ -131,6 +131,12 @@
                                     aria-label="{{ $t('استمع للسؤال', 'Play the question') }}">
                                 <span class="qa__mini-icon" aria-hidden="true">▶</span> {{ $t('بصوتي', 'In my voice') }}
                             </button>
+                            @if ($guest['translation'])
+                                {{-- ترجمة السؤال بس (ونسخة سالم بلغة الترجمة لـ«بصوتي») --}}
+                                <button type="button" class="qa__mini" data-translate-question="{{ $i }}"
+                                        data-label-en="{{ $toArabic ? '🌐 العربية' : '🌐 English' }}"
+                                        data-label-ar="{{ $toArabic ? '🌐 English' : '🌐 العربية' }}">{{ $toArabic ? '🌐 العربية' : '🌐 English' }}</button>
+                            @endif
                         </div>
                     </div>
 
