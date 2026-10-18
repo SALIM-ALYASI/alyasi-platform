@@ -1285,10 +1285,11 @@
     "en": "MT"
    },
    "languages": [
-    "en",
+    "en"
+   ],
+   "preview_languages": [
     "ar"
    ],
-   "preview_languages": [],
    "original_language": "en",
    "topic_ar": "اكتشاف الذكاء الاصطناعي الخفي، وضمانات وكلاء الذكاء الاصطناعي، والتبنّي الآمن في المؤسسات العُمانية",
    "topic_en": "Discovering hidden AI, safeguards for AI agents, and safe AI adoption in Omani organizations",
