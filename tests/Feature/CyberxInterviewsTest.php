@@ -155,6 +155,22 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('بين الامتثال والمرونة السيبرانية', false);
     }
 
+    public function test_interview_page_shows_real_visit_and_listen_counts(): void
+    {
+        foreach (['human', 'human', 'bot'] as $class) {
+            \App\Models\PageVisit::query()->create(['path' => '/events/cyberx-oman-2026/interviews/haitham-al-hajri', 'traffic_class' => $class]);
+        }
+        \App\Models\PageVisit::query()->create(['path' => '/en/events/cyberx-oman-2026/interviews/haitham-al-hajri', 'traffic_class' => 'human']);
+        \App\Models\PageEvent::query()->create(['path' => '/events/cyberx-oman-2026/interviews/haitham-al-hajri', 'type' => 'audio_play', 'traffic_class' => 'human']);
+
+        // البوت ما ينحسب، والصفحتين (عربي وإنجليزي) مع بعض.
+        $this->withHeader('Accept-Language', 'ar')
+            ->get('/events/cyberx-oman-2026/interviews/haitham-al-hajri')
+            ->assertOk()
+            ->assertSee('<strong>3</strong> زيارة', false)
+            ->assertSee('<strong>1</strong> مرة استماع', false);
+    }
+
     public function test_each_english_page_shows_its_own_guest_note(): void
     {
         $this->get('/en/events/cyberx-oman-2026/interviews/yahya-al-azri')

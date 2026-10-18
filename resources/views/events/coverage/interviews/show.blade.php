@@ -221,6 +221,15 @@
             </section>
         @endif
 
+        {{-- أرقام المقابلة (زيارات حقيقية بس، للصفحتين مع بعض) --}}
+        @if ($stats['visits'] > 0)
+            <ul class="interview__stats" aria-label="{{ $t('أرقام المقابلة', 'Interview stats') }}">
+                <li><strong>{{ number_format($stats['visits']) }}</strong> {{ $t('زيارة', 'visits') }}</li>
+                <li><strong>{{ number_format($stats['plays']) }}</strong> {{ $t('مرة استماع', 'listens') }}</li>
+                <li><strong>{{ number_format($stats['completes']) }}</strong> {{ $t('استماع حتى النهاية', 'full listens') }}</li>
+            </ul>
+        @endif
+
         {{-- بقية الضيوف --}}
         @if ($others)
             <section class="interview__more">

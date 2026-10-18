@@ -77,6 +77,7 @@ class EventCoverageController extends Controller
 
         $view = view('events.coverage.interviews.show', [
             'guest' => $data,
+            'stats' => \App\Support\Coverage\InterviewStats::for($guest),
             'others' => collect(array_filter(
                 CyberxInterviews::guests($locale),
                 fn ($g) => $g['published'] && $g['slug'] !== $guest && in_array($locale, $g['languages'], true)

@@ -373,3 +373,8 @@ html[lang="en"] .qa__text { line-height: 1.85; }
 .qa__orig { display: block; margin-top: 6px; color: var(--theme-muted); font-size: 12px; }
 .qa__text--written p { margin: 0 0 12px; }
 .qa__text--written p:last-child { margin-bottom: 0; }
+
+/* أرقام المقابلة تحت الخاتمة */
+.interview__stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px 0 8px; padding: 0; list-style: none; }
+.interview__stats li { padding: 8px 14px; border: 1px solid var(--color-divider); border-radius: 999px; background: var(--theme-card); color: var(--theme-muted); font-size: 13.5px; }
+.interview__stats strong { color: var(--color-text); font-size: 15px; }
