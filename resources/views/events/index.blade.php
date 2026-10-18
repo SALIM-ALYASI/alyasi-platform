@@ -95,7 +95,7 @@
 
                     <article class="card card--hover community-card event-card" data-reveal>
                         <a href="{{ $coverageUrl }}" class="community-card__media" tabindex="-1" aria-hidden="true">
-                            <img src="{{ $cardImage ? media_url($cardImage) : asset('images/events/og-cover.jpg') }}" alt="" loading="lazy" width="1200" height="630">
+                            <img src="{{ $cardImage ? media_url($cardImage) : asset('images/events/og-cover.jpg') }}" @if ($cardImage && ($srcset = media_srcset($cardImage))) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 400px" @endif alt="" loading="lazy" decoding="async" width="1200" height="630">
 
                             @if ($phase)
                                 <span class="badge badge--status-{{ $phaseClass[$phase] }} community-card__badge">{{ __('events.phase.'.$phase) }}</span>
