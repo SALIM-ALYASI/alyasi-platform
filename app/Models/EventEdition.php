@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class EventEdition extends Model
@@ -19,6 +20,11 @@ class EventEdition extends Model
         'title_en',
         'coverage_type',
         'attended',
+        'is_media_partner',
+        'coverage_url',
+        'interviews_url',
+        'exclusive_published_at',
+        'is_featured',
         'date_status',
         'event_start_at',
         'event_end_at',
@@ -29,6 +35,8 @@ class EventEdition extends Model
         'gallery',
         'short_description_ar',
         'short_description_en',
+        'goals_ar',
+        'goals_en',
         'content_ar',
         'content_en',
         'announcements',
@@ -47,6 +55,9 @@ class EventEdition extends Model
     protected $casts = [
         'year' => 'integer',
         'attended' => 'boolean',
+        'is_media_partner' => 'boolean',
+        'is_featured' => 'boolean',
+        'exclusive_published_at' => 'datetime',
         'event_start_at' => 'datetime',
         'official_checked_at' => 'datetime',
         'event_end_at' => 'datetime',
@@ -227,6 +238,81 @@ class EventEdition extends Model
         }
 
         return $start->translatedFormat($start->isSameYear($end) ? 'j F' : 'j F Y').($locale === 'ar' ? ' إلى ' : ' – ').$end->translatedFormat('j F Y');
+    }
+
+    /**
+     * أهداف منصة ALYASI من تغطية هذا المؤتمر بلغة الصفحة (هدف بكل سطر)،
+     * وترجع للعربي لو ما فيه إنجليزي.
+     *
+     * @return list<string>
+     */
+    public function localizedGoals(): array
+    {
+        $text = app()->getLocale() === 'en' ? ($this->goals_en ?: $this->goals_ar) : ($this->goals_ar ?: $this->goals_en);
+
+        return array_values(array_filter(array_map(
+            fn ($line) => trim(preg_replace('/^[\s\-•*·\d.)]+/u', '', $line)),
+            preg_split('/\R/u', (string) $text)
+        )));
+    }
+
+    /**
+     * فهرس مقابلات هذي النسخة (أي مؤتمر، مب CyberX بس).
+     */
+    public function interviews(): HasMany
+    {
+        return $this->hasMany(EventInterview::class)->orderBy('sort_order');
+    }
+
+    /**
+     * رابط من لوحة التحكم بلغة الصفحة: المسار الداخلي (/events/...) ينضاف له
+     * /en بالإنجليزي، والرابط الكامل (https://) يبقى مثل ما هو.
+     */
+    public static function localizedPath(?string $path, ?string $locale = null): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        if (preg_match('#^https?://#i', $path)) {
+            return $path;
+        }
+
+        $locale ??= app()->getLocale();
+        $path = '/'.ltrim($path, '/');
+
+        return url(($locale === 'en' && ! str_starts_with($path, '/en/') ? '/en' : '').$path);
+    }
+
+    public function coverageLink(): ?string
+    {
+        return self::localizedPath($this->coverage_url);
+    }
+
+    public function interviewsLink(): ?string
+    {
+        return self::localizedPath($this->interviews_url);
+    }
+
+    /**
+     * تغطية ميدانية فعلية: حضرنا، ونُشرت تغطيتنا (مب مجرد نية حضور).
+     */
+    public function hasOnsiteCoverage(): bool
+    {
+        return (bool) $this->attended && $this->exclusive_published_at !== null && $this->exclusive_published_at->isPast();
+    }
+
+    /**
+     * آخر وقت نُشر فيه محتوى حصري لهذي النسخة (تغطية ميدانية أو مقابلة)، أو null.
+     */
+    public function latestExclusiveAt(int $publishedInterviews, ?\Illuminate\Support\Carbon $latestInterviewAt): ?\Illuminate\Support\Carbon
+    {
+        $times = array_filter([
+            $this->hasOnsiteCoverage() ? $this->exclusive_published_at : null,
+            $publishedInterviews > 0 ? ($latestInterviewAt ?? $this->exclusive_published_at) : null,
+        ]);
+
+        return $times ? max($times) : null;
     }
 
     /**

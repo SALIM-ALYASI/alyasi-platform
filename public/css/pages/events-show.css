@@ -811,3 +811,8 @@
 .event-detail__dates { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: -10px 0 22px; padding: 0; list-style: none; color: var(--theme-muted); font-size: 13.5px; }
 .event-detail__dates li { display: inline-flex; align-items: center; gap: 6px; }
 .event-detail__dates time { color: var(--color-text); font-weight: 700; }
+.event-detail__exclusive { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -8px 0 24px; }
+.event-detail__exclusive .event-card__tags { margin: 0; }
+.event-detail__goals ul { display: grid; gap: 10px; margin: 0 0 28px; padding: 0; list-style: none; }
+.event-detail__goals li { position: relative; padding: 12px 16px; padding-inline-start: 40px; border: 1px solid var(--color-divider); border-radius: var(--radius-md); background: var(--theme-card); line-height: 1.8; }
+.event-detail__goals li::before { content: "✓"; position: absolute; inset-inline-start: 14px; top: 12px; color: var(--color-accent-500); font-weight: 700; }

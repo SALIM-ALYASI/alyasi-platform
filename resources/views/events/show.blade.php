@@ -184,6 +184,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/community-show.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/pages/events-show.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/pages/events-index.css') }}">
 @endpush
 
 @section('content')
@@ -224,6 +225,35 @@
                 <li>{{ __('events.page_updated') }}: <time datetime="{{ $edition->updated_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $edition->updated_at->copy()->timezone('Asia/Muscat')->locale(app()->getLocale())->translatedFormat('j F Y') }}</time></li>
             @endif
         </ul>
+
+        {{-- تغطية ALYASI الحصرية لهذي النسخة (من لوحة التحكم، لأي مؤتمر) --}}
+        @php $highlights = \App\Support\Events\EventHighlights::for($edition); @endphp
+        @if ($highlights['tags'] || $highlights['links'])
+            <div class="event-detail__exclusive">
+                @if ($highlights['tags'])
+                    <ul class="event-card__tags">
+                        @foreach ($highlights['tags'] as $tag)
+                            <li>{{ $tag }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+                @foreach ($highlights['links'] as $k => $link)
+                    <a class="btn {{ $k === 0 ? 'btn--primary' : 'btn--outline' }}" href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+                @endforeach
+            </div>
+        @endif
+
+        {{-- أهداف ALYASI من تغطية المؤتمر --}}
+        @if ($goals = $edition->localizedGoals())
+            <section class="event-detail__goals">
+                <h2 class="event-detail__section-title">{{ __('events.goals_title') }}</h2>
+                <ul>
+                    @foreach ($goals as $goal)
+                        <li>{{ $goal }}</li>
+                    @endforeach
+                </ul>
+            </section>
+        @endif
 
         @if ($coverageUrl)
             {{-- المؤتمر انتهى: نعرض أرشيف تغطية الياسي بدل التفاصيل والجدول --}}

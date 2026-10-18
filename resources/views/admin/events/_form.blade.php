@@ -135,6 +135,63 @@
 </div>
 
 <div class="events-form-section">
+    <h3 class="events-form-section-title"><i class="fa-solid fa-star"></i> تغطية ALYASI الحصرية</h3>
+    <p style="margin:0 0 14px;color:#555;font-size:13px;">كل شارة بصفحة الفعاليات تطلع بس لما يكون محتواها موجود فعلًا: «تغطية ميدانية» = حضرنا + تاريخ نشر التغطية، «مقابلات حصرية» = مقابلات منشورة بفهرس المقابلات، و«شريك إعلامي» صفة منفصلة.</p>
+    <div class="form-grid">
+        <div class="form-group form-group-full">
+            <label class="check-option">
+                <input type="checkbox" name="is_media_partner" value="1" @checked(old('is_media_partner', $edition->is_media_partner ?? false))>
+                <span>منصة ALYASI الشريك الإعلامي لهذا المؤتمر</span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="coverage_url">رابط التغطية الكاملة</label>
+            <input type="text" id="coverage_url" name="coverage_url" value="{{ old('coverage_url', $edition->coverage_url ?? '') }}" dir="ltr" placeholder="/events/...-2027/coverage">
+            <small style="display:block;margin-top:6px;color:#555;">مسار داخلي يبدأ بـ / (ينضاف له /en تلقائيًا بالإنجليزي) أو رابط كامل.</small>
+            @error('coverage_url')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="interviews_url">رابط صفحة المقابلات</label>
+            <input type="text" id="interviews_url" name="interviews_url" value="{{ old('interviews_url', $edition->interviews_url ?? '') }}" dir="ltr" placeholder="/events/...-2027/interviews">
+            <small style="display:block;margin-top:6px;color:#555;">
+                المقابلات المنشورة لهذي النسخة: {{ isset($edition) ? $edition->interviews()->published()->count() : 0 }}
+                @if (isset($edition) && $edition->interviews()->exists()) (من أصل {{ $edition->interviews()->count() }}) @endif
+            </small>
+            @error('interviews_url')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="exclusive_published_at">تاريخ نشر التغطية الحصرية</label>
+            <input type="datetime-local" id="exclusive_published_at" name="exclusive_published_at" value="{{ old('exclusive_published_at', optional($edition->exclusive_published_at ?? null)->timezone('Asia/Muscat')?->format('Y-m-d\TH:i')) }}">
+            <small style="display:block;margin-top:6px;color:#555;">متى نُشرت تغطيتنا فعلًا (بتوقيت مسقط). فاضي = ما نُشرت بعد. الاختيار التلقائي للتغطية المميزة يعتمد عليه.</small>
+            @error('exclusive_published_at')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label class="check-option" style="margin-top:28px;">
+                <input type="checkbox" name="is_featured" value="1" @checked(old('is_featured', $edition->is_featured ?? false))>
+                <span>ثبّتها «تغطية مميزة» بصفحة الفعاليات</span>
+            </label>
+            <small style="display:block;margin-top:6px;color:#555;">الافتراضي تلقائي (أحدث تغطية حصرية منشورة). التثبيت يلغي تثبيت أي نسخة ثانية.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="goals_ar">أهداف ALYASI من التغطية (عربي)</label>
+            <textarea id="goals_ar" name="goals_ar" rows="4" placeholder="هدف بكل سطر">{{ old('goals_ar', $edition->goals_ar ?? '') }}</textarea>
+            @error('goals_ar')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="goals_en">ALYASI goals (English)</label>
+            <textarea id="goals_en" name="goals_en" rows="4" dir="ltr" placeholder="One goal per line">{{ old('goals_en', $edition->goals_en ?? '') }}</textarea>
+            @error('goals_en')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
+    </div>
+</div>
+
+<div class="events-form-section">
     <h3 class="events-form-section-title"><i class="fa-solid fa-images"></i> الصور</h3>
 
     <div class="form-grid">

@@ -170,6 +170,10 @@ class EventEditionController extends Controller
             $edition = DB::transaction(function () use ($validated, $slug) {
                 $edition = EventEdition::query()->create($validated);
 
+                if ($edition->is_featured) {
+                    EventEdition::query()->whereKeyNot($edition->getKey())->where('is_featured', true)->update(['is_featured' => false]);
+                }
+
                 foreach (['ar', 'en'] as $locale) {
                     Permalink::query()->create([
                         'locale' => $locale,
@@ -218,6 +222,11 @@ class EventEditionController extends Controller
 
         $event->update($validated);
 
+        if ($event->is_featured) {
+            // تغطية مميزة وحدة بس مثبّتة: تثبيت هذي يلغي تثبيت غيرها.
+            EventEdition::query()->whereKeyNot($event->getKey())->where('is_featured', true)->update(['is_featured' => false]);
+        }
+
         if (! empty($validated['image']) && $oldImage && $oldImage !== $validated['image']) {
             $this->deleteUpload($oldImage);
         }
@@ -243,6 +252,14 @@ class EventEditionController extends Controller
             'title_en' => ['nullable', 'string', 'max:255'],
             'coverage_type' => ['required', 'in:global_remote,gulf_analysis,local_field'],
             'attended' => ['nullable', 'boolean'],
+            'is_media_partner' => ['nullable', 'boolean'],
+            'is_featured' => ['nullable', 'boolean'],
+            // مسار داخلي (/events/...) أو رابط كامل.
+            'coverage_url' => ['nullable', 'string', 'max:500', 'regex:#^(/|https?://)#i'],
+            'interviews_url' => ['nullable', 'string', 'max:500', 'regex:#^(/|https?://)#i'],
+            'exclusive_published_at' => ['nullable', 'date'],
+            'goals_ar' => ['nullable', 'string', 'max:4000'],
+            'goals_en' => ['nullable', 'string', 'max:4000'],
             'date_status' => ['required', 'in:confirmed,expected,unknown'],
             'event_start_at' => ['nullable', 'date'],
             'event_end_at' => ['nullable', 'date', 'after_or_equal:event_start_at'],
@@ -282,6 +299,12 @@ class EventEditionController extends Controller
         ]);
 
         $data['attended'] = $request->boolean('attended');
+        $data['is_media_partner'] = $request->boolean('is_media_partner');
+        $data['is_featured'] = $request->boolean('is_featured');
+        // الحقل يُكتب بتوقيت مسقط، وينحفظ بتوقيت غرينتش مثل باقي التواريخ.
+        $data['exclusive_published_at'] = filled($data['exclusive_published_at'] ?? null)
+            ? \Illuminate\Support\Carbon::parse($data['exclusive_published_at'], 'Asia/Muscat')->utc()
+            : null;
 
         foreach (['content_ar', 'content_en'] as $field) {
             $data[$field] = filled($data[$field] ?? null)

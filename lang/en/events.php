@@ -107,4 +107,8 @@ return [
     'tag_remote' => 'Remote coverage',
     'tag_partner' => 'Media partner',
     'tag_interviews' => '{1} 1 exclusive interview|[2,*] :count exclusive interviews',
+    'goals_title' => 'ALYASI’s goals for this coverage',
+    'featured_title' => 'Featured coverage',
+    'featured_interviews' => 'Interviews',
+    'featured_page' => 'Event page',
 ];

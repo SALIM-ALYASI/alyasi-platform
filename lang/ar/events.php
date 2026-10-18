@@ -107,4 +107,8 @@ return [
     'tag_remote' => 'متابعة عن بُعد',
     'tag_partner' => 'شريك إعلامي',
     'tag_interviews' => '{1} مقابلة حصرية|[2,10] :count مقابلات حصرية|[11,*] :count مقابلة حصرية',
+    'goals_title' => 'أهداف ALYASI من هذه التغطية',
+    'featured_title' => 'تغطية مميزة',
+    'featured_interviews' => 'المقابلات',
+    'featured_page' => 'صفحة المؤتمر',
 ];

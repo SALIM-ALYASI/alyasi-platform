@@ -2,61 +2,63 @@
 
 namespace App\Support\Events;
 
-use App\Models\Event;
 use App\Models\EventEdition;
-use App\Support\Coverage\CyberxInterviews;
-use App\Support\Coverage\CyberxOman2026;
 
 /**
- * ما يميّز تغطية ALYASI لكل مؤتمر (يطلع على بطاقته بصفحة الفعاليات):
- * تغطية ميدانية، شراكة إعلامية، مقابلات حصرية، وروابط مباشرة لها.
- * المعلومات من المحتوى المنشور فقط -- ما نضيف شي غير مؤكد.
+ * ما يميّز تغطية ALYASI لكل نسخة مؤتمر -- من بياناتها بلوحة التحكم، لأي مؤتمر.
+ * كل شارة تعكس شي موجود فعلًا:
+ * - «شريك إعلامي»: صفة الشراكة (حتى قبل ما ننشر أي تغطية).
+ * - «تغطية ميدانية»: حضرنا ونُشرت تغطيتنا.
+ * - «مقابلات حصرية»: فيه مقابلات منشورة فعلًا.
  */
 final class EventHighlights
 {
-    /** المؤتمرات اللي ALYASI شريكها الإعلامي (مذكور بصفحاتها المنشورة). */
-    private const MEDIA_PARTNER = ['cysec-oman'];
-
     /**
-     * @return array{tags: list<string>, links: list<array{label: string, url: string}>}
+     * @return array{tags: list<string>, links: list<array{label: string, url: string}>, interviews: \Illuminate\Support\Collection, exclusive_at: ?\Illuminate\Support\Carbon}
      */
-    public static function for(Event $event, ?EventEdition $edition): array
+    public static function for(?EventEdition $edition): array
     {
+        $empty = ['tags' => [], 'links' => [], 'interviews' => collect(), 'exclusive_at' => null];
+
+        if (! $edition) {
+            return $empty;
+        }
+
+        $interviews = $edition->relationLoaded('interviews')
+            ? $edition->interviews->where('is_published', true)->values()
+            : $edition->interviews()->published()->get();
+
         $tags = [];
         $links = [];
 
-        if (in_array($event->slug, self::MEDIA_PARTNER, true)) {
+        if ($edition->is_media_partner) {
             $tags[] = __('events.tag_partner');
         }
 
-        if ($edition?->attended) {
+        if ($edition->hasOnsiteCoverage()) {
             $tags[] = __('events.tag_onsite');
-        } elseif ($edition && $edition->coverage_type === 'global_remote') {
+        } elseif ($edition->coverage_type === 'global_remote' && $edition->phase === 'concluded') {
             $tags[] = __('events.tag_remote');
         }
 
-        if ($edition && $edition->slug('ar') === CyberxOman2026::EVENT_SLUG) {
-            $interviews = count(self::publishedInterviews());
-
-            if ($interviews > 0) {
-                $tags[] = trans_choice('events.tag_interviews', $interviews, ['count' => $interviews]);
-                $links[] = ['label' => __('events.interviews_link'), 'url' => localized_route('event_coverage.cyberx_oman_2026.interviews')];
-            }
-
-            $links[] = ['label' => __('events.coverage_full'), 'url' => localized_route('event_coverage.cyberx_oman_2026')];
+        if ($interviews->isNotEmpty()) {
+            $tags[] = trans_choice('events.tag_interviews', $interviews->count(), ['count' => $interviews->count()]);
         }
 
-        return ['tags' => $tags, 'links' => $links];
-    }
+        // رابط التغطية الكاملة يطلع بس لما تكون التغطية منشورة فعلًا.
+        if (($url = $edition->coverageLink()) && $edition->exclusive_published_at?->isPast()) {
+            $links[] = ['label' => __('events.coverage_full'), 'url' => $url];
+        }
 
-    /** @return list<array<string, mixed>> */
-    public static function publishedInterviews(): array
-    {
-        $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
+        if (($url = $edition->interviewsLink()) && $interviews->isNotEmpty()) {
+            $links[] = ['label' => __('events.interviews_link'), 'url' => $url];
+        }
 
-        return array_values(array_filter(
-            CyberxInterviews::guests($locale),
-            fn (array $guest) => $guest['published']
-        ));
+        return [
+            'tags' => $tags,
+            'links' => $links,
+            'interviews' => $interviews,
+            'exclusive_at' => $edition->latestExclusiveAt($interviews->count(), $interviews->max('published_at')),
+        ];
     }
 }
