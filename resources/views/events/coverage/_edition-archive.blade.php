@@ -5,10 +5,12 @@
     $isEn = app()->getLocale() === 'en';
     $t = fn (string $ar, string $en) => $isEn ? $en : $ar;
     $archiveStops = \App\Support\Coverage\CyberxOman2026::content($isEn ? 'en' : 'ar')['stops'];
-    $archiveGuests = array_values(array_filter(
-        \App\Support\Coverage\CyberxInterviews::guests($isEn ? 'en' : 'ar'),
-        fn ($guest) => $guest['published']
-    ));
+    // ترتيب عشوائي بكل زيارة -- ما فيه ضيف ثابت أول القائمة.
+    $archiveGuests = collect(\App\Support\Coverage\CyberxInterviews::guests($isEn ? 'en' : 'ar'))
+        ->filter(fn ($guest) => $guest['published'])
+        ->shuffle()
+        ->values()
+        ->all();
     $coverageLink = localized_route('event_coverage.cyberx_oman_2026');
 
     // مقالات المؤتمر بالترتيب (قبله ثم بعده)، بالرابط العربي الدائم. المنشور بلغة الصفحة بس.
