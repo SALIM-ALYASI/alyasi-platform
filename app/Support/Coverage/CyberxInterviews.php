@@ -118,6 +118,8 @@ class CyberxInterviews
             'slug' => $guest['slug'],
             'published' => (bool) $guest['published'],
             'languages' => $guest['languages'] ?? ['ar'],
+            // لغة الترجمة داخل الصفحة (خالد: en، فاطمة: ar) -- الضيف يطلع بقائمة تلك اللغة كمان.
+            'inline_translation' => $guest['inline_translation'] ?? null,
             // لغة جاهزة بس تنتظر مراجعة (مثلًا صوت مولّد لسا ما وافق عليه الضيف):
             // تنفتح برابط المعاينة الموقّع فقط، وما تطلع بالـ hreflang ولا الخريطة.
             'preview_languages' => $guest['preview_languages'] ?? [],

@@ -42,12 +42,15 @@
             @foreach ($guests as $guest)
                 @if ($guest['published'])
                     @php
+                        // مقابلة بلغة وحدة مع ترجمة داخل الصفحة (خالد عربي، فاطمة إنجليزي):
+                        // البطاقة تودّي لصفحتها الأصلية، مع شارة لغتها.
                         $inPageLanguage = in_array($isEn ? 'en' : 'ar', $guest['languages'], true);
+                        $ownLanguage = $guest['languages'][0] ?? 'ar';
                         $cardUrl = $inPageLanguage
                             ? localized_route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']])
-                            : route('event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]);
+                            : route($ownLanguage === 'en' ? 'event_coverage.cyberx_oman_2026.interview.en' : 'event_coverage.cyberx_oman_2026.interview', ['guest' => $guest['slug']]);
                     @endphp
-                    <a class="interview-card" data-reveal href="{{ $cardUrl }}" @unless ($inPageLanguage) hreflang="ar" @endunless>
+                    <a class="interview-card" data-reveal href="{{ $cardUrl }}" @unless ($inPageLanguage) hreflang="{{ $ownLanguage }}" @endunless>
                         <span class="interview-card__top">
                             @include('events.coverage.interviews._avatar', ['guest' => $guest, 'size' => 64])
                             <span class="interview-card__who">
@@ -66,7 +69,7 @@
                             <span class="interview-card__play" aria-hidden="true">▶</span>
                             {{ $t('استمع واقرأ', 'Listen & read') }}
                             @unless ($inPageLanguage)
-                                <span class="interview-card__lang">In Arabic</span>
+                                <span class="interview-card__lang">{{ $ownLanguage === 'en' ? 'بالإنجليزية · مع ترجمة عربية' : 'In Arabic · with English translation' }}</span>
                             @endunless
                         </span>
                     </a>

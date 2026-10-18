@@ -19,15 +19,18 @@ class CyberxInterviewsTest extends TestCase
             ->assertSee('يحيى العزري')
             ->assertSee('علي اللواتي')
             ->assertSee('خالد العمراني')
+            // فاطمة صفحتها إنجليزية بترجمة عربية داخلها.
+            ->assertSee('فاطمة اللواتي')
+            ->assertSee(url('/en/events/cyberx-oman-2026/interviews/fatma-al-lawati'), false)
             ->assertDontSee('قريبًا');
 
         $this->get('/en/events/cyberx-oman-2026/interviews')
             ->assertOk()
             ->assertSee('Dr. Haitham Al Hajri')
             ->assertSee('Yahya Al-Azri')
-            // ترجمة خالد مخفية (معاينة فقط) -- ما يطلع بصفحة اللقاءات الإنجليزية.
-            ->assertDontSee('Khalid Al Amrani')
-            ->assertDontSee('In Arabic')
+            // خالد صفحته عربية بترجمة إنجليزية داخلها: يطلع بالقائمة الإنجليزية بشارة لغته.
+            ->assertSee('Khalid Al Amrani')
+            ->assertSee('In Arabic · with English translation')
             ->assertSee('href="'.url('/en/events/cyberx-oman-2026/interviews/haitham-al-hajri').'"', false)
             ->assertDontSee('Coming soon');
     }

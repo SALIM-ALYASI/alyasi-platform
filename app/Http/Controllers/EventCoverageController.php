@@ -39,7 +39,7 @@ class EventCoverageController extends Controller
             // (مقابلة بالعربي فقط، مثل خالد، ما تطلع بالنسخة الإنجليزية).
             'guests' => array_values(array_filter(
                 CyberxInterviews::guests($locale),
-                fn ($g) => $g['published'] && in_array($locale, $g['languages'], true)
+                fn ($g) => $g['published'] && (in_array($locale, $g['languages'], true) || $g['inline_translation'] === $locale)
             )),
             'isEn' => $locale === 'en',
             'coverageUrl' => localized_route('event_coverage.cyberx_oman_2026'),
