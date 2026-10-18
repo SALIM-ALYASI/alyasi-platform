@@ -1755,6 +1755,197 @@
     "ar": "/audio/interviews/cyberx-oman-2026/ahmed/outro-ar.m4a",
     "en": "/audio/interviews/cyberx-oman-2026/ahmed/outro-en.m4a"
    }
+  },
+  {
+   "slug": "fatma-al-lawati",
+   "published": false,
+   "name_ar": "فاطمة اللواتي",
+   "name_en": "Fatma Al Lawati",
+   "role_ar": "قيادية تنفيذية في الأمن السيبراني · مسؤولة المتحدثين في WiCSME",
+   "role_en": "Cybersecurity Executive · Speakers Lead, WiCSME",
+   "photo": "/images/interviews/cyberx-oman-2026/fatma-al-lawati-photo.jpg",
+   "initials": {
+    "ar": "ف",
+    "en": "FL"
+   },
+   "languages": [
+    "en",
+    "ar"
+   ],
+   "preview_languages": [],
+   "original_language": "en",
+   "topic_ar": "الامتثال مقابل المرونة السيبرانية، واستمرارية أعمال المؤسسات الصغيرة، وإيصال الوعي السيبراني بالعربية",
+   "topic_en": "Compliance versus resilience, keeping small organizations running, and cyber awareness in Arabic",
+   "quote_ar": "المرونة السيبرانية قدرة يجب إثباتها عمليًا.",
+   "quote_en": "Compliance is something you demonstrate; resilience is something you prove.",
+   "intro_en": "After the CyberX Oman 2026 conference, I had this conversation with one of the women leading cybersecurity voices in the region. She kindly recorded her answers to my questions after the event.\n\nWe talked about the difference between being compliant and being truly resilient, how small organizations can keep their services running during a breach, the most common mistake in recovery plans, and how to bring cybersecurity knowledge to people in Oman in Arabic.\n\nI thank her for her time, and for her generous cooperation with ALYASI.\n\nAnd before we begin… I'll let her introduce herself.",
+   "intro_ar": "بعد مؤتمر سايبر إكس عُمان 2026، كان لي هذا اللقاء مع إحدى القيادات النسائية في مجال الأمن السيبراني بالمنطقة، وتكرّمت بتسجيل إجاباتها على أسئلتي بعد المؤتمر.\n\nتحدثنا عن الفرق بين الامتثال والمرونة السيبرانية الحقيقية، وكيف تحافظ المؤسسات الصغيرة على استمرار خدماتها أثناء الاختراق، وأكثر الأخطاء شيوعًا في خطط التعافي، وكيف نوصل المعرفة بالأمن السيبراني إلى الناس في عُمان باللغة العربية.\n\nأشكرها على وقتها، وعلى تعاونها الكريم مع منصة الياسي.\n\nوقبل أن نبدأ… أترك لها التعريف بنفسها.",
+   "outro_en": "Thank you, Ms. Fatma, for your time and for sharing your practical insights on cyber resilience, recovery and bringing cybersecurity knowledge to everyone in Oman. It was a pleasure speaking with you on ALYASI. We look forward to another conversation soon.",
+   "outro_ar": "شكرًا جزيلًا أستاذة فاطمة على وقتك، وعلى أفكارك العملية حول المرونة السيبرانية والتعافي وإيصال المعرفة بالأمن السيبراني إلى الجميع في عُمان. سعدنا بهذا الحوار معكِ عبر منصة الياسي، ونتطلع إلى لقاء جديد قريبًا، إن شاء الله.",
+   "note_ar": "الإجابات أدناه ترجمة عربية نصية لإجابات الأستاذة فاطمة اللواتي بالإنجليزية، والتسجيل الصوتي بصوتها الأصلي بالإنجليزية.",
+   "ai_voice_consent": "رفضت الصوت المولّد -- العربي ترجمة نصية فقط مع تسجيلها الإنجليزي (مثل خالد). راجعت النص الإنجليزي ووافقت -- 18 أكتوبر 2026، نقلها سالم",
+   "og_image": "/images/interviews/cyberx-oman-2026/fatma-al-lawati-og.jpg",
+   "og_image_en": "/images/interviews/cyberx-oman-2026/fatma-al-lawati-og-en.jpg",
+   "items": [
+    {
+     "label_ar": "التحية",
+     "label_en": "Greeting",
+     "q_ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
+     "q_en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you.",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-hello-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-hello-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a0.m4a",
+     "duration": 11.6,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "Thank you, Salem. It's a pleasure to speak with you. I'm delighted to be part of this conference and to share some perspective on cybersecurity and the future of Oman's digital economy."
+     ],
+     "ar_paragraphs": [
+      "شكرًا لك سالم، يسعدني التحدث معك. وأنا سعيدة بالمشاركة في هذا المؤتمر ومشاركة بعض الرؤى حول الأمن السيبراني ومستقبل الاقتصاد الرقمي في سلطنة عُمان."
+     ]
+    },
+    {
+     "label_ar": "تعريف الضيفة",
+     "label_en": "Introduction",
+     "q_ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
+     "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-intro-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-intro-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a1.m4a",
+     "duration": 38.8,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "My name is Fatma Al Lawati. I'm a cybersecurity executive and the Speakers Lead at Women in Cybersecurity Middle East (WiCSME). Through WiCSME, we work to amplify cybersecurity expertise, create opportunities for professionals to share their knowledge, and connect experts with regional and international platforms.",
+      "I am particularly passionate about the intersection of cybersecurity, innovation and digital transformation, and how we can build a digital economy that is not only innovative, but also secure and resilient."
+     ],
+     "ar_paragraphs": [
+      "اسمي فاطمة اللواتي، وأنا قيادية تنفيذية في مجال الأمن السيبراني، ومسؤولة المتحدثين في منظمة المرأة في الأمن السيبراني بالشرق الأوسط (WiCSME).",
+      "نعمل من خلال المنظمة على إبراز الخبرات في مجال الأمن السيبراني، وإتاحة الفرص للمتخصصين لمشاركة معارفهم، وربط الخبراء بالمنصات الإقليمية والدولية.",
+      "وأهتم بشكل خاص بالتقاطع بين الأمن السيبراني والابتكار والتحول الرقمي، وكيف يمكننا بناء اقتصاد رقمي لا يتميز بالابتكار فحسب، بل يكون أيضًا آمنًا وقادرًا على الصمود أمام التحديات."
+     ]
+    },
+    {
+     "q_ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟",
+     "q_en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-q1-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-q1-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a2.m4a",
+     "duration": 60.0,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "I believe there is a fundamental difference between being compliant and being resilient. Compliance tells us whether we have the required policies, controls and procedures in place. Resilience tells us whether those controls actually work when something goes wrong.",
+      "An organization can have excellent policies on paper, but the real question is: Can it detect an attack? Can it respond effectively? Can it continue delivering critical services? And how quickly can it recover?",
+      "The best way to know is through regular testing — cyberattack simulations, incident response exercises and recovery drills that involve not only IT teams, but also business leaders. Because ultimately, compliance is something you demonstrate; resilience is something you prove."
+     ],
+     "ar_paragraphs": [
+      "أعتقد أن هناك فرقًا جوهريًا بين الامتثال والمرونة السيبرانية.",
+      "فالامتثال يوضح ما إذا كانت لدينا السياسات والضوابط والإجراءات المطلوبة، بينما تكشف المرونة السيبرانية ما إذا كانت هذه الضوابط تعمل بالفعل عند حدوث مشكلة.",
+      "قد تمتلك المؤسسة سياسات ممتازة على الورق، لكن السؤال الحقيقي هو: هل تستطيع اكتشاف الهجوم؟ وهل يمكنها الاستجابة له بفاعلية؟ وهل تستطيع الاستمرار في تقديم خدماتها الأساسية؟ وما مدى سرعتها في التعافي؟",
+      "وأفضل طريقة لمعرفة ذلك هي الاختبارات المنتظمة، مثل محاكاة الهجمات السيبرانية، وتمارين الاستجابة للحوادث، واختبارات التعافي، بمشاركة فرق تقنية المعلومات والقيادات الإدارية أيضًا.",
+      "فالامتثال أمر يمكن إثبات الالتزام به، أما المرونة السيبرانية فهي قدرة يجب إثباتها عمليًا."
+     ]
+    },
+    {
+     "q_ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟",
+     "q_en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-q2-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-q2-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a3.m4a",
+     "duration": 48.8,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "For small organizations, my advice is simple: know what matters most to your business, and have a tested plan to keep it running.",
+      "Not every system or service carries the same importance. Organizations should first identify their critical services — those they cannot afford to lose — and understand what they need to restore them. Then they should ensure their essential data is securely backed up, that recovery is tested, and that employees know who to contact and what to do during an incident.",
+      "You don't necessarily need a large cybersecurity budget to start building resilience. Start with your most critical service, protect it, and practice how you would recover."
+     ],
+     "ar_paragraphs": [
+      "نصيحتي للمؤسسات الصغيرة بسيطة: حددوا ما هو الأكثر أهمية لأعمالكم، وضعوا خطة مجرّبة تضمن استمراره.",
+      "ليست جميع الأنظمة والخدمات متساوية في الأهمية. لذلك يجب على المؤسسات أولًا تحديد خدماتها الحيوية التي لا تستطيع الاستغناء عنها، وفهم المتطلبات اللازمة لاستعادتها عند تعطلها.",
+      "بعد ذلك، ينبغي التأكد من حفظ نسخ احتياطية آمنة للبيانات الأساسية، واختبار عمليات الاستعادة، والتأكد من معرفة الموظفين بالجهات التي يجب التواصل معها والإجراءات الواجب اتخاذها عند وقوع حادث.",
+      "وليس من الضروري امتلاك ميزانية ضخمة للأمن السيبراني للبدء في بناء المرونة.",
+      "ابدأ بحماية خدمتك الأكثر أهمية، ثم تدرّب على كيفية استعادتها عند حدوث مشكلة."
+     ]
+    },
+    {
+     "q_ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟",
+     "q_en": "What is the most common mistake in recovery plans, and how can it be avoided?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-q3-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-q3-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a4.m4a",
+     "duration": 43.3,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "One of the most common mistakes is assuming that having a recovery plan means being ready to recover. Many organizations document their recovery procedures, but they don't test them under realistic conditions. Then, when an incident happens, they discover that backups cannot be restored quickly enough, responsibilities are unclear, or critical systems depend on other services they hadn't considered.",
+      "My recommendation is to test the plan regularly and learn from every exercise. Because during a cyber crisis, you don't want to discover for the first time whether your recovery plan actually works."
+     ],
+     "ar_paragraphs": [
+      "أحد أكثر الأخطاء شيوعًا هو الاعتقاد بأن مجرد امتلاك خطة للتعافي يعني أن المؤسسة أصبحت مستعدة بالفعل للتعافي.",
+      "فالعديد من المؤسسات توثّق إجراءات التعافي، لكنها لا تختبرها في ظروف واقعية.",
+      "وعندما يقع حادث فعلي، تكتشف أن النسخ الاحتياطية لا يمكن استعادتها بالسرعة المطلوبة، أو أن المسؤوليات غير واضحة، أو أن الأنظمة الحيوية تعتمد على خدمات أخرى لم تؤخذ في الحسبان.",
+      "لذلك أوصي باختبار خطة التعافي بانتظام، والاستفادة من الدروس المستخلصة من كل تمرين.",
+      "ففي أثناء الأزمات السيبرانية، لا ينبغي أن تكون تلك هي المرة الأولى التي تكتشف فيها المؤسسة ما إذا كانت خطة التعافي تعمل فعلًا أم لا."
+     ]
+    },
+    {
+     "q_ar": "برأيكِ، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
+     "q_en": "Is this conference mainly about raising cyber awareness in Oman, or showing the world Oman's progress? And how can we share it with Omanis in Arabic?",
+     "q_audio": {
+      "en": "/audio/interviews/cyberx-oman-2026/fatma/q-last-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/fatma/q-last-ar.m4a"
+     },
+     "a_audio": "/audio/interviews/cyberx-oman-2026/fatma/a5.m4a",
+     "duration": 73.9,
+     "languages": [
+      "en",
+      "ar"
+     ],
+     "segments": [],
+     "en_paragraphs": [
+      "I believe it's both, and the two objectives complement each other. Conferences like this provide an opportunity to strengthen cybersecurity awareness and knowledge within Oman, while also showcasing the expertise, innovation and progress taking place in our cybersecurity ecosystem.",
+      "But I think the real value comes from what happens after the conference. We need to take these discussions beyond conference halls and make cybersecurity knowledge accessible to everyone, not just cybersecurity professionals. That means creating Arabic content, short educational videos, practical guidance, community discussions, and simplified messages that explain cybersecurity in a way that is relevant to people's daily lives.",
+      "We need to engage students, entrepreneurs, small businesses and the wider community, because cybersecurity awareness shouldn't be limited to people who understand technical terminology. If we want to build a resilient digital Oman, cybersecurity knowledge must reach every part of our society — in the language people understand."
+     ],
+     "ar_paragraphs": [
+      "أعتقد أنه يحقق الهدفين معًا، وهما هدفان يكمل أحدهما الآخر.",
+      "فالمؤتمرات من هذا النوع توفر فرصة لتعزيز الوعي والمعرفة بالأمن السيبراني داخل سلطنة عُمان، وفي الوقت نفسه تُبرز الخبرات والابتكارات والتقدم الذي يشهده قطاع الأمن السيبراني لدينا.",
+      "لكنني أرى أن القيمة الحقيقية تكمن فيما يحدث بعد انتهاء المؤتمر.",
+      "علينا نقل هذه النقاشات إلى خارج قاعات المؤتمرات، وجعل المعرفة بالأمن السيبراني متاحة للجميع، وليس فقط للمتخصصين في هذا المجال.",
+      "ويعني ذلك إنتاج محتوى باللغة العربية، ومقاطع فيديو تعليمية قصيرة، وإرشادات عملية، ونقاشات مجتمعية، ورسائل مبسطة تشرح الأمن السيبراني بطريقة ترتبط بالحياة اليومية للناس.",
+      "علينا إشراك الطلبة ورواد الأعمال والمؤسسات الصغيرة والمجتمع بمختلف فئاته؛ لأن الوعي بالأمن السيبراني لا ينبغي أن يقتصر على من يفهمون المصطلحات التقنية.",
+      "فإذا أردنا بناء عُمان رقمية قادرة على الصمود أمام التهديدات، فلا بد أن تصل المعرفة بالأمن السيبراني إلى جميع فئات المجتمع، وباللغة التي يفهمونها."
+     ]
+    }
+   ]
   }
  ]
 }
