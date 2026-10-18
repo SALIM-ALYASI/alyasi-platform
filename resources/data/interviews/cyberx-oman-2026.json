@@ -1310,7 +1310,8 @@
      "q_ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك ومنصبك وطبيعة عملك؟",
      "q_en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
      "q_audio": {
-      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-intro-en.m4a"
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-intro-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-intro-ar.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a0.m4a",
      "duration": 70.0,
@@ -1337,7 +1338,8 @@
      "q_ar": "في مؤتمر سايبر إكس عُمان، طُرحت في الجلسة فكرة «لا يمكنك حوكمة ما لا تراه». كيف يمكن للمؤسسة أن تبدأ في اكتشاف أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها؟",
      "q_en": "At CyberX Oman, the panel raised the idea that “you can’t govern what you can’t see.” How can an organization start discovering AI tools its employees use without its knowledge?",
      "q_audio": {
-      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q1-en.m4a"
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q1-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q1-ar.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a1.m4a",
      "duration": 307.3,
@@ -1374,7 +1376,8 @@
      "q_ar": "عندما يستطيع وكيل الذكاء الاصطناعي تنفيذ إجراءات داخل أنظمة المؤسسة، ما أهم ضمانة يجب وضعها قبل منحه هذه الصلاحية؟",
      "q_en": "When an AI agent can take actions within an organization’s systems, what is the most important safeguard to put in place before granting it that access?",
      "q_audio": {
-      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q2-en.m4a"
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q2-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q2-ar.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a2.m4a",
      "duration": 230.1,
@@ -1407,7 +1410,8 @@
      "q_ar": "لو أوصيت بخطوة واحدة تتخذها المؤسسة العُمانية اليوم لاستخدام الذكاء الاصطناعي بأمان، فما هي؟",
      "q_en": "If you could recommend one step an Omani organization should take today to use AI safely, what would it be?",
      "q_audio": {
-      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q3-en.m4a"
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q3-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-q3-ar.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a3.m4a",
      "duration": 221.5,
@@ -1440,7 +1444,8 @@
      "q_ar": "ما الاعتقاد الشائع عن الذكاء الاصطناعي في بيئة العمل الذي تتمنى أن يتوقف القادة والموظفون عن تصديقه؟",
      "q_en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?",
      "q_audio": {
-      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-closing-en.m4a"
+      "en": "/audio/interviews/cyberx-oman-2026/tajuddin/q-closing-en.m4a",
+      "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/q-closing-ar.m4a"
      },
      "a_audio": "/audio/interviews/cyberx-oman-2026/tajuddin/a4.m4a",
      "duration": 120.9,
@@ -1496,7 +1501,15 @@
      }
     }
    ],
-   "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ محمد تاج الدين"
+   "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ محمد تاج الدين",
+   "intro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/intro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/tajuddin/intro-en.m4a"
+   },
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/tajuddin/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/tajuddin/outro-en.m4a"
+   }
   },
   {
    "slug": "ahmed-reza",
@@ -1710,7 +1723,15 @@
      }
     }
    ],
-   "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ أحمد رضا"
+   "ai_voice_label_ar": "صوت مولّد بالذكاء الاصطناعي بموافقة الأستاذ أحمد رضا",
+   "intro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/ahmed/intro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/ahmed/intro-en.m4a"
+   },
+   "outro_audio": {
+    "ar": "/audio/interviews/cyberx-oman-2026/ahmed/outro-ar.m4a",
+    "en": "/audio/interviews/cyberx-oman-2026/ahmed/outro-en.m4a"
+   }
   }
  ]
 }
