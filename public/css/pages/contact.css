@@ -41,3 +41,6 @@
     .contact-section { padding-top: 48px; padding-bottom: 56px; }
     .contact-form-card { padding: 24px; }
 }
+
+/* حقل فخ البوتات: خارج الشاشة ومعطّل (inert) -- ما يشوفه الزائر ولا قارئ الشاشة */
+.contact-hp { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }

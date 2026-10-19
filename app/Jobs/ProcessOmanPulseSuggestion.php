@@ -64,6 +64,13 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
             return;
         }
 
+        // نبض عُمان يعرض النص الرسمي العربي حرفيًا: صفحة إنجليزية ما تنشر بالصفحة العربية.
+        if (! preg_match('/\p{Arabic}/u', $page['title'].' '.$page['paragraphs'][0])) {
+            $this->finish($suggestion, 'failed', 'الصفحة الرسمية بالإنجليزي -- نبض عُمان ينشر النص العربي فقط');
+
+            return;
+        }
+
         if ($duplicate = $this->similarRecentItem($page['title'])) {
             $this->finish($suggestion, 'duplicate', 'نفس خبر نبض عُمان #'.$duplicate->id);
 
@@ -71,7 +78,15 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
         }
 
         $publishedAt = $page['published_at'] ?? $suggestion->source_published_at;
-        if ($publishedAt && $publishedAt->lt(now()->subHours(72))) {
+
+        // بيان رسمي بدون تاريخ نشر غالبًا مب خبر (صفحة تعريفية أو مكتبة إصدارات).
+        if (! $publishedAt) {
+            $this->finish($suggestion, 'failed', 'ما لقينا تاريخ نشر الخبر في الصفحة الرسمية');
+
+            return;
+        }
+
+        if ($publishedAt->lt(now()->subHours(72))) {
             $this->finish($suggestion, 'failed', 'خبر قديم ('.$publishedAt->toDateString().')');
 
             return;

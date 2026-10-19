@@ -39,12 +39,12 @@ class ContactMessageController extends Controller
         }
 
         /*
-         * فخ بوتات: حقل "website" لازم يضل فاضي (مخفي عن المستخدم الحقيقي)،
+         * فخ بوتات: حقل "contact_extra" (سابقًا "website") لازم يضل فاضي (مخفي عن المستخدم الحقيقي)،
          * والنموذج لازم ياخذ ٣ ثواني على الأقل قبل الإرسال (البوتات تعبّي
          * وترسل فوراً). لو فشل أي شرط، نظهر نجاح وهمي بدون ما نحفظ ولا
          * نرسل إشعار - نتجنب تنبيه البوت إنه انكشف.
          */
-        $isSuspectedBot = filled($request->input('website'))
+        $isSuspectedBot = filled($request->input('contact_extra')) || filled($request->input('website'))
             || (int) $request->input('form_rendered_at') > (now()->timestamp - 3);
 
         if ($isSuspectedBot) {

@@ -161,4 +161,25 @@ class OmanPulseTest extends TestCase
         $this->assertSame(0, OmanPulseItem::query()->count());
         $this->assertStringContainsString('قديم', NewsSuggestion::query()->value('status_note'));
     }
+    public function test_english_or_undated_official_pages_are_not_published(): void
+    {
+        $english = '<html><head><meta property="og:title" content="Hadatha for Cybersecurity Industry Program"></head><body><div class="post-content">'
+            .'<p>The Ministry seeks to build an integrated system in the fields of transport and communications.</p>'
+            .'<p>It aims to build advanced, secure and efficiently interconnected infrastructure.</p></div></body></html>';
+        // صفحة عربية بدون أي تاريخ (صفحة تعريفية مب خبر).
+        $undated = '<html><head><meta property="og:title" content="عن الوزارة"></head><body><div class="post-content">'
+            .'<p>تسعى الوزارة إلى بناء منظومة متكاملة في مجالات النقل والاتصالات وتقنية المعلومات.</p>'
+            .'<p>وتهدف إلى بناء بنية أساسية متطورة وآمنة ومترابطة بكفاءة.</p></div></body></html>';
+
+        Http::fake([
+            'mtcit.gov.om/en/*' => Http::response($english, 200, ['Content-Type' => 'text/html; charset=utf-8']),
+            'mtcit.gov.om/ar/*' => Http::response($undated, 200, ['Content-Type' => 'text/html; charset=utf-8']),
+        ]);
+
+        $this->suggest(['url' => 'https://mtcit.gov.om/en/hadatha', 'source_name' => 'وزارة النقل', 'category' => 'cyber'])->assertStatus(202);
+        $this->suggest(['url' => 'https://mtcit.gov.om/ar/about', 'source_name' => 'وزارة النقل', 'category' => 'cyber'])->assertStatus(202);
+
+        $this->assertSame(0, OmanPulseItem::query()->count());
+        $this->assertSame(['failed', 'failed'], NewsSuggestion::query()->orderBy('id')->pluck('status')->all());
+    }
 }

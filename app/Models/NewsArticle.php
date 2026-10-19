@@ -150,6 +150,13 @@ class NewsArticle extends Model
     protected static function booted(): void
     {
         static::saving(function (self $article): void {
+            // إشارات مصادر البوت (fact_N) ما تنحفظ بأي نص منشور، مهما كان شكلها.
+            foreach (\App\Console\Commands\StripFactMarkers::FIELDS as $field) {
+                if ($article->isDirty($field)) {
+                    $article->setAttribute($field, \App\Console\Commands\StripFactMarkers::clean($article->getAttribute($field)));
+                }
+            }
+
             if ($article->isDirty(['title_ar', 'title_en', 'excerpt_ar', 'excerpt_en']) || ! $article->exists) {
                 $article->is_oman = self::detectOman($article->title_ar, $article->title_en, $article->excerpt_ar, $article->excerpt_en);
             }

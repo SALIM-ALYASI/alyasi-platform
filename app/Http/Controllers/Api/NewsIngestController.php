@@ -139,8 +139,8 @@ class NewsIngestController extends Controller
                     : null,
                 'seo_title_ar' => Str::limit($validated['title_ar'], 70, ''),
                 'seo_title_en' => Str::limit($validated['title_en'], 70, ''),
-                'seo_description_ar' => Str::limit((string) $excerptAr, 170, ''),
-                'seo_description_en' => Str::limit((string) $excerptEn, 170, ''),
+                'seo_description_ar' => \App\Support\Text\Excerpt::make($validated['content_ar'], 160),
+                'seo_description_en' => \App\Support\Text\Excerpt::make($validated['content_en'], 160),
             ]);
 
             $article->save();
@@ -284,10 +284,7 @@ class NewsIngestController extends Controller
                 return [
                     'id' => $article->id,
                     'title' => $article->title_ar,
-                    'excerpt' => Str::limit(
-                        strip_tags($article->content_ar ?: $article->excerpt_ar ?: ''),
-                        500
-                    ),
+                    'excerpt' => \App\Support\Text\Excerpt::make($article->content_ar ?: $article->excerpt_ar ?: '', 500),
                     'source_name' => $article->source_name,
                     'published_at' => $article->published_at?->toIso8601String(),
                     'url' => $permalink?->url(),
@@ -499,7 +496,8 @@ class NewsIngestController extends Controller
             return null;
         }
 
-        return Str::limit(strip_tags($content), 200);
+        // جمل كاملة بدل قص أول 200 حرف بنص الكلمة.
+        return \App\Support\Text\Excerpt::make($content, 220);
     }
 
     /**

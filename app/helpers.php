@@ -120,6 +120,7 @@ if (! function_exists('versioned_asset')) {
      */
     function versioned_asset(string $path): string
     {
+        // ?v= يتغيّر مع كل تعديل للملف: ملف تبدّل بنفس الاسم (صوت، صورة) ما يطلع من الكاش القديم.
         $fullPath = public_path($path);
 
         if (! file_exists($fullPath)) {

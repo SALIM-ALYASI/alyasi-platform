@@ -70,9 +70,9 @@ class CyberxInterviews
                 'label' => $item['label_'.$locale] ?? $item['label_ar'] ?? null,
                 'number' => null,
                 'question' => $item['q_'.$locale] ?? $item['q_ar'],
-                'q_audio' => asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'] ?? reset($item['q_audio']), '/')),
-                'a_audio' => asset(ltrim($alt ? $alt['src'] : $item['a_audio'], '/')),
-                'a_audio_original' => $alt ? asset(ltrim($item['a_audio'], '/')) : null,
+                'q_audio' => versioned_asset(ltrim($item['q_audio'][$locale] ?? $item['q_audio']['ar'] ?? reset($item['q_audio']), '/')),
+                'a_audio' => versioned_asset(ltrim($alt ? $alt['src'] : $item['a_audio'], '/')),
+                'a_audio_original' => $alt ? versioned_asset(ltrim($item['a_audio'], '/')) : null,
                 'ai_voice' => ! empty($alt['ai_voice']),
                 'duration' => $alt['duration'] ?? $item['duration'],
                 'paragraphs' => $paragraphs,
@@ -100,15 +100,15 @@ class CyberxInterviews
                 'intro' => $guest['intro_'.$target] ?? null,
                 'outro' => $guest['outro_'.$target] ?? null,
                 // تسجيلات سالم بلغة الترجمة: لما تنعرض الترجمة، «بصوتي» والمقدمة والخاتمة تتبدّل لها.
-                'intro_audio' => ! empty($guest['intro_audio'][$target] ?? null) ? asset(ltrim($guest['intro_audio'][$target], '/')) : null,
-                'outro_audio' => ! empty($guest['outro_audio'][$target] ?? null) ? asset(ltrim($guest['outro_audio'][$target], '/')) : null,
+                'intro_audio' => ! empty($guest['intro_audio'][$target] ?? null) ? versioned_asset(ltrim($guest['intro_audio'][$target], '/')) : null,
+                'outro_audio' => ! empty($guest['outro_audio'][$target] ?? null) ? versioned_asset(ltrim($guest['outro_audio'][$target], '/')) : null,
                 'items' => array_map(fn (array $source, array $shown) => [
                     'question_label' => ($source['label_'.$target] ?? ($isAr ? 'سؤال ' : 'Question ').$shown['number'])
                         .' · '.($isAr ? 'سالم الحجري' : 'Salem Al Hajri'),
                     'answer_label' => ($source['label_'.$target] ?? ($isAr ? 'إجابة ' : 'Answer ').$shown['number'])
                         .' · '.($guest['name_'.$target] ?? ''),
                     'question' => $source['q_'.$target] ?? '',
-                    'q_audio' => ! empty($source['q_audio'][$target] ?? null) ? asset(ltrim($source['q_audio'][$target], '/')) : null,
+                    'q_audio' => ! empty($source['q_audio'][$target] ?? null) ? versioned_asset(ltrim($source['q_audio'][$target], '/')) : null,
                     'paragraphs' => $source[$target.'_paragraphs'] ?? [],
                 ], $guestItems, $items),
             ];
@@ -136,16 +136,16 @@ class CyberxInterviews
             'intro' => $pick('intro'),
             // المقدمة بصوت سالم (اختيارية) -- أول ما يشتغل بـ«استمع للمقابلة كاملة».
             'intro_audio' => ! empty($guest['intro_audio'][$locale] ?? null)
-                ? asset(ltrim($guest['intro_audio'][$locale], '/'))
+                ? versioned_asset(ltrim($guest['intro_audio'][$locale], '/'))
                 : null,
             // خاتمة سالم بعد آخر إجابة (اختيارية) -- آخر ما يشتغل بـ«استمع للمقابلة كاملة».
             'outro' => $pick('outro'),
             'outro_audio' => ! empty($guest['outro_audio'][$locale] ?? null)
-                ? asset(ltrim($guest['outro_audio'][$locale], '/'))
+                ? versioned_asset(ltrim($guest['outro_audio'][$locale], '/'))
                 : null,
-            'photo' => $guest['photo'] ? asset(ltrim($guest['photo'], '/')) : null,
+            'photo' => $guest['photo'] ? versioned_asset(ltrim($guest['photo'], '/')) : null,
             // صورة المشاركة (1200×630): الضيف واسمه واقتباسه -- تظهر لما ينرسل رابط مقابلته.
-            'og_image' => ($ogImage = $guest['og_image_'.$locale] ?? $guest['og_image'] ?? null) ? asset(ltrim($ogImage, '/')) : null,
+            'og_image' => ($ogImage = $guest['og_image_'.$locale] ?? $guest['og_image'] ?? null) ? versioned_asset(ltrim($ogImage, '/')) : null,
             'initials' => $guest['initials'][$locale] ?? $guest['initials']['ar'] ?? '',
             'items' => $items,
             'questions' => count(array_filter($items, fn (array $item) => $item['number'] !== null)),

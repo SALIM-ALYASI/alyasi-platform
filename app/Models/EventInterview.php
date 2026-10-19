@@ -45,7 +45,7 @@ class EventInterview extends Model
         $words = preg_split('/\s+/u', trim($name)) ?: [];
 
         return [
-            'photo' => $this->photo ? asset(ltrim($this->photo, '/')) : null,
+            'photo' => $this->photo ? versioned_asset(ltrim($this->photo, '/')) : null,
             'initials' => mb_substr($words[0] ?? '', 0, 1).(app()->getLocale() === 'en' ? mb_substr($words[count($words) - 1] ?? '', 0, 1) : ''),
             'name' => $name,
         ];

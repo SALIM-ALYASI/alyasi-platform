@@ -41,9 +41,11 @@
                     {{-- حقل فخ للبوتات — مخفي عن المستخدم الحقيقي بس البوتات اللي
                     تعبّي كل حقل بالنموذج تلقائياً تعبّيه. لو وصل غير فاضي نرفض
                     الطلب بصمت (نظهر نجاح وهمي بدون حفظ) - نفس المنطق بالكنترولر. --}}
-                    <div class="field" style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
-                        <label for="contact-website">Website</label>
-                        <input type="text" name="website" id="contact-website" tabindex="-1" autocomplete="off">
+                    {{-- اسم غير مألوف («website» كان المتصفح يعبّيه تلقائيًا للزائر الحقيقي فتنرفض
+                         رسالته بصمت، وأدوات الفحص تقراه حقلًا ظاهرًا). مخفي ومعطّل عن الزائر بالكامل. --}}
+                    <div class="contact-hp" inert aria-hidden="true">
+                        <label for="contact-extra">{{ __('contact.form_message') }}</label>
+                        <input type="text" name="contact_extra" id="contact-extra" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore>
                     </div>
                     <input type="hidden" name="form_rendered_at" value="{{ now()->timestamp }}">
 
