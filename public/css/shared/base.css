@@ -296,7 +296,7 @@ textarea.field__control { min-height: 130px; resize: vertical; }
 .field__checkbox input { margin-top: 4px; }
 
 /* — تقييم بالنجوم (عرض) — */
-.stars { display: inline-flex; gap: 2px; color: var(--color-accent-500); font-size: 14px; }
+.stars { display: inline-flex; gap: 2px; color: #F5B83D; font-size: 15px; letter-spacing: 1px; }
 
 /* — reveal on scroll: تُفعَّل عبر shared/reveal.js بإضافة is-visible — */
 [data-reveal] {
