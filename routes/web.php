@@ -584,6 +584,19 @@ Route::middleware('force.locale:en')
 
     });
 
+/*
+| صفحة مؤقتة لطلب تقييم من عميل مشروع (رابط موقّع ينتهي -- php artisan reviews:link {slug})
+*/
+foreach (['' => ['review.request', 'ar'], 'en/' => ['review.request.en', 'en']] as $prefix => [$name, $locale]) {
+    Route::get($prefix.'review/{work:slug}', [\App\Http\Controllers\ClientReviewController::class, 'show'])
+        ->middleware(['force.locale:'.$locale, 'signed:relative'])
+        ->name($name);
+
+    Route::post($prefix.'review/{work:slug}', [\App\Http\Controllers\ClientReviewController::class, 'store'])
+        ->middleware(['force.locale:'.$locale, 'signed:relative', 'throttle:5,1'])
+        ->name($name.'.store');
+}
+
 Route::post(
     'works/{work:slug}/reviews',
     [ReviewController::class, 'storeForWork']

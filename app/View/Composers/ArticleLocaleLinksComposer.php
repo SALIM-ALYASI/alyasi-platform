@@ -102,6 +102,11 @@ class ArticleLocaleLinksComposer
             ];
         }
 
+        // صفحة طلب التقييم الموقّعة: رابط اللغة الثانية موقّع بنفس تاريخ الانتهاء.
+        if ($baseName === 'review.request') {
+            return \App\Support\Reviews\ReviewLink::alternates((string) $route->parameter('work')?->slug, (int) request()->query('expires'));
+        }
+
         // مقابلة ضيف: زر اللغة يظهر فقط للغات اللي جاوب بها.
         if ($baseName === 'event_coverage.cyberx_oman_2026.interview') {
             $guest = (string) $route->parameter('guest');
