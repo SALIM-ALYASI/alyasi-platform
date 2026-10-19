@@ -339,3 +339,14 @@
     .home-core-service__body h3 { font-size: 14px; }
     .home-core-service__actions { flex-direction: column; align-items: stretch; text-align: center; }
 }
+
+/* عنوان الهيرو سطرين: القصص ثم الحلول */
+.home-hero__title span { display: block; }
+/* عناوين البيانات الرسمية العربية بالصفحة الإنجليزية تلتصق بحافة العمود */
+[dir="ltr"] .home-pulse h4[lang="ar"] { text-align: left; }
+/* مسافات أقصر بين الأقسام */
+.home-news, .home-conferences, .home-core-services, .home-articles { padding-top: 64px; padding-bottom: 32px; }
+@media (max-width: 767px) {
+    .home-news, .home-conferences, .home-core-services, .home-articles { padding-top: 40px; padding-bottom: 16px; }
+    .home-section { padding-top: 40px; padding-bottom: 40px; }
+}
