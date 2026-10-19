@@ -52,3 +52,9 @@
 .reviews-block__who { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
 .reviews-block__client { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px; border-radius: 999px; background: rgba(63, 179, 127, .14); color: #2f9a6a; font-size: 12px; font-weight: 700; }
 :root[data-theme="dark"] .reviews-block__client { color: #5fd3a0; }
+
+/* بطاقة التقييم تتبع الثيم (كانت بيضاء دائمًا والاسم يختفي بالوضع الداكن) */
+.reviews-block__item { background: var(--theme-card, #fff); border: 1px solid var(--color-divider); }
+.reviews-block__item-head strong { color: var(--color-text); }
+.reviews-block__item-body { color: var(--theme-muted, rgba(20, 32, 46, .75)); }
+.reviews-block__item-date { color: var(--theme-muted, rgba(20, 32, 46, .5)); opacity: .8; }

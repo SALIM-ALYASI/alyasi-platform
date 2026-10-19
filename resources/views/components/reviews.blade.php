@@ -27,7 +27,7 @@
                 <div class="reviews-block__item">
                     <div class="reviews-block__item-head">
                         <span class="reviews-block__who">
-                            <strong>{{ $review->name }}</strong>
+                            <strong dir="auto">{{ $review->name }}</strong>
                             @if ($review->from_client)
                                 <span class="reviews-block__client"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ __('reviews.from_client') }}</span>
                             @endif
@@ -38,7 +38,7 @@
                             @endfor
                         </span>
                     </div>
-                    <p class="reviews-block__item-body">{{ $review->body }}</p>
+                    <p class="reviews-block__item-body" dir="auto">{{ $review->body }}</p>
                     <span class="reviews-block__item-date">{{ $review->created_at->translatedFormat('d.m.Y') }}</span>
                 </div>
             @endforeach
