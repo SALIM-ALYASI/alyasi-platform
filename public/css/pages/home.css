@@ -358,3 +358,13 @@
 }
 /* البطاقة الأولى تحافظ على هامش الصفحة بعد التمرير (بدونها تلتصق بحافة الشاشة) */
 @media (max-width: 767px) { .home-scroller { scroll-padding-inline: 20px; } }
+
+/* خلفية الهيرو: مسقط ليلًا. على الشاشات العريضة يظهر الساحل، وعلى الجوال تتركّز على المدينة */
+.home-hero__bg img { object-position: center 62%; }
+@media (max-width: 767px) {
+    [dir="ltr"] .home-hero__bg img { object-position: 84% center; }
+    [dir="rtl"] .home-hero__bg img { object-position: 16% center; }
+    .home-hero__content { padding-top: 104px; padding-bottom: 40px; }
+}
+/* عنوان الهيرو يتوزّع بتوازن («Technology Stories / Worth Telling.») */
+.home-hero__title, .home-hero__title span { text-wrap: balance; }

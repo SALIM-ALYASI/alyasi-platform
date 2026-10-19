@@ -54,7 +54,9 @@
     {{-- HERO: منصة إعلام تقني عُمانية + خدمات رقمية --}}
     <section class="home-hero">
         <div class="home-hero__bg">
-            <img src="{{ asset('images/home/hero.webp') }}" alt="" loading="eager" fetchpriority="high" decoding="async" width="1672" height="188">
+            {{-- مسقط ليلًا: المدينة بالجهة المقابلة للنص (يسار بالعربي، يمين بالإنجليزي) --}}
+            @php $heroBg = 'images/home/hero-muscat-'.($isEn ? 'en' : 'ar'); @endphp
+            <img src="{{ versioned_asset($heroBg.'.webp') }}" srcset="{{ versioned_asset($heroBg.'-960.webp') }} 960w, {{ versioned_asset($heroBg.'.webp') }} 1731w" sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async" width="1731" height="909">
         </div>
         <div class="home-hero__overlay"></div>
 
