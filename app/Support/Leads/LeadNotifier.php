@@ -26,7 +26,8 @@ final class LeadNotifier
 
             foreach ($chunk->values() as $i => $lead) {
                 $lines[] = '';
-                $lines[] = ($chunkIndex * 5 + $i + 1).') '.$lead->countryLabel().($lead->city ? ' – '.$lead->city : '').' · '.$lead->categoryLabel();
+                $platform = ['mostaql' => 'مستقل', 'khamsat' => 'خمسات'][$lead->platform] ?? strtoupper($lead->platform);
+                $lines[] = ($chunkIndex * 5 + $i + 1).') '.$lead->countryLabel().($lead->city ? ' – '.$lead->city : '').' · '.$lead->categoryLabel().' · '.$platform;
                 $lines[] = Str::limit($lead->summary ?: preg_replace('/\s+/u', ' ', $lead->text), 220);
                 if ($lead->budget) {
                     $lines[] = 'الميزانية: '.$lead->budget;

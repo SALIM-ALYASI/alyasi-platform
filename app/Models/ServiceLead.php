@@ -29,7 +29,7 @@ class ServiceLead extends Model
         'web' => 'مواقع وأنظمة',
     ];
 
-    public const PLATFORMS = ['x', 'instagram', 'linkedin', 'facebook', 'tiktok', 'threads', 'snapchat', 'web'];
+    public const PLATFORMS = ['x', 'instagram', 'linkedin', 'facebook', 'tiktok', 'threads', 'snapchat', 'mostaql', 'khamsat', 'web'];
 
     public const STATUSES = [
         'new' => 'جديد',

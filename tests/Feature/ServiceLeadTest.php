@@ -74,7 +74,7 @@ class ServiceLeadTest extends TestCase
 
         Http::assertSentCount(1);
         Http::assertSent(fn ($request) => str_contains($request['message'], '🎯 طلبات عملاء جديدة (2)')
-            && str_contains($request['message'], '🇴🇲 عُمان – مسقط · تصميم جرافيك')
+            && str_contains($request['message'], '🇴🇲 عُمان – مسقط · تصميم جرافيك · X')
             && strpos($request['message'], 'عُمان') < strpos($request['message'], 'الإمارات'));
         $this->assertSame(2, ServiceLead::whereNotNull('notified_at')->count());
     }
