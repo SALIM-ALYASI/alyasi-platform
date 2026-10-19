@@ -1002,6 +1002,18 @@ Route::prefix('admin')
                 |----------------------------------------------------------
                 */
 
+                /*
+                |----------------------------------------------------------
+                | طلبات العملاء من منصات التواصل (Grok)
+                |----------------------------------------------------------
+                */
+
+                Route::get('service-leads', [\App\Http\Controllers\Admin\ServiceLeadController::class, 'index'])
+                    ->name('service-leads.index');
+
+                Route::patch('service-leads/{lead}/status', [\App\Http\Controllers\Admin\ServiceLeadController::class, 'updateStatus'])
+                    ->name('service-leads.status');
+
                 Route::prefix('messages')
                     ->name('messages.')
                     ->controller(AdminMessageController::class)

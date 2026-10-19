@@ -441,6 +441,23 @@
                     @endif
                 </a>
 
+                {{-- طلبات العملاء (Grok) --}}
+                <a
+                    href="{{ route('admin.service-leads.index') }}"
+                    class="sidebar-link {{ request()->routeIs('admin.service-leads.*') ? 'is-active' : '' }}"
+                >
+                    <span class="sidebar-link-icon">
+                        <i
+                            class="fa-solid fa-bullseye"
+                            aria-hidden="true"
+                        ></i>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        {{ __('admin-sidebar.service_leads') }}
+                    </span>
+                </a>
+
                 {{-- بيانات سيرفر --}}
                 <a
                     href="{{ route('admin.server-info.index') }}"

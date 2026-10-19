@@ -21,3 +21,8 @@ Schedule::command('fx:refresh-gulf-rates')
     ->dailyAt('05:10')
     ->timezone('Asia/Muscat')
     ->withoutOverlapping(15);
+
+// طلبات العملاء (Grok) تنحذف بعد 60 يومًا.
+Schedule::command('model:prune', ['--model' => [\App\Models\ServiceLead::class]])
+    ->dailyAt('04:20')
+    ->timezone('Asia/Muscat');

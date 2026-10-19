@@ -26,6 +26,7 @@ return [
 
     'users' => 'المستخدمون',
     'media_library' => 'مكتبة الوسائط',
+    'service_leads' => 'طلبات العملاء',
     'messages' => 'الرسائل',
     'settings' => 'الإعدادات',
 

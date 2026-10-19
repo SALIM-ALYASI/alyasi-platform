@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\Log;
  */
 class WhatsAppAlerts
 {
-    public static function send(string $message): void
+    /**
+     * @param  string  $prefix  رمز أول الرسالة: 🚨 للتنبيهات، و🎯 لطلبات العملاء مثلًا.
+     */
+    public static function send(string $message, string $prefix = '🚨 '): void
     {
-        $text = '🚨 '.$message;
+        $text = $prefix.$message;
 
         $phoneId = config('services.meta_whatsapp_alerts.phone_id');
         $token = config('services.meta_whatsapp_alerts.token');

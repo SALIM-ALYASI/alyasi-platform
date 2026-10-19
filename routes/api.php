@@ -80,6 +80,11 @@ Route::patch('news-suggestions/{newsSuggestion}', [NewsSuggestionController::cla
 |--------------------------------------------------------------------------
 */
 
+// طلبات خدمات منشورة علنًا في عُمان والخليج (Grok) -- نفس رمز اقتراح الأخبار.
+Route::post('service-leads', [\App\Http\Controllers\Api\ServiceLeadController::class, 'store'])
+    ->middleware(['news-suggester.auth', 'throttle:20,1'])
+    ->name('api.service-leads.store');
+
 Route::post('news-cards', [\App\Http\Controllers\Api\NewsCardController::class, 'store'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news-cards.store');

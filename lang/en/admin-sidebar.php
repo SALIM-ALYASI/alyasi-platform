@@ -26,6 +26,7 @@ return [
 
     'users' => 'Users',
     'media_library' => 'Media Library',
+    'service_leads' => 'Client leads',
     'messages' => 'Messages',
     'settings' => 'Settings',
 
