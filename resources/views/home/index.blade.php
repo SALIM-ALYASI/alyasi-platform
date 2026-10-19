@@ -223,7 +223,7 @@
                     @php $serviceUrl = $service->slug() ? localized_route('services.show', ['slug' => $service->slug()]) : localized_route('services.index'); @endphp
                     <article class="home-core-service" data-reveal>
                         <a href="{{ $serviceUrl }}" class="home-core-service__media" tabindex="-1" aria-hidden="true">
-                            <img src="{{ media_url($service->image) }}" @if ($srcset = media_srcset($service->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 46vw, 300px" @endif alt="" loading="lazy" decoding="async">
+                            <img src="{{ media_url($service->image) }}" @if ($srcset = media_srcset($service->image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 46vw, 300px" @endif alt="" loading="lazy" decoding="async" width="800" height="600">
                         </a>
                         <div class="home-core-service__body">
                             <h3><a href="{{ $serviceUrl }}">{{ $service->localizedTitle() }}</a></h3>
@@ -288,7 +288,7 @@
                 @foreach ($works as $work)
                     <a href="{{ localized_route('works.show', ['work' => $work]) }}" class="card card--hover home-work-card" data-reveal>
                         <div class="home-work-card__media">
-                            <img src="{{ media_url($work->cover_image) }}" @if ($srcset = media_srcset($work->cover_image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 80vw, 400px" @endif alt="{{ $work->localized('title') }}" loading="lazy" decoding="async">
+                            <img src="{{ media_url($work->cover_image) }}" @if ($srcset = media_srcset($work->cover_image)) srcset="{{ $srcset }}" sizes="(max-width: 767px) 80vw, 400px" @endif alt="{{ $work->localized('title') }}" loading="lazy" decoding="async" width="800" height="640">
                         </div>
                         <div class="home-work-card__body">
                             <div class="home-work-card__tag">{{ $work->service?->localizedTitle() ?? $work->type_label }}</div>
@@ -318,7 +318,7 @@
                 @foreach ($latestArticles as $article)
                     <a href="{{ article_route('show', [$article->slug()]) }}" class="card card--hover home-work-card" data-reveal>
                         <div class="home-work-card__media home-article-card__media">
-                            <img src="{{ media_url($article->displayImage()) }}" @if ($srcset = media_srcset($article->displayImage())) srcset="{{ $srcset }}" sizes="(max-width: 767px) 80vw, 400px" @endif alt="" loading="lazy" decoding="async">
+                            <img src="{{ media_url($article->displayImage()) }}" @if ($srcset = media_srcset($article->displayImage())) srcset="{{ $srcset }}" sizes="(max-width: 767px) 80vw, 400px" @endif alt="" loading="lazy" decoding="async" width="800" height="450">
                         </div>
                         <div class="home-work-card__body">
                             <div class="home-work-card__tag">{{ optional($article->published_at)->timezone('Asia/Muscat')->translatedFormat('d.m.Y') }}</div>
