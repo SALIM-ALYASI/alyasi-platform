@@ -117,7 +117,7 @@ return [
         [
             'title' => '24. Contact and Privacy Requests',
             'body' => 'For privacy requests, such as accessing, correcting, or deleting your data, and for inquiries or complaints, message ALYASI on WhatsApp or use the contact form, stating the type of request and the contact details needed for verification. We respond to privacy requests within 30 days.',
-            'link' => ['label' => 'Message us on WhatsApp', 'url' => 'https://wa.me/message/WJELG5R5UVIBO1'],
+            'link' => ['label' => 'Message us on WhatsApp', 'url' => 'https://wa.me/96898881054'],
         ],
         [
             'title' => '25. Google User Data (ALYASI Platform Publisher)',

@@ -13,6 +13,7 @@ class Service extends Model
      * الحقول المسموح بحفظها جماعيًا.
      */
     protected $fillable = [
+        'sort_order',
         'title_ar',
         'description_ar',
         'title_en',
@@ -58,7 +59,9 @@ class Service extends Model
      */
     public function scopeOrdered(Builder $query): Builder
     {
+        // الترتيب من لوحة التحكم (الأصغر أول)، وبعدها الأحدث.
         return $query
+            ->orderBy('sort_order')
             ->orderByDesc('id');
     }
 

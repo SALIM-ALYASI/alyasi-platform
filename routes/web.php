@@ -233,6 +233,10 @@ Route::middleware('force.locale:en')
         Route::get('/', 'index')
             ->name('index.en');
 
+        // «Oman Pulse»: أخبار ALYASI عن عُمان بالإنجليزي، والبيانات الرسمية بنصها العربي كما نُشرت.
+        Route::get('/oman', [\App\Http\Controllers\OmanPulseController::class, 'index'])
+            ->name('oman.en');
+
         Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
             ->where([
                 'year' => '[0-9]{4}',

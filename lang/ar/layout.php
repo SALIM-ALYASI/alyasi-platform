@@ -13,7 +13,7 @@ return [
         'product_launches' => 'إطلاقات المنتجات',
         'tech_history' => 'تاريخ التقنية',
         'articles' => 'المقالات',
-        'events' => 'المؤتمرات',
+        'events' => 'المؤتمرات والفعاليات',
         'community' => 'فعاليات المجتمع',
     ],
 
@@ -35,7 +35,7 @@ return [
         'explore_title' => 'استكشف',
         'faq' => 'الأسئلة الشائعة',
         'contact_us' => 'تواصل معنا',
-        'careers' => 'الوظائف',
+        'careers' => 'التعاون معنا',
         'connect_title' => 'تواصل معنا',
         'copyright' => '© :year ALYASI. جميع الحقوق محفوظة.',
         'privacy' => 'الخصوصية',

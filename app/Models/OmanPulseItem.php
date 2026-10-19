@@ -18,6 +18,14 @@ class OmanPulseItem extends Model
         'society' => 'مجتمع',
     ];
 
+    public const TAGS_EN = [
+        'services' => 'Services',
+        'tech' => 'Technology',
+        'economy' => 'Economy',
+        'cyber' => 'Cybersecurity',
+        'society' => 'Society',
+    ];
+
     protected $fillable = [
         'suggestion_id',
         'title',

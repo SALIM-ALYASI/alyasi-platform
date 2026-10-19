@@ -139,6 +139,7 @@ class ServiceController extends Controller
                 'description_en' => ['nullable', 'string', 'min:10', 'max:5000', 'required_with:title_en'],
                 'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
                 'is_active' => ['nullable', 'boolean'],
+                'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
                 'price_from' => ['nullable', 'numeric', 'min:0', 'max:99999'],
                 'price_is_starting' => ['nullable', 'boolean'],
                 'price_unit_ar' => ['nullable', 'string', 'max:255'],
@@ -182,6 +183,7 @@ class ServiceController extends Controller
             ? trim($validated['description_en'])
             : null;
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['sort_order'] = (int) ($validated['sort_order'] ?? 100);
         $validated['price_is_starting'] = $request->boolean('price_is_starting');
 
         foreach ([

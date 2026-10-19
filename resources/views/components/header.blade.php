@@ -2,24 +2,24 @@
     $showArticlesNav = \App\Models\Setting::get('show_articles', '1') === '1' && \Illuminate\Support\Facades\Route::has('articles.index');
 
     // الروابط التي لها فعليًا نسخة /en (غيرها يبقى بدون prefix بغض النظر عن اللغة).
-    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'articles.index', 'tech-history.index', 'events.index'];
+    $localeAwareRoutes = ['home', 'services.index', 'works.index', 'news.index', 'news.oman', 'articles.index', 'tech-history.index', 'events.index'];
 
     $navItems = [
         'home' => ['route' => 'home', 'active' => request()->routeIs('home')],
         'services' => ['route' => 'services.index', 'active' => request()->routeIs('services.*')],
         'works' => ['route' => 'works.index', 'active' => request()->routeIs('works.*')],
-        'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*') && ! request()->routeIs('news.oman')],
+        'news' => ['route' => 'news.index', 'active' => request()->routeIs('news.*') && ! request()->routeIs('news.oman', 'news.oman.en', 'news.oman.show')],
         'tech_history' => ['route' => 'tech-history.index', 'active' => request()->routeIs('tech-history.*')],
         // إطلاقات المنتجات مخفي مؤقتًا من القائمة (طلب صريح) لحين إعادة
         // صياغته -- الكود والبيانات باقية كما هي، بس الرابط يرجع لصفحة
         // البداية مؤقتًا (routes/web.php).
     ];
 
-    // «نبض عُمان» بعد الأخبار مباشرة -- عربي فقط (نص رسمي حرفي بدون ترجمة).
-    if (app()->getLocale() === 'ar') {
+    // «نبض عُمان» بعد الأخبار مباشرة، باللغتين (البيانات الرسمية تبقى بنصها العربي).
+    if (true) {
         $navItems = array_merge(
             array_slice($navItems, 0, array_search('news', array_keys($navItems), true) + 1, true),
-            ['oman_pulse' => ['route' => 'news.oman', 'active' => request()->routeIs('news.oman')]],
+            ['oman_pulse' => ['route' => 'news.oman', 'active' => request()->routeIs('news.oman', 'news.oman.en')]],
             array_slice($navItems, array_search('news', array_keys($navItems), true) + 1, null, true),
         );
     }

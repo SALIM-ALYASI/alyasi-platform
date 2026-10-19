@@ -13,7 +13,7 @@ return [
         'product_launches' => 'Product Launches',
         'tech_history' => 'Tech History',
         'articles' => 'Articles',
-        'events' => 'Events',
+        'events' => 'Conferences & Events',
         'community' => 'Community Events',
     ],
 
@@ -35,7 +35,7 @@ return [
         'explore_title' => 'Explore',
         'faq' => 'FAQ',
         'contact_us' => 'Contact Us',
-        'careers' => 'Careers',
+        'careers' => 'Work with us',
         'connect_title' => 'Connect With Us',
         'copyright' => '© :year ALYASI. All rights reserved.',
         'privacy' => 'Privacy',

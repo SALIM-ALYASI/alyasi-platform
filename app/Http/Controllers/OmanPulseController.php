@@ -36,6 +36,7 @@ class OmanPulseController extends Controller
                 ->published()
                 ->where('is_oman', true)
                 ->whereNull('merged_into_id')
+                ->when(app()->getLocale() === 'en', fn ($query) => $query->whereNotNull('title_en')->where('title_en', '!=', ''))
                 ->latest('published_at')
                 ->take(200)
                 ->get()
@@ -59,7 +60,7 @@ class OmanPulseController extends Controller
 
         return view('news.oman-pulse', [
             'items' => $items,
-            'tags' => OmanPulseItem::TAGS,
+            'tags' => app()->getLocale() === 'en' ? OmanPulseItem::TAGS_EN : OmanPulseItem::TAGS,
             'activeTag' => $tag,
         ]);
     }

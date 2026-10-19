@@ -3,14 +3,14 @@
 return [
 
     'title' => 'Events',
-    'meta_title' => 'Events | :brand',
+    'meta_title' => 'Conferences & Events | :brand',
     'meta_description' => 'ALYASI coverage of technology, cybersecurity, AI and energy conferences in Oman and worldwide, with exclusive speaker interviews.',
-    'hero_badge' => 'Tech Events',
+    'hero_badge' => 'ALYASI coverage',
     'hero_title' => "ALYASI's Active",
     'hero_title_highlight' => 'Community',
     'hero_description' => 'Local and global tech conferences, meetups, and events that we follow and take part in.',
 
-    'hub_title' => 'Conferences & Events Hub',
+    'hub_title' => 'Conferences & Events',
     'hub_description' => 'ALYASI coverage of technology, cybersecurity, AI and energy conferences in Oman and around the world: on-site coverage, exclusive interviews, and the key announcements.',
     'series_badge' => 'Conference Archive',
     'series_archive' => 'Archive',

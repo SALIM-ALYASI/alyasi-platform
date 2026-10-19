@@ -383,6 +383,15 @@
         @enderror
     </div>
 
+    <div class="form-group">
+        <label for="sort_order">ترتيب الظهور</label>
+        <input type="number" id="sort_order" name="sort_order" min="0" max="9999" value="{{ old('sort_order', $service?->sort_order ?? 100) }}">
+        <small style="display:block;margin-top:6px;color:#555;">الأصغر يظهر أول (بالرئيسية وصفحة الخدمات). مثال: 10، 20، 30…</small>
+        @error('sort_order')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
     <div class="form-group full">
         <label style="display:inline-flex;align-items:center;gap:10px;">
             <input

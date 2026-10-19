@@ -17,7 +17,7 @@ class SocialLink extends Model
         'whatsapp' => [
             'name' => 'واتساب',
             'platform' => 'whatsapp',
-            'url' => 'https://wa.me/message/WJELG5R5UVIBO1',
+            'url' => 'https://wa.me/96898881054',
             'icon' => 'fa-brands fa-whatsapp',
             'open_new_tab' => true,
         ],

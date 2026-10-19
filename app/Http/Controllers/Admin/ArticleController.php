@@ -303,7 +303,7 @@ class ArticleController extends Controller
                     'linkable_type' => 'article',
                     'linkable_id' => $article->id,
                     'locale' => $locale,
-                    'slug' => $this->generateUniqueSlug($manualSlug ?: $title),
+                    'slug' => $this->generateUniqueSlug($manualSlug ?: $this->slugSource($article, $locale, $title)),
                 ]);
 
                 continue;
@@ -339,6 +339,19 @@ class ArticleController extends Controller
 
             $permalink->update(['slug' => $newSlug]);
         });
+    }
+
+    /**
+     * العنوان العربي يطلع رابطه حروفًا لاتينية غير مفهومة (kbl-an-ygtmaa...):
+     * الرابط العربي ينبني من أول كلمات العنوان الإنجليزي لو موجود، والإنجليزي كامل.
+     */
+    private function slugSource(Article $article, string $locale, string $title): string
+    {
+        if ($locale === 'ar' && preg_match('/\p{Arabic}/u', $title) && filled($article->title_en)) {
+            return implode(' ', array_slice(preg_split('/\s+/u', trim($article->title_en)), 0, 6));
+        }
+
+        return $title;
     }
 
     private function generateUniqueSlug(string $title): string

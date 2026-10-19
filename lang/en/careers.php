@@ -2,29 +2,29 @@
 
 return [
 
-    'title' => 'Careers',
-    'meta_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who might work with ALYASI down the road.',
+    'title' => 'Work with ALYASI',
+    'meta_description' => 'ALYASI is run by its founder and works with remote freelancers in development, design and digital content as projects require. There are no permanent positions open at the moment.',
 
-    'hero_badge' => 'Join Us',
-    'hero_title' => 'Always Looking',
-    'hero_title_highlight' => 'For Great Talent',
-    'hero_description' => 'We have no open positions posted right now, but we are always interested in meeting talented people who want to work with ALYASI in the future.',
+    'hero_badge' => 'Work with us',
+    'hero_title' => 'Collaboration',
+    'hero_title_highlight' => 'project by project',
+    'hero_description' => 'Salem Al Hajri runs and develops ALYASI, and works with remote freelancers when a project needs a specific skill. There are currently no permanent positions or internships open.',
 
-    'values_badge' => 'Why ALYASI',
-    'values_title' => 'How We Work',
+    'values_badge' => 'How it works',
+    'values_title' => 'How we collaborate',
 
-    'value_1_title' => 'A Small Team, Real Impact',
-    'value_1_description' => 'Everyone on the team takes part in real decisions, and your work reaches the client directly without layers of bureaucracy.',
+    'value_1_title' => 'Freelance, per project',
+    'value_1_description' => 'We reach out to freelancers when an ongoing project needs a specific skill; scope, timeline and fees are agreed separately for each project.',
 
-    'value_2_title' => 'Varied Projects',
-    'value_2_description' => 'From web and app development to branding and content, you will work across different kinds of projects continuously.',
+    'value_2_title' => 'Fully remote',
+    'value_2_description' => 'Collaboration happens remotely, in development, design and digital content, with no office attendance required.',
 
-    'value_3_title' => 'Room to Learn and Grow',
-    'value_3_description' => 'We encourage trying new tools and technologies, and leave room for professional growth beyond just executing tasks.',
+    'value_3_title' => 'Future opportunities, when real',
+    'value_3_description' => 'Collaboration or internship opportunities may open in the future depending on projects; we will announce them here only when they actually exist.',
 
-    'cta_title' => 'Have Something to Offer?',
-    'cta_description' => "Send us your resume or introduce yourself through the contact form, and we'll reach out as soon as a fitting opportunity comes up.",
-    'cta_contact' => 'Contact Us',
+    'cta_title' => 'Are you a freelance developer, designer or content creator?',
+    'cta_description' => 'Send a short introduction and examples of your work through the contact form. We will keep it on file and reach out when a project matches your skills.',
+    'cta_contact' => 'Contact us',
     'cta_email_prefix' => 'Or email us directly at',
 
 ];

@@ -14,7 +14,7 @@
     $coverageLink = localized_route('event_coverage.cyberx_oman_2026');
 
     // مقالات المؤتمر بالترتيب (قبله ثم بعده)، بالرابط العربي الدائم. المنشور بلغة الصفحة بس.
-    $archiveArticleSlugs = ['kbl-an-ygtmaa-alhras-rhl-al-alaaalm-almthlm-althy-yharbonh', 'from-the-corner-cyberx-oman-2026'];
+    $archiveArticleSlugs = ['before-the-guardians-gather', 'from-the-corner-cyberx-oman-2026'];
     $archiveArticles = \App\Models\Article::query()
         ->published()
         ->availableIn($isEn ? 'en' : 'ar')
