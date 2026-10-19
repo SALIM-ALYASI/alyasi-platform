@@ -47,3 +47,18 @@
 .founder-timeline__links a { color: var(--color-accent-600); font-size: 14px; font-weight: 700; text-decoration: none; }
 .founder-timeline__links a:hover { text-decoration: underline; }
 :root[data-theme="dark"] .founder-timeline__links a { color: var(--color-accent-300); }
+
+/* الإحصائيات: أربع بطاقات متقاربة (2×2 على الجوال)، والوحدة بجانب الرقم */
+.founder-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 28px; padding-bottom: 8px; }
+.founder-stat { padding: 18px 16px; border: 1px solid var(--color-divider); border-radius: var(--radius-lg); background: var(--theme-card); text-align: center; }
+.founder-stat__value { display: flex; align-items: baseline; justify-content: center; gap: 6px; font-family: var(--font-heading); font-size: 36px; font-weight: 700; line-height: 1.2; color: var(--color-accent-600); }
+.founder-stat__value span { font-size: 16px; font-weight: 700; }
+.founder-stat__label { margin-top: 6px; color: var(--theme-muted); font-size: 13.5px; line-height: 1.7; }
+:root[data-theme="dark"] .founder-stat__value { color: var(--color-accent-300); }
+@media (max-width: 1023px) { .founder-stats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 767px) {
+    .founder-stats { gap: 10px; padding-top: 20px; }
+    .founder-stat { padding: 14px 10px; }
+    .founder-stat__value { font-size: 28px; }
+    .founder-stat__label { font-size: 12.5px; }
+}

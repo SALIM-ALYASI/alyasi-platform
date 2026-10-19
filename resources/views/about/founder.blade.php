@@ -57,22 +57,25 @@
         </div>
     </section>
 
-    {{-- أرقام موثّقة: سنوات الخبرة وسنة أول مشروع فعلي (من سالم)، والمشاريع من صفحة الأعمال --}}
-    <section class="container about-stats">
-        <div class="grid-3">
-            <div class="about-stats__item" data-reveal>
-                <div class="about-stats__value">12</div>
-                <div class="about-stats__label">{{ $t('عامًا تقريبًا من التعلّم الذاتي في البرمجة والتصميم', 'years, roughly, of self-learning in programming and design') }}</div>
+    {{-- أرقام موثّقة من سالم: التعلّم (2014 تقريبًا) غير الخبرة العملية (من 2019)، والمشاريع من صفحة الأعمال.
+         كل رقم معه وحدته عشان ما يختلط «7 سنوات» بـ«7 مشاريع». --}}
+    @php
+        $practiceYears = now()->year - 2019;
+        $projectsCount = $projects->count();
+        $stats = [
+            ['12', $t('سنة', 'yrs'), $t('تقريبًا من التعلّم الذاتي في البرمجة والتصميم', 'roughly, of self-learning in programming and design')],
+            [(string) $practiceYears, $t('سنوات', 'yrs'), $t('تقريبًا من الخبرة العملية في تطوير وإنتاج المشاريع التقنية منذ 2019', 'roughly, of hands-on experience building tech projects since 2019')],
+            ['2019', null, $t('بداية الإنتاج الفعلي، بأول تطبيق «البادية»', 'the start of real projects, with the first app, “Al Badyah”')],
+            [(string) $projectsCount, $t($projectsCount >= 3 && $projectsCount <= 10 ? 'مشاريع' : 'مشروعًا', 'projects'), $t('معروضة في صفحة الأعمال', 'featured in the portfolio')],
+        ];
+    @endphp
+    <section class="container founder-stats">
+        @foreach ($stats as [$value, $unit, $label])
+            <div class="founder-stat" data-reveal>
+                <div class="founder-stat__value">{{ $value }}@if ($unit)<span>{{ $unit }}</span>@endif</div>
+                <div class="founder-stat__label">{{ $label }}</div>
             </div>
-            <div class="about-stats__item" data-reveal>
-                <div class="about-stats__value">2019</div>
-                <div class="about-stats__label">{{ $t('أول تطبيق وبداية الإنتاج الفعلي', 'first app, and the start of real projects') }}</div>
-            </div>
-            <div class="about-stats__item" data-reveal>
-                <div class="about-stats__value">{{ $projects->count() }}</div>
-                <div class="about-stats__label">{{ $t('مشاريع معروضة في صفحة الأعمال', 'projects featured in the portfolio') }}</div>
-            </div>
-        </div>
+        @endforeach
     </section>
 
     {{-- مجالات الخبرة --}}

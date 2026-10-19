@@ -43,7 +43,7 @@ class PageController extends Controller
 
     public function about(): View
     {
-        // من 2019: بداية إنتاج المشاريع الفعلية ؛ رحلة التعلّم من 2014 تقريبًا بصفحة المؤسس.
+        // من 2019: بداية إنتاج المشاريع الفعلية؛ رحلة التعلّم من 2014 تقريبًا بصفحة المؤسس.
         $yearsOfExperience = now()->year - 2019;
 
         $projectsCount = Work::query()
