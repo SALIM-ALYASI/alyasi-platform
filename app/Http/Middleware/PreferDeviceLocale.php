@@ -38,6 +38,12 @@ class PreferDeviceLocale
             return $response;
         }
 
+        // الروابط الموقّعة (معاينات، طلب تقييم عميل) شخصية بلغتها: ما نحوّلها --
+        // التحويل يكرر التوقيع بالرابط فيبطل.
+        if ($request->query->has('signature')) {
+            return $response;
+        }
+
         $preferred = $this->preferredLocale($request);
 
         if ($preferred === null || $preferred === app()->getLocale()) {

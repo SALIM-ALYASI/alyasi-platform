@@ -40,6 +40,9 @@ class ClientReviewRequestTest extends TestCase
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
         $this->get($this->path($links['en']))->assertOk()->assertSee('How was your experience with ALYASI?');
 
+        // جهاز إنجليزي يفتح الرابط العربي: يبقى عليه (ما يتحول ويبطل التوقيع).
+        $this->withCookie('alyasi_lang', 'en')->get($this->path($links['ar']))->assertOk()->assertSee('كيف كانت تجربتك مع ALYASI؟');
+
         $this->travel(31)->days();
         $this->get($this->path($links['ar']))->assertForbidden();
     }
