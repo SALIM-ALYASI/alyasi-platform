@@ -14,7 +14,7 @@ return [
 
     'story_title' => 'How We Started',
 
-    'story_body' => 'ALYASI started in 2019 from a simple idea: technology should be a real growth tool for individuals and businesses, not just an isolated technical service. Since then, we have shipped a new platform or website every year, combining web and app development expertise with a focus on the latest AI technologies to build a platform that delivers real value to our clients and tech community.',
+    'story_body' => 'ALYASI was founded in 2025 as a technology news platform, and in July 2026 it expanded to bring together technology journalism, digital services and artificial intelligence. It builds on its founder\'s experience producing technology projects since 2019, and on a simple idea: technology should be a real growth tool for individuals and businesses, not just an isolated technical service.',
 
     'stats_years' => 'Years of Experience',
 

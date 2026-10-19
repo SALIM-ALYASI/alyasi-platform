@@ -39,19 +39,19 @@
             <div class="founder-hero__lead">
                 <p>{{ $t(
                     'مطوّر ومصمّم عُماني، بدأت رحلتي في تعلّم البرمجة والتصميم قبل نحو 12 عامًا، مدفوعًا بالشغف والطموح، ومعتمدًا على التعلّم الذاتي.',
-                    'An Omani developer and designer. My journey in programming and design began about 12 years ago, driven by passion and ambition, and built on teaching myself.'
+                    'An Omani developer and designer, I began my journey in programming and design nearly 12 years ago, driven by passion, ambition, and a commitment to self-learning.'
                 ) }}</p>
                 <p>{{ $t(
                     'رغم التحديات التي فرضتها عليّ صعوبة التنقّل، وجدت في التقنية مساحة للإبداع وتحويل الأفكار إلى واقع.',
-                    'Despite the challenges that limited mobility has placed on me, I found in technology a space to create and to turn ideas into reality.'
+                    'Despite the challenges I have faced with limited mobility, I found in technology a space for creativity and turning ideas into reality.'
                 ) }}</p>
                 <p>{{ $t(
                     'في عام 2019، بدأت إنتاج مشاريعي الفعلية بتطوير أول تطبيق لأجهزة Apple باسم «البادية». وفي عام 2025، أسّست منصة ALYASI لنشر الأخبار التقنية، ثم طوّرتها في يوليو 2026 لتجمع بين الإعلام التقني والخدمات الرقمية والذكاء الاصطناعي.',
-                    'In 2019 I began producing real projects, starting with my first app for Apple devices, «Al Badyah». In 2025 I founded ALYASI to publish tech news, and in July 2026 I developed it to bring together tech media, digital services and artificial intelligence.'
+                    'In 2019, I began developing real-world projects, starting with my first application for Apple devices, “Al Badyah.” In 2025, I founded ALYASI as a technology news platform. In July 2026, I expanded and transformed it into a platform that brings together technology journalism, digital services, and artificial intelligence.'
                 ) }}</p>
                 <p class="founder-hero__belief">{{ $t(
                     'أؤمن أن قيمة الإنسان لا تحددها قدرته على الحركة، بل ما يستطيع أن يصنعه بعقله وإرادته.',
-                    'I believe a person’s worth is not defined by their ability to move, but by what they can create with their mind and will.'
+                    'I believe that a person’s worth is not defined by their physical mobility, but by what they can achieve through their mind and determination.'
                 ) }}</p>
             </div>
         </div>
