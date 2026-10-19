@@ -364,3 +364,6 @@ body:has(.coverage-dock, .interview-dock) .wa-float { bottom: calc(96px + env(sa
 
 /* أي بطاقة معلومات (…__info-card) قيمتها فاضية ما تنعرض، بكل صفحات الموقع */
 [class*="__info-card"]:has(> [class*="__info-value"]:empty) { display: none; }
+
+/* نص لقارئ الشاشة فقط (مستخدم بأكثر من صفحة) */
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
