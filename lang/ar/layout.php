@@ -35,6 +35,7 @@ return [
         'explore_title' => 'استكشف',
         'faq' => 'الأسئلة الشائعة',
         'contact_us' => 'تواصل معنا',
+        'founder' => 'عن المؤسس',
         'careers' => 'التعاون معنا',
         'connect_title' => 'تواصل معنا',
         'copyright' => '© :year ALYASI. جميع الحقوق محفوظة.',

@@ -105,6 +105,10 @@
                     {{ __('layout.footer.faq') }}
                 </a>
 
+                <a href="{{ localized_route('about.founder') }}">
+                    {{ __('layout.footer.founder') }}
+                </a>
+
                 <a href="{{ localized_route('contact') }}">
                     {{ __('layout.footer.contact_us') }}
                 </a>

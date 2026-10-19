@@ -21,6 +21,10 @@
                 </button>
             @endforeach
         </div>
+
+        <div class="certs-section__more" data-reveal>
+            <a href="{{ localized_route('about.founder') }}" class="btn btn--outline">{{ __('home.meet_founder') }} {{ app()->getLocale() === 'en' ? '→' : '←' }}</a>
+        </div>
     </section>
 
     <div class="about-cert-viewer" id="aboutCertViewer" role="dialog" aria-modal="true" hidden>

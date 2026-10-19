@@ -26,13 +26,11 @@
     />
 
     <section class="container news-section">
-        @if (app()->getLocale() === 'ar')
-            {{-- مدخل «نبض عُمان»: الأخبار الرسمية العُمانية بنصّها الأصلي --}}
-            <a href="{{ route('news.oman') }}" class="news-pulse-link">
-                <strong>🇴🇲 نبض عُمان</strong>
-                <span>أخبار عُمان الرسمية من مصادرها، بنصّها الأصلي ←</span>
-            </a>
-        @endif
+        {{-- مدخل «نبض عُمان»: الأخبار الرسمية العُمانية بنصّها الأصلي --}}
+        <a href="{{ localized_route('news.oman') }}" class="news-pulse-link">
+            <strong>🇴🇲 {{ __('home.oman_pulse') }}</strong>
+            <span>{{ app()->getLocale() === 'en' ? 'Official news from Oman, quoted from its sources in the original Arabic' : 'أخبار عُمان الرسمية من مصادرها، بنصّها الأصلي' }} {{ ui_arrow() }}</span>
+        </a>
 
         @if ($categories->isNotEmpty())
             <div class="filters">
@@ -63,7 +61,7 @@
                             </div>
                             <h3 class="news-card__title">{{ $article->title }}</h3>
                             <p class="news-card__excerpt">{{ $article->excerpt }}</p>
-                            <span class="news-card__link">{{ __('news.read_more') }} ←</span>
+                            <span class="news-card__link">{{ __('news.read_more') }} {{ ui_arrow() }}</span>
                         </div>
                     </a>
                 @endforeach

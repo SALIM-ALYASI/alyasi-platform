@@ -4,7 +4,7 @@
     {{-- Previous Page Link --}}
     @if ($paginator->onFirstPage())
         <span class="community-pagination__item disabled">
-            <i class="fa-solid fa-chevron-right"></i>
+            <i class="fa-solid fa-chevron-right rtl-flip"></i>
         </span>
     @else
         <a
@@ -13,7 +13,7 @@
             rel="prev"
             aria-label="Previous"
         >
-            <i class="fa-solid fa-chevron-right"></i>
+            <i class="fa-solid fa-chevron-right rtl-flip"></i>
         </a>
     @endif
 
@@ -58,11 +58,11 @@
             rel="next"
             aria-label="Next"
         >
-            <i class="fa-solid fa-chevron-left"></i>
+            <i class="fa-solid fa-chevron-left rtl-flip"></i>
         </a>
     @else
         <span class="community-pagination__item disabled">
-            <i class="fa-solid fa-chevron-left"></i>
+            <i class="fa-solid fa-chevron-left rtl-flip"></i>
         </span>
     @endif
 

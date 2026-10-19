@@ -59,7 +59,7 @@
                             </div>
                             <h3 class="articles-card__title">{{ $article->title }}</h3>
                             <p class="articles-card__excerpt">{{ $article->excerpt }}</p>
-                            <span class="articles-card__link">{{ __('articles.read_more') }} ←</span>
+                            <span class="articles-card__link">{{ __('articles.read_more') }} {{ ui_arrow() }}</span>
                         </div>
                     </a>
                 @endforeach

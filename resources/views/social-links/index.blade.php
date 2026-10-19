@@ -40,7 +40,7 @@
                             @if ($link->username)
                                 <p>{{ $link->username }}</p>
                             @endif
-                            <span class="social-link-card__cta">{{ str_contains(strtolower($link->platform), 'whatsapp') ? __('social-links.open_whatsapp') : __('social-links.visit') }} ←</span>
+                            <span class="social-link-card__cta">{{ str_contains(strtolower($link->platform), 'whatsapp') ? __('social-links.open_whatsapp') : __('social-links.visit') }} {{ ui_arrow() }}</span>
                         </div>
                     </a>
                 @endforeach

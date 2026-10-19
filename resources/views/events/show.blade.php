@@ -299,7 +299,7 @@
                 <div class="community-detail__info-card">
                     <div class="community-detail__info-label">{{ __('events.official_website') }}</div>
                     <div class="community-detail__info-value">
-                        <a href="{{ $edition->official_url }}" target="_blank" rel="noopener">{{ parse_url($edition->official_url, PHP_URL_HOST) }} ←</a>
+                        <a href="{{ $edition->official_url }}" target="_blank" rel="noopener">{{ parse_url($edition->official_url, PHP_URL_HOST) }} {{ ui_arrow() }}</a>
                     </div>
                 </div>
             @endif
@@ -308,7 +308,7 @@
                 <div class="community-detail__info-card">
                     <div class="community-detail__info-label">{{ __('events.watch_live') }}</div>
                     <div class="community-detail__info-value">
-                        <a href="{{ $edition->livestream_url }}" target="_blank" rel="noopener">{{ __('events.watch_live') }} ←</a>
+                        <a href="{{ $edition->livestream_url }}" target="_blank" rel="noopener">{{ __('events.watch_live') }} {{ ui_arrow() }}</a>
                     </div>
                 </div>
             @endif

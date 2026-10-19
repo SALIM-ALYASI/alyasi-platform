@@ -12,7 +12,7 @@ return [
 
     'platform' => 'Platform',
 
-    'tagline' => 'An Integrated Digital Platform',
+    'tagline' => 'Omani Tech Media & Digital Solutions',
 
     /*
     |--------------------------------------------------------------------------
@@ -20,13 +20,13 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'hero_badge' => 'Advanced Digital Platform',
+    'hero_badge' => 'Omani Tech Media & Digital Solutions',
 
-    'hero_title_1' => 'We build your website or system',
+    'hero_title_1' => 'Technology Stories Worth Telling.',
 
-    'hero_title_2' => 'from idea to launch',
+    'hero_title_2' => 'Digital Solutions Worth Building.',
 
-    'hero_description' => 'A platform that brings together digital services, tech news, and conference coverage in one seamless experience.',
+    'hero_description' => 'ALYASI is an Oman-based platform covering technology, artificial intelligence, and industry events, while delivering digital solutions for individuals and businesses.',
 
     'hero_audience' => 'For individuals building their first idea, entrepreneurs growing their business, and companies that need complete technical solutions.',
 
@@ -292,5 +292,49 @@ return [
     'articles_empty' => 'No articles published yet.',
 
     'all_articles' => 'All Articles',
+
+    /*
+    | الرئيسية: الإعلام التقني أولًا ثم الخدمات (أكتوبر 2026)
+    */
+
+    'meta_description' => 'Omani tech media covering technology, AI and industry events with exclusive interviews, plus websites, systems, bots and AI solutions for businesses.',
+
+    'hero_cta_coverage' => 'Explore Our Coverage',
+
+    'hero_cta_services' => 'Explore Digital Services',
+
+    'news_section_badge' => 'News',
+
+    'news_section_title' => 'Tech news & Oman Pulse',
+
+    'latest_tech_news' => 'Latest tech news',
+
+    'oman_pulse' => 'Oman Pulse',
+
+    'oman_pulse_all' => 'All Oman Pulse',
+
+    'oman_pulse_official' => 'Official statement · Arabic',
+
+    'conferences_badge' => 'Conferences & interviews',
+
+    'conferences_title' => 'On the ground at tech events in Oman',
+
+    'conferences_all' => 'All conferences',
+
+    'partner_ribbon' => 'Media partner',
+
+    'core_services_badge' => 'Digital services',
+
+    'core_services_title' => 'Core digital services',
+
+    'core_services_desc' => 'Websites, systems, bots and AI solutions for individuals and businesses. More services and full pricing on the services page.',
+
+    'service_details' => 'Details',
+
+    'articles_section_badge' => 'Articles',
+
+    'articles_section_title' => 'Latest articles',
+
+    'meet_founder' => 'Meet the founder',
 
 ];

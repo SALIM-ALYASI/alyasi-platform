@@ -275,3 +275,67 @@
     backdrop-filter: blur(6px);
 }
 .home-hero__ctas .btn--ghost-light:hover { background: rgba(11, 31, 58, .72); }
+
+/* ===== الرئيسية (أكتوبر 2026): الإعلام أول ثم الخدمات ===== */
+
+/* سهم الزر الأساسي يتبع اتجاه القراءة */
+[dir="ltr"] .home-arrow { transform: scaleX(-1); }
+
+.home-featured { padding-top: 48px; }
+
+/* الأخبار + نبض عُمان */
+.home-news__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.home-pulse .home-updates-card__date { color: var(--color-accent-600); font-weight: 700; }
+
+/* مؤتمرات / مشاريع / مقالات: 3 أعمدة، وعلى الجوال تمرير أفقي بدل التكديس */
+.home-scroller { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.home-conference--partner { outline: 2px solid var(--color-accent-500); outline-offset: -2px; }
+.home-conference__ribbon {
+    position: absolute; top: 12px; inset-inline-start: 12px;
+    padding: 4px 12px; border-radius: 999px;
+    background: var(--color-accent-500); color: #fff;
+    font-size: 12px; font-weight: 800;
+}
+.home-article-card__media { aspect-ratio: 16 / 9; }
+
+/* الخدمات الأساسية */
+.home-core-services__desc { margin: 8px 0 0; color: var(--theme-muted); font-size: 14.5px; line-height: 1.8; max-width: 620px; }
+.home-core-services__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.home-core-service { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--color-divider); border-radius: var(--radius-lg); background: var(--theme-card); }
+.home-core-service__media { display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+.home-core-service__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.home-core-service:hover .home-core-service__media img { transform: scale(1.05); }
+.home-core-service__body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 16px; }
+.home-core-service__body h3 { margin: 0; font-size: 15.5px; line-height: 1.5; }
+.home-core-service__body h3 a { color: var(--color-text); text-decoration: none; }
+.home-core-service__price { color: var(--color-accent-600); font-size: 13.5px; font-weight: 700; }
+.home-core-service__actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 6px; flex-wrap: wrap; }
+.home-core-service__link { color: var(--color-accent-600); font-size: 13px; font-weight: 700; }
+.home-core-service__request { padding: 6px 12px; border-radius: 999px; background: var(--color-accent-500); color: #fff; font-size: 12.5px; font-weight: 700; text-decoration: none; }
+.home-core-service__request:hover { background: var(--color-accent-600); }
+:root[data-theme="dark"] .home-core-service__price,
+:root[data-theme="dark"] .home-core-service__link,
+:root[data-theme="dark"] .home-pulse .home-updates-card__date { color: var(--color-accent-300); }
+
+@media (max-width: 1023px) {
+    .home-core-services__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+    .home-featured { padding-top: 28px; }
+    .home-news__grid { grid-template-columns: 1fr; gap: 28px; }
+    /* أقصر على الجوال: خبرين من كل عمود */
+    .home-news .home-updates-card:nth-of-type(n + 3) { display: none; }
+
+    .home-scroller {
+        display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+        margin-inline: -16px; padding-inline: 16px; padding-bottom: 6px; scrollbar-width: none;
+    }
+    .home-scroller::-webkit-scrollbar { display: none; }
+    .home-scroller > * { flex: 0 0 80%; scroll-snap-align: start; }
+
+    .home-core-services__grid { gap: 10px; }
+    .home-core-service__body { padding: 12px; }
+    .home-core-service__body h3 { font-size: 14px; }
+    .home-core-service__actions { flex-direction: column; align-items: stretch; text-align: center; }
+}

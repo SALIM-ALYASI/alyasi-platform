@@ -439,6 +439,13 @@
             'name' => 'ALYASI',
             'url' => url('/'),
             'logo' => asset('images/logo/logo-icon-navy.png'),
+            'description' => __('home.meta_description'),
+            'areaServed' => 'OM',
+            'founder' => [
+                '@'.'type' => 'Person',
+                'name' => $isArabic ? 'سالم محمد الحجري' : 'Salem Mohammed Al Hajri',
+                'url' => localized_route('about.founder'),
+            ],
         ];
 
         $organizationSocialLinks = \App\Models\SocialLink::forDisplay()

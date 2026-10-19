@@ -40,7 +40,7 @@
 
             <a href="{{ route('events.index') }}" class="btn btn--primary community-events-hub__button">
                 {{ __('community.events_hub_button') }}
-                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                <i class="fa-solid fa-arrow-left rtl-flip" aria-hidden="true"></i>
             </a>
         </div>
 
@@ -79,7 +79,7 @@
                             </div>
                             <h3 class="community-card__title">{{ $post->title }}</h3>
                             <p class="community-card__excerpt">{{ $post->short_description }}</p>
-                            <span class="community-card__link">{{ __('community.read_more') }} ←</span>
+                            <span class="community-card__link">{{ __('community.read_more') }} {{ ui_arrow() }}</span>
                         </div>
                     </a>
                 @endforeach

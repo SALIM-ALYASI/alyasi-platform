@@ -69,3 +69,4 @@
 
 .certs-section { padding-top: 60px; padding-bottom: 60px; }
 @media (max-width: 767px) { .certs-section { padding-top: 48px; padding-bottom: 48px; } }
+.certs-section__more { display: flex; justify-content: center; margin-top: 22px; }

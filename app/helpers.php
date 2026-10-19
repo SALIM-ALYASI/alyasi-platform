@@ -187,6 +187,16 @@ if (! function_exists('media_srcset')) {
     }
 }
 
+if (! function_exists('ui_arrow')) {
+    /**
+     * سهم «اقرأ المزيد» باتجاه القراءة: ← بالعربي، → بالإنجليزي.
+     */
+    function ui_arrow(?string $locale = null): string
+    {
+        return ($locale ?? app()->getLocale()) === 'en' ? '→' : '←';
+    }
+}
+
 if (! function_exists('share_image_url')) {
     /**
      * صورة مشاركة الروابط (og:image) بصيغة يقبلها واتساب وغيره: لو الصورة من ملفات

@@ -46,7 +46,7 @@
                                 @endif
                             </div>
                             <h3 class="news-card__title">{{ $launch->title }}</h3>
-                            <span class="news-card__link">{{ __('product_launches.read_source') }} ←</span>
+                            <span class="news-card__link">{{ __('product_launches.read_source') }} {{ ui_arrow() }}</span>
                         </div>
                     </a>
                 @endforeach
