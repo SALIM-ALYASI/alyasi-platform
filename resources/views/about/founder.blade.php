@@ -113,6 +113,13 @@
                     'طوّرت ALYASI إلى شكلها الحالي، لتشمل الأخبار والمقالات والتغطيات التقنية والخدمات الرقمية.',
                     'I developed ALYASI into its current form, covering news, articles, technology coverage and digital services.'
                 ), null, []],
+                [$t('6 أكتوبر 2026', '6 October 2026'), $t('عمل ميداني: سايبر إكس عُمان 2026', 'On the ground: CyberX Oman 2026'), $t(
+                    'غطّيت مؤتمر سايبر إكس عُمان 2026 ميدانيًا من موقع الحدث، ومنه انطلقت سلسلة مقابلات مع متحدثين في المؤتمر نُشرت على ALYASI بالعربية والإنجليزية.',
+                    'I covered CyberX Oman 2026 on site, which led to a series of interviews with conference speakers published on ALYASI in Arabic and English.'
+                ), null, [
+                    [\App\Models\EventEdition::localizedPath('/events/cyberx-oman-2026/coverage'), $t('التغطية', 'The coverage'), false],
+                    [\App\Models\EventEdition::localizedPath('/events/cyberx-oman-2026/interviews'), $t('المقابلات', 'The interviews'), false],
+                ]],
             ] as [$when, $title, $body, $status, $links])
                 <li class="founder-timeline__item" data-reveal>
                     <span class="founder-timeline__when">{{ $when }}</span>
