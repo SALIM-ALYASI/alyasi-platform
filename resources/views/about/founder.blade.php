@@ -35,10 +35,25 @@
             <span class="founder-hero__badge">{{ $t('عن المؤسس', 'About the founder') }}</span>
             <h1>{{ $t('سالم محمد الحجري', 'Salem Mohammed Al Hajri') }}</h1>
             <p class="founder-hero__role">{{ $t('مؤسس منصة ALYASI ومطوّرها', 'Founder and developer of ALYASI') }}</p>
-            <p class="founder-hero__lead">{{ $t(
-                'مطوّر ومصمم عُماني، أعمل منذ قرابة 12 عامًا في البرمجة والتصميم والتقنية، تعلّمت أغلبها ذاتيًا. أطوّر المواقع والأنظمة وتطبيقات iOS، وأوظّف الذكاء الاصطناعي في بناء أدوات عملية.',
-                'An Omani developer and designer with close to 12 years in programming, design and technology, most of it self-taught. I build websites, systems and iOS apps, and use AI to create practical tools.'
-            ) }}</p>
+            {{-- نص سالم كما كتبه (19 أكتوبر 2026) --}}
+            <div class="founder-hero__lead">
+                <p>{{ $t(
+                    'مطوّر ومصمّم عُماني، بدأت رحلتي في تعلّم البرمجة والتصميم قبل نحو 12 عامًا، مدفوعًا بالشغف والطموح، ومعتمدًا على التعلّم الذاتي.',
+                    'An Omani developer and designer. My journey in programming and design began about 12 years ago, driven by passion and ambition, and built on teaching myself.'
+                ) }}</p>
+                <p>{{ $t(
+                    'رغم التحديات التي فرضتها عليّ صعوبة التنقّل، وجدت في التقنية مساحة للإبداع وتحويل الأفكار إلى واقع.',
+                    'Despite the challenges that limited mobility has placed on me, I found in technology a space to create and to turn ideas into reality.'
+                ) }}</p>
+                <p>{{ $t(
+                    'في عام 2019، بدأت إنتاج مشاريعي الفعلية بتطوير أول تطبيق لأجهزة Apple باسم «البادية». وفي عام 2025، أسّست منصة ALYASI لنشر الأخبار التقنية، ثم طوّرتها في يوليو 2026 لتجمع بين الإعلام التقني والخدمات الرقمية والذكاء الاصطناعي.',
+                    'In 2019 I began producing real projects, starting with my first app for Apple devices, «Al Badyah». In 2025 I founded ALYASI to publish tech news, and in July 2026 I developed it to bring together tech media, digital services and artificial intelligence.'
+                ) }}</p>
+                <p class="founder-hero__belief">{{ $t(
+                    'أؤمن أن قيمة الإنسان لا تحددها قدرته على الحركة، بل ما يستطيع أن يصنعه بعقله وإرادته.',
+                    'I believe a person’s worth is not defined by their ability to move, but by what they can create with their mind and will.'
+                ) }}</p>
+            </div>
         </div>
     </section>
 
@@ -99,8 +114,8 @@
                     'I built my first app for Apple devices, «Al Badyah» — the first project where I applied what I had learned, and the start of my real output. I later removed it from the App Store because it lacked enough traction and support at the time, but it remained an important step in my journey.'
                 ), $t('تجربة لم تستمر · أُزيل من App Store', 'Discontinued · removed from the App Store'), []],
                 ['2025', $t('تأسيس ALYASI', 'Founding ALYASI'), $t(
-                    'أسست منصة ALYASI منصةً متخصصة في نشر الأخبار.',
-                    'I founded ALYASI as a platform dedicated to publishing news.'
+                    'أسست منصة ALYASI منصةً متخصصة في نشر الأخبار التقنية.',
+                    'I founded ALYASI as a platform dedicated to publishing tech news.'
                 ), null, []],
                 [$t('مارس 2026', 'March 2026'), $t('صوت رقمي بصوتي', 'A digital voice of my own'), $t(
                     'بعد شهور من التجارب طوّرت صوتًا رقميًا يشبه أسلوبي في الكلام، وشاركت التجربة في مقطع «الخطوة الأولى في رحلة صناعة صوت رقمي». لم يكن الهدف التجربة التقنية وحدها، بل تحويل التقنية إلى محتوى ومعرفة نافعة بأسلوب بسيط. أستخدم هذا الصوت اليوم في محتوى ALYASI، ومنه مقدمات مقابلات سايبر إكس عُمان 2026 وترجمة أسئلتها.',
