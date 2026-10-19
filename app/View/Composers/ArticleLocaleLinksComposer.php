@@ -34,6 +34,9 @@ class ArticleLocaleLinksComposer
         'contact',
         'careers',
         'about',
+        'about.founder',
+        'events.index',
+        'news.oman',
         'privacy',
         'terms',
         'social-links.index',
@@ -137,7 +140,8 @@ class ArticleLocaleLinksComposer
         }
 
         if ($baseName !== null && in_array($baseName, self::SIMPLE_LOCALE_ROUTES, true)) {
-            $params = $route->parameters();
+            // فلتر الصفحة (سنة المؤتمرات، وسم نبض عُمان) يبقى بعد تبديل اللغة.
+            $params = $route->parameters() + request()->only(['year', 'tag']);
 
             return [
                 'ar' => localized_route($baseName, $params, 'ar'),
