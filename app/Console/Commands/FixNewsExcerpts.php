@@ -20,9 +20,11 @@ class FixNewsExcerpts extends Command
     public function handle(): int
     {
         $backup = [];
+        $pending = [];
         $changed = 0;
 
-        NewsArticle::query()->withoutGlobalScopes()->withTrashed()->orderBy('id')->each(function (NewsArticle $article) use (&$backup, &$changed): void {
+        // أول شي نجمع التعديلات بدون كتابة، ونحفظ النسخة الاحتياطية، بعدين نكتب.
+        NewsArticle::query()->withoutGlobalScopes()->withTrashed()->orderBy('id')->each(function (NewsArticle $article) use (&$backup, &$pending, &$changed): void {
             $updates = [];
 
             foreach (['ar', 'en'] as $locale) {
@@ -48,22 +50,23 @@ class FixNewsExcerpts extends Command
             }
 
             $backup[$article->id] = array_intersect_key($article->getAttributes(), $updates);
+            $pending[$article->id] = $updates;
             $changed++;
 
             if ($this->option('dry-run')) {
-                $this->line("#{$article->id} ".implode(',', array_keys($updates)).' | '.mb_substr((string) ($updates['excerpt_ar'] ?? ''), -60));
-
-                return;
+                $this->line("#{$article->id} ".implode(',', array_keys($updates)).' | '.mb_substr((string) ($updates['excerpt_ar'] ?? ''), -60, null, 'UTF-8'));
             }
-
-            // تنظيف نص فقط: بدون أحداث الحفظ وبدون تغيير updated_at.
-            NewsArticle::withoutEvents(fn () => $article->forceFill($updates)->saveQuietly());
         });
 
-        if (! $this->option('dry-run') && $backup) {
+        if (! $this->option('dry-run') && $pending) {
             $path = 'backups/news-excerpts-'.now()->format('YmdHis').'.json';
             Storage::disk('local')->put($path, json_encode($backup, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             $this->line('نسخة احتياطية: storage/app/private/'.$path);
+
+            foreach ($pending as $id => $updates) {
+                // تنظيف نص فقط: بدون أحداث الحفظ وبدون تغيير updated_at.
+                NewsArticle::query()->withoutGlobalScopes()->withTrashed()->whereKey($id)->toBase()->update($updates);
+            }
         }
 
         $this->info(($this->option('dry-run') ? 'سيُصلح: ' : 'أُصلح: ').$changed.' خبر');

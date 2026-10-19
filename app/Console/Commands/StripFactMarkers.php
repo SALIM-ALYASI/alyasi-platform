@@ -64,7 +64,7 @@ class StripFactMarkers extends Command
 
             if (! $this->option('dry-run')) {
                 // بدون أحداث الحفظ: تنظيف نص فقط، ما نغيّر updated_at ولا نعيد حساب شي.
-                NewsArticle::withoutEvents(fn () => $article->forceFill($updates)->saveQuietly());
+                NewsArticle::query()->withoutGlobalScopes()->withTrashed()->whereKey($article->id)->toBase()->update($updates);
             }
         });
 

@@ -16,11 +16,13 @@ final class Excerpt
             return null;
         }
 
+        // ترميز السيرفر الافتراضي مب دايمًا UTF-8: كل دوال mb_ هنا بترميز صريح.
         $text = html_entity_decode(strip_tags((string) $text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
         $text = StripFactMarkers::clean($text);
         $text = trim(preg_replace('/\s+/u', ' ', $text));
 
-        if (mb_strlen($text) <= $max) {
+        if (mb_strlen($text, 'UTF-8') <= $max) {
             return $text;
         }
 
@@ -30,7 +32,7 @@ final class Excerpt
         foreach ($sentences as $sentence) {
             $candidate = $out === '' ? $sentence : $out.' '.$sentence;
 
-            if (mb_strlen($candidate) > $max) {
+            if (mb_strlen($candidate, 'UTF-8') > $max) {
                 break;
             }
 
@@ -42,10 +44,10 @@ final class Excerpt
         }
 
         // أول جملة أطول من الحد: آخر كلمة كاملة + «…».
-        $cut = mb_substr($text, 0, $max);
-        $space = mb_strrpos($cut, ' ');
+        $cut = mb_substr($text, 0, $max, 'UTF-8');
+        $space = mb_strrpos($cut, ' ', 0, 'UTF-8');
 
-        return rtrim(mb_substr($cut, 0, $space ?: $max), " \t,،;؛:-–—").'…';
+        return rtrim(mb_substr($cut, 0, $space ?: $max, 'UTF-8'), " \t,،;؛:-–—").'…';
     }
 
     /** هل المقتطف مقصوص بنص كلمة أو جملة (من الطريقة القديمة)؟ */
