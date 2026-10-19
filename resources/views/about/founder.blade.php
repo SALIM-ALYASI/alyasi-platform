@@ -93,26 +93,40 @@
                 [$t('2014 تقريبًا', 'Around 2014'), $t('بداية التعلّم', 'Learning begins'), $t(
                     'بدأت تعلّم البرمجة والتصميم ذاتيًا، وكانت السنوات التالية مرحلة تعلّم وتجريب.',
                     'I started teaching myself programming and design; the years that followed were for learning and experimenting.'
-                ), null],
+                ), null, []],
                 ['2019', $t('أول تطبيق: «البادية»', 'First app: «Al Badyah»'), $t(
                     'طوّرت أول تطبيق لي لأجهزة آبل باسم «البادية»، وكان أول مشروع أطبّق فيه ما تعلّمته، وبداية إنتاجي الفعلي. أزلته لاحقًا من متجر App Store لأنني لم أجد له الجدوى أو الدعم الكافي في ذلك الوقت، لكنه بقي محطة مهمة في رحلتي التقنية.',
                     'I built my first app for Apple devices, «Al Badyah» — the first project where I applied what I had learned, and the start of my real output. I later removed it from the App Store because it lacked enough traction and support at the time, but it remained an important step in my journey.'
-                ), $t('تجربة لم تستمر · أُزيل من App Store', 'Discontinued · removed from the App Store')],
+                ), $t('تجربة لم تستمر · أُزيل من App Store', 'Discontinued · removed from the App Store'), []],
                 ['2025', $t('تأسيس ALYASI', 'Founding ALYASI'), $t(
                     'أسست منصة ALYASI منصةً متخصصة في نشر الأخبار.',
                     'I founded ALYASI as a platform dedicated to publishing news.'
-                ), null],
+                ), null, []],
+                [$t('مارس 2026', 'March 2026'), $t('صوت رقمي بصوتي', 'A digital voice of my own'), $t(
+                    'بعد شهور من التجارب طوّرت صوتًا رقميًا يشبه أسلوبي في الكلام، وشاركت التجربة في مقطع «الخطوة الأولى في رحلة صناعة صوت رقمي». لم يكن الهدف التجربة التقنية وحدها، بل تحويل التقنية إلى محتوى ومعرفة نافعة بأسلوب بسيط. أستخدم هذا الصوت اليوم في محتوى ALYASI، ومنه مقدمات مقابلات سايبر إكس عُمان 2026 وترجمة أسئلتها.',
+                    'After months of experiments I built a digital voice that sounds like the way I speak, and shared the journey in a short video. The goal was never the technology alone, but turning it into useful, simple content and knowledge. I use this voice in ALYASI content today, including the introductions to the CyberX Oman 2026 interviews and the translated questions.'
+                ), null, [
+                    ['https://youtu.be/LJDnzI0uDsw', $t('شاهد المقطع على يوتيوب', 'Watch the video on YouTube'), true],
+                    [localized_route('works.show', ['work' => 'alyasi-ai-voice']), $t('مشروع ALYASI AI Voice', 'The ALYASI AI Voice project'), false],
+                ]],
                 [$t('يوليو 2026', 'July 2026'), $t('ALYASI بشكلها الحالي', 'ALYASI as it is today'), $t(
                     'طوّرت ALYASI إلى شكلها الحالي، لتشمل الأخبار والمقالات والتغطيات التقنية والخدمات الرقمية.',
                     'I developed ALYASI into its current form, covering news, articles, technology coverage and digital services.'
-                ), null],
-            ] as [$when, $title, $body, $status])
+                ), null, []],
+            ] as [$when, $title, $body, $status, $links])
                 <li class="founder-timeline__item" data-reveal>
                     <span class="founder-timeline__when">{{ $when }}</span>
                     <h3>{{ $title }}</h3>
                     <p>{{ $body }}</p>
                     @if ($status)
                         <span class="founder-timeline__status">{{ $status }}</span>
+                    @endif
+                    @if ($links)
+                        <div class="founder-timeline__links">
+                            @foreach ($links as [$href, $label, $external])
+                                <a href="{{ $href }}" @if ($external) target="_blank" rel="noopener" @endif>{{ $label }} {{ $arrow }}</a>
+                            @endforeach
+                        </div>
                     @endif
                 </li>
             @endforeach
