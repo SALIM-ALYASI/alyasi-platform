@@ -20,7 +20,7 @@ class ServiceController extends Controller
             ->with('permalinks')
             ->where('is_active', true)
             ->search($request->string('search')->toString())
-            ->latest('id')
+            ->ordered()
             ->paginate(
                 min($request->integer('per_page', 12), 50)
             )
