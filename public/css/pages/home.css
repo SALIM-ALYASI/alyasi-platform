@@ -350,3 +350,9 @@
     .home-news, .home-conferences, .home-core-services, .home-articles { padding-top: 40px; padding-bottom: 16px; }
     .home-section { padding-top: 40px; padding-bottom: 40px; }
 }
+
+/* الجوال: مسافة موحّدة بين كل أقسام الرئيسية */
+@media (max-width: 767px) {
+    .home-section, .home-news, .home-conferences, .home-core-services, .home-articles,
+    .home-faq, .certs-section { padding-top: 36px; padding-bottom: 36px; }
+}
