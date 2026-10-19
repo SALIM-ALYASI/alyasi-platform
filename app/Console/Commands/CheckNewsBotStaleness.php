@@ -13,6 +13,9 @@ use Illuminate\Console\Command;
  * يكتشف تحديدًا لو news-bot-v2 تعطل داخليًا (حاوية شغالة لكن عالقة/منهارة)
  * رغم إن باقي السيرفر سليم. نمط النشر المعتاد دفعتين يوميًا تقريبًا
  * (~06:30 و~19:40)، فعتبة أطول من أطول فجوة طبيعية بينهما.
+ *
+ * 36 ساعة (كانت 18): دورة وحدة تطلع بدون أخبار شي طبيعي (صارت مساء 18
+ * أكتوبر 2026 وطلع تنبيه كاذب)، فالتنبيه لما تفوت أكثر من دورتين متتاليتين.
  */
 class CheckNewsBotStaleness extends Command
 {
@@ -20,7 +23,7 @@ class CheckNewsBotStaleness extends Command
 
     protected $description = 'ينبّه عبر واتساب لو ما فيه خبر منشور جديد منذ فترة غير طبيعية';
 
-    private const STALE_HOURS = 18;
+    private const STALE_HOURS = 36;
 
     public function handle(): int
     {
