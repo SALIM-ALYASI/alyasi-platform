@@ -2,6 +2,8 @@
 
 return [
 
+    'from_client' => 'Project client',
+
     'badge' => 'Client Reviews',
 
     'title' => 'Reviews (:count)',

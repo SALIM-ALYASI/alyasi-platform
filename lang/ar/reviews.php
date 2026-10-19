@@ -2,6 +2,8 @@
 
 return [
 
+    'from_client' => 'عميل المشروع',
+
     'badge' => 'آراء العملاء',
 
     'title' => 'التقييمات (:count)',

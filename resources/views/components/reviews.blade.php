@@ -26,7 +26,12 @@
             @foreach ($reviews as $review)
                 <div class="reviews-block__item">
                     <div class="reviews-block__item-head">
-                        <strong>{{ $review->name }}</strong>
+                        <span class="reviews-block__who">
+                            <strong>{{ $review->name }}</strong>
+                            @if ($review->from_client)
+                                <span class="reviews-block__client"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ __('reviews.from_client') }}</span>
+                            @endif
+                        </span>
                         <span class="stars" aria-label="{{ $review->rating }}/5">
                             @for ($i = 1; $i <= 5; $i++)
                                 {{ $i <= $review->rating ? '★' : '☆' }}

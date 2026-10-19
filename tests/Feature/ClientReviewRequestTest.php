@@ -58,8 +58,13 @@ class ClientReviewRequestTest extends TestCase
 
         $this->post($path, $review + ['consent' => '1'])->assertRedirect();
         $this->assertSame('pending', $work->reviews()->first()->status);
+        $this->assertTrue($work->reviews()->first()->from_client);
         $this->assertSame(0, $work->approvedReviews()->count());
 
         $this->get($path)->assertSee('شكرًا لك!');
+
+        // بعد الاعتماد يظهر في صفحة المشروع بشارة «عميل المشروع».
+        $work->reviews()->update(['status' => 'approved']);
+        $this->get('/works/sultan-law')->assertOk()->assertSee('عميل المشروع')->assertSee('تعامل راقٍ والتزام بالمواعيد');
     }
 }

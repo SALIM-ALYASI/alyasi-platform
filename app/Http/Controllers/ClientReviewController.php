@@ -49,6 +49,7 @@ class ClientReviewController extends Controller
             'rating' => $validated['rating'],
             'body' => $validated['body'],
             'status' => 'pending',
+            'from_client' => true,
             'ip_address' => $request->ip(),
             'device_token' => $deviceToken,
         ]);

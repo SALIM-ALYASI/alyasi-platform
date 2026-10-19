@@ -19,6 +19,7 @@ class Review extends Model
         'rating',
         'body',
         'status',
+        'from_client',
         'ip_address',
         'device_token',
     ];
@@ -28,6 +29,7 @@ class Review extends Model
      */
     protected $casts = [
         'rating' => 'integer',
+        'from_client' => 'boolean',
     ];
 
     /**
