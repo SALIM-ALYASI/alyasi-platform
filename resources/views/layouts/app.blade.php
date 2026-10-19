@@ -57,10 +57,10 @@
     $seoUrl = trim($__env->yieldContent('og_url'))
         ?: $seoCanonical;
 
-    // بدون صورة محددة: غلاف الرئيسية بدل الشعار. وأي صورة محلية ثقيلة أو WebP
-    // تتحول لنسخة JPG خفيفة يعرضها واتساب.
+    // بدون صورة محددة: صورة الهوية بلغة الصفحة (og-home-ar / og-home-en). وأي صورة
+    // محلية ثقيلة أو WebP تتحول لنسخة JPG خفيفة يعرضها واتساب.
     $seoImage = share_image_url(
-        trim($__env->yieldContent('og_image')) ?: asset('images/home/og-image.png')
+        trim($__env->yieldContent('og_image')) ?: asset('images/home/og-home-'.($isArabic ? 'ar' : 'en').'.jpg')
     );
 
     $seoLocale = $isArabic ? 'ar_OM' : 'en_US';

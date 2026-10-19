@@ -7,7 +7,7 @@
 @section('og_url', localized_route('home'))
 @section('hreflang_ar', localized_route('home', [], 'ar'))
 @section('hreflang_en', localized_route('home', [], 'en'))
-@section('og_image', asset('images/home/og-image.png'))
+@section('og_image', asset('images/home/og-home-'.app()->getLocale().'.jpg'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
 

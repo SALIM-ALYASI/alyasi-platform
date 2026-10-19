@@ -38,6 +38,12 @@ class HomePageTest extends TestCase
             ->assertSee('تعرّف على المؤسس');
     }
 
+    public function test_share_image_matches_the_page_language(): void
+    {
+        $this->get('/')->assertOk()->assertSee('images/home/og-home-ar.jpg?v=', false);
+        $this->get('/en')->assertOk()->assertSee('images/home/og-home-en.jpg?v=', false);
+    }
+
     public function test_home_shows_four_core_services_and_links_to_all(): void
     {
         foreach (range(1, 6) as $i) {
