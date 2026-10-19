@@ -70,3 +70,9 @@
 .certs-section { padding-top: 60px; padding-bottom: 60px; }
 @media (max-width: 767px) { .certs-section { padding-top: 48px; padding-bottom: 48px; } }
 .certs-section__more { display: flex; justify-content: center; margin-top: 22px; }
+/* الجوال: الشهادات بتمرير أفقي بدل عمود طويل */
+@media (max-width: 767px) {
+    .about-certs { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -20px; padding-inline: 20px; padding-bottom: 6px; scrollbar-width: none; }
+    .about-certs::-webkit-scrollbar { display: none; }
+    .about-cert { flex: 0 0 78%; scroll-snap-align: start; }
+}

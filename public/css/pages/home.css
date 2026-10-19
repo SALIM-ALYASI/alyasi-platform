@@ -329,7 +329,7 @@
 
     .home-scroller {
         display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
-        margin-inline: -16px; padding-inline: 16px; padding-bottom: 6px; scrollbar-width: none;
+        margin-inline: -20px; padding-inline: 20px; padding-bottom: 6px; scrollbar-width: none;
     }
     .home-scroller::-webkit-scrollbar { display: none; }
     .home-scroller > * { flex: 0 0 80%; scroll-snap-align: start; }
