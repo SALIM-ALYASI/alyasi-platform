@@ -22,3 +22,7 @@
     .about-stats__value { font-size: 32px; }
     .about-section, .about-mission { padding-top: 48px; padding-bottom: 48px; }
 }
+
+.about-founder-link { display: inline-block; margin-top: 14px; color: var(--color-accent-600); font-weight: 700; text-decoration: none; }
+.about-founder-link:hover { text-decoration: underline; }
+:root[data-theme="dark"] .about-founder-link { color: var(--color-accent-300); }

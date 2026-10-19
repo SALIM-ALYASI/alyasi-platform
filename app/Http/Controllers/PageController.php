@@ -16,10 +16,10 @@ class PageController extends Controller
      * صفحة من نحن.
      */
     /**
-     * صفحة «عن المؤسس» -- مسودة لمراجعة سالم: ما تفتح إلا برابط معاينة موقّع
-     * لين يوافق، بعدها تتغيّر FOUNDER_PUBLISHED إلى true.
+     * صفحة «عن المؤسس» -- نُشرت بموافقة سالم (19 أكتوبر 2026). لو رجعت false
+     * ترجع مسودة ما تفتح إلا برابط معاينة موقّع.
      */
-    private const FOUNDER_PUBLISHED = false;
+    private const FOUNDER_PUBLISHED = true;
 
     public function founder(\Illuminate\Http\Request $request): \Illuminate\Http\Response|View
     {

@@ -44,6 +44,7 @@
             <div class="section-head__eyebrow">{{ __('about.story_badge') }}</div>
             <h2 class="section-head__title">{{ __('about.story_title') }}</h2>
             <p class="section-head__desc">{{ __('about.story_body') }}</p>
+            <a class="about-founder-link" href="{{ localized_route('about.founder') }}">{{ __('about.founder_link') }}</a>
         </div>
     </section>
 

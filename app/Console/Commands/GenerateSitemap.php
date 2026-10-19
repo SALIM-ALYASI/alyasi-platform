@@ -25,6 +25,7 @@ class GenerateSitemap extends Command
     private const STATIC_LOCALIZED_ROUTES = [
         'home',
         'about',
+        'about.founder',
         'careers',
         'contact',
         'services.index',

@@ -16,6 +16,8 @@ return [
 
     'story_body' => 'ALYASI was founded in 2025 as a technology news platform, and in July 2026 it expanded to bring together technology journalism, digital services and artificial intelligence. It builds on its founder\'s experience producing technology projects since 2019, and on a simple idea: technology should be a real growth tool for individuals and businesses, not just an isolated technical service.',
 
+    'founder_link' => 'Meet the founder →',
+
     'stats_years' => 'Years developing tech projects',
 
     'stats_projects' => 'Completed Projects',
