@@ -2,8 +2,6 @@
 
 @php
     $isEn = app()->getLocale() === 'en';
-    $editionUrl = fn ($edition) => ($edition?->permalink(app()->getLocale()) ?? $edition?->permalink())?->url();
-    $seriesUrl = fn ($event) => route($isEn ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]);
     $phaseClass = ['upcoming' => 'upcoming', 'live' => 'ongoing', 'remote' => 'upcoming', 'concluded' => 'ended'];
 @endphp
 
@@ -36,62 +34,7 @@
     />
 
     {{-- تغطية مميزة: مثبّتة من لوحة التحكم، وإلا أحدث نسخة نُشر لها محتوى حصري فعلي --}}
-    @if ($featured)
-        @php
-            $fEdition = $featured->edition;
-            $fUrl = $editionUrl($fEdition) ?? $seriesUrl($featured->event);
-            $fImage = $fEdition->displayImage() ?: $featured->event->image;
-            $fInterviews = $featured->highlights['interviews'];
-        @endphp
-        <section class="container events-featured" aria-labelledby="events-featured-title">
-            <h2 class="events-featured__eyebrow" id="events-featured-title">{{ __('events.featured_title') }}</h2>
-
-            <article class="events-featured__card" data-reveal>
-                <a class="events-featured__media" href="{{ $fUrl }}" tabindex="-1" aria-hidden="true">
-                    <img src="{{ $fImage ? media_url($fImage) : asset('images/events/og-cover.jpg') }}" @if ($fImage && ($srcset = media_srcset($fImage))) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 560px" @endif alt="" loading="lazy" decoding="async" width="1200" height="630">
-                </a>
-
-                <div class="events-featured__body">
-                    @if ($date = $fEdition->dateRangeLabel())
-                        <div class="event-card__date">
-                            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-                            <span class="visually-hidden">{{ __('events.event_date') }}:</span>
-                            <time datetime="{{ $fEdition->event_start_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $date }}</time>
-                        </div>
-                    @endif
-
-                    <h3 class="events-featured__title"><a href="{{ $fUrl }}">{{ $fEdition->title }}</a></h3>
-
-                    @if ($text = $featured->event->localizedDescription() ?: $fEdition->short_description)
-                        <p class="events-featured__text">{{ $text }}</p>
-                    @endif
-
-                    @if ($featured->highlights['tags'])
-                        <ul class="event-card__tags">
-                            @foreach ($featured->highlights['tags'] as $tag)
-                                <li>{{ $tag }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-
-                    @if ($fInterviews->isNotEmpty())
-                        <span class="events-exclusive__faces" aria-hidden="true">
-                            @foreach ($fInterviews->take(6) as $interview)
-                                @include('events.coverage.interviews._avatar', ['guest' => $interview->avatar(), 'size' => 34])
-                            @endforeach
-                        </span>
-                    @endif
-
-                    <div class="events-featured__actions">
-                        @foreach ($featured->highlights['links'] as $k => $link)
-                            <a class="btn {{ $k === 0 ? 'btn--primary' : 'btn--outline' }}" href="{{ $link['url'] }}">{{ $link['label'] }}</a>
-                        @endforeach
-                        <a class="btn {{ $featured->highlights['links'] ? 'btn--outline' : 'btn--primary' }}" href="{{ $fUrl }}">{{ __('events.featured_page') }}</a>
-                    </div>
-                </div>
-            </article>
-        </section>
-    @endif
+    @include('events._featured', ['featured' => $featured])
 
     @if ($years->count() > 1 || $year)
         <nav class="container events-years" aria-label="{{ __('events.filter_by_year') }}">
@@ -116,7 +59,7 @@
                         $event = $row->event;
                         $edition = $row->edition;
                         $phase = $edition?->badge_phase;
-                        $coverageUrl = $editionUrl($edition) ?? $seriesUrl($event);
+                        $coverageUrl = $edition->publicUrl();
                         $cardImage = $event->image ?: $edition?->displayImage();
                     @endphp
 
@@ -164,7 +107,7 @@
                             {{-- سنوات المؤتمر: كل سنة تفتح نسختها (بدل «الأرشيف») --}}
                             <nav class="event-card__years" aria-label="{{ __('events.editions_label', ['name' => $event->localizedName()]) }}">
                                 @foreach ($event->editions->sortByDesc('year') as $yearEdition)
-                                    <a href="{{ $editionUrl($yearEdition) ?? $seriesUrl($event) }}" @class(['is-current' => $yearEdition->is($edition)]) @if ($yearEdition->is($edition)) aria-current="page" @endif>{{ $yearEdition->year }}</a>
+                                    <a href="{{ $yearEdition->publicUrl() }}" @class(['is-current' => $yearEdition->is($edition)]) @if ($yearEdition->is($edition)) aria-current="page" @endif>{{ $yearEdition->year }}</a>
                                 @endforeach
                             </nav>
                         </div>

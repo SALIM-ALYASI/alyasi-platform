@@ -45,8 +45,6 @@
 @php
     $isEn = app()->getLocale() === 'en';
     $arrow = $isEn ? '→' : '←';
-    $editionUrl = fn ($edition) => ($edition?->permalink(app()->getLocale()) ?? $edition?->permalink())?->url();
-    $seriesUrl = fn ($event) => route($isEn ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $event->slug]);
     $phaseClass = ['upcoming' => 'upcoming', 'live' => 'ongoing', 'remote' => 'upcoming', 'concluded' => 'ended'];
     $techChunks = $technologies->count() ? $technologies->split(2) : collect();
     $techRow1 = $techChunks->get(0, collect());
@@ -86,63 +84,7 @@
     </section>
 
     {{-- ١) تغطية مميزة: نفس منطق /events (مثبّتة من لوحة التحكم، وإلا أحدث محتوى حصري) --}}
-    @if ($featuredCoverage)
-        @php
-            $fEdition = $featuredCoverage->edition;
-            $fUrl = $editionUrl($fEdition) ?? $seriesUrl($featuredCoverage->event);
-            $fImage = $fEdition->displayImage() ?: $featuredCoverage->event->image;
-            $fInterviews = $featuredCoverage->highlights['interviews'];
-        @endphp
-        <section class="container events-featured home-featured" aria-labelledby="home-featured-title">
-            <h2 class="events-featured__eyebrow" id="home-featured-title">{{ __('events.featured_title') }}</h2>
-
-            <article class="events-featured__card" data-reveal>
-                <a class="events-featured__media" href="{{ $fUrl }}" tabindex="-1" aria-hidden="true">
-                    <img src="{{ $fImage ? media_url($fImage) : asset('images/events/og-cover.jpg') }}" @if ($fImage && ($srcset = media_srcset($fImage))) srcset="{{ $srcset }}" sizes="(max-width: 767px) 92vw, 560px" @endif alt="" loading="lazy" decoding="async" width="1200" height="630">
-                </a>
-
-                <div class="events-featured__body">
-                    @if ($date = $fEdition->dateRangeLabel())
-                        <div class="event-card__date">
-                            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-                            <time datetime="{{ $fEdition->event_start_at->copy()->timezone('Asia/Muscat')->toDateString() }}">{{ $date }}</time>
-                        </div>
-                    @endif
-
-                    <h3 class="events-featured__title"><a href="{{ $fUrl }}">{{ $fEdition->title }}</a></h3>
-
-                    @if ($text = $featuredCoverage->event->localizedDescription() ?: $fEdition->short_description)
-                        <p class="events-featured__text">{{ $text }}</p>
-                    @endif
-
-                    @if ($featuredCoverage->highlights['tags'])
-                        <ul class="event-card__tags">
-                            @foreach ($featuredCoverage->highlights['tags'] as $tag)
-                                <li>{{ $tag }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-
-                    @if ($fInterviews->isNotEmpty())
-                        <span class="events-exclusive__faces" aria-hidden="true">
-                            @foreach ($fInterviews->take(6) as $interview)
-                                @include('events.coverage.interviews._avatar', ['guest' => $interview->avatar(), 'size' => 34])
-                            @endforeach
-                        </span>
-                    @endif
-
-                    <div class="events-featured__actions">
-                        @foreach ($featuredCoverage->highlights['links'] as $k => $link)
-                            <a class="btn {{ $k === 0 ? 'btn--primary' : 'btn--outline' }}" href="{{ $link['url'] }}">{{ $link['label'] }}</a>
-                        @endforeach
-                        @unless ($featuredCoverage->highlights['links'])
-                            <a class="btn btn--primary" href="{{ $fUrl }}">{{ __('events.featured_page') }}</a>
-                        @endunless
-                    </div>
-                </div>
-            </article>
-        </section>
-    @endif
+    @include('events._featured', ['featured' => $featuredCoverage, 'sectionClass' => 'home-featured', 'headingId' => 'home-featured-title'])
 
     {{-- ٢) أحدث الأخبار التقنية + نبض عُمان --}}
     <section id="news" class="container home-section home-news">
@@ -220,7 +162,7 @@
                         $event = $row->event;
                         $edition = $row->edition;
                         $phase = $edition->badge_phase;
-                        $url = $editionUrl($edition) ?? $seriesUrl($event);
+                        $url = $edition->publicUrl();
                         $image = $event->image ?: $edition->displayImage();
                     @endphp
                     <article @class(['card card--hover community-card event-card', 'home-conference--partner' => $edition->is_media_partner]) data-reveal>

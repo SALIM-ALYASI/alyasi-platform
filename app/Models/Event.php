@@ -43,6 +43,14 @@ class Event extends Model
     /**
      * نسخ الحدث عبر السنين.
      */
+    /**
+     * صفحة المؤتمر (السلسلة) باللغة الحالية.
+     */
+    public function url(?string $locale = null): string
+    {
+        return route(($locale ?? app()->getLocale()) === 'en' ? 'event_editions.show.en' : 'event_editions.show', ['slug' => $this->slug]);
+    }
+
     public function editions(): HasMany
     {
         return $this->hasMany(EventEdition::class);

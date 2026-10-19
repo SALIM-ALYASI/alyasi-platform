@@ -284,6 +284,16 @@ class EventEdition extends Model
         return url(($locale === 'en' && ! str_starts_with($path, '/en/') ? '/en' : '').$path);
     }
 
+    /**
+     * صفحة هذه النسخة باللغة الحالية (أو المتاحة)، وإلا صفحة المؤتمر.
+     */
+    public function publicUrl(?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+
+        return ($this->permalink($locale) ?? $this->permalink())?->url() ?? $this->event->url($locale);
+    }
+
     public function coverageLink(): ?string
     {
         return self::localizedPath($this->coverage_url);

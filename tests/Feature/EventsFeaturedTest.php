@@ -69,6 +69,17 @@ class EventsFeaturedTest extends TestCase
         $this->get('/events')->assertOk()->assertSeeInOrder(['تغطية مميزة', 'نسخة pinned', 'فعاليات منتهية']);
     }
 
+    public function test_home_and_events_hub_show_the_same_featured_coverage(): void
+    {
+        $this->travelTo('2026-10-20 12:00:00');
+        $this->edition('auto', '2026-10-06 05:00:00', ['attended' => true, 'exclusive_published_at' => '2026-10-08 04:00:00']);
+        $this->edition('pinned', '2026-09-02 05:00:00', ['is_featured' => true]);
+        $this->edition('partner', '2026-11-19 05:00:00', ['is_media_partner' => true]);
+
+        $this->get('/')->assertOk()->assertSeeInOrder(['تغطية مميزة', 'نسخة pinned', 'المؤتمرات والمقابلات', 'نسخة partner']);
+        $this->get('/en')->assertOk()->assertSeeInOrder(['Featured coverage', 'pinned 2026', 'Conferences &amp; interviews', 'Media partner', 'partner 2026'], false);
+    }
+
     public function test_goals_show_on_the_edition_page(): void
     {
         $this->travelTo('2026-10-20 12:00:00');
