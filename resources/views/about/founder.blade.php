@@ -62,7 +62,7 @@
         <div class="grid-3">
             <div class="about-stats__item" data-reveal>
                 <div class="about-stats__value">12</div>
-                <div class="about-stats__label">{{ $t('عامًا تقريبًا في البرمجة والتصميم', 'years, roughly, in programming and design') }}</div>
+                <div class="about-stats__label">{{ $t('عامًا تقريبًا من التعلّم الذاتي في البرمجة والتصميم', 'years, roughly, of self-learning in programming and design') }}</div>
             </div>
             <div class="about-stats__item" data-reveal>
                 <div class="about-stats__value">2019</div>
