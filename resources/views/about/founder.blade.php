@@ -30,7 +30,7 @@
 
     {{-- المقدمة: الاسم والدور وسطر واحد يلخّص --}}
     <section class="container founder-hero">
-        <img class="founder-hero__photo" src="{{ versioned_asset('images/about/salem-al-hajri.jpg') }}" alt="{{ $t('سالم محمد الحجري', 'Salem Mohammed Al Hajri') }}" width="220" height="220">
+        <img class="founder-hero__photo" src="{{ versioned_asset('images/about/salem-al-hajri.webp') }}" alt="{{ $t('سالم محمد الحجري', 'Salem Mohammed Al Hajri') }}" width="220" height="220">
         <div class="founder-hero__text">
             <span class="founder-hero__badge">{{ $t('عن المؤسس', 'About the founder') }}</span>
             <h1>{{ $t('سالم محمد الحجري', 'Salem Mohammed Al Hajri') }}</h1>
