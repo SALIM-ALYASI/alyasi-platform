@@ -47,7 +47,8 @@ final class Excerpt
         $cut = mb_substr($text, 0, $max, 'UTF-8');
         $space = mb_strrpos($cut, ' ', 0, 'UTF-8');
 
-        return rtrim(mb_substr($cut, 0, $space ?: $max, 'UTF-8'), " \t,،;؛:-–—").'…';
+        // preg بـ/u مب rtrim: rtrim يشتغل بالبايت ويقص نص حرف عربي.
+        return preg_replace('/[\s,،;؛:\-–—]+$/u', '', mb_substr($cut, 0, $space ?: $max, 'UTF-8')).'…';
     }
 
     /** هل المقتطف مقصوص بنص كلمة أو جملة (من الطريقة القديمة)؟ */

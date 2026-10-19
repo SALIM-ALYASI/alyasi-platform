@@ -22,4 +22,16 @@ class ExcerptTest extends TestCase
         $this->assertTrue(Excerpt::looksCut('يتم الطلب عبر بطاقات الائتمان وباي بال اب...'));
         $this->assertFalse(Excerpt::looksCut('أعلنت الشركة عن نظام جديد.'));
     }
+
+    public function test_cutting_arabic_never_breaks_a_letter(): void
+    {
+        // جملة وحدة طويلة تنتهي الكلمة المقصوصة بحروف بايتاتها تشبه «،» و«ـ».
+        $text = 'أصدرت الشركة يوم الاثنين نموذجًا مفتوح الوزن مصممًا لتشغيل عملاء الذكاء الاصطناعي محليًا على الأجهزة الاستهلاكية مما يوفر أوضح صورة حتى الآن لما يمكن أن تبدو عليه رؤية الرئيس التنفيذي لـ';
+
+        foreach (range(40, 140, 7) as $max) {
+            $out = Excerpt::make($text, $max);
+            $this->assertTrue(mb_check_encoding($out, 'UTF-8'), "broken at {$max}");
+            $this->assertStringEndsWith('…', $out);
+        }
+    }
 }
