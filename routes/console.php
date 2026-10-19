@@ -26,3 +26,12 @@ Schedule::command('fx:refresh-gulf-rates')
 Schedule::command('model:prune', ['--model' => [\App\Models\ServiceLead::class]])
     ->dailyAt('04:20')
     ->timezone('Asia/Muscat');
+
+// قائمة مشاريع مستقل وخمسات اليومية (احتياط لو ما وصلت دفعة Grok المسائية بعد 7).
+Artisan::command('leads:marketplace-digest', function (): void {
+    \App\Support\Leads\LeadNotifier::marketplaceDigestIfDue();
+})->purpose('إرسال قائمة مشاريع مستقل وخمسات اليومية لواتساب');
+
+Schedule::command('leads:marketplace-digest')
+    ->dailyAt('21:30')
+    ->timezone('Asia/Muscat');

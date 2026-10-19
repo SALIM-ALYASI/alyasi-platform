@@ -29,6 +29,15 @@ class ServiceLead extends Model
         'web' => 'مواقع وأنظمة',
     ];
 
+    /** gcc: طلبات عُمان والخليج (تنبيه فوري). marketplace: مستقل وخمسات من أي بلد (قائمة يومية). */
+    public const SCOPES = [
+        'gcc' => 'عُمان والخليج',
+        'marketplace' => 'مستقل وخمسات',
+    ];
+
+    /** أقل ميزانية لمشاريع المنصات (بالدولار). */
+    public const MARKETPLACE_MIN_BUDGET_USD = 100;
+
     public const PLATFORMS = ['x', 'instagram', 'linkedin', 'facebook', 'tiktok', 'threads', 'snapchat', 'mostaql', 'khamsat', 'web'];
 
     public const STATUSES = [
@@ -43,11 +52,13 @@ class ServiceLead extends Model
         'offer' => 'عرض خدمات مب طلب',
         'stale' => 'قديم (أكثر من 7 أيام)',
         'duplicate_text' => 'نفس نص طلب سابق',
+        'low_budget' => 'ميزانية أقل من 100$ أو غير مذكورة',
+        'not_marketplace' => 'مب من مستقل أو خمسات',
     ];
 
     protected $fillable = [
-        'agent', 'platform', 'url', 'url_key', 'text_hash', 'author', 'text', 'summary',
-        'category', 'country', 'city', 'budget', 'deadline', 'posted_at', 'score',
+        'agent', 'scope', 'platform', 'url', 'url_key', 'text_hash', 'author', 'text', 'summary',
+        'category', 'country', 'city', 'budget', 'budget_usd', 'deadline', 'posted_at', 'score',
         'status', 'reject_reason', 'notified_at',
     ];
 
@@ -57,6 +68,7 @@ class ServiceLead extends Model
             'posted_at' => 'datetime',
             'notified_at' => 'datetime',
             'score' => 'integer',
+            'budget_usd' => 'integer',
         ];
     }
 
@@ -67,9 +79,18 @@ class ServiceLead extends Model
 
     public function countryLabel(): string
     {
+        if ($this->country === null) {
+            return '🌍';
+        }
+
         [$name, $flag] = self::COUNTRIES[$this->country] ?? [$this->country, ''];
 
         return trim($flag.' '.$name);
+    }
+
+    public function platformLabel(): string
+    {
+        return ['mostaql' => 'مستقل', 'khamsat' => 'خمسات'][$this->platform] ?? strtoupper($this->platform);
     }
 
     public function categoryLabel(): string

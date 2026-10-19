@@ -14,7 +14,7 @@
             </span>
             <h1 class="admin-page-header__title">طلبات العملاء</h1>
             <p class="admin-page-header__description">
-                منشورات علنية في عُمان والخليج يطلب فيها أصحابها مصمم جرافيك أو مونتير أو موقعًا، يلقطها Grok مرتين باليوم.
+                منشورات علنية في عُمان والخليج يطلب فيها أصحابها مصمم جرافيك أو مونتير أو موقعًا (توصلك فورًا)، ومشاريع مستقل وخمسات من أي بلد بميزانية 100$ فأكثر (قائمة يومية). يلقطها Grok مرتين باليوم.
                 ما يتواصل النظام مع أحد: تشوف الطلب وتقرر. تنحذف تلقائيًا بعد 60 يومًا.
             </p>
         </div>
@@ -22,7 +22,7 @@
 
     <section class="admin-stats-row">
         @foreach (\App\Models\ServiceLead::STATUSES as $key => $label)
-            <a class="admin-stat-card" href="{{ route('admin.service-leads.index', ['status' => $key]) }}" @if ($status === $key) style="outline: 2px solid var(--admin-accent, #5E76A8);" @endif>
+            <a class="admin-stat-card" href="{{ route('admin.service-leads.index', array_filter(['status' => $key, 'scope' => $scope])) }}" @if ($status === $key) style="outline: 2px solid var(--admin-accent, #5E76A8);" @endif>
                 <div class="admin-stat-card__content">
                     <span>{{ $label }}</span>
                     <strong>{{ number_format($counts[$key] ?? 0) }}</strong>
@@ -34,6 +34,15 @@
     <section class="admin-filter-panel">
         <form action="{{ route('admin.service-leads.index') }}" method="GET" class="admin-filter-form">
             <input type="hidden" name="status" value="{{ $status }}">
+            <div class="admin-filter-form__field">
+                <label for="lead-scope">المصدر</label>
+                <select id="lead-scope" name="scope">
+                    <option value="">الكل</option>
+                    @foreach (\App\Models\ServiceLead::SCOPES as $key => $label)
+                        <option value="{{ $key }}" @selected($scope === $key)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="admin-filter-form__field">
                 <label for="lead-category">النوع</label>
                 <select id="lead-category" name="category">
@@ -70,12 +79,12 @@
                                 <div>
                                     <h3>{{ $lead->countryLabel() }}@if ($lead->city) – {{ $lead->city }}@endif · {{ $lead->categoryLabel() }}</h3>
                                     <p style="margin: 4px 0 0; font-size: 0.8rem; opacity: 0.6;">
-                                        {{ strtoupper($lead->platform) }}@if ($lead->author) · <span dir="ltr">{{ $lead->author }}</span>@endif
+                                        {{ $lead->platformLabel() }}@if ($lead->author) · <span dir="ltr">{{ $lead->author }}</span>@endif
                                         · {{ ($lead->posted_at ?? $lead->created_at)->timezone('Asia/Muscat')->translatedFormat('d F - h:i A') }}
                                     </p>
                                 </div>
                                 <span class="admin-status {{ $lead->status === 'new' ? 'admin-status--featured' : 'admin-status--inactive' }}">
-                                    {{ $lead->status === 'rejected' ? (\App\Models\ServiceLead::REJECT_REASONS[$lead->reject_reason] ?? $lead->reject_reason) : 'أولوية '.$lead->score }}
+                                    {{ $lead->status === 'rejected' ? (\App\Models\ServiceLead::REJECT_REASONS[$lead->reject_reason] ?? $lead->reject_reason) : ($lead->scope === 'marketplace' ? '$'.number_format((int) $lead->budget_usd) : 'أولوية '.$lead->score) }}
                                 </span>
                             </div>
 

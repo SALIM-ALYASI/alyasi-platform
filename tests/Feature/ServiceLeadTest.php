@@ -79,6 +79,50 @@ class ServiceLeadTest extends TestCase
         $this->assertSame(2, ServiceLead::whereNotNull('notified_at')->count());
     }
 
+    private function marketplace(array $overrides = []): array
+    {
+        return $overrides + [
+            'scope' => 'marketplace',
+            'url' => 'https://mostaql.com/project/'.random_int(1000, 999999),
+            'platform' => 'mostaql',
+            'text' => 'تصميم شعار ومطبوعات لمنصة عقارية جديدة مع دليل هوية',
+            'summary' => 'شعار ومطبوعات لمنصة عقارية',
+            'category' => 'graphic_design',
+            'budget' => '100 - 250 دولار',
+            'budget_usd' => 250,
+            'posted_at' => now()->subHours(2)->toIso8601String(),
+            'post_type' => 'request',
+        ];
+    }
+
+    public function test_marketplace_projects_wait_for_one_evening_digest(): void
+    {
+        Config::set('services.whatsapp_notify', ['base_url' => 'https://bridge.test', 'api_key' => 'k', 'number' => '96800000000']);
+        Http::fake(['bridge.test/*' => Http::response(['ok' => true])]);
+
+        // الصبح: تنحفظ بدون رسالة.
+        $this->travelTo(now('Asia/Muscat')->setTime(9, 5)->utc());
+        $this->sendLeads(['items' => [
+            $this->marketplace(),
+            $this->marketplace(['url' => 'https://khamsat.com/community/requests/1', 'platform' => 'khamsat', 'budget_usd' => 600, 'text' => 'مطلوب مونتاج فيديوهات قصيرة لقناة تعليمية', 'summary' => 'مونتاج فيديوهات قصيرة', 'category' => 'video']),
+            $this->marketplace(['url' => 'https://mostaql.com/project/77', 'budget_usd' => 40, 'text' => 'تصميم 4 أغلفة لعبوات جاهزة بسرعة']),
+            $this->marketplace(['url' => 'https://x.com/z/status/9', 'platform' => 'x', 'text' => 'need a logo for my brand asap please']),
+        ]])->assertJson(['accepted' => 2, 'rejected' => 2]);
+
+        $this->assertSame(['low_budget', 'not_marketplace'], ServiceLead::where('status', 'rejected')->orderBy('id')->pluck('reject_reason')->all());
+        Http::assertNothingSent();
+
+        // المسا: أول دفعة بعد 7 ترسل القائمة (الأعلى ميزانية أول)، ومرة وحدة باليوم.
+        $this->travelTo(now('Asia/Muscat')->setTime(20, 10)->utc());
+        $this->sendLeads(['items' => [$this->marketplace(['url' => 'https://mostaql.com/project/88', 'budget_usd' => 120, 'text' => 'إعداد متجر إلكتروني على سلة مع تصميم الواجهة'])]]);
+        $this->artisan('leads:marketplace-digest')->assertSuccessful();
+
+        Http::assertSentCount(1);
+        Http::assertSent(fn ($request) => str_contains($request['message'], '📋 أفضل مشاريع مستقل وخمسات اليوم (3)')
+            && strpos($request['message'], '$600') < strpos($request['message'], '$250')
+            && str_contains($request['message'], 'خمسات · فيديو ومونتاج'));
+    }
+
     public function test_same_text_from_another_url_is_a_duplicate(): void
     {
         $this->sendLeads($this->lead(['url' => 'https://x.com/a/status/10']))->assertJson(['accepted' => 1]);

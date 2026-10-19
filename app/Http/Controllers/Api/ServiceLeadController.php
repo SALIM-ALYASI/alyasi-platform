@@ -39,7 +39,9 @@ class ServiceLeadController extends Controller
             }
         }
 
-        LeadNotifier::notify($accepted);
+        // الخليج يوصل فورًا؛ مشاريع المنصات تنتظر القائمة اليومية (مع دفعة المساء).
+        LeadNotifier::notify($accepted->where('scope', 'gcc'));
+        LeadNotifier::marketplaceDigestIfDue();
 
         $counts = collect($results)->countBy('status');
 
@@ -59,8 +61,9 @@ class ServiceLeadController extends Controller
      */
     private function ingest(array $input, string $agent): array
     {
-        $input['country'] = strtoupper(trim((string) ($input['country'] ?? '')));
+        $input['country'] = filled($input['country'] ?? null) ? strtoupper(trim((string) $input['country'])) : null;
         $input['platform'] = strtolower(trim((string) ($input['platform'] ?? 'x')));
+        $input['scope'] = ($input['scope'] ?? 'gcc') === 'marketplace' ? 'marketplace' : 'gcc';
 
         $validator = Validator::make($input, [
             'url' => ['required', 'url:http,https', 'max:500'],
@@ -68,7 +71,9 @@ class ServiceLeadController extends Controller
             'text' => ['required', 'string', 'min:10', 'max:3000'],
             'summary' => ['nullable', 'string', 'max:400'],
             'category' => ['required', Rule::in(array_keys(ServiceLead::CATEGORIES))],
-            'country' => ['required', 'string', 'size:2'],
+            'scope' => ['required', Rule::in(array_keys(ServiceLead::SCOPES))],
+            'country' => [Rule::requiredIf($input['scope'] === 'gcc'), 'nullable', 'string', 'size:2'],
+            'budget_usd' => [Rule::requiredIf($input['scope'] === 'marketplace'), 'nullable', 'integer', 'min:0', 'max:1000000'],
             'city' => ['nullable', 'string', 'max:80'],
             'author' => ['nullable', 'string', 'max:120'],
             'budget' => ['nullable', 'string', 'max:120'],
@@ -91,6 +96,7 @@ class ServiceLeadController extends Controller
 
         $lead = ServiceLead::query()->create([
             'agent' => $agent,
+            'scope' => $data['scope'],
             'platform' => $data['platform'],
             'url' => $data['url'],
             'url_key' => $screen['url_key'],
@@ -99,9 +105,10 @@ class ServiceLeadController extends Controller
             'text' => $data['text'],
             'summary' => $data['summary'] ?? null,
             'category' => $data['category'],
-            'country' => $data['country'],
+            'country' => $data['country'] ?? null,
             'city' => $data['city'] ?? null,
             'budget' => $data['budget'] ?? null,
+            'budget_usd' => $data['budget_usd'] ?? null,
             'deadline' => $data['deadline'] ?? null,
             'posted_at' => $data['posted_at'] ?? null,
             'score' => $screen['score'],

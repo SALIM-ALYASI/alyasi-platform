@@ -23,10 +23,13 @@ class ServiceLeadController extends Controller
         $status = array_key_exists($status, ServiceLead::STATUSES) ? $status : 'new';
         $category = $request->string('category')->toString();
         $category = array_key_exists($category, ServiceLead::CATEGORIES) ? $category : '';
+        $scope = $request->string('scope')->toString();
+        $scope = array_key_exists($scope, ServiceLead::SCOPES) ? $scope : '';
 
         $leads = ServiceLead::query()
             ->where('status', $status)
             ->when($category, fn ($query) => $query->where('category', $category))
+            ->when($scope, fn ($query) => $query->where('scope', $scope))
             ->orderByDesc('score')
             ->latest()
             ->paginate(20)
@@ -34,7 +37,7 @@ class ServiceLeadController extends Controller
 
         $counts = ServiceLead::query()->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status');
 
-        return view('admin.service-leads.index', compact('leads', 'status', 'category', 'counts'));
+        return view('admin.service-leads.index', compact('leads', 'status', 'category', 'scope', 'counts'));
     }
 
     public function updateStatus(Request $request, ServiceLead $lead): RedirectResponse

@@ -39,9 +39,12 @@ final class LeadScreener
         $urlKey = self::urlKey($lead['url']);
         $textHash = self::textHash($lead['text']);
         $postedAt = filled($lead['posted_at'] ?? null) ? Carbon::parse($lead['posted_at']) : null;
+        $marketplace = ($lead['scope'] ?? 'gcc') === 'marketplace';
 
         $reason = match (true) {
-            ! array_key_exists($lead['country'], ServiceLead::COUNTRIES) => 'outside_region',
+            $marketplace && ! in_array($lead['platform'], ['mostaql', 'khamsat'], true) => 'not_marketplace',
+            $marketplace && (int) ($lead['budget_usd'] ?? 0) < ServiceLead::MARKETPLACE_MIN_BUDGET_USD => 'low_budget',
+            ! $marketplace && ! array_key_exists((string) ($lead['country'] ?? ''), ServiceLead::COUNTRIES) => 'outside_region',
             self::isOffer($lead['text'], $lead['post_type'] ?? null) => 'offer',
             $postedAt !== null && $postedAt->lt(now()->subDays(7)) => 'stale',
             ServiceLead::query()->where('text_hash', $textHash)->where('created_at', '>=', now()->subDays(14))->exists() => 'duplicate_text',
@@ -51,7 +54,7 @@ final class LeadScreener
         return [
             'status' => $reason ? 'rejected' : 'new',
             'reason' => $reason,
-            'score' => $reason ? 0 : self::score($lead, $postedAt),
+            'score' => $reason ? 0 : ($marketplace ? min(65535, (int) $lead['budget_usd']) : self::score($lead, $postedAt)),
             'url_key' => $urlKey,
             'text_hash' => $textHash,
         ];
@@ -93,7 +96,7 @@ final class LeadScreener
         $text = Str::lower($lead['text'].' '.($lead['deadline'] ?? ''));
 
         return 10
-            + ($lead['country'] === 'OM' ? 40 : 0)
+            + (($lead['country'] ?? null) === 'OM' ? 40 : 0)
             + (filled($lead['budget'] ?? null) ? 20 : 0)
             + (filled($lead['deadline'] ?? null) || self::contains($text, self::URGENT_PATTERNS) ? 15 : 0)
             + ($postedAt === null || $postedAt->gte(now()->subDay()) ? 15 : 0);
