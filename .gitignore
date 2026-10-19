@@ -38,3 +38,4 @@ Thumbs.db
 # نسخ احتياطية من الإعدادات (فيها مفاتيح) -- المستودع عام
 /.env.*
 !/.env.example
+/public/images/apps/

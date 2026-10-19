@@ -15,6 +15,36 @@ class PageController extends Controller
     /**
      * صفحة من نحن.
      */
+    /**
+     * صفحة «عن المؤسس» -- مسودة لمراجعة سالم: ما تفتح إلا برابط معاينة موقّع
+     * لين يوافق، بعدها تتغيّر FOUNDER_PUBLISHED إلى true.
+     */
+    private const FOUNDER_PUBLISHED = false;
+
+    public function founder(\Illuminate\Http\Request $request): \Illuminate\Http\Response|View
+    {
+        $preview = ! self::FOUNDER_PUBLISHED;
+        abort_if($preview && ! $request->hasValidRelativeSignature(), 404);
+
+        \App\Support\AppStore\DeveloperApps::refreshLaterIfStale();
+
+        $projects = Work::query()
+            ->active()
+            ->ordered()
+            ->get();
+
+        $view = view('about.founder', [
+            'apps' => \App\Support\AppStore\DeveloperApps::featured(),
+            'appsCount' => count(\App\Support\AppStore\DeveloperApps::all()),
+            'projects' => $projects,
+            'preview' => $preview,
+        ]);
+
+        return $preview
+            ? response($view)->header('X-Robots-Tag', 'noindex, nofollow')->header('Cache-Control', 'no-store, private')
+            : $view;
+    }
+
     public function about(): View
     {
         $yearsOfExperience = now()->year - 2019;

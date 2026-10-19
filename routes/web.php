@@ -447,6 +447,14 @@ Route::middleware('force.locale:ar')
     ->get('/about', [PageController::class, 'about'])
     ->name('about');
 
+Route::middleware('force.locale:ar')
+    ->get('/about/founder', [PageController::class, 'founder'])
+    ->name('about.founder');
+
+Route::middleware('force.locale:en')
+    ->get('/en/about/founder', [PageController::class, 'founder'])
+    ->name('about.founder.en');
+
 Route::middleware('force.locale:en')
     ->get('/en/about', [PageController::class, 'about'])
     ->name('about.en');

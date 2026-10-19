@@ -220,4 +220,10 @@ return [
 
     ],
 
+    'apps' => [
+        'title' => 'Apps published on the App Store',
+        'description' => '{1} One app published on the App Store|[2,*] :count apps developed and published by Salem Al Hajri on the App Store since 2017; here is a selection.',
+        'since' => 'since :year',
+        'all' => '{1} View the app on the App Store|[2,*] View all :count apps on the App Store',
+    ],
 ];

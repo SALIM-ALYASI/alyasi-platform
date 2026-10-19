@@ -75,6 +75,50 @@
         @endif
     </section>
 
+    {{-- تطبيقات App Store المنشورة فعلًا (من حساب المطوّر، تتحدّث تلقائيًا كل أسبوع) --}}
+    @php
+        \App\Support\AppStore\DeveloperApps::refreshLaterIfStale();
+        $featuredApps = \App\Support\AppStore\DeveloperApps::featured();
+        $allAppsCount = count(\App\Support\AppStore\DeveloperApps::all());
+        $isEn = app()->getLocale() === 'en';
+    @endphp
+    @if ($featuredApps)
+        <section class="container works-apps" id="apps" aria-labelledby="works-apps-title">
+            <div class="section-head">
+                <div class="section-head__eyebrow">App Store</div>
+                <h2 class="section-head__title" id="works-apps-title">{{ __('works.apps.title') }}</h2>
+                <p class="section-head__desc">{{ trans_choice('works.apps.description', $allAppsCount, ['count' => $allAppsCount]) }}</p>
+            </div>
+
+            <div class="works-apps__grid">
+                @foreach ($featuredApps as $app)
+                    <a class="works-app" href="{{ $app['url'] }}" target="_blank" rel="noopener" data-reveal>
+                        @if ($app['icon'])
+                            <img class="works-app__icon" src="{{ versioned_asset($app['icon']) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+                        @endif
+                        <span class="works-app__body">
+                            <strong dir="auto">{{ $app['name'] }}</strong>
+                            <span class="works-app__meta">
+                                {{ $app['genre'] }}
+                                @if ($app['released']) · {{ __('works.apps.since', ['year' => substr($app['released'], 0, 4)]) }} @endif
+                            </span>
+                            @if ($app['rating'] && $app['ratings_count'] >= 3)
+                                <span class="works-app__rating">★ {{ number_format($app['rating'], 1) }} <small>({{ $app['ratings_count'] }})</small></span>
+                            @endif
+                        </span>
+                        <span class="works-app__store" aria-hidden="true"><i class="fa-brands fa-app-store-ios"></i></span>
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="works-apps__more">
+                <a class="btn btn--outline" href="{{ \App\Support\AppStore\DeveloperApps::DEVELOPER_URL }}" target="_blank" rel="noopener">
+                    {{ trans_choice('works.apps.all', $allAppsCount, ['count' => $allAppsCount]) }} {{ $isEn ? '→' : '←' }}
+                </a>
+            </div>
+        </section>
+    @endif
+
     <section class="container">
         <div class="cta-band" data-reveal>
             <div class="cta-band__eyebrow">{{ __('works.cta.tag') }}</div>
