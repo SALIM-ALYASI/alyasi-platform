@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 return new class extends Migration
@@ -12,6 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // works.type كان ENUM بقائمة ثابتة: يصير نص عشان تنضاف أنواع جديدة (القائمة بالكود).
+        Schema::table('works', function (Blueprint $table): void {
+            $table->string('type', 40)->default('other')->change();
+        });
+
         $work = DB::table('works')->where('slug', 'harfiyoon')->first();
 
         if (! $work) {
