@@ -48,6 +48,7 @@
     color: var(--color-text);
     font-weight: 500;
     font-size: 14.5px;
+    white-space: nowrap;
     padding-bottom: 3px;
     border-bottom: 2px solid transparent;
 }
@@ -147,6 +148,15 @@
 .site-header__mobile-link.is-active { color: var(--color-accent-600); font-weight: 700; }
 
 body.has-mobile-menu-open { overflow: hidden; }
+
+/* — شاشات الكمبيوتر الصغيرة: القائمة صارت 8 روابط («نبض عُمان»، «المؤتمرات والفعاليات») -- تبقى بسطر واحد — */
+@media (max-width: 1279px) {
+    .site-header__nav { gap: 15px; }
+    .site-header__nav-link { font-size: 13.5px; }
+}
+@media (max-width: 1179px) {
+    .site-header__cta { display: none; }
+}
 
 /* — تابلت — */
 @media (max-width: 1023px) {
