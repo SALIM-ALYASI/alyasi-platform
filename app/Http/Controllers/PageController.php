@@ -26,16 +26,12 @@ class PageController extends Controller
         $preview = ! self::FOUNDER_PUBLISHED;
         abort_if($preview && ! $request->hasValidRelativeSignature(), 404);
 
-        \App\Support\AppStore\DeveloperApps::refreshLaterIfStale();
-
         $projects = Work::query()
             ->active()
             ->ordered()
             ->get();
 
         $view = view('about.founder', [
-            'apps' => \App\Support\AppStore\DeveloperApps::featured(),
-            'appsCount' => count(\App\Support\AppStore\DeveloperApps::all()),
             'projects' => $projects,
             'preview' => $preview,
         ]);

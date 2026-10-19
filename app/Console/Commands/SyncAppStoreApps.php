@@ -13,6 +13,12 @@ class SyncAppStoreApps extends Command
 
     public function handle(): int
     {
+        if (! DeveloperApps::ENABLED) {
+            $this->warn('المزامنة موقوفة (DeveloperApps::ENABLED = false) لين يتأكد سالم من التطبيقات.');
+
+            return self::SUCCESS;
+        }
+
         $this->info('تطبيقات محدّثة: '.DeveloperApps::sync());
 
         return self::SUCCESS;

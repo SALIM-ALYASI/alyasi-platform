@@ -761,6 +761,7 @@ class WorkController extends Controller
         return [
             'website' => 'موقع إلكتروني',
             'application' => 'تطبيق',
+            'accounting_system' => 'نظام محاسبي',
             'design' => 'تصميم',
             'advertisement' => 'إعلان',
             'video' => 'فيديو ومونتاج',

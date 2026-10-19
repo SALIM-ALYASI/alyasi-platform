@@ -78,6 +78,8 @@ return [
 
         'application' => 'تطبيق',
 
+        'accounting_system' => 'نظام محاسبي',
+
         'design' => 'تصميم',
 
         'advertisement' => 'إعلان',

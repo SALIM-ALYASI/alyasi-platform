@@ -7,10 +7,10 @@
 @endphp
 
 @section('title', $t('سالم محمد الحجري — مؤسس ALYASI', 'Salem Mohammed Al Hajri — Founder of ALYASI'))
-@section('meta_description', str_replace(':count', (string) $appsCount, $t(
-    'سالم محمد الحجري، مؤسس منصة ALYASI ومطوّرها: خبرة تقارب 12 عامًا في البرمجة والتصميم، و:count تطبيقًا منشورًا في App Store، ومشاريع مواقع وأنظمة وذكاء اصطناعي.',
-    'Salem Mohammed Al Hajri, founder and developer of ALYASI: about 12 years in programming and design, :count apps published on the App Store, and web, systems and AI projects.'
-)))
+@section('meta_description', $t(
+    'سالم محمد الحجري، مؤسس منصة ALYASI ومطوّرها: خبرة تقارب 12 عامًا في البرمجة والتصميم، وتطوير المواقع والأنظمة وتطبيقات iOS والذكاء الاصطناعي.',
+    'Salem Mohammed Al Hajri, founder and developer of ALYASI: close to 12 years in programming and design, building websites, systems, iOS apps and AI tools.'
+))
 @section('canonical', localized_route('about.founder'))
 @section('hreflang_ar', route('about.founder'))
 @section('hreflang_en', route('about.founder.en'))
@@ -36,13 +36,13 @@
             <h1>{{ $t('سالم محمد الحجري', 'Salem Mohammed Al Hajri') }}</h1>
             <p class="founder-hero__role">{{ $t('مؤسس منصة ALYASI ومطوّرها', 'Founder and developer of ALYASI') }}</p>
             <p class="founder-hero__lead">{{ $t(
-                'مطوّر ومصمم عُماني، أعمل منذ قرابة 12 عامًا في البرمجة والتصميم والتقنية، تعلّمت أغلبها ذاتيًا. أطوّر المواقع والأنظمة وتطبيقات أجهزة آبل، وأوظّف الذكاء الاصطناعي في بناء أدوات عملية.',
-                'An Omani developer and designer with close to 12 years in programming, design and technology, most of it self-taught. I build websites, systems and apps for Apple devices, and use AI to create practical tools.'
+                'مطوّر ومصمم عُماني، أعمل منذ قرابة 12 عامًا في البرمجة والتصميم والتقنية، تعلّمت أغلبها ذاتيًا. أطوّر المواقع والأنظمة وتطبيقات iOS، وأوظّف الذكاء الاصطناعي في بناء أدوات عملية.',
+                'An Omani developer and designer with close to 12 years in programming, design and technology, most of it self-taught. I build websites, systems and iOS apps, and use AI to create practical tools.'
             ) }}</p>
         </div>
     </section>
 
-    {{-- أرقام موثّقة: التطبيقات من App Store مباشرة، والمشاريع من صفحة الأعمال --}}
+    {{-- أرقام موثّقة: سنوات الخبرة (من سالم)، وسنة انطلاق المنصة، والمشاريع من صفحة الأعمال --}}
     <section class="container about-stats">
         <div class="grid-3">
             <div class="about-stats__item" data-reveal>
@@ -50,8 +50,8 @@
                 <div class="about-stats__label">{{ $t('عامًا تقريبًا في البرمجة والتصميم', 'years, roughly, in programming and design') }}</div>
             </div>
             <div class="about-stats__item" data-reveal>
-                <div class="about-stats__value">{{ $appsCount }}</div>
-                <div class="about-stats__label">{{ $t('تطبيقًا منشورًا في App Store منذ 2017', 'apps published on the App Store since 2017') }}</div>
+                <div class="about-stats__value">2019</div>
+                <div class="about-stats__label">{{ $t('انطلاق منصة ALYASI', 'ALYASI launched') }}</div>
             </div>
             <div class="about-stats__item" data-reveal>
                 <div class="about-stats__value">{{ $projects->count() }}</div>
@@ -68,8 +68,8 @@
         </div>
         <div class="founder-skills">
             @foreach ([
-                ['fa-solid fa-code', $t('المواقع والأنظمة', 'Websites and systems'), $t('مواقع تعريفية ومنصات محتوى وأنظمة إدارة ولوحات تحكم، مثل نظام «الحرفيون» للمبيعات والمخزون ومنصة ALYASI نفسها.', 'Websites, content platforms, management systems and dashboards, such as the «Harfiyoon» sales and inventory system and the ALYASI platform itself.')],
-                ['fa-brands fa-apple', $t('تطبيقات أجهزة آبل', 'Apps for Apple devices'), $t('تطبيقات مخصصة لأجهزة آبل منشورة في App Store منذ 2017، في السياحة والتوصيل والكتب والأدوات والألعاب، ومنها تطبيق «Bidiyah».', 'Apps for Apple devices published on the App Store since 2017 — travel, delivery, books, utilities and games — including «Bidiyah».')],
+                ['fa-solid fa-code', $t('المواقع والأنظمة', 'Websites and systems'), $t('مواقع تعريفية ومنصات محتوى وأنظمة إدارة ولوحات تحكم، مثل النظام المحاسبي «الحرفيون» ومنصة ALYASI نفسها.', 'Websites, content platforms, management systems and dashboards, such as the «Al Harfiyoon» accounting system and the ALYASI platform itself.')],
+                ['fa-brands fa-apple', $t('تطبيقات iOS', 'iOS apps'), $t('خبرة عملية في تطوير تطبيقات أجهزة آبل بنظام iOS، عملت فيها على عدد من التطبيقات في مجالات مختلفة.', 'Hands-on experience building apps for Apple devices on iOS, across a number of apps in different fields.')],
                 ['fa-solid fa-wand-magic-sparkles', $t('الذكاء الاصطناعي', 'Artificial intelligence'), $t('أدوات تجمع الأخبار وتحللها وتتحقق من معلوماتها قبل النشر، وتجارب في توليد الصوت، وتوظيف الذكاء الاصطناعي في تطوير المشاريع.', 'Tools that gather, analyse and fact-check news before publishing, voice generation experiments, and AI applied to building projects.')],
                 ['fa-solid fa-pen-ruler', $t('التصميم الرقمي', 'Digital design'), $t('هويات بصرية وتصاميم واجهات ومحتوى مرئي، جزء من أغلب المشاريع من بدايتها.', 'Visual identities, interface design and visual content, part of most projects from the start.')],
             ] as [$icon, $title, $body])
@@ -110,33 +110,6 @@
                         <span>{{ $work->type_label }}@if ($work->status_label) · {{ $work->status_label }}@endif</span>
                     </a>
                 @endforeach
-            </div>
-        </section>
-    @endif
-
-    {{-- تطبيقات App Store (منشورة فعلًا، وتتحدّث تلقائيًا) --}}
-    @if ($apps)
-        <section class="container about-section">
-            <div class="section-head" data-reveal>
-                <div class="section-head__eyebrow">App Store</div>
-                <h2 class="section-head__title">{{ $t('تطبيقات منشورة', 'Published apps') }}</h2>
-                <p class="section-head__desc">{{ str_replace(':count', (string) $appsCount, $t(':count تطبيقًا منشورًا في متجر آبل من حساب المطوّر «Salim Alhajri»، منها:', ':count apps published on the App Store under the developer account «Salim Alhajri», including:')) }}</p>
-            </div>
-            <div class="works-apps__grid">
-                @foreach (array_slice($apps, 0, 4) as $app)
-                    <a class="works-app" href="{{ $app['url'] }}" target="_blank" rel="noopener">
-                        @if ($app['icon'])
-                            <img class="works-app__icon" src="{{ versioned_asset($app['icon']) }}" alt="" width="64" height="64" loading="lazy">
-                        @endif
-                        <span class="works-app__body">
-                            <strong dir="auto">{{ $app['name'] }}</strong>
-                            <span class="works-app__meta">{{ \App\Support\AppStore\DeveloperApps::genre($app['genre']) }} · {{ substr((string) $app['released'], 0, 4) }}</span>
-                        </span>
-                    </a>
-                @endforeach
-            </div>
-            <div class="works-apps__more">
-                <a class="btn btn--outline" href="{{ localized_route('works.index') }}#apps">{{ $t('كل التطبيقات في صفحة الأعمال', 'All apps in the portfolio') }} {{ $arrow }}</a>
             </div>
         </section>
     @endif

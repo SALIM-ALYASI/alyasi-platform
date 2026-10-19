@@ -78,6 +78,8 @@ return [
 
         'application' => 'Application',
 
+        'accounting_system' => 'Accounting system',
+
         'design' => 'Design',
 
         'advertisement' => 'Advertisement',

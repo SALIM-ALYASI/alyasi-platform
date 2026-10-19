@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Log;
  */
 final class DeveloperApps
 {
+    /**
+     * موقوف (19 أكتوبر 2026، طلب سالم): ارتباط حساب المطوّر هذا بسالم غير مؤكد
+     * (اشتراكه في Apple Developer متوقف، والحساب فيه تحديثات حديثة). القسم ما يظهر
+     * والمزامنة ما تشتغل لين يتأكد سالم من التطبيقات.
+     */
+    public const ENABLED = false;
+
     public const DEVELOPER_ID = 1191312496;
 
     public const DEVELOPER_URL = 'https://apps.apple.com/om/developer/salim-alhajri/id1191312496';
@@ -61,6 +68,10 @@ final class DeveloperApps
     /** @return list<array<string, mixed>> */
     public static function featured(): array
     {
+        if (! self::ENABLED) {
+            return [];
+        }
+
         $byId = collect(self::all())->keyBy('id');
 
         return collect(self::FEATURED)->map(fn ($id) => $byId[$id] ?? null)->filter()->values()->all();
@@ -69,6 +80,10 @@ final class DeveloperApps
     /** تحديث أسبوعي بعد الاستجابة (لو الملف قديم أو مب موجود). */
     public static function refreshLaterIfStale(): void
     {
+        if (! self::ENABLED) {
+            return;
+        }
+
         $path = storage_path(self::FILE);
 
         if (is_file($path) && filemtime($path) > now()->subDays(7)->getTimestamp()) {
