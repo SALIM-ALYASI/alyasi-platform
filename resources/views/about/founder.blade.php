@@ -130,7 +130,7 @@
                         @endif
                         <span class="works-app__body">
                             <strong dir="auto">{{ $app['name'] }}</strong>
-                            <span class="works-app__meta">{{ $app['genre'] }} · {{ substr((string) $app['released'], 0, 4) }}</span>
+                            <span class="works-app__meta">{{ \App\Support\AppStore\DeveloperApps::genre($app['genre']) }} · {{ substr((string) $app['released'], 0, 4) }}</span>
                         </span>
                     </a>
                 @endforeach

@@ -99,7 +99,7 @@
                         <span class="works-app__body">
                             <strong dir="auto">{{ $app['name'] }}</strong>
                             <span class="works-app__meta">
-                                {{ $app['genre'] }}
+                                {{ \App\Support\AppStore\DeveloperApps::genre($app['genre']) }}
                                 @if ($app['released']) · {{ __('works.apps.since', ['year' => substr($app['released'], 0, 4)]) }} @endif
                             </span>
                             @if ($app['rating'] && $app['ratings_count'] >= 3)

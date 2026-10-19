@@ -30,6 +30,18 @@ final class DeveloperApps
 
     private const FILE = 'app/app-store-apps.json';
 
+    /** أسماء فئات App Store بالعربي (الصفحة العربية). */
+    private const GENRES_AR = [
+        'Travel' => 'سفر وسياحة', 'Shopping' => 'تسوق', 'Book' => 'كتب', 'Books' => 'كتب', 'Games' => 'ألعاب',
+        'Utilities' => 'أدوات', 'Productivity' => 'إنتاجية', 'Business' => 'أعمال', 'Food & Drink' => 'طعام وشراب',
+        'Photo & Video' => 'صور وفيديو', 'Entertainment' => 'ترفيه', 'Education' => 'تعليم', 'Lifestyle' => 'نمط الحياة',
+    ];
+
+    public static function genre(?string $genre): ?string
+    {
+        return app()->getLocale() === 'ar' ? (self::GENRES_AR[$genre] ?? $genre) : $genre;
+    }
+
     /** @return list<array<string, mixed>> */
     public static function all(): array
     {
