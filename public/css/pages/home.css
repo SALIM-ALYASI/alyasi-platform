@@ -356,3 +356,5 @@
     .home-section, .home-news, .home-conferences, .home-core-services, .home-articles,
     .home-faq, .certs-section { padding-top: 36px; padding-bottom: 36px; }
 }
+/* البطاقة الأولى تحافظ على هامش الصفحة بعد التمرير (بدونها تلتصق بحافة الشاشة) */
+@media (max-width: 767px) { .home-scroller { scroll-padding-inline: 20px; } }

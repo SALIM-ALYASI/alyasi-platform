@@ -76,3 +76,4 @@
     .about-certs::-webkit-scrollbar { display: none; }
     .about-cert { flex: 0 0 78%; scroll-snap-align: start; }
 }
+@media (max-width: 767px) { .about-certs { scroll-padding-inline: 20px; } }
