@@ -192,6 +192,9 @@ if (! function_exists('share_image_url')) {
      * صورة مشاركة الروابط (og:image) بصيغة يقبلها واتساب وغيره: لو الصورة من ملفات
      * الموقع وكانت WebP/PNG أو أكبر من 500KB، نجهّز نسخة JPG بعرض 1200 جنبها
      * ({name}-share.jpg) مرة وحدة ونرجّع رابطها. أي خطأ يرجّع الرابط الأصلي.
+     *
+     * الرابط فيه ?v=وقت تعديل الملف: واتساب وغيره يحفظون الصورة حسب رابطها، فلو
+     * تغيّرت الصورة بنفس الاسم يظلون يعرضون القديمة.
      */
     function share_image_url(string $url): string
     {
@@ -208,7 +211,7 @@ if (! function_exists('share_image_url')) {
 
         $isJpeg = (bool) preg_match('/\.jpe?g$/i', $relative);
         if ($isJpeg && filesize($source) <= 500 * 1024) {
-            return $url;
+            return asset($relative).'?v='.filemtime($source);
         }
 
         $targetRelative = preg_replace('/\.[a-z0-9]+$/i', '', $relative).'-share.jpg';
@@ -246,6 +249,6 @@ if (! function_exists('share_image_url')) {
             }
         }
 
-        return asset($targetRelative);
+        return asset($targetRelative).'?v='.filemtime($target);
     }
 }
