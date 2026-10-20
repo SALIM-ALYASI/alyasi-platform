@@ -58,3 +58,4 @@
 @media (max-width: 767px) {
     .news-detail__top { padding-top: 40px; }
 }
+:root[data-theme="dark"] .news-detail__related { background: var(--color-bg); }
