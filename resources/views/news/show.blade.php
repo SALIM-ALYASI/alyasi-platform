@@ -455,9 +455,10 @@
             target="_blank"
             rel="noopener"
             class="news-detail__share-btn"
-            aria-label="X"
+            aria-label="{{ __('news.share') }}: X"
+            title="X"
         >
-            X
+            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
         </a>
 
 
@@ -467,9 +468,10 @@
             target="_blank"
             rel="noopener"
             class="news-detail__share-btn"
-            aria-label="LinkedIn"
+            aria-label="{{ __('news.share') }}: LinkedIn"
+            title="LinkedIn"
         >
-            IN
+            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
         </a>
 
 
@@ -479,9 +481,10 @@
             target="_blank"
             rel="noopener"
             class="news-detail__share-btn"
-            aria-label="WhatsApp"
+            aria-label="{{ __('news.share') }}: WhatsApp"
+            title="WhatsApp"
         >
-            WA
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
         </a>
 
     </div>
