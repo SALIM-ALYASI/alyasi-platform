@@ -65,6 +65,38 @@ class NewsIngestTest extends TestCase
         $this->assertDatabaseCount('news_articles', 0);
     }
 
+    public function test_tracking_pixel_image_is_replaced_by_the_alyasi_fallback(): void
+    {
+        // رابط بكسل تتبّع GlobeNewswire (خبر مستشفى الملك فيصل 21 أكتوبر 2026).
+        $this->withHeader('Authorization', 'Bearer test-secret-token')
+            ->postJson('/api/new', $this->payload(['image' => 'https://www.globenewswire.com/newsroom/ti?nf=OTg0OTkyMyM3OTA3MjM4']))
+            ->assertOk()
+            ->assertJson(['image' => 'images/news/placeholder.jpg', 'image_fallback' => true])
+            ->assertJsonPath('image_url', asset('images/news/placeholder.jpg'));
+    }
+
+    public function test_tiny_uploaded_image_is_replaced_but_a_real_one_is_kept(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $headers = ['Authorization' => 'Bearer test-secret-token'];
+
+        $tiny = $this->withHeaders($headers)->post('/api/new', $this->payload([
+            'image' => \Illuminate\Http\UploadedFile::fake()->image('pixel.jpg', 1, 1),
+            'link' => 'https://example.com/a',
+        ]), ['Accept' => 'application/json']);
+        $tiny->assertOk()->assertJson(['image' => 'images/news/placeholder.jpg', 'image_fallback' => true]);
+
+        $real = $this->withHeaders($headers)->post('/api/new', $this->payload([
+            'image' => \Illuminate\Http\UploadedFile::fake()->image('photo.jpg', 1200, 675),
+            'link' => 'https://example.com/b',
+            'title_ar' => 'خبر ثاني بصورة حقيقية للاختبار',
+            'title_en' => 'A second story with a real image',
+            'slug' => 'second-story-real-image',
+        ]), ['Accept' => 'application/json']);
+        $real->assertOk()->assertJson(['image_fallback' => false]);
+        $this->assertStringStartsWith('news/', $real->json('image'));
+    }
+
     public function test_valid_request_creates_article(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer test-secret-token')

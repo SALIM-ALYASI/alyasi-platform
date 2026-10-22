@@ -23,6 +23,29 @@ class NewsIngestController extends Controller
 {
     use NotifiesWhatsApp;
 
+    /** صورة ALYASI بدل صورة مصدر غير صالحة. */
+    private const FALLBACK_IMAGE = 'images/news/placeholder.jpg';
+
+    /** أصغر صورة مقبولة للخبر (أصغر منها = أيقونة أو بكسل تتبّع). */
+    private const MIN_IMAGE_WIDTH = 300;
+
+    private const MIN_IMAGE_HEIGHT = 150;
+
+    private static function usableImageFile(string $path): bool
+    {
+        $size = @getimagesize($path);
+
+        return $size !== false && $size[0] >= self::MIN_IMAGE_WIDTH && $size[1] >= self::MIN_IMAGE_HEIGHT;
+    }
+
+    /**
+     * روابط بكسلات التتبّع المعروفة (GlobeNewswire، فيسبوك، ...) لما تجي الصورة رابطًا.
+     */
+    private static function looksLikeTrackingPixel(string $url): bool
+    {
+        return (bool) preg_match('~/newsroom/ti\?|facebook\.com/tr[/?]|/pixel[./?]|[?&](utm_pixel|tracking)=|1x1\.(gif|png)~i', $url);
+    }
+
     /**
      * استقبال خبر كامل من بوت الأخبار وحفظه.
      *
@@ -74,7 +97,20 @@ class NewsIngestController extends Controller
             'is_published' => ['required', 'boolean'],
         ]);
 
-        if ($request->hasFile('image')) {
+        // صورة غير صالحة (بكسل تتبّع 1×1 أو أيقونة صغيرة من مصدر الخبر -- صار مع
+        // خبر مستشفى الملك فيصل 21 أكتوبر 2026): نحط صورة ALYASI الاحتياطية بدلها.
+        $imageFallback = false;
+
+        if ($request->hasFile('image') && ! self::usableImageFile($request->file('image')->getRealPath())) {
+            $imageFallback = true;
+        } elseif (! $request->hasFile('image') && self::looksLikeTrackingPixel((string) $validated['image'])) {
+            $imageFallback = true;
+        }
+
+        if ($imageFallback) {
+            Log::warning('news ingest: صورة الخبر غير صالحة، استُخدمت الصورة الاحتياطية.', ['link' => $validated['link']]);
+            $validated['image'] = self::FALLBACK_IMAGE;
+        } elseif ($request->hasFile('image')) {
             $file = $request->file('image');
 
             $extension = strtolower(
@@ -236,13 +272,8 @@ class NewsIngestController extends Controller
             'title_ar' => $article->title_ar,
             'excerpt_ar' => $article->excerpt_ar,
             'image' => $article->image,
-            'image_url' => filled($article->image)
-                ? (
-                    Str::startsWith($article->image, ['http://', 'https://'])
-                        ? $article->image
-                        : Storage::disk('public')->url($article->image)
-                )
-                : null,
+            'image_url' => media_url($article->image),
+            'image_fallback' => $imageFallback,
         ]);
     }
 
