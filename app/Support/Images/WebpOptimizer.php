@@ -25,7 +25,7 @@ final class WebpOptimizer
         self::save($image, public_path($base.'.webp'), $maxWidth, $quality);
         self::save($image, public_path($base.'-'.self::SMALL_WIDTH.'.webp'), self::SMALL_WIDTH, $quality);
 
-        imagedestroy($image);
+        unset($image); // imagedestroy() بلا أثر من PHP 8.0 ومهمل في 8.5
 
         return $base.'.webp';
     }
@@ -73,7 +73,7 @@ final class WebpOptimizer
         }
 
         if ($resized !== $image) {
-            imagedestroy($resized);
+            unset($resized); // imagedestroy() بلا أثر من PHP 8.0 ومهمل في 8.5
         }
     }
 }

@@ -250,8 +250,8 @@ if (! function_exists('share_image_url')) {
                 imagefill($canvas, 0, 0, imagecolorallocate($canvas, 0x0B, 0x1F, 0x3A));
                 imagecopyresampled($canvas, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
                 imagejpeg($canvas, $target, 82);
-                imagedestroy($image);
-                imagedestroy($canvas);
+                unset($image); // imagedestroy() بلا أثر من PHP 8.0 ومهمل في 8.5
+                unset($canvas); // imagedestroy() بلا أثر من PHP 8.0 ومهمل في 8.5
             } catch (\Throwable $exception) {
                 report($exception);
 

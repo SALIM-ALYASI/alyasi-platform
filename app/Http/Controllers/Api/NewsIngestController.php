@@ -510,7 +510,7 @@ class NewsIngestController extends Controller
             default => imagejpeg($image, null, 90),
         };
         $clean = (string) ob_get_clean();
-        imagedestroy($image);
+        unset($image); // imagedestroy() بلا أثر من PHP 8.0 ومهمل في 8.5
 
         $path = "{$directory}/{$fileName}";
         Storage::disk('public')->put($path, $clean);
