@@ -41,6 +41,19 @@ class PageController extends Controller
             : $view;
     }
 
+    /**
+     * مبادرة «قبل أن تشارك الخبر… تحقّق» (26–31 أكتوبر 2026). روابط المواد تُضاف من
+     * الإعدادات عند نشرها (mil_week_2026_{article,video,tips}_url)؛ قبلها تظهر «قريبًا».
+     */
+    public function milWeek(): View
+    {
+        $materials = collect(['article', 'video', 'tips'])
+            ->mapWithKeys(fn (string $key) => [$key => Setting::get("mil_week_2026_{$key}_url")])
+            ->all();
+
+        return view('initiatives.mil-week-2026', compact('materials'));
+    }
+
     public function about(): View
     {
         // من 2019: بداية إنتاج المشاريع الفعلية؛ رحلة التعلّم من 2014 تقريبًا بصفحة المؤسس.

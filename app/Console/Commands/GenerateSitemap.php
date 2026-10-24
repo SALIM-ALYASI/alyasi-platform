@@ -26,6 +26,7 @@ class GenerateSitemap extends Command
         'home',
         'about',
         'about.founder',
+        'mil-week',
         'careers',
         'contact',
         'services.index',

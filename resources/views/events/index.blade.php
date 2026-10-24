@@ -36,6 +36,18 @@
     {{-- تغطية مميزة: مثبّتة من لوحة التحكم، وإلا أحدث نسخة نُشر لها محتوى حصري فعلي --}}
     @include('events._featured', ['featured' => $featured])
 
+    {{-- مبادرة ALYASI للأسبوع العالمي للدراية الإعلامية والمعلوماتية 2026 --}}
+    <section class="container">
+        <a class="events-initiative" href="{{ localized_route('mil-week') }}">
+            <span class="events-initiative__icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+            <span>
+                <strong>{{ __('mil_week.title') }}</strong>
+                <span>{{ __('mil_week.badge') }} · {{ __('mil_week.facts.dates.1') }}</span>
+            </span>
+            <span class="events-initiative__arrow" aria-hidden="true">{{ ui_arrow() }}</span>
+        </a>
+    </section>
+
     @if ($years->count() > 1 || $year)
         <nav class="container events-years" aria-label="{{ __('events.filter_by_year') }}">
             <a href="{{ localized_route('events.index') }}" @class(['is-active' => ! $year]) @unless ($year) aria-current="page" @endunless>{{ __('events.all_events') }}</a>

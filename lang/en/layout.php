@@ -35,6 +35,7 @@ return [
         'explore_title' => 'Explore',
         'faq' => 'FAQ',
         'contact_us' => 'Contact Us',
+        'mil_week' => 'Initiative: Verify Before You Share',
         'founder' => 'About the founder',
         'careers' => 'Work with us',
         'connect_title' => 'Connect With Us',

@@ -447,6 +447,15 @@ Route::middleware('force.locale:ar')
     ->get('/about', [PageController::class, 'about'])
     ->name('about');
 
+// مبادرة «قبل أن تشارك الخبر… تحقّق» -- الأسبوع العالمي للدراية الإعلامية والمعلوماتية 2026.
+Route::middleware('force.locale:ar')
+    ->get('/mil-week-2026', [PageController::class, 'milWeek'])
+    ->name('mil-week');
+
+Route::middleware('force.locale:en')
+    ->get('/en/mil-week-2026', [PageController::class, 'milWeek'])
+    ->name('mil-week.en');
+
 Route::middleware('force.locale:ar')
     ->get('/about/founder', [PageController::class, 'founder'])
     ->name('about.founder');

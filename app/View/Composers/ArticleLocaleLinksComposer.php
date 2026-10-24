@@ -35,6 +35,7 @@ class ArticleLocaleLinksComposer
         'careers',
         'about',
         'about.founder',
+        'mil-week',
         'events.index',
         'news.oman',
         'privacy',

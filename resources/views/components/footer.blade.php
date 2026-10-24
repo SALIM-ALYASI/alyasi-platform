@@ -105,6 +105,10 @@
                     {{ __('layout.footer.faq') }}
                 </a>
 
+                <a href="{{ localized_route('mil-week') }}">
+                    {{ __('layout.footer.mil_week') }}
+                </a>
+
                 <a href="{{ localized_route('about.founder') }}">
                     {{ __('layout.footer.founder') }}
                 </a>
