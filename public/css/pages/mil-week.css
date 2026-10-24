@@ -88,3 +88,6 @@
 }
 @media (max-width: 420px) { .mil-steps { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .mil-share__btn { transition: none; } }
+/* الاسم باللغة الثانية يصطف مع النص (عربي بصفحة إنجليزية والعكس) */
+html[dir="ltr"] .mil-hero__alt { text-align: left; }
+html[dir="rtl"] .mil-hero__alt { text-align: right; }
