@@ -87,7 +87,7 @@
         <div class="founder-skills">
             @foreach ([
                 ['fa-solid fa-code', $t('المواقع والأنظمة', 'Websites and systems'), $t('مواقع تعريفية ومنصات محتوى وأنظمة إدارة ولوحات تحكم، مثل النظام المحاسبي «الحرفيون» ومنصة ALYASI نفسها.', 'Websites, content platforms, management systems and dashboards, such as the «Al Harfiyoon» accounting system and the ALYASI platform itself.')],
-                ['fa-brands fa-apple', $t('تطبيقات iOS', 'iOS apps'), $t('خبرة عملية في تطوير تطبيقات أجهزة آبل بنظام iOS، بدأت بتطبيق «البادية» عام 2019.', 'Hands-on experience building apps for Apple devices on iOS, starting with the «Al Badyah» app in 2019.')],
+                ['fa-brands fa-apple', $t('تطبيقات iOS', 'iOS apps'), $t('خبرة عملية في تطوير تطبيقات أجهزة آبل بنظام iOS، بدأت بتطبيق «البادية» عام 2019، ونشرت عام 2021 ثلاث مكتبات برمجية للمطورين عبر CocoaPods.', 'Hands-on experience building apps for Apple devices on iOS, starting with the «Al Badyah» app in 2019, and publishing three developer libraries on CocoaPods in 2021.')],
                 ['fa-solid fa-wand-magic-sparkles', $t('الذكاء الاصطناعي', 'Artificial intelligence'), $t('أدوات تجمع الأخبار وتحللها وتتحقق من معلوماتها قبل النشر، وتجارب في توليد الصوت، وتوظيف الذكاء الاصطناعي في تطوير المشاريع.', 'Tools that gather, analyse and fact-check news before publishing, voice generation experiments, and AI applied to building projects.')],
                 ['fa-solid fa-pen-ruler', $t('التصميم الرقمي', 'Digital design'), $t('هويات بصرية وتصاميم واجهات ومحتوى مرئي، جزء من أغلب المشاريع من بدايتها.', 'Visual identities, interface design and visual content, part of most projects from the start.')],
             ] as [$icon, $title, $body])
@@ -116,6 +116,21 @@
                     'طوّرت أول تطبيق لي لأجهزة آبل باسم «البادية»، وكان أول مشروع أطبّق فيه ما تعلّمته، وبداية إنتاجي الفعلي. أزلته لاحقًا من متجر App Store لأنني لم أجد له الجدوى أو الدعم الكافي في ذلك الوقت، لكنه بقي محطة مهمة في رحلتي التقنية.',
                     'I built my first app for Apple devices, «Al Badyah» — the first project where I applied what I had learned, and the start of my real output. I later removed it from the App Store because it lacked enough traction and support at the time, but it remained an important step in my journey.'
                 ), $t('تجربة لم تستمر · أُزيل من App Store', 'Discontinued · removed from the App Store'), []],
+                ['2021', $t('نشر ثلاث مكتبات برمجية للمطورين', 'Publishing Three Developer Libraries'), [
+                    $t(
+                        'في عام 2021، انتقلت تجربتي في تطوير تطبيقات Apple إلى مرحلة أخرى، حيث طوّرت ونشرت ثلاث مكتبات برمجية عبر منصة CocoaPods، المخصصة لتوزيع المكتبات البرمجية لمطوري تطبيقات iOS.',
+                        'In 2021, I expanded my experience beyond building Apple applications by developing and publishing three software libraries through CocoaPods, a package distribution platform for iOS developers.'
+                    ),
+                    $t(
+                        'كانت هذه التجربة خطوة مهمة في رحلتي، إذ لم أكتفِ ببناء التطبيقات، بل بدأت أيضًا بإنشاء مكونات برمجية قابلة لإعادة الاستخدام من قِبل المطورين.',
+                        'This was an important milestone in my programming journey, moving from building applications to creating reusable software components for other developers.'
+                    ),
+                ], $t('مكتبات أرشيفية · آخر تحديث لها عام 2021', 'Archived libraries · last updated in 2021'), [], [
+                    // التواريخ من سجل إصدارات CocoaPods (trunk) -- آخر إصدار لكل مكتبة.
+                    ['SALIMALYASICurved', $t('25 يونيو 2021', '25 June 2021')],
+                    ['SMDesign', $t('27 يونيو 2021', '27 June 2021')],
+                    ['SMMessage', $t('5 يوليو 2021', '5 July 2021')],
+                ]],
                 ['2025', $t('تأسيس ALYASI', 'Founding ALYASI'), $t(
                     'أسست منصة ALYASI منصةً متخصصة في نشر الأخبار التقنية.',
                     'I founded ALYASI as a platform dedicated to publishing tech news.'
@@ -138,11 +153,28 @@
                     [\App\Models\EventEdition::localizedPath('/events/cyberx-oman-2026/coverage'), $t('التغطية', 'The coverage'), false],
                     [\App\Models\EventEdition::localizedPath('/events/cyberx-oman-2026/interviews'), $t('المقابلات', 'The interviews'), false],
                 ]],
-            ] as [$when, $title, $body, $status, $links])
+            ] as $item)
+                @php
+                    [$when, $title, $body, $status, $links] = $item;
+                    $libs = $item[5] ?? [];
+                @endphp
                 <li class="founder-timeline__item" data-reveal>
                     <span class="founder-timeline__when">{{ $when }}</span>
                     <h3>{{ $title }}</h3>
-                    <p>{{ $body }}</p>
+                    @foreach ((array) $body as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
+                    @if ($libs)
+                        <p class="founder-libs__label">{{ $t('المكتبات المنشورة:', 'Published libraries:') }}</p>
+                        <ul class="founder-libs">
+                            @foreach ($libs as [$lib, $updated])
+                                <li class="founder-lib">
+                                    <a href="https://cocoapods.org/pods/{{ $lib }}" target="_blank" rel="noopener" dir="ltr"><code>{{ $lib }}</code></a>
+                                    <span>{{ $t('آخر تحديث:', 'Last updated:') }} {{ $updated }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                     @if ($status)
                         <span class="founder-timeline__status">{{ $status }}</span>
                     @endif

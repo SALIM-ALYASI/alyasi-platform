@@ -62,3 +62,14 @@
     .founder-stat__value { font-size: 28px; }
     .founder-stat__label { font-size: 12.5px; }
 }
+
+/* مكتبات CocoaPods (محطة 2021) */
+.founder-timeline__item p + p { margin-top: 8px; }
+.founder-libs__label { margin-top: 12px !important; font-weight: 700; color: var(--color-text) !important; font-size: 14.5px !important; }
+.founder-libs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 8px 0 0; padding: 0; list-style: none; }
+.founder-lib { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--color-divider); border-radius: 12px; background: var(--theme-card); }
+.founder-lib a { align-self: flex-start; text-decoration: none; }
+.founder-lib code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14.5px; font-weight: 700; color: var(--color-accent-600); direction: ltr; unicode-bidi: isolate; }
+.founder-lib a:hover code { text-decoration: underline; }
+.founder-lib span { color: var(--theme-muted); font-size: 12.5px; }
+:root[data-theme="dark"] .founder-lib code { color: #9fc1ff; }

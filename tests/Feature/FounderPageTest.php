@@ -26,4 +26,16 @@ class FounderPageTest extends TestCase
         $this->get('/about')->assertOk()->assertSee('/about/founder', false);
         $this->get('/en/about')->assertOk()->assertSee('/en/about/founder', false);
     }
+
+    public function test_2021_libraries_milestone_sits_between_2019_and_2025(): void
+    {
+        $this->get('/about/founder')->assertOk()
+            ->assertSeeInOrder(['أول تطبيق: «البادية»', 'نشر ثلاث مكتبات برمجية للمطورين', 'SALIMALYASICurved', 'SMDesign', 'SMMessage', 'تأسيس ALYASI'])
+            ->assertSee('href="https://cocoapods.org/pods/SMMessage"', false)
+            ->assertSee('آخر تحديث: 5 يوليو 2021');
+
+        $this->get('/en/about/founder')->assertOk()
+            ->assertSeeInOrder(['First app', 'Publishing Three Developer Libraries', 'SALIMALYASICurved', 'Founding ALYASI'])
+            ->assertSee('Last updated: 25 June 2021');
+    }
 }
