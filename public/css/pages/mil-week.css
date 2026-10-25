@@ -42,6 +42,17 @@
 .mil-step h3 { margin: 6px 0 0; font-size: 17px; line-height: 1.5; }
 .mil-step p { margin: 0; color: var(--theme-muted); font-size: 15px; line-height: 1.85; }
 
+/* فيديو المبادرة (عمودي 9:16) */
+.mil-video { display: grid; grid-template-columns: minmax(0, 340px) 1fr; gap: 40px; align-items: center; }
+.mil-video__player { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: #0b1220; box-shadow: 0 18px 40px rgba(11, 18, 32, .28); }
+.mil-video__player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.mil-video__lead { margin: 0 0 14px; font-size: 17px; line-height: 1.95; }
+.mil-video__note { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 18px; color: var(--theme-muted); font-size: 14.5px; line-height: 1.8; }
+.mil-video__note i { margin-top: 5px; color: var(--color-accent-500); }
+.mil-video__yt { display: inline-flex; gap: 8px; align-items: center; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--color-divider); background: var(--theme-card); color: var(--color-text); font-weight: 800; text-decoration: none; }
+.mil-video__yt i { color: #e62117; font-size: 18px; }
+.mil-video__yt:hover { border-color: #e62117; }
+
 .mil-materials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0; padding: 0; list-style: none; }
 .mil-material { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 22px; border: 1px solid var(--color-divider); border-radius: 16px; background: var(--theme-card); }
 .mil-material__icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(94, 118, 168, .16); color: var(--color-accent-600); font-size: 19px; }
@@ -75,6 +86,8 @@
     .mil-hero__grid { grid-template-columns: 1fr; padding-top: 104px; padding-bottom: 48px; }
     .mil-hero__art { width: min(72%, 300px); order: -1; }
     .mil-materials { grid-template-columns: 1fr; }
+    .mil-video { grid-template-columns: 1fr; gap: 24px; }
+    .mil-video__player { width: min(100%, 340px); margin-inline: auto; }
 }
 @media (max-width: 767px) {
     [dir="rtl"] .mil-hero__bg { object-position: 16% center; }

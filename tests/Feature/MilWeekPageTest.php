@@ -50,4 +50,26 @@ class MilWeekPageTest extends TestCase
         $this->get('/mil-week-2026')->assertOk()
             ->assertSee('href="https://alyasi.dev/articles/verify-news-ai"', false);
     }
+
+    public function test_youtube_video_is_embedded_once_its_url_is_set(): void
+    {
+        $this->get('/mil-week-2026')->assertOk()->assertDontSee('youtube-nocookie.com/embed', false);
+
+        Setting::set('mil_week_2026_video_url', 'https://youtube.com/shorts/kw0oZk_ERfA');
+
+        $this->get('/mil-week-2026')->assertOk()
+            ->assertSee('https://www.youtube-nocookie.com/embed/kw0oZk_ERfA', false)
+            ->assertSee('الفيديو يتضمن مشاهد تمثيلية مُنشأة بالذكاء الاصطناعي.');
+
+        $this->get('/en/mil-week-2026')->assertOk()
+            ->assertSee('https://www.youtube-nocookie.com/embed/kw0oZk_ERfA', false)
+            ->assertSee('This video includes AI-generated dramatized scenes.');
+    }
+
+    public function test_non_youtube_video_link_is_not_embedded(): void
+    {
+        Setting::set('mil_week_2026_video_url', 'https://example.com/watch?v=kw0oZk_ERfA');
+
+        $this->get('/mil-week-2026')->assertOk()->assertDontSee('youtube-nocookie.com/embed', false);
+    }
 }

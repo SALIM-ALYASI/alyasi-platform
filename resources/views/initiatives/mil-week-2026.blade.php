@@ -141,6 +141,24 @@
         @endforeach
     </section>
 
+    {{-- فيديو المبادرة: يظهر بس لما يكون رابط الفيديو في الإعدادات رابط يوتيوب --}}
+    @if ($videoId)
+        <section id="mil-video" class="container mil-section mil-video" aria-labelledby="mil-video-title">
+            <div class="mil-video__player">
+                <iframe src="https://www.youtube-nocookie.com/embed/{{ $videoId }}?rel=0" title="{{ __('mil_week.video_frame_title') }}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="mil-video__text">
+                <p class="mil-section__eyebrow">{{ __('mil_week.video_badge') }}</p>
+                <h2 id="mil-video-title" class="mil-section__title">{{ __('mil_week.video_title') }}</h2>
+                <p class="mil-video__lead">{{ __('mil_week.video_lead') }}</p>
+                <p class="mil-video__note"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> {{ __('mil_week.video_ai_note') }}</p>
+                <a class="mil-video__yt" href="https://www.youtube.com/shorts/{{ $videoId }}" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-youtube" aria-hidden="true"></i> {{ __('mil_week.video_youtube') }}
+                </a>
+            </div>
+        </section>
+    @endif
+
     {{-- خمس خطوات --}}
     <section id="mil-steps" class="mil-steps-band" aria-labelledby="mil-steps-title">
         <div class="container mil-section">

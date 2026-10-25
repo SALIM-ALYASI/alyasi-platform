@@ -48,6 +48,15 @@
             "port": 8100
         },
         {
+            "name": "madarij",
+            "runtimeExecutable": "bash",
+            "runtimeArgs": [
+                "-c",
+                "cd /Volumes/Projects/Laravel/MADARIJ && php artisan serve --port=8010"
+            ],
+            "port": 8010
+        },
+        {
             "name": "mockup-preview",
             "runtimeExecutable": "php",
             "runtimeArgs": [

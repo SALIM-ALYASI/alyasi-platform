@@ -51,7 +51,17 @@ class PageController extends Controller
             ->mapWithKeys(fn (string $key) => [$key => Setting::get("mil_week_2026_{$key}_url")])
             ->all();
 
-        return view('initiatives.mil-week-2026', compact('materials'));
+        // فيديو المبادرة يُعرض داخل الصفحة لو كان رابط يوتيوب (عادي أو Shorts).
+        $videoId = self::youtubeId($materials['video'] ?? null);
+
+        return view('initiatives.mil-week-2026', compact('materials', 'videoId'));
+    }
+
+    private static function youtubeId(?string $url): ?string
+    {
+        $pattern = '~^https?://(?:www\.|m\.)?(?:youtube\.com/(?:shorts/|watch\?(?:.*&)?v=|embed/)|youtu\.be/)([A-Za-z0-9_-]{11})~';
+
+        return $url && preg_match($pattern, $url, $m) ? $m[1] : null;
     }
 
     public function about(): View

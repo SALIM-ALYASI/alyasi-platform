@@ -43,6 +43,13 @@ return [
         ['icon' => 'fa-solid fa-hand', 'title' => 'Think before you share', 'body' => 'If you are not sure the information is true, don’t share it as fact.'],
     ],
 
+    'video_badge' => 'The initiative video',
+    'video_title' => 'Verify Before You Share',
+    'video_lead' => 'About a minute on a convincing breaking-news post, and how to check it before passing it on.',
+    'video_ai_note' => 'This video includes AI-generated dramatized scenes.',
+    'video_youtube' => 'Watch on YouTube',
+    'video_frame_title' => 'Verify Before You Share initiative video',
+
     'materials_badge' => 'During the initiative',
     'materials_title' => 'What we will share',
     'materials' => [
