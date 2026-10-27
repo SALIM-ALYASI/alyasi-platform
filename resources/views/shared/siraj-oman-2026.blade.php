@@ -1,12 +1,13 @@
-{{-- صفحة مشاركة فيديو «فريق سراج عمان 2026» (مدرسة زينب بنت الرسول للتعليم الأساسي).
+{{-- صفحة مشاركة فيديو مدرسة زينب بنت الرسول للتعليم الأساسي (رابطها /siraj-oman-2026).
      صفحة مستقلة برابط مباشر: ما تظهر في محركات البحث ولا في خريطة الموقع.
      الملفات نفسها في public/storage/videos/siraj-oman-2026 (خارج git). --}}
 @php
     $dir = 'storage/videos/siraj-oman-2026';
     $files = [
-        'web' => "{$dir}/siraj-oman-2026-1080.mp4",
-        'hd' => "{$dir}/siraj-oman-2026-4k.mp4",
-        'poster' => "{$dir}/poster.jpg",
+        // v2 (27 أكتوبر): نسخة بدون سطر «فريق سراج عمان». اسم جديد للملفات حتى ما يظهر القديم من الكاش.
+        'web' => "{$dir}/siraj-v2-1080.mp4",
+        'hd' => "{$dir}/siraj-v2-4k.mp4",
+        'poster' => "{$dir}/poster-v2.jpg",
     ];
     $size = function (string $path): ?string {
         $full = public_path($path);
@@ -17,7 +18,6 @@
 
         return $mb >= 1024 ? number_format($mb / 1024, 1).' جيجا' : number_format($mb).' ميجا';
     };
-    $title = 'فريق سراج عمان 2026';
     $school = 'مدرسة زينب بنت الرسول للتعليم الأساسي';
     $pageUrl = url('/siraj-oman-2026');
 @endphp
@@ -26,13 +26,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title }} | {{ $school }}</title>
+    <title>{{ $school }} | المديرية العامة للتعليم بمحافظة الداخلية</title>
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="فيديو {{ $title }} — {{ $school }}، المديرية العامة للتعليم بمحافظة الداخلية.">
+    <meta name="description" content="فيديو {{ $school }}، المديرية العامة للتعليم بمحافظة الداخلية.">
     <meta name="theme-color" content="#0f3b3f">
     <meta property="og:type" content="video.other">
-    <meta property="og:title" content="{{ $title }}">
-    <meta property="og:description" content="{{ $school }} — المديرية العامة للتعليم بمحافظة الداخلية">
+    <meta property="og:title" content="{{ $school }}">
+    <meta property="og:description" content="المديرية العامة للتعليم بمحافظة الداخلية">
     <meta property="og:url" content="{{ $pageUrl }}">
     <meta property="og:image" content="{{ asset($files['poster']) }}">
     <meta property="og:locale" content="ar_OM">
@@ -53,8 +53,7 @@
         }
         header { text-align: center; max-width: 520px; }
         .badge { display: inline-block; margin-bottom: 10px; padding: 4px 14px; border-radius: 999px; background: rgba(255, 255, 255, .1); color: #f6d9a8; font-size: 13.5px; font-weight: 600; }
-        h1 { font-size: clamp(26px, 7vw, 36px); line-height: 1.4; }
-        .school { margin-top: 6px; font-size: 16.5px; font-weight: 600; color: #ffd7cf; }
+        h1 { font-size: clamp(22px, 6vw, 30px); line-height: 1.5; color: #ffe3dc; }
         .dept { margin-top: 2px; font-size: 14px; color: rgba(244, 239, 230, .75); }
         .player {
             width: min(100%, 420px); aspect-ratio: 1080 / 1896;
@@ -83,8 +82,7 @@
 <body>
     <header>
         <span class="badge">الموسوعة العُمانية · المجلد 9</span>
-        <h1>{{ $title }}</h1>
-        <p class="school">{{ $school }}</p>
+        <h1>{{ $school }}</h1>
         <p class="dept">المديرية العامة للتعليم بمحافظة الداخلية</p>
     </header>
 
