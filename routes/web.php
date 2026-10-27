@@ -550,6 +550,11 @@ Route::get('/alyasicarwash', [PageController::class, 'carWash'])
 Route::get('/Ra3iSwait', [PageController::class, 'ra3iSwait'])
     ->name('ra3i-swait');
 
+// فيديو «فريق سراج عمان 2026» (مدرسة زينب بنت الرسول) — صفحة مشاركة مستقلة مع زر تحميل
+Route::view('/siraj-oman-2026', 'shared.siraj-oman-2026')
+    ->middleware('force.locale:ar')
+    ->name('siraj-oman-2026');
+
 /*
 |--------------------------------------------------------------------------
 | مؤتمر آبل 2026 — صفحة تغطية حية مستقلة
