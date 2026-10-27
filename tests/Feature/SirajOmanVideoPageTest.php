@@ -12,7 +12,7 @@ class SirajOmanVideoPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const FILE = 'storage/videos/siraj-oman-2026/siraj-v2-1080.mp4';
+    private const FILE = 'storage/videos/siraj-oman-2026/siraj-v3-web.mp4';
 
     public function test_link_is_off_while_the_video_files_are_paused(): void
     {
@@ -50,8 +50,8 @@ class SirajOmanVideoPageTest extends TestCase
             ->assertDontSee('فريق سراج عمان')
             ->assertSee('مدرسة زينب بنت الرسول للتعليم الأساسي')
             ->assertSee('<meta name="robots" content="noindex, nofollow">', false)
-            ->assertSee('storage/videos/siraj-oman-2026/siraj-v2-1080.mp4', false)
-            ->assertSee('download="siraj-oman-2026-4k.mp4"', false)
-            ->assertSee('تحميل بجودة عالية (4K)');
+            ->assertSee('storage/videos/siraj-oman-2026/siraj-v3-web.mp4', false)
+            ->assertSee('download="zainab-bint-alrasool-school.mp4"', false)
+            ->assertSee('تحميل الفيديو (MP4)');
     }
 }

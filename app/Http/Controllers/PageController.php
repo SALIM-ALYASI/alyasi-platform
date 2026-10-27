@@ -191,7 +191,7 @@ class PageController extends Controller
      */
     public function sirajVideo(): View
     {
-        abort_unless(is_file(public_path('storage/videos/siraj-oman-2026/siraj-v2-1080.mp4')), 404);
+        abort_unless(is_file(public_path('storage/videos/siraj-oman-2026/siraj-v3-web.mp4')), 404);
 
         return view('shared.siraj-oman-2026');
     }

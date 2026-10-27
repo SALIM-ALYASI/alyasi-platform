@@ -4,10 +4,11 @@
 @php
     $dir = 'storage/videos/siraj-oman-2026';
     $files = [
-        // v2 (27 أكتوبر): نسخة بدون سطر «فريق سراج عمان». اسم جديد للملفات حتى ما يظهر القديم من الكاش.
-        'web' => "{$dir}/siraj-v2-1080.mp4",
-        'hd' => "{$dir}/siraj-v2-4k.mp4",
-        'poster' => "{$dir}/poster-v2.jpg",
+        // v3 (27 أكتوبر): النسخة الأحدث (1080×1896، 60 إطار). اسم جديد للملفات حتى ما يظهر القديم من الكاش.
+        // web = نسخة مضغوطة H.264 تشتغل على كل الأجهزة، hd = الملف الأصلي بدون أي ضغط.
+        'web' => "{$dir}/siraj-v3-web.mp4",
+        'hd' => "{$dir}/siraj-v3-hq.mp4",
+        'poster' => "{$dir}/poster-v3.jpg",
     ];
     $size = function (string $path): ?string {
         $full = public_path($path);
@@ -93,17 +94,18 @@
     </div>
 
     <div class="downloads">
-        <a class="btn btn--main" href="{{ asset($files['hd']) }}" download="siraj-oman-2026-4k.mp4">
+        <a class="btn btn--main" href="{{ asset($files['web']) }}" download="zainab-bint-alrasool-school.mp4">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            تحميل بجودة عالية (4K)
-            @if ($s = $size($files['hd'])) <small>{{ $s }}</small> @endif
-        </a>
-        <a class="btn btn--light" href="{{ asset($files['web']) }}" download="siraj-oman-2026-1080p.mp4">
-            نسخة أخف للجوال (1080p)
+            تحميل الفيديو (MP4)
             @if ($s = $size($files['web'])) <small>{{ $s }}</small> @endif
         </a>
+        @if ($s = $size($files['hd']))
+            <a class="btn btn--light" href="{{ asset($files['hd']) }}" download="zainab-bint-alrasool-school-original.mp4">
+                الملف الأصلي بدون ضغط <small>{{ $s }}</small>
+            </a>
+        @endif
     </div>
-    <p class="hint">نسخة 4K هي الفيديو الأصلي بدون أي ضغط، ويُفضّل تحميلها عبر الواي فاي.</p>
+    <p class="hint">الفيديو بدقة 1080 و60 إطارًا في الثانية. للمشاركة في الواتساب أرسله «كمستند» حتى لا تقلّ جودته.</p>
 
     <footer>مستضاف على <a href="{{ url('/') }}">ALYASI</a></footer>
 </body>
