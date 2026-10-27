@@ -184,6 +184,18 @@ class PageController extends Controller
         return view('ra3i-swait');
     }
 
+    /**
+     * فيديو مدرسة زينب بنت الرسول (/siraj-oman-2026). الرابط يشتغل بس لما ملفات الفيديو
+     * موجودة في public/storage/videos/siraj-oman-2026؛ للإيقاف المؤقت تنتقل الملفات
+     * إلى storage/app/private/paused-videos/siraj-oman-2026 وترجع لما يتفعّل الرابط.
+     */
+    public function sirajVideo(): View
+    {
+        abort_unless(is_file(public_path('storage/videos/siraj-oman-2026/siraj-v2-1080.mp4')), 404);
+
+        return view('shared.siraj-oman-2026');
+    }
+
     public function sitemap()
 {
     // لو فيه محتوى جديد ما دخل الخريطة بعد، نبنيها قبل ما نرسلها (لقوقل مثلًا).
