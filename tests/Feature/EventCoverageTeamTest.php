@@ -30,12 +30,12 @@ class EventCoverageTeamTest extends TestCase
     public function test_team_heading_and_profile_button_show_on_the_conference_page(): void
     {
         $this->travelTo('2026-10-28 12:00:00');
-        $this->edition("سالم الحجري | Salem Al Hajri\nمروى ماهر | Marwa Maher | https://www.instagram.com/1almarwa/");
+        $this->edition("سالم الحجري | Salem Al Hajri\nمروة ماهر | Marwa Maher | https://www.instagram.com/1almarwa/");
 
         $this->get('/events/cysec-oman-2026')->assertOk()
-            ->assertSee('تابعوا المؤتمر مع تغطية سالم الحجري ومروى ماهر')
+            ->assertSee('تابعوا المؤتمر مع تغطية سالم الحجري ومروة ماهر')
             ->assertSee('href="https://www.instagram.com/1almarwa/"', false)
-            ->assertSee('حساب مروى ماهر على إنستغرام')
+            ->assertSee('حساب مروة ماهر على إنستغرام')
             ->assertDontSee('حساب سالم الحجري'); // ما له رابط = بدون زر
 
         $this->get('/en/events/cysec-oman-2026')->assertOk()

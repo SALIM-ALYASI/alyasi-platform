@@ -17,14 +17,14 @@ return new class extends Migration
             $table->text('coverage_team')->nullable()->after('goals_en');
         });
 
-        // CYSEC Oman 2026 (19 نوفمبر): تغطية سالم الحجري ومروى ماهر (طلب سالم، 28 أكتوبر).
+        // CYSEC Oman 2026 (19 نوفمبر): تغطية سالم الحجري ومروة ماهر (طلب سالم، 28 أكتوبر).
         $id = DB::table('permalinks')
             ->where('linkable_type', 'event_edition')->where('locale', 'ar')->where('slug', 'cysec-oman-2026')
             ->value('linkable_id');
 
         if ($id) {
             DB::table('event_editions')->where('id', $id)->whereNull('coverage_team')->update([
-                'coverage_team' => "سالم الحجري | Salem Al Hajri\nمروى ماهر | Marwa Maher | https://www.instagram.com/1almarwa/",
+                'coverage_team' => "سالم الحجري | Salem Al Hajri\nمروة ماهر | Marwa Maher | https://www.instagram.com/1almarwa/",
             ]);
         }
     }
