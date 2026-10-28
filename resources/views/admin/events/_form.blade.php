@@ -188,6 +188,13 @@
             <textarea id="goals_en" name="goals_en" rows="4" dir="ltr" placeholder="One goal per line">{{ old('goals_en', $edition->goals_en ?? '') }}</textarea>
             @error('goals_en')<span class="form-error">{{ $message }}</span>@enderror
         </div>
+
+        <div class="form-group">
+            <label for="coverage_team">فريق التغطية («تابعوا المؤتمر مع تغطية …»)</label>
+            <textarea id="coverage_team" name="coverage_team" rows="3" placeholder="شخص بكل سطر: الاسم بالعربي | English name | رابط الحساب (اختياري)&#10;مثال: مروى ماهر | Marwa Maher | https://www.instagram.com/1almarwa/">{{ old('coverage_team', $edition->coverage_team ?? '') }}</textarea>
+            <small style="display:block;margin-top:6px;color:#555;">كل شخص له رابط يطلع له زر «حسابه على إنستغرام/X/…» في صفحة المؤتمر.</small>
+            @error('coverage_team')<span class="form-error">{{ $message }}</span>@enderror
+        </div>
     </div>
 </div>
 

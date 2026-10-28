@@ -243,6 +243,32 @@
             </div>
         @endif
 
+        {{-- فريق التغطية: «تابعوا المؤتمر مع تغطية …» + زر حساب لكل شخص له رابط (من لوحة التحكم) --}}
+        @if ($team = $edition->coverageTeam())
+            @php
+                $names = array_column($team, 'name');
+                $last = array_pop($names);
+                $namesLabel = $names ? implode('، ', $names).__('events.team_and').$last : $last;
+            @endphp
+            <section class="event-detail__team">
+                <h2 class="event-detail__team-title"><i class="fa-solid fa-video" aria-hidden="true"></i> {{ __('events.team_title', ['names' => $namesLabel]) }}</h2>
+                @if ($linked = array_filter($team, fn ($m) => $m['url']))
+                    <div class="event-detail__team-links">
+                        @foreach ($linked as $member)
+                            <a class="btn btn--outline event-detail__team-btn" href="{{ $member['url'] }}" target="_blank" rel="noopener">
+                                @if ($member['platform'])
+                                    <i class="fa-brands fa-{{ $member['platform'] === 'x' ? 'x-twitter' : $member['platform'] }}" aria-hidden="true"></i>
+                                    {{ __('events.team_profile', ['name' => $member['name'], 'platform' => __('events.platform.'.$member['platform'])]) }}
+                                @else
+                                    {{ __('events.team_profile_generic', ['name' => $member['name']]) }}
+                                @endif
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </section>
+        @endif
+
         {{-- أهداف ALYASI من تغطية المؤتمر --}}
         @if ($goals = $edition->localizedGoals())
             <section class="event-detail__goals">

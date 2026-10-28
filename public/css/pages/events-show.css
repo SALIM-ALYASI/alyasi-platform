@@ -818,3 +818,11 @@
 .event-detail__goals ul { display: grid; gap: 10px; margin: 0 0 28px; padding: 0; list-style: none; }
 .event-detail__goals li { position: relative; padding: 12px 16px; padding-inline-start: 40px; border: 1px solid var(--color-divider); border-radius: var(--radius-md); background: var(--theme-card); line-height: 1.8; }
 .event-detail__goals li::before { content: "✓"; position: absolute; inset-inline-start: 14px; top: 12px; color: var(--color-accent-500); font-weight: 700; }
+
+/* فريق التغطية: «تابعوا المؤتمر مع تغطية …» + أزرار الحسابات */
+.event-detail__team { margin: 0 0 28px; padding: 18px 20px; border: 1px solid var(--color-divider); border-radius: var(--radius-md); background: var(--theme-card); }
+.event-detail__team-title { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.7; }
+.event-detail__team-title .fa-video { color: var(--color-accent-500); margin-inline-end: 6px; }
+.event-detail__team-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.event-detail__team-btn { display: inline-flex; align-items: center; gap: 8px; }
+@media (max-width: 600px) { .event-detail__team-btn { width: 100%; justify-content: center; } }

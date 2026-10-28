@@ -260,6 +260,14 @@ class EventEditionController extends Controller
             'exclusive_published_at' => ['nullable', 'date'],
             'goals_ar' => ['nullable', 'string', 'max:4000'],
             'goals_en' => ['nullable', 'string', 'max:4000'],
+            'coverage_team' => ['nullable', 'string', 'max:2000', function ($attribute, $value, $fail) {
+                foreach (preg_split('/\R/u', (string) $value) as $n => $line) {
+                    $url = trim(explode('|', $line)[2] ?? '');
+                    if ($url !== '' && ! preg_match('#^https://\S+$#i', $url)) {
+                        $fail('السطر '.($n + 1).': الرابط لازم يبدأ بـ https://');
+                    }
+                }
+            }],
             'date_status' => ['required', 'in:confirmed,expected,unknown'],
             'event_start_at' => ['nullable', 'date'],
             'event_end_at' => ['nullable', 'date', 'after_or_equal:event_start_at'],

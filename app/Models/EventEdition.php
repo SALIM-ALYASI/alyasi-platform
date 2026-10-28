@@ -37,6 +37,7 @@ class EventEdition extends Model
         'short_description_en',
         'goals_ar',
         'goals_en',
+        'coverage_team',
         'content_ar',
         'content_en',
         'announcements',
@@ -254,6 +255,42 @@ class EventEdition extends Model
             fn ($line) => trim(preg_replace('/^[\s\-•*·\d.)]+/u', '', $line)),
             preg_split('/\R/u', (string) $text)
         )));
+    }
+
+    /**
+     * فريق تغطية المؤتمر من حقل coverage_team (شخص بكل سطر):
+     * «الاسم بالعربي | English name | رابط الحساب» — الإنجليزي والرابط اختياريين.
+     * الرابط ينقبل بس لو https، والمنصة تنعرف من النطاق (لنص الزر وأيقونته).
+     *
+     * @return list<array{name: string, url: ?string, platform: ?string}>
+     */
+    public function coverageTeam(): array
+    {
+        $en = app()->getLocale() === 'en';
+        $platforms = [
+            'instagram.com' => 'instagram', 'x.com' => 'x', 'twitter.com' => 'x',
+            'tiktok.com' => 'tiktok', 'linkedin.com' => 'linkedin', 'youtube.com' => 'youtube', 'snapchat.com' => 'snapchat',
+        ];
+
+        $team = [];
+        foreach (preg_split('/\R/u', (string) $this->coverage_team) as $line) {
+            $parts = array_map('trim', explode('|', $line));
+            if (($parts[0] ?? '') === '') {
+                continue;
+            }
+
+            $url = $parts[2] ?? null;
+            $url = $url && preg_match('#^https://#i', $url) ? $url : null;
+            $host = $url ? preg_replace('/^www\./', '', strtolower((string) parse_url($url, PHP_URL_HOST))) : null;
+
+            $team[] = [
+                'name' => $en && filled($parts[1] ?? null) ? $parts[1] : $parts[0],
+                'url' => $url,
+                'platform' => $host ? ($platforms[$host] ?? null) : null,
+            ];
+        }
+
+        return $team;
     }
 
     /**
