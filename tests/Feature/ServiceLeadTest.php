@@ -51,7 +51,7 @@ class ServiceLeadTest extends TestCase
         $this->assertSame(0, ServiceLead::count());
     }
 
-    public function test_screens_a_batch_and_sends_one_whatsapp_message(): void
+    public function test_screens_a_batch_without_sending_any_message(): void
     {
         Config::set('services.whatsapp_notify', ['base_url' => 'https://bridge.test', 'api_key' => 'k', 'number' => '96800000000']);
         Http::fake(['bridge.test/*' => Http::response(['ok' => true])]);
@@ -72,11 +72,9 @@ class ServiceLeadTest extends TestCase
         // عُمان مع ميزانية أعلى أولوية من الإمارات.
         $this->assertGreaterThan(ServiceLead::where('country', 'AE')->value('score'), ServiceLead::where('country', 'OM')->value('score'));
 
-        Http::assertSentCount(1);
-        Http::assertSent(fn ($request) => str_contains($request['message'], '🎯 طلبات عملاء جديدة (2)')
-            && str_contains($request['message'], '🇴🇲 عُمان – مسقط · تصميم جرافيك · X')
-            && strpos($request['message'], 'عُمان') < strpos($request['message'], 'الإمارات'));
-        $this->assertSame(2, ServiceLead::whereNotNull('notified_at')->count());
+        // ما فيه تنبيه لكل دفعة (من 28 أكتوبر): أفضل 5 بالأسبوع بس.
+        Http::assertNothingSent();
+        $this->assertSame(0, ServiceLead::whereNotNull('notified_at')->count());
     }
 
     private function marketplace(array $overrides = []): array
@@ -95,32 +93,40 @@ class ServiceLeadTest extends TestCase
         ];
     }
 
-    public function test_marketplace_projects_wait_for_one_evening_digest(): void
+    public function test_weekly_message_has_only_the_best_five(): void
     {
         Config::set('services.whatsapp_notify', ['base_url' => 'https://bridge.test', 'api_key' => 'k', 'number' => '96800000000']);
         Http::fake(['bridge.test/*' => Http::response(['ok' => true])]);
 
-        // الصبح: تنحفظ بدون رسالة.
-        $this->travelTo(now('Asia/Muscat')->setTime(9, 5)->utc());
-        $this->sendLeads(['items' => [
-            $this->marketplace(),
-            $this->marketplace(['url' => 'https://khamsat.com/community/requests/1', 'platform' => 'khamsat', 'budget_usd' => 600, 'text' => 'مطلوب مونتاج فيديوهات قصيرة لقناة تعليمية', 'summary' => 'مونتاج فيديوهات قصيرة', 'category' => 'video']),
-            $this->marketplace(['url' => 'https://mostaql.com/project/77', 'budget_usd' => 40, 'text' => 'تصميم 4 أغلفة لعبوات جاهزة بسرعة']),
-            $this->marketplace(['url' => 'https://x.com/z/status/9', 'platform' => 'x', 'text' => 'need a logo for my brand asap please']),
-        ]])->assertJson(['accepted' => 2, 'rejected' => 2]);
-
-        $this->assertSame(['low_budget', 'not_marketplace'], ServiceLead::where('status', 'rejected')->orderBy('id')->pluck('reject_reason')->all());
+        $budgets = [150, 5000, 300, 900, 120, 2500, 200];
+        $this->sendLeads(['items' => array_map(fn ($b) => $this->marketplace([
+            'url' => 'https://mostaql.com/project/'.$b, 'budget_usd' => $b, 'text' => 'مشروع رقم '.$b.' لبناء نظام ويب متكامل', 'summary' => 'مشروع '.$b,
+        ]), $budgets)])->assertJson(['accepted' => 7]);
+        // طلب عُماني بدون ميزانية بالدولار: أفضلية القرب (+600) تدخله بالخمسة.
+        $this->sendLeads($this->lead(['url' => 'https://x.com/om/status/1']));
+        // طلب قديم (9 أيام) ما يدخل.
+        ServiceLead::query()->create(['agent' => 'grok', 'scope' => 'marketplace', 'platform' => 'mostaql', 'url' => 'https://mostaql.com/project/old', 'url_key' => 'old', 'text' => 'قديم', 'text_hash' => 'old', 'category' => 'web', 'budget_usd' => 9000, 'score' => 9000, 'status' => 'new'])
+            ->forceFill(['created_at' => now()->subDays(9)])->save();
         Http::assertNothingSent();
 
-        // المسا: أول دفعة بعد 7 ترسل القائمة (الأعلى ميزانية أول)، ومرة وحدة باليوم.
-        $this->travelTo(now('Asia/Muscat')->setTime(20, 10)->utc());
-        $this->sendLeads(['items' => [$this->marketplace(['url' => 'https://mostaql.com/project/88', 'budget_usd' => 120, 'text' => 'إعداد متجر إلكتروني على سلة مع تصميم الواجهة'])]]);
-        $this->artisan('leads:marketplace-digest')->assertSuccessful();
+        $this->artisan('leads:weekly-top')->assertSuccessful();
+        $this->artisan('leads:weekly-top')->assertSuccessful(); // مرة وحدة بالأسبوع
 
         Http::assertSentCount(1);
-        Http::assertSent(fn ($request) => str_contains($request['message'], '📋 أفضل مشاريع مستقل وخمسات اليوم (3)')
-            && strpos($request['message'], '$600') < strpos($request['message'], '$250')
-            && str_contains($request['message'], 'خمسات · فيديو ومونتاج'));
+        Http::assertSent(function ($request) {
+            $m = $request['message'];
+
+            return str_contains($m, '🎯 أفضل 5 طلبات عملاء هذا الأسبوع')
+                && strpos($m, '$5,000') < strpos($m, '$2,500')
+                && str_contains($m, 'عُمان – مسقط')
+                && ! str_contains($m, '$9,000') && ! str_contains($m, '$150') && ! str_contains($m, '$120');
+        });
+        $this->assertSame(5, ServiceLead::whereNotNull('notified_at')->count());
+
+        // بعد 8 أيام: اللي ما انختار ينحذف، والخمسة يبقون.
+        $this->travel(9)->days();
+        $this->artisan('model:prune', ['--model' => [ServiceLead::class]])->assertSuccessful();
+        $this->assertSame(5, ServiceLead::count());
     }
 
     public function test_same_text_from_another_url_is_a_duplicate(): void

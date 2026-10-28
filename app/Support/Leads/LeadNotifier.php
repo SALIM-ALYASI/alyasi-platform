@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
- * رسالة واتساب وحدة لكل دفعة طلبات (الأعلى أولوية أول)، 5 طلبات بالرسالة
- * كحد أقصى عشان تظل مقروءة.
+ * من 28 أكتوبر (قرار سالم): بدل تنبيه لكل دفعة وقائمة يومية، رسالة وحدة بالأسبوع
+ * فيها أفضل 5 طلبات (weeklyTop). notify وmarketplaceDigestIfDue باقيين للاستخدام
+ * اليدوي بس، ما ينادَون تلقائيًا.
  */
 final class LeadNotifier
 {
@@ -88,5 +89,53 @@ final class LeadNotifier
         WhatsAppAlerts::send(implode("\n", $lines), '📋 ');
 
         ServiceLead::query()->whereKey($leads->pluck('id'))->update(['notified_at' => now()]);
+    }
+
+    public const WEEKLY_COUNT = 5;
+
+    /**
+     * أفضل 5 طلبات من آخر 7 أيام: الميزانية بالدولار، مع أفضلية للخليج (+300)
+     * وعُمان (+300) لأن العميل القريب أسهل يتحوّل لمشروع.
+     */
+    public static function weeklyTop(): Collection
+    {
+        return ServiceLead::query()
+            ->where('status', 'new')
+            ->whereNull('notified_at')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->get()
+            ->sortByDesc(fn (ServiceLead $lead) => (int) $lead->budget_usd
+                + ($lead->scope === 'gcc' ? 300 : 0)
+                + ($lead->country === 'OM' ? 300 : 0))
+            ->take(self::WEEKLY_COUNT)
+            ->values();
+    }
+
+    public static function sendWeeklyTop(): int
+    {
+        $now = now('Asia/Muscat');
+        $leads = self::weeklyTop();
+
+        if ($leads->isEmpty() || ! Cache::add('leads:weekly-top:'.$now->format('o-W'), true, $now->copy()->endOfWeek())) {
+            return 0;
+        }
+
+        $lines = ['أفضل '.$leads->count().' طلبات عملاء هذا الأسبوع'];
+
+        foreach ($leads as $i => $lead) {
+            $where = $lead->scope === 'gcc'
+                ? $lead->countryLabel().($lead->city ? ' – '.$lead->city : '')
+                : $lead->platformLabel();
+            $lines[] = '';
+            $lines[] = ($i + 1).') '.$where.' · '.$lead->categoryLabel().($lead->budget_usd ? ' · $'.number_format($lead->budget_usd) : ($lead->budget ? ' · '.$lead->budget : ''));
+            $lines[] = Str::limit($lead->summary ?: preg_replace('/\s+/u', ' ', $lead->text), 200);
+            $lines[] = $lead->url;
+        }
+
+        WhatsAppAlerts::send(implode("\n", $lines), '🎯 ');
+
+        ServiceLead::query()->whereKey($leads->pluck('id'))->update(['notified_at' => now()]);
+
+        return $leads->count();
     }
 }

@@ -74,7 +74,11 @@ class ServiceLead extends Model
 
     public function prunable(): Builder
     {
-        return static::where('created_at', '<', now()->subDays(60));
+        // اللي ما انختار بأفضل 5 الأسبوعية ولا اشتغل عليه سالم: يروح بعد 8 أيام.
+        return static::where('created_at', '<', now()->subDays(60))
+            ->orWhere(fn (Builder $q) => $q->where('created_at', '<', now()->subDays(8))
+                ->whereNull('notified_at')
+                ->whereIn('status', ['new', 'rejected']));
     }
 
     public function countryLabel(): string

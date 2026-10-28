@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ServiceLead;
-use App\Support\Leads\LeadNotifier;
 use App\Support\Leads\LeadScreener;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,9 +38,7 @@ class ServiceLeadController extends Controller
             }
         }
 
-        // الخليج يوصل فورًا؛ مشاريع المنصات تنتظر القائمة اليومية (مع دفعة المساء).
-        LeadNotifier::notify($accepted->where('scope', 'gcc'));
-        LeadNotifier::marketplaceDigestIfDue();
+        // ما فيه تنبيه لكل دفعة: أفضل 5 بالأسبوع توصل برسالة وحدة (leads:weekly-top).
 
         $counts = collect($results)->countBy('status');
 
