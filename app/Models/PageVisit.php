@@ -18,6 +18,11 @@ class PageVisit extends Model
         'traffic_class',
         'class_reasons',
         'visitor_id',
+        'confirmed_at',
+    ];
+
+    protected $casts = [
+        'confirmed_at' => 'datetime',
     ];
 
     /**
@@ -44,6 +49,17 @@ class PageVisit extends Model
         if ($this->traffic_class === VisitClassifier::HUMAN) {
             $this->traffic_class = VisitClassifier::SUSPECT;
         }
+    }
+
+    /**
+     * زيارات بشرية تنحسب بالأرقام: «بشري مرجّح» قبل analytics.confirm_since،
+     * وبعده لازم تكون مؤكدة بإشارة view من المتصفح (confirmed_at).
+     */
+    public function scopeCountedHuman(Builder $query): Builder
+    {
+        return $query->where('traffic_class', VisitClassifier::HUMAN)
+            ->where(fn (Builder $q) => $q->where('created_at', '<', \App\Support\Analytics\VisitStats::confirmSince())
+                ->orWhereNotNull('confirmed_at'));
     }
 
     /**

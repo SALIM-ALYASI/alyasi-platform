@@ -46,6 +46,12 @@ class AnalyticsController extends Controller
      */
     public function event(Request $request): Response
     {
+        // «view»: المتصفح شغّل جافاسكربت ورجّع الكوكي والصفحة ظاهرة ثانيتين —
+        // يأكد آخر زيارة لنفس الزائر والصفحة (ما ينحفظ كحدث تفاعل).
+        if ($request->input('type') === 'view') {
+            return $this->confirmView($request);
+        }
+
         // sendBeacon ما يقرأ الرد، فما نحتاج رسائل خطأ ولا تحويل للخلف.
         $validator = Validator::make($request->all(), [
             'type' => ['required', 'in:'.implode(',', PageEvent::TYPES)],
@@ -79,6 +85,25 @@ class AnalyticsController extends Controller
             'seconds' => $data['seconds'] ?? null,
             'traffic_class' => $class,
         ]);
+
+        return response()->noContent();
+    }
+
+    private function confirmView(Request $request): Response
+    {
+        $visitorId = $request->cookie(config('analytics.visitor_cookie'));
+        $path = substr('/'.ltrim((string) parse_url((string) $request->input('path'), PHP_URL_PATH), '/'), 0, 255);
+
+        if (is_string($visitorId) && preg_match('/^[a-z0-9]{20,32}$/', $visitorId)) {
+            PageVisit::query()
+                ->where('visitor_id', $visitorId)
+                ->where('path', $path)
+                ->whereNull('confirmed_at')
+                ->where('created_at', '>=', now()->subMinutes(30))
+                ->latest('id')
+                ->limit(1)
+                ->update(['confirmed_at' => now()]);
+        }
 
         return response()->noContent();
     }

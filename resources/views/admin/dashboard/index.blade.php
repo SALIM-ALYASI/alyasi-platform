@@ -636,7 +636,8 @@
     {{-- جودة الزيارات والتفاعل --}}
     @php
         $classLabels = [
-            'human' => ['بشري مرجّح', 'is-success'],
+            'human' => ['بشري (أكّده المتصفح)', 'is-success'],
+            'unconfirmed' => ['متصفح ما أكّد نفسه (غالبًا روبوت متنكّر)', 'is-warning'],
             'suspect' => ['مشتبه به', 'is-warning'],
             'bot' => ['بوت مؤكد', 'is-danger'],
             'owner' => ['أجهزتك (مستبعدة)', 'is-muted'],

@@ -2,6 +2,8 @@
  * قياس التفاعل بدون أي مكتبة خارجية:
  *  - reached_end: الزائر وصل لآخر نص المقال/الخبر (تمرير -- مب دليل قراءة)،
  *    مع الثواني اللي كانت فيها الصفحة ظاهرة قبل الوصول.
+ *  - view: الصفحة ظاهرة ثانيتين بمتصفح حقيقي -- يأكد إن الزائر بشري (الروبوتات
+ *    المتنكّرة بهوية كروم ما تشغّل جافاسكربت أو ما ترجّع الكوكي).
  *  - audio_play / audio_complete: أول تشغيل وإكمال لكل ملف صوت بالصفحة،
  *    بما فيها مشغّلات new Audio() اللي ما تنضاف للصفحة.
  * كل حدث ينرسل مرة وحدة لكل صفحة.
@@ -43,6 +45,18 @@
         if (navigator.sendBeacon && navigator.sendBeacon(endpoint, body)) return;
         fetch(endpoint, { method: 'POST', body: body, keepalive: true, credentials: 'same-origin' }).catch(function () {});
     }
+
+    // تأكيد الزيارة: أول ما تكمل الصفحة ثانيتين ظاهرة (نفحص كل ثانية لمدة دقيقة).
+    var viewChecks = 0;
+    var viewTimer = setInterval(function () {
+        viewChecks++;
+        if (!document.hidden && activeSeconds() >= 2) {
+            send('view');
+            clearInterval(viewTimer);
+        } else if (viewChecks > 60) {
+            clearInterval(viewTimer);
+        }
+    }, 1000);
 
     // نهاية النص: علامة صغيرة بعد آخر فقرة بالمقال أو الخبر أو حلقة تاريخ التقنية.
     var content = document.querySelector('.articles-detail__content, .news-detail__content');

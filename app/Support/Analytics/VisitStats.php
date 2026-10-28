@@ -19,6 +19,11 @@ final class VisitStats
         return Carbon::parse(config('analytics.clean_since'), 'Asia/Muscat')->startOfDay();
     }
 
+    public static function confirmSince(): Carbon
+    {
+        return Carbon::parse(config('analytics.confirm_since'), 'Asia/Muscat')->startOfDay();
+    }
+
     /**
      * @return array<string, int> عدد الزيارات لكل تصنيف
      */
@@ -31,10 +36,22 @@ final class VisitStats
             ->groupBy('traffic_class')
             ->pluck('total', 'traffic_class');
 
-        return collect([
+        // «بشري مرجّح» ما أكّده المتصفح (بعد confirm_since): غالبًا روبوت متنكّر.
+        $unconfirmed = PageVisit::query()
+            ->where('traffic_class', VisitClassifier::HUMAN)
+            ->where('created_at', '>=', max(self::cleanSince(), self::confirmSince()))
+            ->whereNull('confirmed_at')
+            ->count();
+
+        $result = collect([
             VisitClassifier::HUMAN, VisitClassifier::SUSPECT, VisitClassifier::BOT,
             VisitClassifier::OWNER, VisitClassifier::INTERNAL,
         ])->mapWithKeys(fn ($class) => [$class => (int) ($counts[$class] ?? 0)])->all();
+
+        $result[VisitClassifier::HUMAN] -= $unconfirmed;
+        $result['unconfirmed'] = $unconfirmed;
+
+        return $result;
     }
 
     /**
@@ -43,7 +60,7 @@ final class VisitStats
     public static function humans(): array
     {
         $base = fn () => PageVisit::query()
-            ->where('traffic_class', VisitClassifier::HUMAN)
+            ->countedHuman()
             ->where('created_at', '>=', self::cleanSince());
 
         $today = now('Asia/Muscat')->startOfDay();
@@ -84,7 +101,7 @@ final class VisitStats
     public static function topPages(int $limit = 6): Collection
     {
         return PageVisit::query()
-            ->where('traffic_class', VisitClassifier::HUMAN)
+            ->countedHuman()
             ->where('created_at', '>=', self::cleanSince())
             ->selectRaw('path, count(distinct visitor_id) as visitors')
             ->groupBy('path')
@@ -96,7 +113,7 @@ final class VisitStats
     public static function topCountries(int $limit = 5): Collection
     {
         return PageVisit::query()
-            ->where('traffic_class', VisitClassifier::HUMAN)
+            ->countedHuman()
             ->where('created_at', '>=', self::cleanSince())
             ->withKnownCountry()
             ->selectRaw('country_name, country_code, count(distinct visitor_id) as visits_count')

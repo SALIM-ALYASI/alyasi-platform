@@ -93,4 +93,38 @@ class AnalyticsTest extends TestCase
             ->assertSee('إحصائيات قديمة غير منقّاة: 1 زيارة')
             ->assertSee('أجهزتك (مستبعدة)');
     }
+
+    public function test_view_beacon_confirms_the_visit_and_unconfirmed_browsers_are_not_counted(): void
+    {
+        $this->travelTo('2026-10-30 10:00:00');
+        $real = 'abcdefghijklmnopqrstuvwxyz';
+        PageVisit::query()->create(['path' => '/news', 'ip_address' => '5.36.10.20', 'traffic_class' => 'human', 'visitor_id' => $real, 'country_name' => 'Oman']);
+        // روبوت بهوية كروم: زيارة وحدة بدون أي إشارة من المتصفح.
+        PageVisit::query()->create(['path' => '/', 'ip_address' => '36.137.1.1', 'traffic_class' => 'human', 'visitor_id' => 'zyxwvutsrqponmlkjihgfedcba', 'country_name' => 'China']);
+
+        $this->withCookie('alyasi_vid', $real)
+            ->post('/analytics/event', ['type' => 'view', 'path' => 'https://alyasi.dev/news'])
+            ->assertNoContent();
+
+        // بدون كوكي: ما يأكد شي.
+        $this->post('/analytics/event', ['type' => 'view', 'path' => '/'])->assertNoContent();
+
+        $this->assertNotNull(PageVisit::query()->where('visitor_id', $real)->value('confirmed_at'));
+        $this->assertSame(0, PageEvent::query()->count()); // view مب حدث تفاعل
+
+        $this->assertSame(1, \App\Support\Analytics\VisitStats::humans()['visitors']);
+        $byClass = \App\Support\Analytics\VisitStats::byClass();
+        $this->assertSame(1, $byClass['human']);
+        $this->assertSame(1, $byClass['unconfirmed']);
+        $this->assertSame(['Oman'], \App\Support\Analytics\VisitStats::topCountries()->pluck('country_name')->all());
+    }
+
+    public function test_visits_before_the_confirmation_date_still_count(): void
+    {
+        $this->travelTo('2026-10-28 10:00:00');
+        PageVisit::query()->create(['path' => '/', 'ip_address' => '5.36.10.20', 'traffic_class' => 'human', 'visitor_id' => 'abcdefghijklmnopqrstuvwxyz']);
+
+        $this->assertSame(1, \App\Support\Analytics\VisitStats::humans()['visitors']);
+        $this->assertSame(0, \App\Support\Analytics\VisitStats::byClass()['unconfirmed']);
+    }
 }
