@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\NewsSuggestion;
 use App\Models\OmanPulseItem;
 use App\Support\OmanPulse\OfficialPageExtractor;
+use App\Support\OmanPulse\TechTopic;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\File;
@@ -21,7 +22,9 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
 {
     use Queueable;
 
-    public const DAILY_LIMIT = 3;
+    // سقف أمان مب حصة: وكيل الوكالة ينشر كل خبر تقني عُماني، والسقف يمنع سيل
+    // أخبار لو صار خلل (الطبيعي 1-5 باليوم).
+    public const DAILY_LIMIT = 10;
 
     public function __construct(public int $suggestionId)
     {
@@ -37,7 +40,7 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
 
         $today = now('Asia/Muscat')->startOfDay()->utc();
         if (OmanPulseItem::query()->where('created_at', '>=', $today)->count() >= self::DAILY_LIMIT) {
-            $this->finish($suggestion, 'failed', 'تجاوز حصة نبض عُمان اليومية ('.self::DAILY_LIMIT.')');
+            $this->finish($suggestion, 'failed', 'تجاوز سقف الأمان اليومي لنبض عُمان ('.self::DAILY_LIMIT.')');
 
             return;
         }
@@ -73,7 +76,7 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
 
         // هدف ALYASI النشر التقني: نبض عُمان يقبل التقنية والأمن السيبراني والتحول
         // الرقمي فقط (قرار سالم، 28 أكتوبر). الاقتصاد والمجتمع والخدمات العامة تنرفض.
-        $tag = $this->techTag($suggestion->category, $page['title'].' '.$page['paragraphs'][0]);
+        $tag = TechTopic::tag($suggestion->category, $page['title'].' '.$page['paragraphs'][0]);
         if ($tag === null) {
             $this->finish($suggestion, 'failed', 'خارج نطاق نبض عُمان: الأخبار التقنية فقط');
 
@@ -180,23 +183,6 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
 
                 return $union > 0 && count(array_intersect($mine, $theirs)) / $union >= 0.6;
             });
-    }
-
-    /**
-     * تصنيف تقني أو null: تصنيف Grok لو تقني، وإلا من نص الخبر نفسه
-     * (Grok أحيانًا يصنّف خدمة رقمية أو اتفاقية أقمار صناعية «خدمات/اقتصاد»).
-     */
-    private function techTag(?string $category, string $text): ?string
-    {
-        if (in_array($category, ['tech', 'cyber'], true)) {
-            return $category;
-        }
-
-        return match (true) {
-            (bool) preg_match('/سيبران|اختراق|احتيال إلكتروني|برمجيات خبيثة|تصيّد/u', $text) => 'cyber',
-            (bool) preg_match('/رقمي|رقمن|تقني|تقنية المعلومات|ذكاء اصطناعي|الذكاء الاصطناعي|اتصالات|إلكترونيًا|إلكتروني|أقمار صناعية|الأقمار الصناعية|فضائي|بيانات|برمجي|الثورة الصناعية الرابعة|الصناعة الذكية|إنترنت|سحابي/u', $text) => 'tech',
-            default => null,
-        };
     }
 
     private function finish(NewsSuggestion $suggestion, string $status, string $note): void

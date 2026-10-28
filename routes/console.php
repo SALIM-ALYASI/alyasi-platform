@@ -40,3 +40,8 @@ Schedule::command('leads:marketplace-digest')
 Schedule::command('telescope:prune', ['--hours' => 168])
     ->dailyAt('04:40')
     ->timezone('Asia/Muscat');
+
+// وكيل نبض عُمان: خلاصات وكالة الأنباء العُمانية كل نص ساعة (أخبار تقنية فقط).
+Schedule::command('oman-pulse:scan')
+    ->everyThirtyMinutes()
+    ->withoutOverlapping(10);

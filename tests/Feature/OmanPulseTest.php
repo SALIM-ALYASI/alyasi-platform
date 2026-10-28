@@ -87,26 +87,27 @@ class OmanPulseTest extends TestCase
         $this->get('/news/oman/'.$item->id)->assertNotFound();
     }
 
-    public function test_daily_limit_duplicates_and_old_news_are_skipped(): void
+    public function test_daily_safety_ceiling_and_duplicates_are_skipped(): void
     {
-        Http::fake(function ($request) {
+        // عناوين مختلفة كليًا عشان ما ينحسب أي واحد مكرر.
+        $words = ['الحوسبة', 'المختبرات', 'الشبكات', 'التطبيقات', 'المنصات', 'الأقمار', 'الخوادم', 'الأتمتة', 'البرمجيات', 'المراكز', 'الألياف', 'المعالجات'];
+        Http::fake(function ($request) use ($words) {
             $n = (int) basename($request->url());
-            $titles = [1 => 'قرار أول عن الاتصالات', 2 => 'إعلان ثانٍ عن التمويل', 3 => 'خبر ثالث عن الأمن السيبراني', 4 => 'خبر رابع جديد تمامًا'];
 
-            return Http::response($this->page($titles[$n] ?? 'قرار أول عن الاتصالات'), 200, ['Content-Type' => 'text/html']);
+            return Http::response($this->page('مشروع '.($words[$n] ?? $words[0]).' الوطني '.$n), 200, ['Content-Type' => 'text/html']);
         });
 
-        $this->suggest(['url' => 'https://gov.om/news/1'])->assertStatus(202);
+        $this->suggest(['url' => 'https://gov.om/news/0'])->assertStatus(202);
         // نفس الخبر من رابط ثاني
-        $this->suggest(['url' => 'https://gov.om/news/9'])->assertStatus(202);
-        $this->assertSame('duplicate', NewsSuggestion::query()->where('url', 'https://gov.om/news/9')->value('status'));
+        $this->suggest(['url' => 'https://gov.om/news/99'])->assertStatus(202);
+        $this->assertSame('duplicate', NewsSuggestion::query()->where('url', 'https://gov.om/news/99')->value('status'));
 
-        $this->suggest(['url' => 'https://gov.om/news/2'])->assertStatus(202);
-        $this->suggest(['url' => 'https://gov.om/news/3'])->assertStatus(202);
-        $this->suggest(['url' => 'https://gov.om/news/4'])->assertStatus(202);
+        for ($n = 1; $n <= \App\Jobs\ProcessOmanPulseSuggestion::DAILY_LIMIT; $n++) {
+            $this->suggest(['url' => 'https://gov.om/news/'.$n])->assertStatus(202);
+        }
 
-        $this->assertSame(3, OmanPulseItem::query()->count());
-        $this->assertStringContainsString('حصة', NewsSuggestion::query()->where('url', 'https://gov.om/news/4')->value('status_note'));
+        $this->assertSame(\App\Jobs\ProcessOmanPulseSuggestion::DAILY_LIMIT, OmanPulseItem::query()->count());
+        $this->assertStringContainsString('سقف الأمان', NewsSuggestion::query()->where('url', 'https://gov.om/news/'.\App\Jobs\ProcessOmanPulseSuggestion::DAILY_LIMIT)->value('status_note'));
     }
 
     public function test_oman_detection_does_not_confuse_amman(): void
@@ -195,5 +196,40 @@ class OmanPulseTest extends TestCase
         $this->assertSame(0, OmanPulseItem::query()->count());
         $this->assertSame('failed', NewsSuggestion::query()->value('status'));
         $this->assertStringContainsString('التقنية فقط', NewsSuggestion::query()->value('status_note'));
+    }
+
+    public function test_ona_agent_publishes_only_fresh_omani_tech_news_from_the_feeds(): void
+    {
+        $rss = fn (array $items) => '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>ONA</title>'
+            .implode('', array_map(fn ($i) => '<item><title><![CDATA['.$i[0].']]></title><link>'.$i[1].'</link><pubDate>'.$i[2].'</pubDate><description><![CDATA['.$i[3].']]></description></item>', $items))
+            .'</channel></rss>';
+        $now = now()->toRfc2822String();
+
+        Http::fake([
+            'omannews.gov.om/rss/lang/ar/cat/3' => Http::response($rss([
+                ['إطلاق خدمة رقمية جديدة للمعاملات', 'https://omannews.gov.om/topics/ar/3/show/101/', $now, 'مسقط في 28 أكتوبر /العُمانية/ أطلقت الوزارة خدمة رقمية جديدة.'],
+                ['ارتفاع وول ستريت مع التركيز على الذكاء الاصطناعي', 'https://omannews.gov.om/topics/ar/7/show/104/', $now, 'نيويورك في 28 أكتوبر /العُمانية/ ارتفعت المؤشرات مع صعود أسهم الذكاء الاصطناعي.'],
+                ['حلقة لتطوير إحصاءات الطفولة', 'https://omannews.gov.om/topics/ar/3/show/105/', $now, 'مسقط في 28 أكتوبر /العُمانية/ ناقشت الحلقة قواعد بيانات الإحصاء.'],
+                ['مطار صلالة يستقبل رحلات جديدة', 'https://omannews.gov.om/topics/ar/3/show/102/', $now, 'استقبل المطار رحلات الطيران العارض.'],
+                ['منصة إلكترونية قديمة', 'https://omannews.gov.om/topics/ar/3/show/103/', now()->subDays(5)->toRfc2822String(), 'خبر تقني قديم.'],
+            ]), 200, ['Content-Type' => 'application/rss+xml']),
+            'omannews.gov.om/rss/lang/ar/cat/7' => Http::response($rss([]), 200, ['Content-Type' => 'application/rss+xml']),
+            'omannews.gov.om/topics/*' => Http::response($this->page('إطلاق خدمة رقمية جديدة للمعاملات'), 200, ['Content-Type' => 'text/html']),
+            'omannews.gov.om/img/*' => Http::response('jpg', 200, ['Content-Type' => 'image/jpeg']),
+        ]);
+
+        $this->artisan('oman-pulse:scan')->assertSuccessful();
+
+        // العُماني التقني الجديد بس: الطيران ووول ستريت والإحصاءات والقديم ما يدخلون أصلًا.
+        $this->assertSame(1, NewsSuggestion::query()->count());
+        $this->assertSame('ona-rss', NewsSuggestion::query()->value('suggested_by'));
+        $item = OmanPulseItem::query()->sole();
+        $this->assertSame('إطلاق خدمة رقمية جديدة للمعاملات', $item->title);
+        $this->assertSame('tech', $item->tag);
+
+        // تشغيل ثاني ما يكرر.
+        $this->artisan('oman-pulse:scan')->assertSuccessful();
+        $this->assertSame(1, OmanPulseItem::query()->count());
+        $this->assertSame(1, NewsSuggestion::query()->count());
     }
 }
