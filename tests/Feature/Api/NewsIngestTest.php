@@ -155,4 +155,21 @@ class NewsIngestTest extends TestCase
                 'created' => true,
             ]);
     }
+
+    public function test_plain_alert_message_is_forwarded_to_whatsapp(): void
+    {
+        // تنبيهات smart-content (توكن منصة انتهى) ترسل message بس بدون رابط فيديو.
+        Config::set('services.whatsapp_notify', ['base_url' => 'https://wa.test', 'api_key' => 'k', 'number' => '96800000000']);
+
+        $this->withHeader('Authorization', 'Bearer test-secret-token')
+            ->postJson('/api/news/notify-whatsapp', ['message' => '⚠️ توكن إنستقرام توقف'])
+            ->assertOk()->assertJson(['success' => true]);
+
+        Http::assertSent(fn ($r) => str_ends_with($r->url(), '/send-message') && str_contains(json_encode($r->data(), JSON_UNESCAPED_UNICODE), 'توكن إنستقرام توقف'));
+
+        // بدون رسالة ولا رابط: يبقى مرفوض.
+        $this->withHeader('Authorization', 'Bearer test-secret-token')
+            ->postJson('/api/news/notify-whatsapp', [])
+            ->assertStatus(422);
+    }
 }

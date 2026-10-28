@@ -382,6 +382,15 @@ class NewsIngestController extends Controller
      */
     public function notifyWhatsAppEndpoint(Request $request): JsonResponse
     {
+        // تنبيه نصي بسيط (مثل «توكن إنستغرام انتهى» من smart-content): نفس المسار،
+        // بس بدون رابط فيديو. قبلها كان يرجع 422 فما وصل أي تنبيه من 19 أكتوبر.
+        if (! $request->filled('published_url') && $request->filled('message')) {
+            $data = $request->validate(['message' => ['required', 'string', 'max:1500']]);
+            $this->notifyWhatsApp($data['message']);
+
+            return response()->json(['success' => true]);
+        }
+
         $validated = $request->validate([
             'published_url' => ['required', 'url', 'max:2000'],
             'image_url' => ['nullable', 'url', 'max:2000'],
