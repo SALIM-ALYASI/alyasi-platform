@@ -79,6 +79,9 @@ class ScanOmanPulse extends Command
             }
         }
 
+        // آخر تشغيل (لمتابعة إن الجدولة شغّالة فعلًا).
+        \App\Models\Setting::set('oman_pulse_last_scan', now()->toDateTimeString()." | {$candidates}/{$processed}");
+
         $this->info("أخبار تقنية بالخلاصات: {$candidates} | جديدة تمت معالجتها: {$processed}");
 
         return self::SUCCESS;
