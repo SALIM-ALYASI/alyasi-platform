@@ -1,0 +1,5 @@
+# طبقة حماية إضافية: مجلد الملفات المرفوعة ما يشغّل أي سكربت أبدًا،
+# حتى لو انرفع ملف PHP بالغلط أو بثغرة. (نسخة منه في public/storage/.htaccess على السيرفر)
+<FilesMatch "(?i)\.(php[0-9]*|phtml|phar|pht|phps|cgi|pl|py|sh|shtml)$">
+    Require all denied
+</FilesMatch>

@@ -34,6 +34,7 @@ Thumbs.db
 # صور يرفعها الموقع بنفسه على السيرفر (نبض عُمان، لوحة التحكم)
 /public/uploads/*
 !/public/uploads/services/
+!/public/uploads/.htaccess
 
 # نسخ احتياطية من الإعدادات (فيها مفاتيح) -- المستودع عام
 /.env.*

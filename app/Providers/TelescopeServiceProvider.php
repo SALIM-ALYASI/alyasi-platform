@@ -40,12 +40,17 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             return;
         }
 
-        Telescope::hideRequestParameters(['_token']);
+        Telescope::hideRequestParameters(['_token', 'token', 'password', 'password_confirmation', 'secret', 'api_key']);
 
+        // مفاتيح API (Bearer لبوت الأخبار وGrok وغيرها) ما تنحفظ بسجلات Telescope.
         Telescope::hideRequestHeaders([
             'cookie',
             'x-csrf-token',
             'x-xsrf-token',
+            'authorization',
+            'php-auth-pw',
+            'x-api-key',
+            'x-origin-auth',
         ]);
     }
 

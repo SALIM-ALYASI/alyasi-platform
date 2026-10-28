@@ -35,3 +35,8 @@ Artisan::command('leads:marketplace-digest', function (): void {
 Schedule::command('leads:marketplace-digest')
     ->dailyAt('21:30')
     ->timezone('Asia/Muscat');
+
+// سجلات Telescope (أخطاء وطلبات فاشلة) تنحذف بعد 7 أيام بدل ما تتراكم للأبد.
+Schedule::command('telescope:prune', ['--hours' => 168])
+    ->dailyAt('04:40')
+    ->timezone('Asia/Muscat');
