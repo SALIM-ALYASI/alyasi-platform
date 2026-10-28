@@ -11,7 +11,7 @@ Artisan::command('inspire', function () {
 // مزامنة أسعار متجر Apple الإمارات أربع مرات يوميًا.
 // withoutOverlapping يمنع تشغيل نسختين من المهمة في الوقت نفسه.
 Schedule::command('apple:sync-prices')
-    ->cron('17 */6 * * *')
+    ->cron('15 */6 * * *') // الدقيقة 15: الجدولة تنطلق من سيرفر البيت كل 5 دقايق
     ->withoutOverlapping(30);
 
 // تحديث سعر USD/KWD يوميًا من بنك الكويت المركزي.
