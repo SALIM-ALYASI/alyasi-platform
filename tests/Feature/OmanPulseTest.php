@@ -55,7 +55,8 @@ class OmanPulseTest extends TestCase
         $this->assertSame('إطلاق خدمة رقمية جديدة للمعاملات', $item->title);
         $this->assertStringStartsWith('مسقط في', $item->lead);
         $this->assertCount(2, $item->paragraphs);
-        $this->assertSame('services', $item->tag);
+        // Grok قال «خدمات» بس الخبر عن خدمة رقمية: ينقبل كتقني.
+        $this->assertSame('tech', $item->tag);
         $this->assertNotNull($item->source_published_at);
         $this->assertStringNotContainsString('خبر جانبي', $item->lead.implode(' ', $item->paragraphs));
         $this->assertSame('fetched', NewsSuggestion::query()->value('status'));
@@ -181,5 +182,18 @@ class OmanPulseTest extends TestCase
 
         $this->assertSame(0, OmanPulseItem::query()->count());
         $this->assertSame(['failed', 'failed'], NewsSuggestion::query()->orderBy('id')->pluck('status')->all());
+    }
+
+    public function test_non_tech_official_news_is_rejected(): void
+    {
+        Http::fake(['*' => Http::response('<html><head><meta property="og:title" content="مطار صلالة يستقبل أولى رحلات الطيران العارض"></head><body><div class="post-content">'
+            .'<p>صلالة في '.now('Asia/Muscat')->day.' '.['', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'][now('Asia/Muscat')->month].' '.now('Asia/Muscat')->year.' /العُمانية/ استقبل مطار صلالة اليوم أولى رحلات الطيران العارض المباشرة.</p>'
+            .'<p>وتأتي الرحلات ضمن خطة لتنشيط السياحة في محافظة ظفار خلال الموسم.</p></div></body></html>', 200, ['Content-Type' => 'text/html'])]);
+
+        $this->suggest(['url' => 'https://omannews.gov.om/topics/ar/1/show/77', 'category' => 'economy'])->assertStatus(202);
+
+        $this->assertSame(0, OmanPulseItem::query()->count());
+        $this->assertSame('failed', NewsSuggestion::query()->value('status'));
+        $this->assertStringContainsString('التقنية فقط', NewsSuggestion::query()->value('status_note'));
     }
 }

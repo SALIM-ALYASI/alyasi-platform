@@ -71,6 +71,15 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
             return;
         }
 
+        // هدف ALYASI النشر التقني: نبض عُمان يقبل التقنية والأمن السيبراني والتحول
+        // الرقمي فقط (قرار سالم، 28 أكتوبر). الاقتصاد والمجتمع والخدمات العامة تنرفض.
+        $tag = $this->techTag($suggestion->category, $page['title'].' '.$page['paragraphs'][0]);
+        if ($tag === null) {
+            $this->finish($suggestion, 'failed', 'خارج نطاق نبض عُمان: الأخبار التقنية فقط');
+
+            return;
+        }
+
         if ($duplicate = $this->similarRecentItem($page['title'])) {
             $this->finish($suggestion, 'duplicate', 'نفس خبر نبض عُمان #'.$duplicate->id);
 
@@ -102,7 +111,7 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
             'source_url_hash' => $suggestion->url_hash,
             'source_published_at' => $publishedAt,
             'image' => $page['image'] ? $this->storeImage($page['image']) : null,
-            'tag' => $this->tag($suggestion->category, $page['title'].' '.$page['paragraphs'][0]),
+            'tag' => $tag,
             'status' => 'published',
         ]);
 
@@ -173,18 +182,20 @@ class ProcessOmanPulseSuggestion implements ShouldQueue
             });
     }
 
-    private function tag(?string $category, string $text): string
+    /**
+     * تصنيف تقني أو null: تصنيف Grok لو تقني، وإلا من نص الخبر نفسه
+     * (Grok أحيانًا يصنّف خدمة رقمية أو اتفاقية أقمار صناعية «خدمات/اقتصاد»).
+     */
+    private function techTag(?string $category, string $text): ?string
     {
-        if ($category && array_key_exists($category, OmanPulseItem::TAGS)) {
+        if (in_array($category, ['tech', 'cyber'], true)) {
             return $category;
         }
 
         return match (true) {
-            (bool) preg_match('/سيبران|اختراق|احتيال/u', $text) => 'cyber',
-            (bool) preg_match('/رقمي|تقني|ذكاء اصطناعي|اتصالات|إلكتروني|منصة/u', $text) => 'tech',
-            (bool) preg_match('/اقتصاد|استثمار|تمويل|ميزانية|صادرات/u', $text) => 'economy',
-            (bool) preg_match('/خدمة|خدمات|تراخيص|إجراءات/u', $text) => 'services',
-            default => 'society',
+            (bool) preg_match('/سيبران|اختراق|احتيال إلكتروني|برمجيات خبيثة|تصيّد/u', $text) => 'cyber',
+            (bool) preg_match('/رقمي|رقمن|تقني|تقنية المعلومات|ذكاء اصطناعي|الذكاء الاصطناعي|اتصالات|إلكترونيًا|إلكتروني|أقمار صناعية|الأقمار الصناعية|فضائي|بيانات|برمجي|الثورة الصناعية الرابعة|الصناعة الذكية|إنترنت|سحابي/u', $text) => 'tech',
+            default => null,
         };
     }
 
