@@ -232,4 +232,33 @@ class OmanPulseTest extends TestCase
         $this->assertSame(1, OmanPulseItem::query()->count());
         $this->assertSame(1, NewsSuggestion::query()->count());
     }
+
+    public function test_items_without_a_card_are_listed_for_the_home_server(): void
+    {
+        $item = OmanPulseItem::query()->create([
+            'title' => 'خبر تقني عُماني', 'lead' => 'مسقط في 28 أكتوبر /العُمانية/ أطلقت الوزارة منصة رقمية جديدة. وتهدف المنصة إلى تسهيل الخدمات.',
+            'paragraphs' => [], 'source_name' => 'وكالة الأنباء العُمانية', 'source_url' => 'https://omannews.gov.om/topics/ar/3/show/1/',
+            'source_url_hash' => 'h1', 'image' => 'uploads/oman-pulse/a.jpg', 'tag' => 'tech', 'status' => 'published',
+        ]);
+        OmanPulseItem::query()->create(['title' => 'بدون صورة', 'lead' => 'x', 'paragraphs' => [], 'source_name' => 'وكالة', 'source_url' => 'https://omannews.gov.om/2', 'source_url_hash' => 'h2', 'tag' => 'tech', 'status' => 'published']);
+
+        $this->getJson('/api/oman-pulse/pending-cards')->assertUnauthorized();
+
+        $data = $this->withToken('bot-secret')->getJson('/api/oman-pulse/pending-cards')->assertOk()->json('data');
+        $this->assertCount(1, $data);
+        $this->assertSame('أطلقت الوزارة منصة رقمية جديدة. وتهدف المنصة إلى تسهيل الخدمات.', $data[0]['summary']);
+        $this->assertStringEndsWith('/news/oman/'.$item->id, $data[0]['page_url']);
+
+        \App\Models\NewsCard::query()->create(['source_type' => 'oman_pulse', 'source_id' => $item->id, 'title_ar' => 'x', 'url' => 'https://alyasi.dev/news/oman/'.$item->id, 'image_ar' => 'uploads/news-cards/x.png', 'text_x' => 'x']);
+        $this->assertCount(0, $this->withToken('bot-secret')->getJson('/api/oman-pulse/pending-cards')->json('data'));
+    }
+
+    public function test_card_summary_ends_on_a_whole_sentence(): void
+    {
+        $lead = 'مسقط في 1 /العُمانية/ '.str_repeat('جملة أولى طويلة نسبيًا عن التقنية. ', 10).'جملة أخيرة';
+        $summary = \App\Http\Controllers\Api\OmanPulseSocialController::summary($lead);
+        $this->assertLessThanOrEqual(260, mb_strlen($summary));
+        $this->assertStringEndsWith('.', $summary);
+        $this->assertStringStartsWith('جملة أولى', $summary);
+    }
 }

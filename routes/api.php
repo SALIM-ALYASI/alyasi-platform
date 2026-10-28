@@ -89,6 +89,11 @@ Route::post('news-cards', [\App\Http\Controllers\Api\NewsCardController::class, 
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news-cards.store');
 
+// نبض عُمان: الأخبار اللي تحتاج بطاقة نشر (سيرفر البيت يسوّيها وينشرها).
+Route::get('oman-pulse/pending-cards', [\App\Http\Controllers\Api\OmanPulseSocialController::class, 'pending'])
+    ->middleware(['news-bot.auth', 'throttle:30,1'])
+    ->name('api.oman-pulse.pending-cards');
+
 Route::get('news-cards/pending', [\App\Http\Controllers\Api\NewsCardController::class, 'pending'])
     ->middleware(['news-suggester.auth', 'throttle:30,1'])
     ->name('api.news-cards.pending');
