@@ -650,6 +650,7 @@ Route::prefix('/tools/voice/{token}')
         Route::get('/notes/{uuid}/audio', 'audio')->middleware('throttle:60,1')->name('audio');
         Route::post('/notes/{uuid}/text', 'saveText')->middleware('throttle:30,1')->name('text');
         Route::post('/notes/{uuid}/retry', 'retry')->middleware('throttle:20,1')->name('retry');
+        Route::delete('/notes/{uuid}', 'destroy')->middleware('throttle:30,1')->name('destroy');
         Route::post('/dictionary', 'addTerm')->middleware('throttle:30,1')->name('dictionary.add');
         Route::delete('/dictionary/{entry}', 'removeTerm')->middleware('throttle:30,1')->name('dictionary.remove');
     });

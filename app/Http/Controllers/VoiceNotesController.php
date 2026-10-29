@@ -120,6 +120,17 @@ class VoiceNotesController extends Controller
         return response()->json(['success' => true, 'learned' => $learned, 'note' => $note->toPublic()]);
     }
 
+    /** سالم يحذف ملاحظة: السجل والتسجيل من السيرفر (وتطلع من مادة التدريب). */
+    public function destroy(string $token, string $uuid): JsonResponse
+    {
+        $this->guard($token);
+        $note = VoiceNote::where('uuid', $uuid)->firstOrFail();
+        Storage::disk(self::DISK)->delete($note->original_path);
+        $note->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     public function retry(string $token, string $uuid): JsonResponse
     {
         $this->guard($token);

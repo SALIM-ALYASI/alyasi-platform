@@ -59,6 +59,8 @@
         .actions { display: flex; gap: 8px; flex-wrap: wrap; }
         .actions button, .chip-btn { font: 600 13.5px/1 var(--ui); color: var(--silver); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
         .actions .primary { background: var(--teal); color: #03141a; border-color: transparent; }
+        .del { font: 600 12.5px/1 var(--ui); color: var(--muted); background: none; border: 0; padding: 6px 2px; cursor: pointer; }
+        .del:hover { color: var(--red); }
         .learn { background: rgba(11, 185, 203, .07); border: 1px solid rgba(11, 185, 203, .3); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: 14px; }
         .learn label { display: flex; gap: 8px; align-items: center; }
         .learn s { color: var(--warn); } .learn b { color: var(--ok); font-weight: 600; }
@@ -275,7 +277,13 @@
             const el = document.createElement('div');
             el.className = 'note';
             el.dataset.id = n.id;
-            el.innerHTML = '<div class="meta"><span>' + esc(n.created_at) + (n.duration ? ' · ' + Math.round(n.duration) + ' ث' : '') + (n.language === 'en' ? ' · English' : '') + '</span><span class="badge ' + cls + '">' + label + (n.approved ? ' · 🎯 درس' : '') + '</span></div>';
+            el.innerHTML = '<div class="meta"><span><button type="button" class="del" aria-label="احذف الملاحظة">🗑 حذف</button> ' + esc(n.created_at) + (n.duration ? ' · ' + Math.round(n.duration) + ' ث' : '') + (n.language === 'en' ? ' · English' : '') + '</span><span class="badge ' + cls + '">' + label + (n.approved ? ' · 🎯 درس' : '') + '</span></div>';
+            el.querySelector('.del').addEventListener('click', async (e) => {
+                if (!confirm('تحذف هذي الملاحظة وتسجيلها؟ ما ترجع بعد الحذف.')) return;
+                e.target.disabled = true;
+                try { await api('/notes/' + n.id, { method: 'DELETE' }); notes = notes.filter((x) => x.id !== n.id); delete drafts[n.id]; el.remove(); refresh(); }
+                catch (err) { e.target.disabled = false; setStatus('ما انحذفت: ' + err.message, 'err'); }
+            });
             if (n.status === 'done') {
                 const ta = document.createElement('textarea');
                 ta.value = drafts[n.id] ?? n.text ?? '';

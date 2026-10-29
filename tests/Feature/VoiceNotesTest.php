@@ -84,6 +84,18 @@ class VoiceNotesTest extends TestCase
         $this->getJson('/api/cj/agent/voice/dataset', $this->agent())->assertJsonPath('items.0.text', 'منصة الياسي للأمن');
     }
 
+    public function test_owner_can_delete_a_note_and_its_audio(): void
+    {
+        $this->post($this->base().'/notes', ['audio' => $this->audio(), 'take_id' => 'take-5555-eeee'])->assertOk();
+        $path = VoiceNote::first()->original_path;
+        Storage::disk('local')->assertExists($path);
+
+        $this->deleteJson('/tools/voice/'.str_repeat('b', 24).'/notes/take-5555-eeee')->assertNotFound();
+        $this->deleteJson($this->base().'/notes/take-5555-eeee')->assertOk();
+        $this->assertSame(0, VoiceNote::count());
+        Storage::disk('local')->assertMissing($path);
+    }
+
     public function test_failed_note_retries_then_stops(): void
     {
         $this->post($this->base().'/notes', ['audio' => $this->audio(), 'take_id' => 'take-4444-dddd'])->assertOk();
