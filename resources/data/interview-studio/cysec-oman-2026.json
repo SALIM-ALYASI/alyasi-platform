@@ -1,0 +1,192 @@
+{
+  "event": {
+    "slug": "cysec-oman-2026",
+    "name": "CYSEC OMAN 2026",
+    "date_ar": "الخميس 19 نوفمبر 2026",
+    "date_en": "Thursday, 19 November 2026",
+    "venue_ar": "فندق شيراتون عُمان · مسقط",
+    "venue_en": "Sheraton Oman Hotel · Muscat",
+    "coverage_url": "https://alyasi.dev/events/cysec-oman-2026"
+  },
+  "closes_at": "2026-12-19T00:00:00+04:00",
+  "quick": [
+    {
+      "id": "intro",
+      "label_ar": "التعريف بنفسي",
+      "label_en": "Introduction",
+      "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي لمؤتمر CYSEC عُمان 2026. أسئلتي بصوتي المسجّل، ويسعدني الحديث معك.",
+      "en": "Hello, I'm Salem Al Hajri from ALYASI, the media partner of CYSEC Oman 2026. My questions are pre-recorded in my own voice. It's a pleasure to talk with you.",
+      "audio": "intro"
+    },
+    {
+      "id": "thanks",
+      "label_ar": "شكرًا لك",
+      "label_en": "Thank you",
+      "ar": "شكرًا جزيلًا على وقتك وإجاباتك القيّمة.",
+      "en": "Thank you very much for your time and your valuable answers.",
+      "audio": "thanks"
+    },
+    {
+      "id": "closing",
+      "label_ar": "الختام",
+      "label_en": "Closing",
+      "ar": "كانت هذه مقابلة خاصة لمنصة الياسي من مؤتمر CYSEC عُمان. شكرًا لكم، وإلى اللقاء.",
+      "en": "This was an exclusive ALYASI interview from CYSEC Oman. Thank you, and goodbye.",
+      "audio": "closing"
+    }
+  ],
+  "extra": {
+    "id": "fraud-platform",
+    "topic_ar": "منصة وطنية للتحقق من بلاغات الاحتيال",
+    "topic_en": "A national platform to verify fraud reports",
+    "ar": "مع تزايد الاحتيال عبر المكالمات والرسائل والبريد الإلكتروني، هل يمكن إنشاء منصة وطنية تتيح للمستخدمين الإبلاغ عن الأرقام والرسائل المشبوهة والتحقق منها؟ وما الضوابط التي تمنع البلاغات الكيدية وتحمي من يبلّغ بحسن نية، بما يضمن حقوق المستخدمين وأصحاب الأعمال؟",
+    "en": "With the rise in fraud through phone calls, messages, and emails, could Oman establish a national platform where users can report and verify suspicious phone numbers and messages? What safeguards would prevent malicious reports, protect those reporting in good faith, and ensure fairness for both consumers and businesses?",
+    "audio": "fraud-platform"
+  },
+  "guests": [
+    {
+      "id": "talal",
+      "name_ar": "د. طلال السعدي",
+      "name_en": "Dr. Talal Al-Saadi",
+      "gender": "m",
+      "role_ar": "مدير بمكتب وكيل الوزارة (التحول الرقمي وحوكمة الذكاء الاصطناعي) — وزارة الداخلية",
+      "role_en": "Director, Undersecretary's Office (Digital Transformation & AI Governance) — Ministry of Interior",
+      "questions": [
+        {
+          "ar": "في البداية، نرحب بك في منصة الياسي. هل يمكنك تعريف جمهورنا بنفسك وبطبيعة عملك؟",
+          "en": "To begin, welcome to ALYASI. Could you introduce yourself to our audience and tell us about your role?",
+          "audio": "talal-q1"
+        },
+        {
+          "ar": "ما أبرز التحديات الأمنية التي تواجه التحول الرقمي في المؤسسات الحكومية بسلطنة عُمان؟",
+          "en": "What are the main cybersecurity challenges facing digital transformation in Oman's government institutions?",
+          "audio": "talal-q2"
+        },
+        {
+          "ar": "كيف يمكن لحوكمة الذكاء الاصطناعي أن تسهم في حماية بيانات المواطنين وتعزيز الثقة بالخدمات الحكومية الرقمية؟",
+          "en": "How can AI governance help protect citizens' data and strengthen trust in digital government services?",
+          "audio": "talal-q3"
+        },
+        {
+          "ar": "مع انتشار الرسائل والمكالمات التي تنتحل صفة الجهات الحكومية، كيف يستطيع المواطن التمييز بين التواصل الرسمي ومحاولات الاحتيال؟",
+          "en": "With the rise of messages and calls impersonating government entities, how can citizens distinguish official communications from scams?",
+          "audio": "talal-q4"
+        },
+        {
+          "ar": "هل ترى إمكانية إنشاء منصة وطنية للإبلاغ عن الأرقام والرسائل المشبوهة والتحقق منها؟ وكيف يمكن حماية المبلّغين بحسن نية ومنع إساءة استخدام المنصة عبر البلاغات الكيدية؟",
+          "en": "Do you see potential for a national platform to report and verify suspicious phone numbers and messages? How could it protect good-faith reporters while preventing malicious or false reports?",
+          "audio": "talal-q5"
+        }
+      ],
+      "extra": false
+    },
+    {
+      "id": "barwani",
+      "name_ar": "عبدالله البرواني",
+      "name_en": "Abdullah Al-Barwani",
+      "gender": "m",
+      "role_ar": "مسؤول تنفيذي في تقنيات المؤسسات والأمن السيبراني — عُمانتل",
+      "role_en": "Strategic Enterprise Technology & Cybersecurity Executive — Omantel",
+      "questions": [
+        {
+          "ar": "في البداية، هل يمكنك تعريف جمهور الياسي بنفسك وبطبيعة مسؤولياتك في عُمانتل؟",
+          "en": "To begin, could you introduce yourself to ALYASI's audience and explain your responsibilities at Omantel?",
+          "audio": "barwani-q1"
+        },
+        {
+          "ar": "ما أبرز أساليب الاحتيال الإلكتروني التي تستهدف مستخدمي خدمات الاتصالات اليوم؟",
+          "en": "What are the most common cyber fraud methods targeting telecommunications users today?",
+          "audio": "barwani-q2"
+        },
+        {
+          "ar": "كيف يمكن لشركات الاتصالات المساعدة في الحد من المكالمات والرسائل الاحتيالية مع المحافظة على خصوصية المشتركين؟",
+          "en": "How can telecom operators help reduce fraudulent calls and messages while protecting subscribers' privacy?",
+          "audio": "barwani-q3"
+        },
+        {
+          "ar": "إذا ضغط المستخدم على رابط احتيالي أو أدخل بياناته في موقع مزيف، ما أول إجراء يجب عليه اتخاذه؟",
+          "en": "If a user clicks a phishing link or enters personal information on a fake website, what should they do first?",
+          "audio": "barwani-q4"
+        },
+        {
+          "ar": "كيف يمكن الاستفادة من الذكاء الاصطناعي لاكتشاف محاولات الاحتيال مبكرًا وحماية المؤسسات والعملاء؟",
+          "en": "How can AI be used to detect fraud attempts early and protect businesses and customers?",
+          "audio": "barwani-q5"
+        }
+      ],
+      "extra": true
+    },
+    {
+      "id": "maain",
+      "name_ar": "معين الراشدي",
+      "name_en": "Maain Al Rashdi",
+      "gender": "m",
+      "role_ar": "استشاري أول للأمن السيبراني والحوكمة والاستراتيجية — تنمية نفط عُمان",
+      "role_en": "Senior Cybersecurity Consultant, Governance & Strategy — Petroleum Development Oman",
+      "questions": [
+        {
+          "ar": "في البداية، هل يمكنك تعريف جمهور الياسي بنفسك ودورك في مجال الأمن السيبراني بقطاع الطاقة؟",
+          "en": "To begin, could you introduce yourself to ALYASI's audience and explain your role in cybersecurity within the energy sector?",
+          "audio": "maain-q1"
+        },
+        {
+          "ar": "ما أبرز المخاطر السيبرانية التي تواجه قطاع النفط والغاز في ظل التحول الرقمي المتسارع؟",
+          "en": "What are the main cybersecurity risks facing the oil and gas industry amid rapid digital transformation?",
+          "audio": "maain-q2"
+        },
+        {
+          "ar": "كيف يمكن حماية أنظمة التشغيل والتحكم الصناعية من الهجمات الإلكترونية دون التأثير في استمرارية الإنتاج؟",
+          "en": "How can industrial operational and control systems be protected against cyberattacks without disrupting production?",
+          "audio": "maain-q3"
+        },
+        {
+          "ar": "كيف يمكن للذكاء الاصطناعي أن يساعد في الكشف المبكر عن التهديدات التي تستهدف البنية التحتية الحيوية؟",
+          "en": "How can AI help detect cyber threats targeting critical infrastructure at an early stage?",
+          "audio": "maain-q4"
+        },
+        {
+          "ar": "ما المهارات التي تنصح الشباب العُماني بتطويرها للعمل في الأمن السيبراني الصناعي وقطاع الطاقة؟",
+          "en": "What skills would you recommend Omani youth develop to pursue careers in industrial cybersecurity and the energy sector?",
+          "audio": "maain-q5"
+        }
+      ],
+      "extra": true
+    },
+    {
+      "id": "majid",
+      "name_ar": "ماجد القاسمي",
+      "name_en": "Majid Al Qasmi",
+      "gender": "m",
+      "role_ar": "خبير أول في تقنية المعلومات وأمن المعلومات — وزارة الاقتصاد",
+      "role_en": "Senior Expert, IT & Information Security — Ministry of Economy",
+      "questions": [
+        {
+          "ar": "في البداية، هل يمكنك تعريف جمهور الياسي بنفسك وطبيعة عملك في وزارة الاقتصاد؟",
+          "en": "To begin, could you introduce yourself to ALYASI's audience and tell us about your work at the Ministry of Economy?",
+          "audio": "majid-q1"
+        },
+        {
+          "ar": "كيف يسهم الأمن السيبراني في بناء اقتصاد رقمي موثوق يدعم مستهدفات رؤية عُمان 2040؟",
+          "en": "How does cybersecurity contribute to building a trusted digital economy that supports Oman Vision 2040?",
+          "audio": "majid-q2"
+        },
+        {
+          "ar": "ما أبرز التحديات الأمنية التي تواجه الشركات الصغيرة والمتوسطة عند التحول إلى الخدمات الرقمية؟",
+          "en": "What are the main cybersecurity challenges facing small and medium-sized enterprises as they adopt digital services?",
+          "audio": "majid-q3"
+        },
+        {
+          "ar": "كيف يمكن لرواد الأعمال تحقيق التوازن بين تكلفة الأمن السيبراني والابتكار والنمو؟",
+          "en": "How can entrepreneurs balance cybersecurity costs with innovation and business growth?",
+          "audio": "majid-q4"
+        },
+        {
+          "ar": "ما الفرص التي تراها أمام الشباب ورواد الأعمال العُمانيين لتطوير حلول أمن سيبراني محلية؟",
+          "en": "What opportunities do you see for Omani youth and entrepreneurs to develop locally built cybersecurity solutions?",
+          "audio": "majid-q5"
+        }
+      ],
+      "extra": true
+    }
+  ]
+}

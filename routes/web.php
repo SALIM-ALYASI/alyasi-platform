@@ -624,6 +624,15 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
+// استوديو المقابلات (أي مؤتمر): رابط خاص لكل ضيف ورابط لوضع المضيف (رمز HMAC).
+Route::get('/tools/interviews/{event}/{token}', [\App\Http\Controllers\InterviewStudioController::class, 'show'])
+    ->middleware('throttle:60,1')
+    ->name('tools.interview-studio');
+
+Route::post('/tools/interviews/{event}/{token}/answers', [\App\Http\Controllers\InterviewStudioController::class, 'storeAnswer'])
+    ->middleware('throttle:30,1')
+    ->name('tools.interview-studio.answers');
+
 Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
     ->name('tools.cyberx-interview');
 
