@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\VoiceNotesController;
+use App\Models\Article;
 use App\Models\VoiceDictionaryEntry;
 use App\Models\VoiceNote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -94,6 +95,26 @@ class VoiceNotesTest extends TestCase
         $this->deleteJson($this->base().'/notes/take-5555-eeee')->assertOk();
         $this->assertSame(0, VoiceNote::count());
         Storage::disk('local')->assertMissing($path);
+    }
+
+    public function test_read_and_record_saves_a_lesson_and_feeds_the_prompt(): void
+    {
+        Article::query()->create([
+            'title_ar' => 'مقال',
+            'status' => 'published',
+            'published_at' => now()->subDay(),
+            'content_ar' => '<p>هذه جملة عربية طويلة بما يكفي لتكون تمرين قراءة مفيد. قصيرة.</p><p>Visit https://example.com now please for more words here.</p>',
+        ]);
+        $sentences = $this->getJson($this->base().'/script')->assertOk()->json('sentences');
+        $this->assertSame(['هذه جملة عربية طويلة بما يكفي لتكون تمرين قراءة مفيد.'], $sentences);
+
+        $this->post($this->base().'/notes', ['audio' => $this->audio(), 'take_id' => 'take-6666-ffff', 'script' => $sentences[0]])->assertOk();
+        $note = VoiceNote::first();
+        $this->assertNotNull($note->approved_at);
+        $this->assertSame($sentences[0], $note->edited_text);
+
+        $prompt = $this->getJson('/api/cj/agent/voice/next', $this->agent())->json('note.prompt');
+        $this->assertStringEndsWith($sentences[0], $prompt);
     }
 
     public function test_failed_note_retries_then_stops(): void

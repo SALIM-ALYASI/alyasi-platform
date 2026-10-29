@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\VoiceDictionaryEntry;
 use App\Models\VoiceNote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -59,6 +61,8 @@ class VoiceNotesController extends Controller
             'audio' => ['required', 'file', 'max:'.self::MAX_UPLOAD_KB],
             'take_id' => ['required', 'string', 'regex:/^[A-Za-z0-9-]{8,64}$/'],
             'language' => ['nullable', 'in:ar,en'],
+            // «اقرأ وسجّل»: الجملة المكتوبة اللي قرأها = النص الصحيح، فالملاحظة درس من البداية.
+            'script' => ['nullable', 'string', 'max:600'],
         ]);
 
         // نفس التسجيل وصل قبل (إعادة إرسال بعد انقطاع): نرجّع نفس الملاحظة.
@@ -82,9 +86,39 @@ class VoiceNotesController extends Controller
             'original_path' => $path,
             'mime_type' => $mime,
             'size_bytes' => $file->getSize(),
+            'edited_text' => filled($input['script'] ?? null) ? trim($input['script']) : null,
+            'approved_at' => filled($input['script'] ?? null) ? now() : null,
         ]);
 
         return response()->json(['success' => true, 'note' => $note->toPublic()]);
+    }
+
+    /**
+     * جمل «اقرأ وسجّل»: من مقالات سالم المنشورة (أسلوبه ومصطلحاته)، 6–24 كلمة،
+     * بترتيب ثابت عشان الصفحة تكمل من آخر جملة.
+     */
+    public function script(string $token): JsonResponse
+    {
+        $this->guard($token);
+
+        $sentences = Cache::remember('voice-notes:script:v1', now()->addHours(6), function () {
+            $out = [];
+            foreach (Article::where('status', Article::STATUS_PUBLISHED)->orderBy('id')->get(['content_ar']) as $article) {
+                $text = html_entity_decode(strip_tags(str_replace(['</p>', '</li>', '</h2>', '</h3>', '<br>'], "\n", (string) $article->content_ar)), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                foreach (preg_split('/(?<=[.!؟?])\s+|\n+/u', $text) ?: [] as $sentence) {
+                    $sentence = trim(preg_replace('/\s+/u', ' ', $sentence) ?? '');
+                    $words = $sentence === '' ? 0 : count(preg_split('/\s+/u', $sentence));
+                    if ($words < 6 || $words > 24 || preg_match('#https?://|[a-zA-Z]{4,}#', $sentence) || isset($out[$sentence])) {
+                        continue;
+                    }
+                    $out[$sentence] = true;
+                }
+            }
+
+            return array_slice(array_keys($out), 0, 400);
+        });
+
+        return response()->json(['sentences' => $sentences]);
     }
 
     public function audio(string $token, string $uuid): StreamedResponse

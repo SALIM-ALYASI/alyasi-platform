@@ -62,6 +62,7 @@
         .rec.is-recording { background: var(--danger); color: #fff; animation: pulse 1.4s ease-in-out infinite; }
         @keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(192, 57, 43, .18); } }
         @media (prefers-reduced-motion: reduce) { .rec.is-recording { animation: none; } }
+        .actions .is-recording { background: var(--danger); color: #fff; }
         .ghost { background: var(--surface-2); color: var(--text); font-size: 15px; padding: 12px; }
         .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
         .timer { font: 700 15px/1 var(--ui); font-variant-numeric: tabular-nums; }
@@ -118,6 +119,13 @@
         <div class="row"><b>🎯 يتعلّم من صوتك</b><span class="badge" id="train-label">0 من 30 دقيقة</span></div>
         <div style="height:8px; background:var(--surface-2); border-radius:99px; overflow:hidden"><div id="train-bar" style="height:100%; width:0; background:linear-gradient(90deg, var(--primary-2), var(--ok))"></div></div>
         <p class="sub" style="margin:0" id="train-note">كل ملاحظة تصحّح نصها وتضغط «حفظ» تصير درس: صوتك مع النص الصحيح. لما توصل 30 دقيقة، ندرّب نسخة من النموذج على نطقك أنت.</p>
+    </section>
+
+    <section class="card" id="read">
+        <div class="row"><b>📖 اقرأ وسجّل</b><span class="badge" id="read-count"></span></div>
+        <p class="sub" style="margin:0">أسرع طريقة يتعلّم صوتك: اقرأ الجملة بصوتك الطبيعي، وتنحفظ درس بنصها الصحيح بدون ما تعدّل شي.</p>
+        <p id="read-text" style="margin:0; font-size:20px; line-height:1.9; font-weight:600">…</p>
+        <div class="actions"><button type="button" class="primary" id="read-rec" style="flex:1; padding:14px; font-size:16px">🎙 اقرأ الجملة</button><button type="button" id="read-skip">تخطّ</button></div>
     </section>
 
     <section id="notes" style="display:grid; gap:12px"></section>
@@ -192,6 +200,7 @@
                 body.append('audio', t.blob, t.name || ('note.' + ext));
                 body.append('take_id', t.id);
                 body.append('language', t.language);
+                if (t.script) body.append('script', t.script);
                 try {
                     await api('/notes', { method: 'POST', body });
                     await outbox.del(t.id);
@@ -213,11 +222,12 @@
 
     // ---- التسجيل
     const mimeType = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'].find((t) => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
-    let rec = null, stream = null, chunks = [], timer = null, started = 0;
-    async function startRec() {
+    let rec = null, stream = null, chunks = [], timer = null, started = 0, recBtn = null, recScript = null;
+    // زر الكلام الحر وزر «اقرأ وسجّل» يستخدمون نفس المسجّل؛ script = الجملة المكتوبة.
+    async function startRec(btn, script, onDone) {
         try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
         catch (e) { setStatus('ما قدرنا نوصل للمايك. اسمح للمتصفح باستخدامه وحاول مرة ثانية.', 'err'); return; }
-        chunks = [];
+        chunks = []; recBtn = btn; recScript = script || null;
         rec = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
         rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
         rec.onstop = async () => {
@@ -225,19 +235,39 @@
             stream.getTracks().forEach((t) => t.stop());
             const blob = new Blob(chunks, { type: rec.mimeType || 'audio/webm' });
             rec = null;
-            $('rec').textContent = '🎙 ابدأ الكلام'; $('rec').classList.remove('is-recording');
+            recBtn.textContent = recBtn.dataset.idle; recBtn.classList.remove('is-recording');
             if (blob.size < 1000) { setStatus('التسجيل قصير جدًا.', 'err'); return; }
-            await outbox.put({ id: newId(), blob, language: lang, at: Date.now() });
-            setStatus('⬆️ يترفع…');
+            await outbox.put({ id: newId(), blob, language: lang, script: recScript, at: Date.now() });
+            setStatus(recScript ? '✓ انحفظت الجملة درس. اقرأ اللي بعدها.' : '⬆️ يترفع…', recScript ? 'ok' : '');
+            if (onDone) onDone();
             flush();
         };
         rec.start(1000);
         started = Date.now();
-        $('rec').textContent = '⏹ وقّف وحوّل لنص'; $('rec').classList.add('is-recording');
-        setStatus('🔴 أسمعك…');
+        btn.textContent = btn.dataset.stop; btn.classList.add('is-recording');
+        if (!script) setStatus('🔴 أسمعك…');
         timer = setInterval(() => { const s = Math.floor((Date.now() - started) / 1000); $('timer').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 500);
     }
-    $('rec').addEventListener('click', () => (rec && rec.state === 'recording' ? rec.stop() : startRec()));
+    $('rec').dataset.idle = '🎙 ابدأ الكلام'; $('rec').dataset.stop = '⏹ وقّف وحوّل لنص';
+    $('rec').addEventListener('click', () => (rec && rec.state === 'recording' ? rec.stop() : startRec($('rec'))));
+
+    // ---- «اقرأ وسجّل»: جملة من مقالاتك ← تقرأها ← تنحفظ درس بنصها الصحيح.
+    let sentences = [], sIdx = Number(pref.get('script-idx')) || 0;
+    const showSentence = () => {
+        if (!sentences.length) { $('read-text').textContent = 'ما في جمل متاحة الحين.'; return; }
+        sIdx = sIdx % sentences.length;
+        $('read-text').textContent = sentences[sIdx];
+        $('read-count').textContent = 'جملة ' + (sIdx + 1) + ' من ' + sentences.length;
+        pref.set('script-idx', String(sIdx));
+    };
+    $('read-rec').dataset.idle = '🎙 اقرأ الجملة'; $('read-rec').dataset.stop = '⏹ خلصت';
+    $('read-rec').addEventListener('click', () => {
+        if (rec && rec.state === 'recording') { rec.stop(); return; }
+        if (!sentences.length) return;
+        startRec($('read-rec'), sentences[sIdx], () => { sIdx++; showSentence(); });
+    });
+    $('read-skip').addEventListener('click', () => { if (rec) return; sIdx++; showSentence(); });
+    api('/script').then((out) => { sentences = out.sentences || []; showSentence(); }).catch(() => {});
     window.addEventListener('beforeunload', (e) => { if (rec && rec.state === 'recording') { e.preventDefault(); e.returnValue = ''; } });
 
     $('pick').addEventListener('click', () => $('file').click());

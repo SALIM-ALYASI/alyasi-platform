@@ -646,6 +646,7 @@ Route::prefix('/tools/voice/{token}')
     ->group(function () {
         Route::get('/', 'show')->middleware('throttle:60,1')->name('show');
         Route::get('/notes', 'index')->middleware('throttle:60,1')->name('index');
+        Route::get('/script', 'script')->middleware('throttle:30,1')->name('script');
         Route::post('/notes', 'store')->middleware('throttle:30,1')->name('store');
         Route::get('/notes/{uuid}/audio', 'audio')->middleware('throttle:60,1')->name('audio');
         Route::post('/notes/{uuid}/text', 'saveText')->middleware('throttle:30,1')->name('text');

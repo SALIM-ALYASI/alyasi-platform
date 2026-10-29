@@ -56,13 +56,27 @@ class VoiceDictionaryEntry extends Model
 
         $out = $base;
         foreach ($terms as $term) {
-            if (mb_strlen($out) + mb_strlen($term) + 2 > 600) {
+            if (mb_strlen($out) + mb_strlen($term) + 2 > 300) {
                 break;
             }
             $out .= ($language === 'en' ? ', ' : '، ').$term;
         }
 
-        return $out;
+        // جمل أكّدها سالم (الأحدث آخر، لأن آخر الـ prompt أقوى أثر): النموذج يتعوّد
+        // على كلامه وأسلوبه، مب بس على كلمات منفصلة.
+        $sentences = VoiceNote::whereNotNull('approved_at')->where('language', $language)
+            ->whereNotNull('edited_text')->latest('approved_at')->limit(20)->pluck('edited_text')
+            ->map(fn ($t) => trim(preg_replace('/\s+/u', ' ', (string) $t) ?? ''))
+            ->filter(fn ($t) => $t !== '' && mb_strlen($t) <= 200)->values();
+        $tail = '';
+        foreach ($sentences as $sentence) {
+            if (mb_strlen($out) + mb_strlen($tail) + mb_strlen($sentence) + 1 > 700) {
+                break;
+            }
+            $tail = $sentence.' '.$tail;
+        }
+
+        return trim($out.' '.$tail);
     }
 
     /** @return list<array{0: string, 1: string}> */
