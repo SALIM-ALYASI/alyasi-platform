@@ -110,14 +110,14 @@ class VoiceNotesController extends Controller
 
         // حفظ النص = سالم أكّد إنه صحيح، فيصير درس (صوته + النص الصحيح) لتدريب النموذج.
         $note->update(['edited_text' => $input['text'], 'approved_at' => now()]);
-        $learned = 0;
+        $learned = [];
         foreach ($input['learn'] ?? [] as $pair) {
-            if (VoiceDictionaryEntry::remember(VoiceDictionaryEntry::CORRECTION, $note->language, $pair['wrong'], $pair['right'])) {
-                $learned++;
+            if ($entry = VoiceDictionaryEntry::remember(VoiceDictionaryEntry::CORRECTION, $note->language, $pair['wrong'], $pair['right'])) {
+                $learned[] = $entry->only(['id', 'wrong', 'right']);
             }
         }
 
-        return response()->json(['success' => true, 'learned' => $learned, 'note' => $note->toPublic()]);
+        return response()->json(['success' => true, 'learned' => count($learned), 'entries' => $learned, 'note' => $note->toPublic()]);
     }
 
     /** سالم يحذف ملاحظة: السجل والتسجيل من السيرفر (وتطلع من مادة التدريب). */

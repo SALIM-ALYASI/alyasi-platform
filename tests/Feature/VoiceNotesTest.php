@@ -74,7 +74,7 @@ class VoiceNotesTest extends TestCase
         $this->postJson($this->base().'/notes/take-3333-cccc/text', [
             'text' => 'منصة الياسي للأمن',
             'learn' => [['wrong' => 'الياسر', 'right' => 'الياسي']],
-        ])->assertOk()->assertJsonPath('learned', 1);
+        ])->assertOk()->assertJsonPath('learned', 1)->assertJsonPath('entries.0.right', 'الياسي');
 
         $note = VoiceNote::first();
         $this->assertNotNull($note->approved_at);

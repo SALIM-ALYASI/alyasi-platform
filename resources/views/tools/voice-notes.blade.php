@@ -7,67 +7,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#050b17">
+    <meta name="theme-color" content="#0B1F3A">
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('alyasi-theme');
+                var theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.dataset.theme = theme;
+            } catch (e) { document.documentElement.dataset.theme = 'light'; }
+        })();
+    </script>
     <title>صوتي — ALYASI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
     <style>
+        /* ألوان منصة ALYASI (public/css/shared/tokens.css + theme.css) */
         :root {
-            color-scheme: dark;
-            --bg: #050b17; --surface: #0b1830; --surface-2: #11223f; --line: rgba(160, 190, 230, .14);
-            --text: #eef3fa; --muted: #9bb0c9; --teal: #0bb9cb; --red: #f33829; --silver: #c9d4e3; --ok: #3ccf8e; --warn: #f6b54d;
+            color-scheme: light;
+            --bg: #F7F8FA; --surface: #FFFFFF; --surface-2: #ECEFF3; --line: rgba(20, 32, 46, .12);
+            --text: #14202E; --muted: #6E6E73; --primary: #0B1F3A; --primary-2: #2C4A7C; --on-primary: #FFFFFF;
+            --field: #FFFFFF; --ok: #2E8B57; --warn: #A15C00; --danger: #C0392B;
+            --shadow: 0 8px 24px rgba(11, 31, 58, .08);
             --ui: 'IBM Plex Sans Arabic', 'SF Arabic', 'Segoe UI', system-ui, sans-serif;
+        }
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #07111F; --surface: #0F1B2C; --surface-2: #132238; --line: rgba(232, 238, 246, .14);
+            --text: #E8EEF6; --muted: #A5AFBC; --primary: #86A7D4; --primary-2: #668BC2; --on-primary: #07111F;
+            --field: #0B1626; --ok: #3FA66B; --warn: #F4B860; --danger: #F07167;
+            --shadow: 0 8px 30px rgba(0, 0, 0, .28);
         }
         * { box-sizing: border-box; }
         html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
         body {
             margin: 0; color: var(--text); font-family: var(--ui); min-height: 100vh;
-            background: radial-gradient(120% 60% at 100% 0%, rgba(11, 185, 203, .13), transparent 60%),
-                        radial-gradient(110% 60% at 0% 100%, rgba(243, 56, 41, .08), transparent 60%), var(--bg);
-            background-attachment: fixed;
+            background: var(--bg);
             padding: 14px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px));
         }
         [hidden] { display: none !important; }
         .app { max-width: 620px; margin: 0 auto; display: grid; gap: 14px; }
         header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-        .brand { font: 700 15px/1 var(--ui); letter-spacing: .32em; color: var(--silver); }
+        .brand img { height: 38px; width: auto; display: block; }
+        :root[data-theme="dark"] .brand img { filter: brightness(0) invert(1); }
         h1 { margin: 0; font-size: 26px; }
         .sub { margin: 4px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
-        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
+        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: grid; gap: 12px; box-shadow: var(--shadow); }
         .langs { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; }
         .langs button { font: 600 13px/1 var(--ui); color: var(--muted); background: none; border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer; }
-        .langs button[aria-pressed="true"] { background: var(--teal); color: #03141a; }
+        .langs button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
         .btn { font: 700 17px/1.2 var(--ui); color: #fff; border: 0; border-radius: 14px; padding: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
         .btn:disabled { opacity: .5; cursor: default; }
-        .rec { background: linear-gradient(90deg, var(--teal), var(--red)); font-size: 19px; padding: 20px; }
-        .rec.is-recording { background: var(--red); animation: pulse 1.4s ease-in-out infinite; }
-        @keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(243, 56, 41, .18); } }
+        .rec { background: var(--primary); color: var(--on-primary); font-size: 19px; padding: 20px; }
+        .rec.is-recording { background: var(--danger); color: #fff; animation: pulse 1.4s ease-in-out infinite; }
+        @keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(192, 57, 43, .18); } }
         @media (prefers-reduced-motion: reduce) { .rec.is-recording { animation: none; } }
-        .ghost { background: var(--surface-2); color: var(--silver); font-size: 15px; padding: 12px; }
+        .ghost { background: var(--surface-2); color: var(--text); font-size: 15px; padding: 12px; }
         .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
         .timer { font: 700 15px/1 var(--ui); font-variant-numeric: tabular-nums; }
         .status { font-size: 14px; color: var(--muted); line-height: 1.7; min-height: 1.7em; }
         .status.err { color: var(--warn); } .status.ok { color: var(--ok); }
         .note { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 10px; }
         .note .meta { display: flex; gap: 8px; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
-        .badge { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 4px 10px; background: var(--surface-2); color: var(--silver); }
-        .badge.wait { color: var(--warn); } .badge.done { color: var(--ok); } .badge.fail { color: var(--red); }
-        textarea { width: 100%; min-height: 120px; resize: vertical; font: 400 16px/1.9 var(--ui); color: var(--text); background: #07112a; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+        .badge { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 4px 10px; background: var(--surface-2); color: var(--text); }
+        .badge.wait { color: var(--warn); } .badge.done { color: var(--ok); } .badge.fail { color: var(--danger); }
+        textarea { width: 100%; min-height: 120px; resize: vertical; font: 400 16px/1.9 var(--ui); color: var(--text); background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
         textarea[dir="ltr"] { font-family: system-ui, sans-serif; }
         audio { width: 100%; height: 40px; }
         .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .actions button, .chip-btn { font: 600 13.5px/1 var(--ui); color: var(--silver); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
-        .actions .primary { background: var(--teal); color: #03141a; border-color: transparent; }
+        .actions button, .chip-btn { font: 600 13.5px/1 var(--ui); color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
+        .actions .primary { background: var(--primary); color: var(--on-primary); border-color: transparent; }
         .del { font: 600 12.5px/1 var(--ui); color: var(--muted); background: none; border: 0; padding: 6px 2px; cursor: pointer; }
-        .del:hover { color: var(--red); }
-        .learn { background: rgba(11, 185, 203, .07); border: 1px solid rgba(11, 185, 203, .3); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: 14px; }
+        .del:hover { color: var(--danger); }
+        .learn { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: 14px; }
         .learn label { display: flex; gap: 8px; align-items: center; }
         .learn s { color: var(--warn); } .learn b { color: var(--ok); font-weight: 600; }
         details summary { cursor: pointer; font-weight: 700; }
         .dict { display: grid; gap: 10px; margin-top: 10px; }
         .dict form { display: flex; gap: 6px; flex-wrap: wrap; }
-        .dict input { flex: 1 1 120px; min-width: 0; font: 400 15px/1.4 var(--ui); color: var(--text); background: #07112a; border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+        .dict input { flex: 1 1 120px; min-width: 0; font: 400 15px/1.4 var(--ui); color: var(--text); background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
         .chips { display: flex; flex-wrap: wrap; gap: 6px; }
         .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; background: var(--surface-2); border-radius: 999px; padding: 6px 6px 6px 12px; }
         .chip button { background: none; border: 0; color: var(--muted); font-size: 16px; cursor: pointer; padding: 0 6px; }
@@ -79,7 +97,7 @@
 <div class="app">
     <header>
         <div><h1>صوتي</h1><p class="sub">تكلّم، والماك يحوّل كلامك لنص. عدّل النص، وأتذكّر تصحيحاتك المرة الجاية.</p></div>
-        <span class="brand">ALYASI</span>
+        <span class="brand"><img src="/images/alyasi-logo-mark.png" alt="ALYASI" width="59" height="38"></span>
     </header>
 
     <section class="card">
@@ -98,7 +116,7 @@
 
     <section class="card" id="train" style="gap:8px">
         <div class="row"><b>🎯 يتعلّم من صوتك</b><span class="badge" id="train-label">0 من 30 دقيقة</span></div>
-        <div style="height:8px; background:var(--surface-2); border-radius:99px; overflow:hidden"><div id="train-bar" style="height:100%; width:0; background:linear-gradient(90deg, var(--teal), var(--ok))"></div></div>
+        <div style="height:8px; background:var(--surface-2); border-radius:99px; overflow:hidden"><div id="train-bar" style="height:100%; width:0; background:linear-gradient(90deg, var(--primary-2), var(--ok))"></div></div>
         <p class="sub" style="margin:0" id="train-note">كل ملاحظة تصحّح نصها وتضغط «حفظ» تصير درس: صوتك مع النص الصحيح. لما توصل 30 دقيقة، ندرّب نسخة من النموذج على نطقك أنت.</p>
     </section>
 
@@ -184,7 +202,7 @@
                 }
             }
             waiting = await outbox.all();
-            if (!waiting.length && /ما في نت|انتهت صلاحية/.test($('status').textContent)) setStatus('✓ وصل التسجيل.', 'ok');
+            if (!waiting.length && /ما في نت|انتهت صلاحية|يترفع/.test($('status').textContent)) setStatus('✓ وصل التسجيل، والماك يحوّله لنص الحين.', 'ok');
         } finally {
             flushing = false;
             render();
@@ -294,9 +312,10 @@
                 actions.className = 'actions';
                 actions.innerHTML = '<button type="button" class="copy">نسخ</button><button type="button" class="primary save">' + (n.approved ? 'حفظ التعديل' : '✓ النص صحيح / احفظ') + '</button><button type="button" class="listen">🔊 تسجيلي</button>';
                 actions.querySelector('.copy').addEventListener('click', async (e) => { try { await navigator.clipboard.writeText(ta.value); e.target.textContent = '✓ انسخ'; } catch (_) { ta.select(); } });
-                actions.querySelector('.save').addEventListener('click', () => review(n, ta.value, el));
+                actions.querySelector('.save').addEventListener('click', (e) => save(n, ta.value, e.currentTarget));
                 actions.querySelector('.listen').addEventListener('click', (e) => { e.target.replaceWith(Object.assign(document.createElement('audio'), { controls: true, autoplay: true, src: base + '/notes/' + n.id + '/audio' })); });
                 el.appendChild(actions);
+                const fb = flashBox(n); if (fb) el.appendChild(fb);
             } else if (n.status === 'failed') {
                 el.insertAdjacentHTML('beforeend', '<div class="status err">' + esc(n.error || 'خطأ في التحويل') + '</div>');
                 const b = Object.assign(document.createElement('button'), { type: 'button', className: 'chip-btn', textContent: 'جرّب مرة ثانية' });
@@ -307,29 +326,48 @@
         });
     }
 
-    function review(n, text, el) {
-        const old = el.querySelector('.learn'); if (old) old.remove();
+    // حفظ بضغطة وحدة: النص ينحفظ ويتعلّم التصحيحات فورًا، وبعدها يطلع اللي تعلّمه
+    // مع زر «تراجع» لكل تصحيح. الرسالة محفوظة في flash عشان التحديث الدوري ما يمسحها.
+    const flash = {};
+    async function save(n, text, btn) {
         const pairs = n.machine_text ? suggestions(n.machine_text, text) : [];
+        btn.disabled = true;
+        btn.textContent = 'يحفظ…';
+        try {
+            const out = await api('/notes/' + n.id + '/text', { method: 'POST', headers: { 'X-CSRF-TOKEN': csrf, Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ text, learn: pairs }) });
+            delete drafts[n.id];
+            flash[n.id] = { entries: out.entries || [], at: Date.now() };
+            const i = notes.findIndex((x) => x.id === n.id);
+            if (i >= 0) notes[i] = out.note;
+            if (document.activeElement) document.activeElement.blur();
+            render();
+            refresh();
+        } catch (e) {
+            btn.disabled = false;
+            btn.textContent = '✓ النص صحيح / احفظ';
+            setStatus('ما انحفظ: ' + e.message + '. تعديلك باقي، جرّب مرة ثانية.', 'err');
+        }
+    }
+
+    function flashBox(n) {
+        const f = flash[n.id];
+        if (!f) return null;
         const box = document.createElement('div');
         box.className = 'learn';
-        if (pairs.length) {
-            box.innerHTML = '<span>لقيت ' + pairs.length + ' تصحيح. تبي أتذكرها المرة الجاية؟</span>' + pairs.map((p, i) => '<label><input type="checkbox" checked data-i="' + i + '"><s>' + esc(p.wrong) + '</s> ← <b>' + esc(p.right) + '</b></label>').join('');
-        } else {
-            box.innerHTML = '<span>ما في كلمات متبدّلة أتعلّمها، بحفظ النص بس.</span>';
-        }
-        const go = Object.assign(document.createElement('button'), { type: 'button', className: 'chip-btn', textContent: pairs.length ? 'احفظ وتعلّم' : 'احفظ' });
-        go.addEventListener('click', async () => {
-            const learn = [...box.querySelectorAll('input:checked')].map((c) => pairs[Number(c.dataset.i)]);
-            go.disabled = true;
-            try {
-                const out = await api('/notes/' + n.id + '/text', { method: 'POST', headers: { 'X-CSRF-TOKEN': csrf, Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ text, learn }) });
-                delete drafts[n.id];
-                box.innerHTML = '<span class="status ok">✓ انحفظ' + (out.learned ? '، وتعلّمت ' + out.learned + ' تصحيح.' : '.') + '</span>';
-                setTimeout(() => { document.activeElement && document.activeElement.blur(); refresh(); }, 1500);
-            } catch (e) { go.disabled = false; box.insertAdjacentHTML('beforeend', '<span class="status err">ما انحفظ: ' + esc(e.message) + '</span>'); }
+        box.innerHTML = '<span class="status ok">✓ انحفظ، وصار درس' + (f.entries.length ? '. تعلّمت:' : '.') + '</span>';
+        f.entries.forEach((e) => {
+            const row = document.createElement('div');
+            row.className = 'chip';
+            row.innerHTML = '<span><s>' + esc(e.wrong) + '</s> ← <b>' + esc(e.right) + '</b></span><button type="button" aria-label="تراجع">تراجع</button>';
+            row.querySelector('button').addEventListener('click', async () => {
+                try { await api('/dictionary/' + e.id, { method: 'DELETE' }); f.entries = f.entries.filter((x) => x.id !== e.id); row.remove(); refresh(); } catch (_) {}
+            });
+            box.appendChild(row);
         });
-        box.appendChild(go);
-        el.appendChild(box);
+        const ok = Object.assign(document.createElement('button'), { type: 'button', className: 'chip-btn', textContent: 'تمام' });
+        ok.addEventListener('click', () => { delete flash[n.id]; render(); });
+        box.appendChild(ok);
+        return box;
     }
 
     function renderDict() {
