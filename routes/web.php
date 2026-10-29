@@ -24,14 +24,15 @@ use App\Http\Controllers\Admin\PublishController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\ServerInfoController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\ServiceLeadController;
 use App\Http\Controllers\Admin\ServiceSlugCleanupController;
-use App\Http\Controllers\Admin\SettingController;
 /*
 |--------------------------------------------------------------------------
 | Admin Controllers
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\VoiceStudioController;
@@ -39,27 +40,32 @@ use App\Http\Controllers\Admin\WhatsAppController;
 use App\Http\Controllers\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\Admin\YoutubeAuthController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\Api\ConferenceRecordingController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ClientReviewController;
 use App\Http\Controllers\CommunityCommentController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CyberxInterviewController;
-use App\Http\Controllers\MetaWhatsAppSetupController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventCoverageController;
 use App\Http\Controllers\EventEditionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InterviewStudioController;
+use App\Http\Controllers\MetaWhatsAppSetupController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\TechHistoryController;
+use App\Http\Controllers\OmanPulseController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductLaunchController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLinkController;
+use App\Http\Controllers\TechHistoryController;
+use App\Http\Controllers\VoiceNotesController;
 use App\Http\Controllers\WorkController;
+use App\Http\Middleware\PreferDeviceLocale;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\ConferenceRecordingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,7 +92,7 @@ Route::get('/locale/{locale}', function (Request $request, string $locale) {
     if (in_array($locale, SetLocale::SUPPORTED_LOCALES, true)) {
         session(['locale' => $locale]);
         // اختيار صريح من الزائر -- يتقدّم على لغة الجهاز (PreferDeviceLocale).
-        cookie()->queue(cookie(\App\Http\Middleware\PreferDeviceLocale::COOKIE, $locale, 60 * 24 * 365, '/', null, null, false, false, 'lax'));
+        cookie()->queue(cookie(PreferDeviceLocale::COOKIE, $locale, 60 * 24 * 365, '/', null, null, false, false, 'lax'));
     }
 
     /*
@@ -178,10 +184,10 @@ Route::middleware('force.locale:ar')
             ->name('index');
 
         // «نبض عُمان» -- قبل /{slug} عشان ما ينقرأ كرابط خبر.
-        Route::get('/oman', [\App\Http\Controllers\OmanPulseController::class, 'index'])
+        Route::get('/oman', [OmanPulseController::class, 'index'])
             ->name('oman');
 
-        Route::get('/oman/{item}', [\App\Http\Controllers\OmanPulseController::class, 'show'])
+        Route::get('/oman/{item}', [OmanPulseController::class, 'show'])
             ->whereNumber('item')
             ->name('oman.show');
 
@@ -234,7 +240,7 @@ Route::middleware('force.locale:en')
             ->name('index.en');
 
         // «Oman Pulse»: أخبار ALYASI عن عُمان بالإنجليزي، والبيانات الرسمية بنصها العربي كما نُشرت.
-        Route::get('/oman', [\App\Http\Controllers\OmanPulseController::class, 'index'])
+        Route::get('/oman', [OmanPulseController::class, 'index'])
             ->name('oman.en');
 
         Route::get('/{year}/{month}/{day}/{sequence}/{slug}', 'showSmart')
@@ -602,11 +608,11 @@ Route::middleware('force.locale:en')
 | صفحة مؤقتة لطلب تقييم من عميل مشروع (رابط موقّع ينتهي -- php artisan reviews:link {slug})
 */
 foreach (['' => ['review.request', 'ar'], 'en/' => ['review.request.en', 'en']] as $prefix => [$name, $locale]) {
-    Route::get($prefix.'review/{work:slug}', [\App\Http\Controllers\ClientReviewController::class, 'show'])
+    Route::get($prefix.'review/{work:slug}', [ClientReviewController::class, 'show'])
         ->middleware(['force.locale:'.$locale, 'signed:relative'])
         ->name($name);
 
-    Route::post($prefix.'review/{work:slug}', [\App\Http\Controllers\ClientReviewController::class, 'store'])
+    Route::post($prefix.'review/{work:slug}', [ClientReviewController::class, 'store'])
         ->middleware(['force.locale:'.$locale, 'signed:relative', 'throttle:5,1'])
         ->name($name.'.store');
 }
@@ -625,13 +631,28 @@ Route::post(
 */
 
 // استوديو المقابلات (أي مؤتمر): رابط خاص لكل ضيف ورابط لوضع المضيف (رمز HMAC).
-Route::get('/tools/interviews/{event}/{token}', [\App\Http\Controllers\InterviewStudioController::class, 'show'])
+Route::get('/tools/interviews/{event}/{token}', [InterviewStudioController::class, 'show'])
     ->middleware('throttle:60,1')
     ->name('tools.interview-studio');
 
-Route::post('/tools/interviews/{event}/{token}/answers', [\App\Http\Controllers\InterviewStudioController::class, 'storeAnswer'])
+Route::post('/tools/interviews/{event}/{token}/answers', [InterviewStudioController::class, 'storeAnswer'])
     ->middleware('throttle:30,1')
     ->name('tools.interview-studio.answers');
+
+// «صوتي»: ملاحظات سالم الصوتية ← نص (الماك) + قاموس شخصي. رابط سري HMAC.
+Route::prefix('/tools/voice/{token}')
+    ->controller(VoiceNotesController::class)
+    ->name('tools.voice.')
+    ->group(function () {
+        Route::get('/', 'show')->middleware('throttle:60,1')->name('show');
+        Route::get('/notes', 'index')->middleware('throttle:60,1')->name('index');
+        Route::post('/notes', 'store')->middleware('throttle:30,1')->name('store');
+        Route::get('/notes/{uuid}/audio', 'audio')->middleware('throttle:60,1')->name('audio');
+        Route::post('/notes/{uuid}/text', 'saveText')->middleware('throttle:30,1')->name('text');
+        Route::post('/notes/{uuid}/retry', 'retry')->middleware('throttle:20,1')->name('retry');
+        Route::post('/dictionary', 'addTerm')->middleware('throttle:30,1')->name('dictionary.add');
+        Route::delete('/dictionary/{entry}', 'removeTerm')->middleware('throttle:30,1')->name('dictionary.remove');
+    });
 
 Route::get('/tools/cyberx-interview', [CyberxInterviewController::class, 'index'])
     ->name('tools.cyberx-interview');
@@ -1044,10 +1065,10 @@ Route::prefix('admin')
                 |----------------------------------------------------------
                 */
 
-                Route::get('service-leads', [\App\Http\Controllers\Admin\ServiceLeadController::class, 'index'])
+                Route::get('service-leads', [ServiceLeadController::class, 'index'])
                     ->name('service-leads.index');
 
-                Route::patch('service-leads/{lead}/status', [\App\Http\Controllers\Admin\ServiceLeadController::class, 'updateStatus'])
+                Route::patch('service-leads/{lead}/status', [ServiceLeadController::class, 'updateStatus'])
                     ->name('service-leads.status');
 
                 Route::prefix('messages')

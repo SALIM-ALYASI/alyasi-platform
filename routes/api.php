@@ -5,18 +5,23 @@ use App\Http\Controllers\Api\ArticleIngestController;
 use App\Http\Controllers\Api\ConferenceAgentController;
 use App\Http\Controllers\Api\ConferenceRecordingController;
 use App\Http\Controllers\Api\EventIngestController;
+use App\Http\Controllers\Api\FacebookWebhookController;
+use App\Http\Controllers\Api\InstagramWebhookController;
+use App\Http\Controllers\Api\MetaWhatsAppWebhookController;
+use App\Http\Controllers\Api\NewsCardController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsIngestController;
 use App\Http\Controllers\Api\NewsSuggestionController;
+use App\Http\Controllers\Api\OmanPulseSocialController;
 use App\Http\Controllers\Api\PipelineAlertController;
 use App\Http\Controllers\Api\ProductLaunchIngestController;
 use App\Http\Controllers\Api\PublishWebhookController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\ServiceLeadController;
+use App\Http\Controllers\Api\VoiceAgentController;
 use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\FacebookWebhookController;
-use App\Http\Controllers\Api\InstagramWebhookController;
-use App\Http\Controllers\Api\MetaWhatsAppWebhookController;
+
 /*
 |--------------------------------------------------------------------------
 | News Bot Ingest
@@ -81,24 +86,24 @@ Route::patch('news-suggestions/{newsSuggestion}', [NewsSuggestionController::cla
 */
 
 // طلبات خدمات منشورة علنًا في عُمان والخليج (Grok) -- نفس رمز اقتراح الأخبار.
-Route::post('service-leads', [\App\Http\Controllers\Api\ServiceLeadController::class, 'store'])
+Route::post('service-leads', [ServiceLeadController::class, 'store'])
     ->middleware(['news-suggester.auth', 'throttle:20,1'])
     ->name('api.service-leads.store');
 
-Route::post('news-cards', [\App\Http\Controllers\Api\NewsCardController::class, 'store'])
+Route::post('news-cards', [NewsCardController::class, 'store'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.news-cards.store');
 
 // نبض عُمان: الأخبار اللي تحتاج بطاقة نشر (سيرفر البيت يسوّيها وينشرها).
-Route::get('oman-pulse/pending-cards', [\App\Http\Controllers\Api\OmanPulseSocialController::class, 'pending'])
+Route::get('oman-pulse/pending-cards', [OmanPulseSocialController::class, 'pending'])
     ->middleware(['news-bot.auth', 'throttle:30,1'])
     ->name('api.oman-pulse.pending-cards');
 
-Route::get('news-cards/pending', [\App\Http\Controllers\Api\NewsCardController::class, 'pending'])
+Route::get('news-cards/pending', [NewsCardController::class, 'pending'])
     ->middleware(['news-suggester.auth', 'throttle:30,1'])
     ->name('api.news-cards.pending');
 
-Route::post('news-cards/{newsCard}/result', [\App\Http\Controllers\Api\NewsCardController::class, 'result'])
+Route::post('news-cards/{newsCard}/result', [NewsCardController::class, 'result'])
     ->middleware(['news-suggester.auth', 'throttle:60,1'])
     ->name('api.news-cards.result');
 
@@ -175,6 +180,19 @@ Route::prefix('cj')
         Route::post('relay/{relayId}/transcript-synced', [ConferenceRecordingController::class, 'transcriptSynced'])
             ->middleware(['cj.auth:relay', 'throttle:60,1'])
             ->name('relay.transcript-synced');
+
+        // «صوتي»: طابور ملاحظات سالم الصوتية لبوت الماك (نفس توكن agent).
+        Route::prefix('agent/voice')
+            ->name('agent.voice.')
+            ->middleware('cj.auth:agent')
+            ->controller(VoiceAgentController::class)
+            ->group(function () {
+                Route::get('next', 'next')->middleware('throttle:60,1')->name('next');
+                Route::get('dataset', 'dataset')->middleware('throttle:10,1')->name('dataset');
+                Route::get('{uuid}/audio', 'audio')->middleware('throttle:30,1')->name('audio');
+                Route::post('{uuid}/complete', 'complete')->middleware('throttle:30,1')->name('complete');
+                Route::post('{uuid}/fail', 'fail')->middleware('throttle:30,1')->name('fail');
+            });
 
         // Mac Bot: same contract as the Server Bot, with SERVER_URL=https://alyasi.dev/api/cj/agent
         Route::prefix('agent/api/jobs')
@@ -305,13 +323,8 @@ Route::prefix('news-articles')
             ->name('show');
     });
 
-
-
 Route::get('/webhooks/facebook', [FacebookWebhookController::class, 'verify']);
 Route::post('/webhooks/facebook', [FacebookWebhookController::class, 'handle']);
-
-
-
 
 Route::get('webhooks/instagram', [InstagramWebhookController::class, 'verify'])
     ->name('api.webhooks.instagram.verify');
