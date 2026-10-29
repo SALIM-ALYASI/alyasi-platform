@@ -4,39 +4,70 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#0B1F3A">
+  <meta name="theme-color" content="#050b17">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="صحفي المؤتمر">
-  <title>صحفي المؤتمر</title>
+  <title>صحفي المؤتمر — CYSEC OMAN 2026 × ALYASI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap">
   <style>
-    :root { color-scheme: dark; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-    * { box-sizing: border-box; }
-    body { margin:0; min-height:100vh; background:#071426; color:#fff; display:grid; place-items:center; padding:24px 16px; }
-    .card { width:min(560px,100%); background:#0B1F3A; border:1px solid #263a56; border-radius:28px; padding:24px; box-shadow:0 20px 60px #0007; }
-    h1 { margin:0 0 8px; font-size:28px; }
-    p { color:#b9c4d3; line-height:1.7; }
-    label { display:block; margin:18px 0 8px; color:#d7dfeb; font-size:14px; }
-    input { width:100%; border:1px solid #344b6c; background:#071426; color:#fff; padding:14px 16px; border-radius:14px; font-size:16px; }
-    .timer { font-variant-numeric:tabular-nums; text-align:center; font-size:42px; margin:28px 0 14px; letter-spacing:2px; }
+    /* هوية ALYASI × CYSEC OMAN 2026 (نفس أداة المقابلات): كحلي ALYASI + تدرّج CYSEC الفيروزي→الأحمر. */
+    :root {
+      color-scheme: dark;
+      --bg:#050b17; --surface:#0b1830; --surface-2:#11223f; --line:rgba(160,190,230,.14);
+      --text:#eef3fa; --muted:#9bb0c9; --teal:#0bb9cb; --red:#f33829; --silver:#c9d4e3; --ok:#3ccf8e; --warn:#f6b54d;
+      --grad:linear-gradient(90deg,var(--teal),var(--red));
+      --display:'Quantico','Arial Narrow',sans-serif;
+      --ui:'IBM Plex Sans Arabic','SF Arabic',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      font-family:var(--ui);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); display:grid; place-items:center;
+      padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+      background:radial-gradient(120% 60% at 100% 0%,rgba(11,185,203,.13),transparent 60%),radial-gradient(110% 60% at 0% 100%,rgba(243,56,41,.10),transparent 60%),var(--bg); background-attachment:fixed; }
+    .card { width:min(560px,100%); background:var(--surface); border:1px solid var(--line); border-radius:24px; padding:22px; box-shadow:0 20px 60px #0008; position:relative; overflow:hidden; }
+    .card::before { content:""; position:absolute; inset:0 0 auto; height:3px; background:var(--grad); }
+    .cobrand { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:12px; margin-bottom:14px; border-bottom:1px solid var(--line); }
+    .cobrand .alyasi { font:700 14px/1 var(--ui); letter-spacing:.32em; color:var(--silver); }
+    .cobrand .x { color:var(--muted); font-size:13px; }
+    .cobrand .ev { text-align:end; }
+    .cobrand .ev b { display:block; font:700 16px/1 var(--display); letter-spacing:.06em; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .cobrand .ev span { font-size:11px; color:var(--muted); }
+    h1 { margin:0 0 6px; font-size:26px; }
+    p { color:var(--muted); line-height:1.8; margin:0; font-size:14.5px; }
+    label { display:block; margin:18px 0 8px; color:var(--silver); font-size:14px; }
+    input { width:100%; border:1px solid var(--line); background:var(--bg); color:var(--text); padding:14px 16px; border-radius:14px; font-size:16px; }
+    .timer { font:700 46px/1 var(--display); font-variant-numeric:tabular-nums; text-align:center; margin:26px 0 14px; letter-spacing:3px; }
     .meter { display:none; margin:0 0 14px; }
-    .meter canvas { display:block; width:100%; height:56px; border-radius:12px; background:#071426; }
-    .meter-note { min-height:22px; margin-top:6px; text-align:center; font-size:14px; color:#8fa1b8; }
-    .meter-note.warn { color:#f0b429; }
-    button { width:100%; min-height:64px; border:0; border-radius:18px; font-size:20px; font-weight:700; cursor:pointer; }
-    #record { background:#fff; color:#0B1F3A; }
-    #record.recording { background:#d93434; color:#fff; }
-    #record:disabled { opacity:.55; cursor:not-allowed; }
-    #upload-file { margin-top:12px; background:transparent; color:#fff; border:1px dashed #4a6a94; font-size:17px; min-height:56px; }
+    .meter canvas { display:block; width:100%; height:56px; border-radius:12px; background:var(--bg); border:1px solid var(--line); }
+    .meter-note { min-height:22px; margin-top:6px; text-align:center; font-size:14px; color:var(--muted); }
+    .meter-note.warn { color:var(--warn); }
+    button { width:100%; min-height:64px; border:0; border-radius:18px; font:700 20px/1 var(--ui); cursor:pointer; touch-action:manipulation; }
+    button:focus-visible { outline:3px solid var(--teal); outline-offset:2px; }
+    #record { background:var(--grad); color:#fff; }
+    #record.recording { background:var(--red); animation:pulse 1.2s ease-in-out infinite; }
+    #record:disabled { opacity:.55; cursor:not-allowed; animation:none; }
+    #upload-file { margin-top:12px; background:transparent; color:var(--text); border:1px dashed rgba(11,185,203,.55); font-size:17px; min-height:56px; }
     #upload-file:disabled { opacity:.55; cursor:not-allowed; }
-    .progress { display:none; height:8px; margin-top:12px; border-radius:8px; background:#071426; overflow:hidden; border:1px solid #263a56; }
-    .progress > div { height:100%; width:0; background:#4fd18b; transition:width .3s; }
-    .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:#071426; border:1px solid #263a56; min-height:52px; line-height:1.6; word-break:break-word; }
-    .hint { font-size:13px; color:#8fa1b8; text-align:center; margin-top:14px; line-height:1.6; }
+    .progress { display:none; height:8px; margin-top:12px; border-radius:8px; background:var(--bg); overflow:hidden; border:1px solid var(--line); }
+    .progress > div { height:100%; width:0; background:var(--grad); transition:width .3s; }
+    .status { margin-top:18px; padding:14px 16px; border-radius:14px; background:var(--bg); border:1px solid var(--line); min-height:52px; line-height:1.7; word-break:break-word; font-size:15px; }
+    .hint { font-size:13px; color:var(--muted); text-align:center; margin-top:14px; line-height:1.7; }
+    .foot { text-align:center; font-size:11.5px; color:var(--muted); margin-top:12px; }
+    .foot b { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    @keyframes pulse { 50% { opacity:.8 } }
+    @media (prefers-reduced-motion: reduce) { #record.recording { animation:none; } }
   </style>
 </head>
 <body>
   <main class="card">
-    <h1>🎙️ صحفي المؤتمر</h1>
+    <header class="cobrand">
+      <span class="alyasi">ALYASI</span>
+      <span class="x">×</span>
+      <div class="ev"><b>CYSEC OMAN 2026</b><span>الشريك الإعلامي</span></div>
+    </header>
+    <h1>صحفي المؤتمر</h1>
     <p>سجّل الجلسة أو المقابلة، أو ارفع ملف صوت/فيديو جاهز. الصوت ينقّى على سيرفر البيت ثم يتحول إلى نص على الماك.</p>
 
 
@@ -51,6 +82,7 @@
     <div id="progress" class="progress"><div></div></div>
     <div id="status" class="status">جاهز للتسجيل.</div>
     <div class="hint">لا تقفل الشاشة أثناء التسجيل، واترك الصفحة مفتوحة حتى تظهر رسالة نجاح الرفع.</div>
+    <div class="foot">تغطية <b>ALYASI</b> الحصرية · alyasi.dev</div>
   </main>
 
 <script>
@@ -149,7 +181,7 @@ function startMeter(tap) {
     ctx.clearRect(0, 0, w, h);
     bars.forEach((v, i) => {
       const bh = Math.max(2, v * (h - 8));
-      ctx.fillStyle = v > 0.85 ? '#d93434' : v > 0.25 ? '#4fd18b' : '#4fa3ff';
+      ctx.fillStyle = v > 0.85 ? '#f33829' : v > 0.25 ? '#3ccf8e' : '#0bb9cb';
       ctx.fillRect(w - (bars.length - i) * step + 1, (h - bh) / 2, step - 2, bh);
     });
 
