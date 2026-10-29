@@ -72,6 +72,9 @@ class CyberxAnswerUploadTest extends TestCase
 
     public function test_unknown_question_and_scripted_client_are_flagged(): void
     {
+        // قبل إقفال الأداة ومهلة الروابط، عشان الاختبار ما يتغير مع التاريخ.
+        $this->travelTo('2026-10-20 12:00:00');
+
         $this->withHeaders(['User-Agent' => 'python-requests/2.32'])
             ->post(route('tools.cyberx-interview.answers'), [
                 'audio' => $this->audio(),
@@ -94,27 +97,14 @@ class CyberxAnswerUploadTest extends TestCase
         Http::assertNothingSent();
     }
 
-    public function test_upload_page_lists_the_guests_questions_in_english(): void
+    public function test_upload_page_is_closed_for_published_and_removed_guests(): void
     {
-        // قبل مهلة الأيام العشرة وإقفال الأداة، عشان الاختبار ما يتغير مع التاريخ.
         $this->travelTo('2026-10-20 12:00:00');
 
-        // أحمد مقابلته منشورة وصفحته مقفولة -- الاختبار على ضيف ما سجّل بعد.
+        // أحمد مقابلته منشورة وصفحته مقفولة.
         $this->get(route('tools.cyberx-interview.upload', ['guest' => 'ahmed']))->assertStatus(410);
-
-        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'rineel']))
-            ->assertOk()
-            ->assertSee('lang="en"', false)
-            ->assertSee('Hi Rineel Wahid')
-            ->assertSeeInOrder([
-                'data-question="rineel-rineel-intro"',
-                'data-question="rineel-rineel-q1"',
-                'data-question="rineel-rineel-q5"',
-                'data-question="rineel-rineel-last"',
-                'data-question="rineel-upload-other"',
-            ], false)
-            ->assertSee('what is your view on the progress the Sultanate has made');
-
+        // الضيوف اللي ما سجّلوا انحذفوا من الأداة (29 أكتوبر 2026).
+        $this->get(route('tools.cyberx-interview.upload', ['guest' => 'rineel']))->assertNotFound();
         $this->get(route('tools.cyberx-interview.upload', ['guest' => 'nobody']))->assertNotFound();
     }
 

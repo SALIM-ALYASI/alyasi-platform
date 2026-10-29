@@ -1,710 +1,463 @@
 {
- "event": "CyberX Oman 2026",
- "updated": "2026-10-06",
- "quick_buttons": [
-  {
-   "audio": "shared-intro",
-   "label": "تعريفي",
-   "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر. لدي صعوبة في النطق، لذلك جهزت أسئلتي بصوت مسجل. هل تسمح لي ببضع دقائق؟",
-   "en": "Hello, I'm Salem Al Hajri from ALYASI, a media partner of this conference. I have a speech difficulty, so I prepared my questions as audio. May I have a few minutes of your time?"
+  "event": "CyberX Oman 2026",
+  "updated": "2026-10-06",
+  "quick_buttons": [
+    {
+      "audio": "shared-intro",
+      "label": "تعريفي",
+      "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر. لدي صعوبة في النطق، لذلك جهزت أسئلتي بصوت مسجل. هل تسمح لي ببضع دقائق؟",
+      "en": "Hello, I'm Salem Al Hajri from ALYASI, a media partner of this conference. I have a speech difficulty, so I prepared my questions as audio. May I have a few minutes of your time?"
+    },
+    {
+      "audio": "shared-self-intro",
+      "label": "تعريف الضيف",
+      "ar": "قبل أن نبدأ، هل يمكنك تعريف نفسك لجمهورنا؟",
+      "en": "Before we start, could you please introduce yourself to our audience?"
+    },
+    {
+      "audio": "shared-unified",
+      "label": "السؤال الموحد",
+      "ar": "في جملة واحدة: ما أهم شيء يفعله الشخص ليحمي نفسه على الإنترنت؟",
+      "en": "In one sentence: what is the most important thing a person should do to stay safe online?"
+    },
+    {
+      "audio": "shared-last",
+      "label": "السؤال الأخير",
+      "ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
+      "en": "Is this conference mainly about raising cyber awareness in Oman, or showing the world Oman's progress? And how can we share it with Omanis in Arabic?"
+    },
+    {
+      "audio": "shared-closing",
+      "label": "الختام",
+      "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
+      "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?"
+    }
+  ],
+  "followups": [
+    {
+      "audio": "followup-example",
+      "label": "الجواب قصير",
+      "ar": "هل يمكنك إعطاؤنا مثالًا؟",
+      "en": "Could you give us an example?"
+    },
+    {
+      "audio": "followup-simplify",
+      "label": "الجواب معقد",
+      "ar": "هَلْ يُمْكِنُكَ تَبْسِيطُهَا لِجُمْهُورٍ غَيْرِ مُتَخَصِّصٍ؟",
+      "en": "Could you simplify that for a non-technical audience?"
+    },
+    {
+      "audio": "followup-arabic",
+      "label": "الضيف يتكلم عربي",
+      "ar": "هل يمكنك قولها بالعربية لجمهورنا؟",
+      "en": "Could you say that in Arabic for our audience?"
+    },
+    {
+      "audio": "followup-more",
+      "label": "تبي تعمّق",
+      "ar": "هل يمكنك التوسع أكثر؟",
+      "en": "Could you tell us more about that?"
+    }
+  ],
+  "panel_question": {
+    "session": "10:00 الجلسة القيادية",
+    "audio": "panel-question",
+    "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي. كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
+    "en": "Hello, I'm Salem Al Hajri from ALYASI. Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: what is the difference between a programmer, a cybersecurity specialist, and a penetration tester? And why does society confuse these fields?"
   },
-  {
-   "audio": "shared-self-intro",
-   "label": "تعريف الضيف",
-   "ar": "قبل أن نبدأ، هل يمكنك تعريف نفسك لجمهورنا؟",
-   "en": "Before we start, could you please introduce yourself to our audience?"
-  },
-  {
-   "audio": "shared-unified",
-   "label": "السؤال الموحد",
-   "ar": "في جملة واحدة: ما أهم شيء يفعله الشخص ليحمي نفسه على الإنترنت؟",
-   "en": "In one sentence: what is the most important thing a person should do to stay safe online?"
-  },
-  {
-   "audio": "shared-last",
-   "label": "السؤال الأخير",
-   "ar": "برأيك، هل هدف هذا المؤتمر توعية المجتمع العُماني بالأمن السيبراني، أم تعريف العالم بما وصلت إليه عُمان في هذا المجال؟ وإذا كان يخدم الهدفين، كيف نوصل محتواه للجمهور العُماني باللغة العربية؟",
-   "en": "Is this conference mainly about raising cyber awareness in Oman, or showing the world Oman's progress? And how can we share it with Omanis in Arabic?"
-  },
-  {
-   "audio": "shared-closing",
-   "label": "الختام",
-   "ar": "شكرًا جزيلًا لوقتك. هل يمكنني الحصول على حسابك في لينكدإن للتواصل؟",
-   "en": "Thank you so much for your time. May I have your LinkedIn to stay in touch?"
+  "priority_guests": [
+    {
+      "id": "yahya",
+      "name_ar": "يحيى العزري",
+      "name_en": "Yahya Al-Azri",
+      "hint": "Oman CERT",
+      "window": "11:30",
+      "gender": "m",
+      "final_question": true,
+      "core": [
+        {
+          "audio": "yahya-hello",
+          "label": "تعريفي",
+          "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
+          "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+        },
+        {
+          "audio": "yahya-intro",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        },
+        {
+          "audio": "yahya-ai1",
+          "ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟",
+          "en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?"
+        },
+        {
+          "audio": "yahya-ai2",
+          "ar": "كيف نميّز الصوت أو الفيديو المزيَّف بالذكاء الاصطناعي، خصوصًا إذا استُخدم لانتحال شخصية مسؤول وطلب تحويل مالي؟",
+          "en": "How can we spot a fake AI voice or video, especially when it is used to impersonate an official and request a money transfer?"
+        },
+        {
+          "audio": "yahya-ai3",
+          "ar": "إذا وقع اختراق بالفعل، ما أول إجراء يساعد المؤسسة على تقليل الضرر واستمرار خدماتها؟",
+          "en": "If a breach has already happened, what is the first action that helps an organization limit the damage and keep its services running?"
+        }
+      ],
+      "followup": null,
+      "extra": [],
+      "hidden": true
+    },
+    {
+      "id": "fatma",
+      "name_ar": "فاطمة اللواتي",
+      "name_en": "Fatma Al Lawati",
+      "hint": "WiCSME",
+      "window": "11:30",
+      "gender": "f",
+      "final_question": true,
+      "core": [
+        {
+          "audio": "fatma-hello",
+          "label": "تعريفي",
+          "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
+          "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+        },
+        {
+          "audio": "fatma-intro",
+          "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        },
+        {
+          "audio": "fatma-bc1",
+          "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟",
+          "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?"
+        },
+        {
+          "audio": "fatma-bc2",
+          "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟",
+          "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?"
+        },
+        {
+          "audio": "fatma-bc3",
+          "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟",
+          "en": "What is the most common mistake in recovery plans, and how can it be avoided?"
+        }
+      ],
+      "message": {
+        "image": "fatma-get-well.jpg",
+        "audio": "fatma-get-well-ar.m4a",
+        "audio_label": "🤲 الدعاء بصوتي",
+        "alt": "دعاء بالشفاء لفاطمة اللواتي"
+      },
+      "hidden": true
+    },
+    {
+      "id": "haitham",
+      "name_ar": "هيثم الحجري",
+      "name_en": "Haitham Al Hajri",
+      "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00",
+      "window": "15:15",
+      "gender": "m",
+      "final_question": false,
+      "core": [
+        {
+          "audio": "haitham-intro",
+          "label": "تعريف الضيف",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        }
+      ],
+      "extra": [],
+      "hidden": true
+    },
+    {
+      "id": "ali",
+      "name_ar": "علي اللواتي",
+      "name_en": "Ali Al-Lawati",
+      "hint": "Qpay",
+      "window": "15:15",
+      "gender": "m",
+      "final_question": true,
+      "optional": true,
+      "core": [
+        {
+          "audio": "yahya-hello",
+          "label": "تعريفي",
+          "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
+          "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+        },
+        {
+          "audio": "yahya-intro",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        },
+        {
+          "audio": "ali-pay1",
+          "ar": "أستاذ علي، ما أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان، وكيف يمكن تجاوزه؟",
+          "en": "Mr. Ali, what is the biggest challenge facing the spread of digital payments in Oman, and how can it be overcome?"
+        },
+        {
+          "audio": "ali-pay2",
+          "ar": "كيف تحمون المستخدم من الاحتيال المالي، خصوصًا مع استخدام الذكاء الاصطناعي لتزييف الأصوات والرسائل؟",
+          "en": "How do you protect users from financial fraud, especially now that AI is used to fake voices and messages?"
+        },
+        {
+          "audio": "ali-pay3",
+          "ar": "كيف يستطيع صاحب مشروع صغير إضافة الدفع الإلكتروني إلى موقعه بطريقة سهلة وآمنة وبتكلفة مناسبة؟",
+          "en": "How can a small business owner add online payments to their website in an easy, secure, and affordable way?"
+        }
+      ],
+      "followup": null,
+      "extra": [],
+      "hidden": true
+    },
+    {
+      "id": "khalid",
+      "name_ar": "خالد العمراني",
+      "name_en": "Khalid Al Amrani",
+      "hint": "مدير جلسة أمن ICS/OT 12:15",
+      "window": "13:00",
+      "gender": "m",
+      "final_question": true,
+      "core": [
+        {
+          "audio": "yahya-hello",
+          "label": "تعريفي",
+          "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
+          "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+        },
+        {
+          "audio": "yahya-intro",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        },
+        {
+          "audio": "khalid-q1",
+          "ar": "أستاذ خالد، ما أكثر خطأ شائع يعرّض الأفراد والمؤسسات للاختراق، وكيف نتجنّبه؟",
+          "en": "Mr. Khalid, what is the most common mistake that exposes individuals and organizations to hacking, and how can we avoid it?"
+        },
+        {
+          "audio": "khalid-q2",
+          "ar": "مع تطوّر الاحتيال باستخدام الذكاء الاصطناعي، كيف يتأكد الشخص من أن الرسالة أو الاتصال حقيقي؟",
+          "en": "As AI-powered fraud evolves, how can a person make sure a message or a call is real?"
+        },
+        {
+          "audio": "khalid-q3",
+          "ar": "ما نصيحتك للشباب العُماني الذي يريد دخول مجال الأمن السيبراني، ومن أين يبدأ؟",
+          "en": "What is your advice for young Omanis who want to enter cybersecurity, and where should they start?"
+        }
+      ],
+      "followup": null,
+      "extra": [],
+      "hidden": true
+    }
+  ],
+  "additional_guests": [
+    {
+      "id": "ahmed",
+      "name_ar": "أحمد رضا",
+      "name_en": "Ahmed Reza",
+      "hint": "حين يقع الاختراق… هل نحن جاهزون؟",
+      "window": "13:00",
+      "gender": "m",
+      "questions": [
+        {
+          "audio": "ahmed-app-intro",
+          "label": "تعريف الضيف",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
+          "label_en": "Introduction"
+        },
+        {
+          "audio": "ahmed-v3-q1",
+          "ar": "في مشاركتك في CyberX Oman، ما أهم رسالة أردت إيصالها عن قدرة المؤسسات على مواجهة الاختراق والتعافي منه؟",
+          "en": "In your participation at CyberX Oman, what was the most important message you wanted to share about organizations' ability to withstand a breach and recover from it?"
+        },
+        {
+          "audio": "ahmed-v3-q2",
+          "ar": "مع استخدام الذكاء الاصطناعي في البرمجة، كيف نتأكد أن التطبيق آمن، وليس فقط يعمل؟",
+          "en": "With AI being used in programming, how do we make sure an app is secure, and not just working?"
+        },
+        {
+          "audio": "ahmed-v3-q3",
+          "ar": "ما أول خطوة تنصح بها شركة صغيرة اليوم لتكون أكثر استعدادًا لأي اختراق؟",
+          "en": "What first step would you advise a small company to take today to be better prepared for any breach?"
+        },
+        {
+          "audio": "ahmed-app-closing",
+          "label": "سؤال ختامي",
+          "ar": "ما الاعتقاد الشائع عن أمن التطبيقات الذي تتمنى أن يتوقف المطوّرون وأصحاب المشاريع عن تصديقه؟",
+          "en": "What common belief about application security do you wish developers and project owners would stop believing?",
+          "label_en": "Closing question"
+        }
+      ],
+      "final_question": "foreign",
+      "language": "en",
+      "hint_en": "When a breach happens… are we ready?",
+      "hidden": true
+    },
+    {
+      "id": "tajuddin",
+      "name_ar": "محمد تاج الدين",
+      "name_en": "Mohammed Tajuddin",
+      "hint": "حوكمة الذكاء الاصطناعي",
+      "hint_en": "AI Governance",
+      "language": "en",
+      "gender": "m",
+      "questions": [
+        {
+          "audio": "tajuddin-hello",
+          "label": "تعريفي",
+          "label_en": "Hello",
+          "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
+          "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
+        },
+        {
+          "audio": "tajuddin-intro",
+          "label": "تعريف الضيف",
+          "label_en": "Introduction",
+          "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
+          "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
+        },
+        {
+          "audio": "tajuddin-q1",
+          "ar": "في CyberX Oman، طرحت الجلسة فكرة «لا يمكنك حوكمة ما لا تراه». كيف تبدأ المؤسسة في اكتشاف أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها؟",
+          "en": "At CyberX Oman, the panel raised the idea that “you can’t govern what you can’t see.” How can an organization start discovering AI tools its employees use without its knowledge?"
+        },
+        {
+          "audio": "tajuddin-q2",
+          "ar": "عندما يستطيع وكيل ذكاء اصطناعي تنفيذ إجراءات داخل أنظمة المؤسسة، ما أهم ضابط يجب وضعه قبل منحه هذه الصلاحية؟",
+          "en": "When an AI agent can take actions within an organization’s systems, what is the most important safeguard to put in place before granting it that access?"
+        },
+        {
+          "audio": "tajuddin-q3",
+          "ar": "لو أوصيت بخطوة واحدة تتخذها مؤسسة عُمانية اليوم لاستخدام الذكاء الاصطناعي بأمان، فما هي؟",
+          "en": "If you could recommend one step an Omani organization should take today to use AI safely, what would it be?"
+        },
+        {
+          "audio": "tajuddin-closing",
+          "label": "سؤال ختامي",
+          "label_en": "Closing question",
+          "ar": "ما الاعتقاد الشائع عن الذكاء الاصطناعي في بيئة العمل الذي تتمنى أن يتوقف القادة والموظفون عن تصديقه؟",
+          "en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?"
+        }
+      ],
+      "final_question": "foreign",
+      "hidden": true
+    }
+  ],
+  "interview_windows": [
+    {
+      "time": "11:30 – 12:00",
+      "label": "استراحة القهوة",
+      "guests": [
+        "yahya",
+        "fatma"
+      ]
+    },
+    {
+      "time": "13:00 – 14:00",
+      "label": "الغداء",
+      "guests": [
+        "khalid",
+        "ahmed"
+      ]
+    },
+    {
+      "time": "15:15 – 16:30",
+      "label": "الختام والتواصل",
+      "guests": [
+        "haitham",
+        "ali"
+      ]
+    }
+  ],
+  "agenda": [
+    {
+      "time": "08:00 – 09:20",
+      "ar": "التسجيل والتواصل",
+      "en": "Arrival & Networking"
+    },
+    {
+      "time": "09:20 – 09:30",
+      "ar": "كلمة المنظّم — برويز شريف، BConnect",
+      "en": "Welcome Note — Parvez Shariff, Bconnect"
+    },
+    {
+      "time": "09:30 – 09:45",
+      "ar": "الكلمة الافتتاحية: مستقبل المرونة السيبرانية في عُمان — يحيى العزري",
+      "en": "Grand Opening Keynote: Shaping the Future of Cyber Resilience in Oman — Yahya Al-Azri"
+    },
+    {
+      "time": "09:45 – 10:00",
+      "ar": "كلمة: ما بعد الامتثال، بناء مؤسسات تصمد أمام الاضطرابات السيبرانية — فاطمة اللواتي",
+      "en": "Keynote: Beyond Compliance — Fatma Al Lawati"
+    },
+    {
+      "time": "10:00 – 10:45",
+      "ar": "الجلسة القيادية: الابتكار في الأمن السيبراني ضمن الاقتصاد الرقمي — تديرها أسماء حبيب، بمشاركة أبهيشيك سينغ، يحيى العزري، فاطمة اللواتي، أحمد سعيد البحدور، علي باوزير",
+      "en": "Leadership Panel: Innovation in Cybersecurity with the Digital Economy"
+    },
+    {
+      "time": "10:45 – 11:00",
+      "ar": "عرض تقني — Bulwark",
+      "en": "Industry Presentation — Bulwark"
+    },
+    {
+      "time": "11:00 – 11:15",
+      "ar": "عرض تقني — ESET",
+      "en": "Industry Presentation — ESET"
+    },
+    {
+      "time": "11:15 – 11:30",
+      "ar": "كلمة: خارطة طريق الأمن السيبراني للقطاع الصحي — رينيل واحد",
+      "en": "Keynote: Cybersecurity Roadmap for Healthcare — Rineel Wahid"
+    },
+    {
+      "time": "11:30 – 12:00",
+      "ar": "استراحة قهوة وتواصل",
+      "en": "Networking Break"
+    },
+    {
+      "time": "12:00 – 12:15",
+      "ar": "كلمة: هوية الآلات والثقة الصفرية — أحمد رضا",
+      "en": "Keynote: Machine Identity & Zero Trust — Ahmed Reza"
+    },
+    {
+      "time": "12:15 – 13:00",
+      "ar": "جلسة أمن ICS/OT والبنية الحرجة — يديرها خالد العمراني، بمشاركة مرشد الهنائي، سارة الكندي، علي البحدور، رينيل واحد",
+      "en": "ICS & OT Security Panel"
+    },
+    {
+      "time": "13:00 – 14:00",
+      "ar": "الغداء وعروض الشركاء",
+      "en": "Power Lunch & Partner Demos"
+    },
+    {
+      "time": "14:00 – 14:45",
+      "ar": "جلسة: تأمين مؤسسات الذكاء الاصطناعي — تديرها راميا سانكاري كارثيك، بمشاركة علي اللواتي، فيفيك بانيا، د. هيثم الحجري",
+      "en": "Panel: Securing the AI Enterprise"
+    },
+    {
+      "time": "14:45 – 15:00",
+      "ar": "كلمة: المؤسسات الواعية سيبرانيًا — عرفان الصائغ، صندوق الحماية الاجتماعية",
+      "en": "Keynote: Cyber-Aware Organizations — Arfan Al Saigh"
+    },
+    {
+      "time": "15:00 – 15:15",
+      "ar": "حفل جوائز CyberX — نسخة عُمان",
+      "en": "CyberX Forum Awards Ceremony"
+    },
+    {
+      "time": "15:15 – 16:30",
+      "ar": "الختام والتواصل",
+      "en": "Official Closing & Networking"
+    }
+  ],
+  "final_question_foreign": {
+    "audio": "shared-last-foreign",
+    "label": "السؤال الأخير (ضيف من خارج عُمان)",
+    "ar": "كيف تقيّم دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيك في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+    "ar_f": "كيف تقيّمين دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيكِ في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
+    "en": "How do you assess the conference’s role in strengthening cybersecurity in Oman, and what is your view on the progress the Sultanate has made in this field?"
   }
- ],
- "followups": [
-  {
-   "audio": "followup-example",
-   "label": "الجواب قصير",
-   "ar": "هل يمكنك إعطاؤنا مثالًا؟",
-   "en": "Could you give us an example?"
-  },
-  {
-   "audio": "followup-simplify",
-   "label": "الجواب معقد",
-   "ar": "هَلْ يُمْكِنُكَ تَبْسِيطُهَا لِجُمْهُورٍ غَيْرِ مُتَخَصِّصٍ؟",
-   "en": "Could you simplify that for a non-technical audience?"
-  },
-  {
-   "audio": "followup-arabic",
-   "label": "الضيف يتكلم عربي",
-   "ar": "هل يمكنك قولها بالعربية لجمهورنا؟",
-   "en": "Could you say that in Arabic for our audience?"
-  },
-  {
-   "audio": "followup-more",
-   "label": "تبي تعمّق",
-   "ar": "هل يمكنك التوسع أكثر؟",
-   "en": "Could you tell us more about that?"
-  }
- ],
- "panel_question": {
-  "session": "10:00 الجلسة القيادية",
-  "audio": "panel-question",
-  "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي. كثير من الناس عندما يعرفون أنني مبرمج، يسألونني: هل تستطيع اختراق حساب؟ وإذا قلت لا، يقولون: إذن أنت لست مبرمجًا. بل اتُّهمت مرة باختراق حساب في مجموعة، فقط لأنني مبرمج. سؤالي لكل واحد منكم: ما الفرق بين المبرمج، ومختص الأمن السيبراني، ومختبر الاختراق؟ ولماذا يخلط المجتمع بين هذه التخصصات؟",
-  "en": "Hello, I'm Salem Al Hajri from ALYASI. Many people, when they know I'm a programmer, ask me: can you hack an account? If I say no, they say I'm not a real programmer. I was even accused once of hacking an account in a group, just because I'm a programmer. My question to each of you: what is the difference between a programmer, a cybersecurity specialist, and a penetration tester? And why does society confuse these fields?"
- },
- "priority_guests": [
-  {
-   "id": "yahya",
-   "name_ar": "يحيى العزري",
-   "name_en": "Yahya Al-Azri",
-   "hint": "Oman CERT",
-   "window": "11:30",
-   "gender": "m",
-   "final_question": true,
-   "core": [
-    {
-     "audio": "yahya-hello",
-     "label": "تعريفي",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "yahya-intro",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "yahya-ai1",
-     "ar": "مع استخدام المهاجمين للذكاء الاصطناعي، ما أهم خطوة يجب أن تبدأ بها المؤسسات العُمانية لحماية نفسها؟",
-     "en": "With attackers now using AI, what is the most important first step Omani organizations should take to protect themselves?"
-    },
-    {
-     "audio": "yahya-ai2",
-     "ar": "كيف نميّز الصوت أو الفيديو المزيَّف بالذكاء الاصطناعي، خصوصًا إذا استُخدم لانتحال شخصية مسؤول وطلب تحويل مالي؟",
-     "en": "How can we spot a fake AI voice or video, especially when it is used to impersonate an official and request a money transfer?"
-    },
-    {
-     "audio": "yahya-ai3",
-     "ar": "إذا وقع اختراق بالفعل، ما أول إجراء يساعد المؤسسة على تقليل الضرر واستمرار خدماتها؟",
-     "en": "If a breach has already happened, what is the first action that helps an organization limit the damage and keep its services running?"
-    }
-   ],
-   "followup": null,
-   "extra": [],
-   "hidden": true
-  },
-  {
-   "id": "fatma",
-   "name_ar": "فاطمة اللواتي",
-   "name_en": "Fatma Al Lawati",
-   "hint": "WiCSME",
-   "window": "11:30",
-   "gender": "f",
-   "final_question": true,
-   "core": [
-    {
-     "audio": "fatma-hello",
-     "label": "تعريفي",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "fatma-intro",
-     "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "fatma-bc1",
-     "ar": "كيف تعرف المؤسسة أنها مستعدة فعلًا لهجوم سيبراني، وليس فقط مستوفية لمتطلبات الامتثال؟",
-     "en": "How can an organization know it is truly ready for a cyberattack, and not just meeting compliance requirements?"
-    },
-    {
-     "audio": "fatma-bc2",
-     "ar": "ما أهم خطوة تساعد المؤسسات الصغيرة في عُمان على مواصلة خدماتها أثناء الاختراق؟",
-     "en": "What is the most important step that helps small organizations in Oman keep their services running during a breach?"
-    },
-    {
-     "audio": "fatma-bc3",
-     "ar": "ما الخطأ الأكثر شيوعًا في خطط التعافي، وكيف يمكن تجنّبه؟",
-     "en": "What is the most common mistake in recovery plans, and how can it be avoided?"
-    }
-   ],
-   "message": {
-    "image": "fatma-get-well.jpg",
-    "audio": "fatma-get-well-ar.m4a",
-    "audio_label": "🤲 الدعاء بصوتي",
-    "alt": "دعاء بالشفاء لفاطمة اللواتي"
-   },
-   "hidden": true
-  },
-  {
-   "id": "sara",
-   "name_ar": "سارة الكندي",
-   "name_en": "Sara Al Kindi",
-   "hint": "PDO",
-   "window": "13:00",
-   "gender": "f",
-   "hidden": true,
-   "core": [
-    {
-     "audio": "sara-q1",
-     "ar": "ما أهم درس تعلمتيه من عملكِ في حماية البنية التحتية الحرجة؟",
-     "en": "What is the most important lesson you learned from protecting critical infrastructure?"
-    },
-    {
-     "audio": "sara-q2",
-     "ar": "ما الفرق بين أمن الأنظمة الصناعية وأمن الأنظمة العادية؟",
-     "en": "What is the difference between industrial system security and regular IT security?"
-    }
-   ],
-   "followup": {
-    "audio": "sara-fu",
-    "ar": "كيف يبدأ شاب عُماني يريد العمل في أمن الأنظمة الصناعية؟",
-    "en": "How can a young Omani start a career in industrial systems security?"
-   },
-   "extra": []
-  },
-  {
-   "id": "haitham",
-   "name_ar": "هيثم الحجري",
-   "name_en": "Haitham Al Hajri",
-   "hint": "بنك الإسكان العُماني — جلسة الذكاء الاصطناعي 14:00",
-   "window": "15:15",
-   "gender": "m",
-   "final_question": false,
-   "core": [
-    {
-     "audio": "haitham-intro",
-     "label": "تعريف الضيف",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    }
-   ],
-   "extra": [],
-   "hidden": true
-  },
-  {
-   "id": "ali",
-   "name_ar": "علي اللواتي",
-   "name_en": "Ali Al-Lawati",
-   "hint": "Qpay",
-   "window": "15:15",
-   "gender": "m",
-   "final_question": true,
-   "optional": true,
-   "core": [
-    {
-     "audio": "yahya-hello",
-     "label": "تعريفي",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "yahya-intro",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "ali-pay1",
-     "ar": "أستاذ علي، ما أكبر تحدٍّ يواجه انتشار المدفوعات الرقمية في عُمان، وكيف يمكن تجاوزه؟",
-     "en": "Mr. Ali, what is the biggest challenge facing the spread of digital payments in Oman, and how can it be overcome?"
-    },
-    {
-     "audio": "ali-pay2",
-     "ar": "كيف تحمون المستخدم من الاحتيال المالي، خصوصًا مع استخدام الذكاء الاصطناعي لتزييف الأصوات والرسائل؟",
-     "en": "How do you protect users from financial fraud, especially now that AI is used to fake voices and messages?"
-    },
-    {
-     "audio": "ali-pay3",
-     "ar": "كيف يستطيع صاحب مشروع صغير إضافة الدفع الإلكتروني إلى موقعه بطريقة سهلة وآمنة وبتكلفة مناسبة؟",
-     "en": "How can a small business owner add online payments to their website in an easy, secure, and affordable way?"
-    }
-   ],
-   "followup": null,
-   "extra": [],
-   "hidden": true
-  },
-  {
-   "id": "bawazeer",
-   "name_ar": "علي باوزير",
-   "name_en": "Ali Bawazeer",
-   "hint": "Filigran",
-   "window": "15:15",
-   "gender": "m",
-   "final_question": "foreign",
-   "core": [
-    {
-     "audio": "yahya-hello",
-     "label": "تعريفي",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "yahya-intro",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "bawazeer-q1",
-     "ar": "أستاذ علي، كيف تستطيع منصة صغيرة مثل ALYASI الاستفادة من معلومات التهديدات لحماية موقعها بميزانية محدودة؟",
-     "en": "Mr. Ali, how can a small platform like ALYASI use threat intelligence to protect its website on a limited budget?"
-    },
-    {
-     "audio": "bawazeer-q2",
-     "ar": "كيف تساعد حلول Filigran المؤسسات على تحويل معلومات التهديدات إلى إجراءات تمنع الهجمات أو تقلّل أثرها؟",
-     "en": "How do Filigran's solutions help organizations turn threat intelligence into actions that prevent attacks or reduce their impact?"
-    },
-    {
-     "audio": "bawazeer-q3",
-     "ar": "برأيك، أين يفيد الذكاء الاصطناعي أكثر في الأمن السيبراني، وأي قرارات يجب أن تبقى بيد الإنسان؟",
-     "en": "In your view, where does AI help most in cybersecurity, and which decisions must stay in human hands?"
-    }
-   ],
-   "followup": null,
-   "extra": []
-  },
-  {
-   "id": "khalid",
-   "name_ar": "خالد العمراني",
-   "name_en": "Khalid Al Amrani",
-   "hint": "مدير جلسة أمن ICS/OT 12:15",
-   "window": "13:00",
-   "gender": "m",
-   "final_question": true,
-   "core": [
-    {
-     "audio": "yahya-hello",
-     "label": "تعريفي",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "yahya-intro",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "khalid-q1",
-     "ar": "أستاذ خالد، ما أكثر خطأ شائع يعرّض الأفراد والمؤسسات للاختراق، وكيف نتجنّبه؟",
-     "en": "Mr. Khalid, what is the most common mistake that exposes individuals and organizations to hacking, and how can we avoid it?"
-    },
-    {
-     "audio": "khalid-q2",
-     "ar": "مع تطوّر الاحتيال باستخدام الذكاء الاصطناعي، كيف يتأكد الشخص من أن الرسالة أو الاتصال حقيقي؟",
-     "en": "As AI-powered fraud evolves, how can a person make sure a message or a call is real?"
-    },
-    {
-     "audio": "khalid-q3",
-     "ar": "ما نصيحتك للشباب العُماني الذي يريد دخول مجال الأمن السيبراني، ومن أين يبدأ؟",
-     "en": "What is your advice for young Omanis who want to enter cybersecurity, and where should they start?"
-    }
-   ],
-   "followup": null,
-   "extra": [],
-   "hidden": true
-  }
- ],
- "additional_guests": [
-  {
-   "id": "ahmed",
-   "name_ar": "أحمد رضا",
-   "name_en": "Ahmed Reza",
-   "hint": "حين يقع الاختراق… هل نحن جاهزون؟",
-   "window": "13:00",
-   "gender": "m",
-   "questions": [
-    {
-     "audio": "ahmed-app-intro",
-     "label": "تعريف الضيف",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?",
-     "label_en": "Introduction"
-    },
-    {
-     "audio": "ahmed-v3-q1",
-     "ar": "في مشاركتك في CyberX Oman، ما أهم رسالة أردت إيصالها عن قدرة المؤسسات على مواجهة الاختراق والتعافي منه؟",
-     "en": "In your participation at CyberX Oman, what was the most important message you wanted to share about organizations' ability to withstand a breach and recover from it?"
-    },
-    {
-     "audio": "ahmed-v3-q2",
-     "ar": "مع استخدام الذكاء الاصطناعي في البرمجة، كيف نتأكد أن التطبيق آمن، وليس فقط يعمل؟",
-     "en": "With AI being used in programming, how do we make sure an app is secure, and not just working?"
-    },
-    {
-     "audio": "ahmed-v3-q3",
-     "ar": "ما أول خطوة تنصح بها شركة صغيرة اليوم لتكون أكثر استعدادًا لأي اختراق؟",
-     "en": "What first step would you advise a small company to take today to be better prepared for any breach?"
-    },
-    {
-     "audio": "ahmed-app-closing",
-     "label": "سؤال ختامي",
-     "ar": "ما الاعتقاد الشائع عن أمن التطبيقات الذي تتمنى أن يتوقف المطوّرون وأصحاب المشاريع عن تصديقه؟",
-     "en": "What common belief about application security do you wish developers and project owners would stop believing?",
-     "label_en": "Closing question"
-    }
-   ],
-   "final_question": "foreign",
-   "language": "en",
-   "hint_en": "When a breach happens… are we ready?",
-   "hidden": true
-  },
-  {
-   "id": "abhishek",
-   "name_ar": "أبهيشيك سينغ",
-   "name_en": "Abhishek Pratap Singh",
-   "hint": "National Bank of Oman — إنجليزي",
-   "language": "en",
-   "window": "15:15",
-   "gender": "m",
-   "hidden": true,
-   "questions": [
-    {
-     "audio": "abhishek-q1",
-     "ar": "ما أكثر طريقة يفقد بها الناس حساباتهم البنكية لصالح المخترقين؟",
-     "en": "What is the most common way people lose their bank accounts to attackers?"
-    },
-    {
-     "audio": "abhishek-q2",
-     "ar": "كيف يحمي العميل العادي تطبيق البنك على جواله؟",
-     "en": "How can ordinary customers protect their banking apps?"
-    }
-   ]
-  },
-  {
-   "id": "arfan",
-   "name_ar": "عرفان الصائغ",
-   "name_en": "Arfan Al Saigh",
-   "hint": "صندوق الحماية الاجتماعية — اختياري",
-   "window": "15:15",
-   "gender": "m",
-   "hidden": true,
-   "questions": [
-    {
-     "audio": "arfan-q1",
-     "ar": "كيف تجعل الموظف العادي يهتم بالأمن السيبراني؟",
-     "en": "How do you make ordinary employees care about cybersecurity?"
-    },
-    {
-     "audio": "arfan-q2",
-     "ar": "ما الخطأ الأكثر تكرارًا من الموظفين الذي يسبب الاختراق؟",
-     "en": "What is the most frequent employee mistake that leads to a breach?"
-    }
-   ]
-  },
-  {
-   "id": "tajuddin",
-   "name_ar": "محمد تاج الدين",
-   "name_en": "Mohammed Tajuddin",
-   "hint": "حوكمة الذكاء الاصطناعي",
-   "hint_en": "AI Governance",
-   "language": "en",
-   "gender": "m",
-   "questions": [
-    {
-     "audio": "tajuddin-hello",
-     "label": "تعريفي",
-     "label_en": "Hello",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معك.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "tajuddin-intro",
-     "label": "تعريف الضيف",
-     "label_en": "Introduction",
-     "ar": "قبل أن نبدأ، هل يمكنك تعريف جمهورنا باسمك، ومنصبك، وطبيعة عملك؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "tajuddin-q1",
-     "ar": "في CyberX Oman، طرحت الجلسة فكرة «لا يمكنك حوكمة ما لا تراه». كيف تبدأ المؤسسة في اكتشاف أدوات الذكاء الاصطناعي التي يستخدمها موظفوها دون علمها؟",
-     "en": "At CyberX Oman, the panel raised the idea that “you can’t govern what you can’t see.” How can an organization start discovering AI tools its employees use without its knowledge?"
-    },
-    {
-     "audio": "tajuddin-q2",
-     "ar": "عندما يستطيع وكيل ذكاء اصطناعي تنفيذ إجراءات داخل أنظمة المؤسسة، ما أهم ضابط يجب وضعه قبل منحه هذه الصلاحية؟",
-     "en": "When an AI agent can take actions within an organization’s systems, what is the most important safeguard to put in place before granting it that access?"
-    },
-    {
-     "audio": "tajuddin-q3",
-     "ar": "لو أوصيت بخطوة واحدة تتخذها مؤسسة عُمانية اليوم لاستخدام الذكاء الاصطناعي بأمان، فما هي؟",
-     "en": "If you could recommend one step an Omani organization should take today to use AI safely, what would it be?"
-    },
-    {
-     "audio": "tajuddin-closing",
-     "label": "سؤال ختامي",
-     "label_en": "Closing question",
-     "ar": "ما الاعتقاد الشائع عن الذكاء الاصطناعي في بيئة العمل الذي تتمنى أن يتوقف القادة والموظفون عن تصديقه؟",
-     "en": "What common belief about AI in the workplace do you wish leaders and employees would stop believing?"
-    }
-   ],
-   "final_question": "foreign",
-   "hidden": true
-  },
-  {
-   "id": "hajar",
-   "name_ar": "هاجر سعيد الرواحي",
-   "name_en": "Hajar Saeed Al Rawahi",
-   "hint": "حماية البنية الأساسية والأنظمة التشغيلية",
-   "hint_en": "Critical infrastructure & OT security",
-   "gender": "f",
-   "questions": [
-    {
-     "audio": "hajar-hello",
-     "label": "تعريفي",
-     "label_en": "Hello",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "hajar-intro",
-     "label": "تعريف الضيفة",
-     "label_en": "Introduction",
-     "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "hajar-q1",
-     "ar": "في قطاع الكهرباء، كيف يمكن أن يتحول هجوم سيبراني إلى أثر يشعر به الناس في حياتهم اليومية؟",
-     "en": "In the electricity sector, how can a cyberattack turn into an impact people feel in their daily lives?"
-    },
-    {
-     "audio": "hajar-q2",
-     "ar": "إذا تعرضت أنظمة التشغيل للاختراق، كيف نوازن بين احتواء الهجوم واستمرار الخدمة بأمان؟",
-     "en": "If operational systems are breached, how do we balance containing the attack with keeping the service running safely?"
-    },
-    {
-     "audio": "hajar-q3",
-     "ar": "ما أول خطوة تنصحين بها مؤسسة تريد تقوية حماية أنظمتها التشغيلية؟",
-     "en": "What first step would you recommend for an organization that wants to strengthen the protection of its operational systems?"
-    }
-   ],
-   "final_question": true
-  },
-  {
-   "id": "asma",
-   "name_ar": "أسماء حبيب",
-   "name_en": "Asma Habib",
-   "hint": "إدارة مخاطر الأمن السيبراني",
-   "hint_en": "Cybersecurity risk management",
-   "gender": "f",
-   "questions": [
-    {
-     "audio": "asma-hello",
-     "label": "تعريفي",
-     "label_en": "Hello",
-     "ar": "السلام عليكم، أنا سالم الحجري من منصة الياسي، الشريك الإعلامي للمؤتمر، وأسئلتي بصوت مسجّل. يسعدني الحديث معكِ.",
-     "en": "Hello, I'm Salem Al Hajri from ALYASI, the conference's media partner. My questions are pre-recorded. It's a pleasure to talk with you."
-    },
-    {
-     "audio": "asma-intro",
-     "label": "تعريف الضيفة",
-     "label_en": "Introduction",
-     "ar": "قبل أن نبدأ، هل يمكنكِ تعريف جمهورنا باسمكِ، ومنصبكِ، وطبيعة عملكِ؟",
-     "en": "Before we start, could you tell our audience your name, your position, and what your work involves?"
-    },
-    {
-     "audio": "asma-q1",
-     "ar": "كيف تعرف المؤسسة أن أمنها السيبراني فعّال فعلًا، وليس مجرد سياسات وشهادات امتثال؟",
-     "en": "How can an organization tell whether its cybersecurity is truly effective, and not just policies and compliance certificates?"
-    },
-    {
-     "audio": "asma-q2",
-     "ar": "عندما تريد المؤسسة تبنّي تقنية جديدة بسرعة، كيف تقيّم مخاطرها دون تعطيل الابتكار؟",
-     "en": "When an organization wants to adopt a new technology quickly, how can it assess the risks without slowing down innovation?"
-    },
-    {
-     "audio": "asma-q3",
-     "ar": "إذا كانت الميزانية محدودة، كيف تختار المؤسسة المخاطر التي يجب أن تعالجها أولًا؟",
-     "en": "With a limited budget, how should an organization choose which risks to address first?"
-    }
-   ],
-   "final_question": true
-  },
-  {
-   "id": "rineel",
-   "name_ar": "رينيل وحيد",
-   "name_en": "Rineel Wahid",
-   "hint": "مدير تقنية المعلومات، SOFPITAL",
-   "hint_en": "IT Director, SOFPITAL",
-   "language": "en",
-   "gender": "m",
-   "questions": [
-    {
-     "audio": "rineel-intro",
-     "label": "تعريف الضيف",
-     "label_en": "Introduction",
-     "ar": "هل يمكنك تعريف نفسك، ودورك، وطبيعة عملك؟",
-     "en": "Could you introduce yourself, your role, and the work you do?"
-    },
-    {
-     "audio": "rineel-q1",
-     "label": "سلامة المرضى",
-     "label_en": "Patient safety",
-     "ar": "كيف يمكن أن يؤثر هجوم سيبراني على مستشفى في سلامة المرضى بشكل مباشر؟",
-     "en": "How can a cyberattack on a hospital directly affect patient safety?"
-    },
-    {
-     "audio": "rineel-q2",
-     "label": "البداية",
-     "label_en": "Getting started",
-     "ar": "بناءً على خارطة طريق الأمن السيبراني التي عرضتها في CyberX Oman، ما أول ما يجب أن يفعله مستشفى بميزانية محدودة؟",
-     "en": "Based on the cybersecurity roadmap you presented at CyberX Oman, what should a hospital with a limited budget do first?"
-    },
-    {
-     "audio": "rineel-q3",
-     "label": "استمرارية الرعاية",
-     "label_en": "Continuity of care",
-     "ar": "إذا عطّل هجوم سيبراني أنظمة المستشفى، كيف تواصل الفرق الصحية تقديم الرعاية بأمان؟",
-     "en": "If a cyberattack disrupts hospital systems, how can healthcare teams continue providing care safely?"
-    },
-    {
-     "audio": "rineel-q4",
-     "label": "رسالتك",
-     "label_en": "Your message",
-     "ar": "ما الرسالة الأهم التي تود توجيهها للجمهور العُماني بعد مشاركتك في المؤتمر؟",
-     "en": "What key message would you like to share with the Omani public following your participation in the conference?"
-    },
-    {
-     "audio": "rineel-q5",
-     "label": "سؤال خارج الصندوق",
-     "label_en": "An outside-the-box question",
-     "ar": "مع التقدم السريع في الذكاء الاصطناعي، هل تعرف مؤسسات صحية أو منظمات دولية تستخدم «مترجمًا بالذكاء الاصطناعي» لفهم الأشخاص الذين لديهم صعوبات في النطق ومساعدتهم على التواصل بوضوح مع الأطباء؟ وكيف يمكن إدخال هذا النهج في مستشفيات عُمان؟",
-     "en": "With the rapid progress in AI, do you know of any healthcare institutions or international organizations using an “AI interpreter” to understand people with speech difficulties and help them communicate clearly with doctors? How could this approach be introduced in hospitals in Oman?"
-    }
-   ],
-   "final_question": "foreign"
-  }
- ],
- "interview_windows": [
-  {
-   "time": "11:30 – 12:00",
-   "label": "استراحة القهوة",
-   "guests": [
-    "yahya",
-    "fatma"
-   ]
-  },
-  {
-   "time": "13:00 – 14:00",
-   "label": "الغداء",
-   "guests": [
-    "khalid",
-    "ahmed",
-    "sara"
-   ]
-  },
-  {
-   "time": "15:15 – 16:30",
-   "label": "الختام والتواصل",
-   "guests": [
-    "haitham",
-    "ali",
-    "bawazeer",
-    "abhishek",
-    "arfan"
-   ]
-  }
- ],
- "agenda": [
-  {
-   "time": "08:00 – 09:20",
-   "ar": "التسجيل والتواصل",
-   "en": "Arrival & Networking"
-  },
-  {
-   "time": "09:20 – 09:30",
-   "ar": "كلمة المنظّم — برويز شريف، BConnect",
-   "en": "Welcome Note — Parvez Shariff, Bconnect"
-  },
-  {
-   "time": "09:30 – 09:45",
-   "ar": "الكلمة الافتتاحية: مستقبل المرونة السيبرانية في عُمان — يحيى العزري",
-   "en": "Grand Opening Keynote: Shaping the Future of Cyber Resilience in Oman — Yahya Al-Azri"
-  },
-  {
-   "time": "09:45 – 10:00",
-   "ar": "كلمة: ما بعد الامتثال، بناء مؤسسات تصمد أمام الاضطرابات السيبرانية — فاطمة اللواتي",
-   "en": "Keynote: Beyond Compliance — Fatma Al Lawati"
-  },
-  {
-   "time": "10:00 – 10:45",
-   "ar": "الجلسة القيادية: الابتكار في الأمن السيبراني ضمن الاقتصاد الرقمي — تديرها أسماء حبيب، بمشاركة أبهيشيك سينغ، يحيى العزري، فاطمة اللواتي، أحمد سعيد البحدور، علي باوزير",
-   "en": "Leadership Panel: Innovation in Cybersecurity with the Digital Economy"
-  },
-  {
-   "time": "10:45 – 11:00",
-   "ar": "عرض تقني — Bulwark",
-   "en": "Industry Presentation — Bulwark"
-  },
-  {
-   "time": "11:00 – 11:15",
-   "ar": "عرض تقني — ESET",
-   "en": "Industry Presentation — ESET"
-  },
-  {
-   "time": "11:15 – 11:30",
-   "ar": "كلمة: خارطة طريق الأمن السيبراني للقطاع الصحي — رينيل واحد",
-   "en": "Keynote: Cybersecurity Roadmap for Healthcare — Rineel Wahid"
-  },
-  {
-   "time": "11:30 – 12:00",
-   "ar": "استراحة قهوة وتواصل",
-   "en": "Networking Break"
-  },
-  {
-   "time": "12:00 – 12:15",
-   "ar": "كلمة: هوية الآلات والثقة الصفرية — أحمد رضا",
-   "en": "Keynote: Machine Identity & Zero Trust — Ahmed Reza"
-  },
-  {
-   "time": "12:15 – 13:00",
-   "ar": "جلسة أمن ICS/OT والبنية الحرجة — يديرها خالد العمراني، بمشاركة مرشد الهنائي، سارة الكندي، علي البحدور، رينيل واحد",
-   "en": "ICS & OT Security Panel"
-  },
-  {
-   "time": "13:00 – 14:00",
-   "ar": "الغداء وعروض الشركاء",
-   "en": "Power Lunch & Partner Demos"
-  },
-  {
-   "time": "14:00 – 14:45",
-   "ar": "جلسة: تأمين مؤسسات الذكاء الاصطناعي — تديرها راميا سانكاري كارثيك، بمشاركة علي اللواتي، فيفيك بانيا، د. هيثم الحجري",
-   "en": "Panel: Securing the AI Enterprise"
-  },
-  {
-   "time": "14:45 – 15:00",
-   "ar": "كلمة: المؤسسات الواعية سيبرانيًا — عرفان الصائغ، صندوق الحماية الاجتماعية",
-   "en": "Keynote: Cyber-Aware Organizations — Arfan Al Saigh"
-  },
-  {
-   "time": "15:00 – 15:15",
-   "ar": "حفل جوائز CyberX — نسخة عُمان",
-   "en": "CyberX Forum Awards Ceremony"
-  },
-  {
-   "time": "15:15 – 16:30",
-   "ar": "الختام والتواصل",
-   "en": "Official Closing & Networking"
-  }
- ],
- "final_question_foreign": {
-  "audio": "shared-last-foreign",
-  "label": "السؤال الأخير (ضيف من خارج عُمان)",
-  "ar": "كيف تقيّم دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيك في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
-  "ar_f": "كيف تقيّمين دور المؤتمر في تعزيز الأمن السيبراني في سلطنة عُمان، وما رأيكِ في مستوى التقدّم الذي وصلت إليه السلطنة في هذا المجال؟",
-  "en": "How do you assess the conference’s role in strengthening cybersecurity in Oman, and what is your view on the progress the Sultanate has made in this field?"
- }
 }
