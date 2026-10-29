@@ -92,7 +92,8 @@
         .review audio { width: 100%; }
         .review .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .status { font-size: 13.5px; font-weight: 600; line-height: 1.7; }
-        .status.ok { color: var(--ok); } .status.err { color: var(--warn); }
+        .status.ok { color: var(--ok); } .status.err { color: var(--warn); } .status.wait { color: #ffc861; }
+        .review .retry { font: 600 13px/1 var(--ui); color: var(--teal); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; justify-self: start; }
         .sent-box { display: grid; gap: 8px; background: rgba(60, 207, 142, .08); border: 1px solid rgba(60, 207, 142, .35); border-radius: 14px; padding: 12px; }
         .sent-box button { font: 600 13px/1 var(--ui); color: var(--muted); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; justify-self: start; }
 
@@ -171,7 +172,7 @@
     const mode = @json($mode);
     const guest = @json($guest);
     const audioBase = @json($audioBase);
-    const answersUrl = @json(route('tools.interview-studio.answers', ['event' => $event, 'token' => $token]));
+    const answersUrl = {{ Js::from(route('tools.interview-studio.answers', ['event' => $event, 'token' => $token], false)) }};
     const csrf = document.querySelector('meta[name="csrf-token"]').content;
     const storeKey = 'studio:' + @json($event) + ':' + @json($token) + ':';
     let lang = 'ar';
@@ -211,12 +212,97 @@
     const ICON_PLAY = '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
     const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
+    // ---- صندوق محلي (IndexedDB): الإجابة تنحفظ بالجهاز أول ما يخلص التسجيل،
+    // وما تنمسح إلا بعد ما توصل للسيرفر. انقطاع النت أو قفل الصفحة ما يضيّعها:
+    // نفس الرابط يرجّعها ويكمل إرسالها تلقائيًا (نفس take_id فما تتكرر).
+    const scope = @json($event) + ':' + @json($token);
+    const takes = (() => {
+        const mem = new Map();
+        let db = null;
+        const open = () => db || (db = new Promise((resolve, reject) => {
+            if (!window.indexedDB) return reject(new Error('no indexedDB'));
+            const req = indexedDB.open('alyasi-studio', 1);
+            req.onupgradeneeded = () => req.result.createObjectStore('takes', { keyPath: 'take' });
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        }));
+        const run = (mode, fn) => open().then((d) => new Promise((resolve, reject) => {
+            const tx = d.transaction('takes', mode);
+            const out = fn(tx.objectStore('takes'));
+            tx.oncomplete = () => resolve(out ? out.result : undefined);
+            tx.onerror = tx.onabort = () => reject(tx.error);
+        }));
+        return {
+            put: (t) => { mem.set(t.take, t); return run('readwrite', (s) => s.put(t)).catch(() => {}); },
+            del: (k) => { mem.delete(k); return run('readwrite', (s) => s.delete(k)).catch(() => {}); },
+            all: async () => {
+                const saved = await run('readonly', (s) => s.getAll()).catch(() => []);
+                const out = new Map((saved || []).filter((t) => t.scope === scope).map((t) => [t.take, t]));
+                mem.forEach((t, k) => out.set(k, t));
+                return [...out.values()].sort((a, b) => a.at - b.at);
+            },
+        };
+    })();
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+    const watchers = new Map(); // question_id → تحديث شكل المسجّل
+    const sentTakes = new Set();
+    const notify = (t, state, msg) => { const w = watchers.get(t.questionId); if (w) w(t, state, msg); };
+
+    async function uploadTake(t) {
+        const body = new FormData();
+        const ext = ((t.blob.type || 'audio/webm').split('/')[1] || 'webm').split(';')[0];
+        body.append('audio', t.blob, t.questionId + '.' + ext);
+        body.append('question_id', t.questionId);
+        body.append('take_id', t.take);
+        const res = await fetch(answersUrl, { method: 'POST', headers: { 'X-CSRF-TOKEN': csrf, Accept: 'application/json' }, body });
+        const out = await res.json().catch(() => ({}));
+        if (res.ok && out.success) return out;
+        const err = new Error(out.message || ('HTTP ' + res.status));
+        err.status = res.status;
+        throw err;
+    }
+
+    // يرسل كل الإجابات اللي بالطابور. يشتغل عند فتح الصفحة، ولما يرجع النت، وكل 20 ثانية.
+    let flushing = false;
+    async function flush() {
+        if (flushing) return;
+        flushing = true;
+        try {
+            for (const t of (await takes.all()).filter((x) => x.state === 'queued')) {
+                notify(t, 'sending');
+                try {
+                    await uploadTake(t);
+                    sentTakes.add(t.take);
+                    await takes.del(t.take);
+                    store.set(t.questionId, '1');
+                    notify(t, 'sent');
+                } catch (e) {
+                    if (e.status === 419) {
+                        notify(t, 'waiting', T('انتهت صلاحية الصفحة. حدّث الصفحة وبتنرسل إجابتك تلقائيًا، هي محفوظة بجهازك.', 'This page expired. Refresh it and your saved answer will be sent automatically.'));
+                    } else if (e.status && e.status >= 400 && e.status < 500 && ![408, 409, 425, 429].includes(e.status)) {
+                        await takes.del(t.take);
+                        notify(t, 'rejected', e.message);
+                    } else {
+                        notify(t, 'waiting');
+                    }
+                }
+            }
+        } finally {
+            flushing = false;
+        }
+    }
+    window.addEventListener('online', flush);
+    setInterval(flush, 20000);
+    setTimeout(flush, 1200); // اللي بالطابور من فتحة سابقة
+
     // ---- مسجّل: سجّل ← اسمع ← أرسل (مرة وحدة لكل تسجيل) ← نسخة جديدة اختيارية
     function recorder(questionId, onSent) {
         const box = el('<div class="recorder"></div>');
-        let rec = null, stream = null, chunks = [], timer = null, secs = 0, starting = false, blob = null, take = null, sending = false;
+        let rec = null, stream = null, chunks = [], timer = null, secs = 0, starting = false, cur = null, view = null;
 
         function idle() {
+            view = null;
             box.innerHTML = '';
             const b = el('<button class="btn rec" type="button">' + ICON_MIC + '<span>' + T('سجّل إجابتك', 'Record your answer') + '</span></button>');
             b.addEventListener('click', start);
@@ -239,10 +325,11 @@
             chunks = [];
             rec = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
             rec.addEventListener('dataavailable', (e) => { if (e.data.size) chunks.push(e.data); });
-            rec.addEventListener('stop', review);
+            rec.addEventListener('stop', stopped);
             rec.start();
             starting = false;
             secs = 0;
+            view = null;
             box.innerHTML = '';
             const b = el('<button class="btn rec is-recording" type="button">' + ICON_MIC + '<span>' + T('يسجّل… اضغط للإيقاف', 'Recording… tap to stop') + '</span><span class="timer">00:00</span></button>');
             b.addEventListener('click', () => rec && rec.state === 'recording' && rec.stop());
@@ -251,49 +338,72 @@
             timer = setInterval(() => { secs++; b.querySelector('.timer').textContent = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0'); }, 1000);
         }
 
-        function review() {
+        function stopped() {
             clearInterval(timer);
             stream.getTracks().forEach((t) => t.stop());
             streams.delete(stream);
-            blob = new Blob(chunks, { type: rec.mimeType || 'audio/webm' });
-            take = newTake();
-            box.innerHTML = '';
-            const r = el('<div class="review"><span class="hint">' + T('اسمع إجابتك. إذا تمام اضغط «أرسل الإجابة»، وإذا تبي تعيدها اضغط «إعادة التسجيل».', 'Listen to your answer. If you are happy, tap “Send answer”; otherwise record again.') + '</span><audio controls preload="metadata"></audio><div class="two"><button class="btn ghost again" type="button">' + T('إعادة التسجيل', 'Record again') + '</button><button class="btn send" type="button">' + T('أرسل الإجابة', 'Send answer') + '</button></div><div class="status" role="status"></div></div>');
-            r.querySelector('audio').src = URL.createObjectURL(blob);
-            r.querySelector('.again').addEventListener('click', idle);
-            r.querySelector('.send').addEventListener('click', () => send(r));
-            box.appendChild(r);
+            const type = rec.mimeType || 'audio/webm';
+            rec = null;
+            // ينحفظ بالجهاز فورًا، قبل الإرسال.
+            cur = { take: newTake(), scope, questionId, blob: new Blob(chunks, { type }), state: 'draft', at: Date.now() };
+            takes.put(cur);
+            review();
         }
 
-        async function send(r) {
-            if (sending) return;
-            sending = true;
-            const sendBtn = r.querySelector('.send'), again = r.querySelector('.again'), status = r.querySelector('.status');
-            sendBtn.disabled = again.disabled = true;
-            status.className = 'status';
-            status.textContent = T('جاري الإرسال…', 'Sending…');
-            const body = new FormData();
-            const ext = (blob.type.split('/')[1] || 'webm').split(';')[0];
-            body.append('audio', blob, questionId + '.' + ext);
-            body.append('question_id', questionId);
-            body.append('take_id', take);
-            try {
-                const res = await fetch(answersUrl, { method: 'POST', headers: { 'X-CSRF-TOKEN': csrf, Accept: 'application/json' }, body });
-                const out = await res.json().catch(() => ({}));
-                if (!res.ok || !out.success) throw new Error(out.message || ('HTTP ' + res.status));
-                store.set(questionId, '1');
-                box.innerHTML = '';
-                box.appendChild(sentBox(false));
-                if (onSent) onSent();
-            } catch (e) {
-                // نفس التسجيل ونفس take_id: إعادة الإرسال ما تكرر الإجابة عند سالم.
-                status.className = 'status err';
-                status.textContent = T('ما انرسلت (' + e.message + '). تأكد من النت واضغط «أرسل الإجابة» مرة ثانية.', 'Not sent (' + e.message + '). Check your connection and tap “Send answer” again.');
-                sendBtn.disabled = again.disabled = false;
-            } finally {
-                sending = false;
+        function review(note) {
+            box.innerHTML = '';
+            view = el('<div class="review"><span class="hint"></span><audio controls preload="metadata"></audio><div class="two"><button class="btn ghost again" type="button">' + T('إعادة التسجيل', 'Record again') + '</button><button class="btn send" type="button">' + T('أرسل الإجابة', 'Send answer') + '</button></div><div class="status" role="status"></div></div>');
+            view.querySelector('.hint').textContent = note || T('اسمع إجابتك. إذا تمام اضغط «أرسل الإجابة»، وإذا تبي تعيدها اضغط «إعادة التسجيل».', 'Listen to your answer. If you are happy, tap “Send answer”; otherwise record again.');
+            view.querySelector('audio').src = URL.createObjectURL(cur.blob);
+            view.querySelector('.again').addEventListener('click', () => { takes.del(cur.take); cur = null; idle(); });
+            view.querySelector('.send').addEventListener('click', queue);
+            box.appendChild(view);
+            if (cur.state === 'queued') waiting();
+        }
+
+        function setStatus(cls, text) {
+            if (!view) return;
+            const s = view.querySelector('.status');
+            s.className = 'status' + (cls ? ' ' + cls : '');
+            s.textContent = text;
+        }
+        function lock(on) { if (view) view.querySelectorAll('.two button').forEach((b) => { b.disabled = on; }); }
+
+        function waiting(msg) {
+            lock(true);
+            setStatus('wait', msg || T('⏳ ما وصل النت. إجابتك محفوظة بجهازك وبتنرسل تلقائيًا أول ما يرجع الاتصال. لا تسجّلها مرة ثانية، وحتى لو قفلت الصفحة افتح نفس الرابط وبتكمل.', '⏳ No connection. Your answer is saved on this device and will be sent automatically when you are back online. No need to record it again; even if you close the page, open the same link and it will continue.'));
+            if (!view.querySelector('.retry')) {
+                const r = el('<button class="retry" type="button">' + T('حاول الحين', 'Try now') + '</button>');
+                r.addEventListener('click', flush);
+                view.querySelector('.status').after(r);
             }
         }
+
+        async function queue() {
+            if (!cur || cur.state === 'queued') return;
+            cur.state = 'queued';
+            lock(true);
+            setStatus('', T('جاري الإرسال…', 'Sending…'));
+            await takes.put(cur);
+            flush();
+        }
+
+        watchers.set(questionId, (t, state, msg) => {
+            if (!cur || t.take !== cur.take) {
+                // إجابة قديمة من فتحة سابقة للصفحة وصلت بالخلفية.
+                if (state === 'sent' && !cur && !rec) { idle(); if (onSent) onSent(); }
+                return;
+            }
+            if (state === 'sending') { lock(true); setStatus('', T('جاري الإرسال…', 'Sending…')); }
+            else if (state === 'waiting') waiting(msg);
+            else if (state === 'sent') { cur = null; view = null; box.innerHTML = ''; box.appendChild(sentBox(false)); if (onSent) onSent(); }
+            else if (state === 'rejected') {
+                cur.state = 'rejected';
+                lock(false);
+                view.querySelector('.send').disabled = true;
+                setStatus('err', T('ما انقبلت الإجابة (' + msg + '). سجّلها مرة ثانية.', 'The answer was not accepted (' + msg + '). Please record it again.'));
+            }
+        });
 
         function sentBox(fromBefore) {
             const s = el('<div class="sent-box"><span class="status ok">' + (fromBefore ? T('✓ أرسلت إجابة لهذا السؤال قبل.', '✓ You already sent an answer to this question.') : T('✓ وصلت إجابتك، شكرًا لك.', '✓ Your answer was received, thank you.')) + '</span><button type="button">' + T('سجّل نسخة جديدة (تنرسل كإجابة إضافية)', 'Record a new version (sent as an extra answer)') + '</button></div>');
@@ -302,6 +412,13 @@
         }
 
         idle();
+        // تسجيل محفوظ بالجهاز لهذا السؤال (ما انرسل أو بالطابور)؟ نرجّعه.
+        takes.all().then((list) => {
+            const saved = list.filter((t) => t.questionId === questionId).pop();
+            if (!saved || sentTakes.has(saved.take) || cur || rec || starting) return;
+            cur = saved;
+            review(saved.state === 'draft' ? T('هذا تسجيلك السابق، ما انرسل بعد. اسمعه وأرسله، أو أعد التسجيل.', 'This is your earlier recording; it has not been sent yet. Listen and send it, or record again.') : null);
+        });
         return box;
     }
 

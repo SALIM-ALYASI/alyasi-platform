@@ -103,6 +103,40 @@ const MAX_FILE_BYTES = 500 * 1024 * 1024;
 const FILE_EXTENSIONS = ['webm', 'm4a', 'mp4', 'wav', 'mp3', 'ogg', 'aac', 'caf', 'mov', 'flac', 'opus'];
 
 
+// صندوق محلي (IndexedDB): كل جزء من التسجيل ينحفظ بالجهاز قبل ما يترفع، وما
+// ينمسح إلا بعد ما يكتمل الرفع. لو انقطع النت أو انقفلت الصفحة أو انحدّثت،
+// افتح /cj مرة ثانية ويكمل الرفع من الجهاز تلقائيًا.
+const outbox = (() => {
+  let db = null;
+  const open = () => db || (db = new Promise((resolve, reject) => {
+    if (!window.indexedDB) return reject(new Error('no indexedDB'));
+    const req = indexedDB.open('alyasi-cj', 1);
+    req.onupgradeneeded = () => {
+      req.result.createObjectStore('recs', { keyPath: 'id' });
+      req.result.createObjectStore('parts', { keyPath: ['id', 'seq'] });
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  }));
+  const run = (stores, mode, fn) => open().then(d => new Promise((resolve, reject) => {
+    const tx = d.transaction(stores, mode);
+    const out = fn(tx);
+    tx.oncomplete = () => resolve(out ? out.result : undefined);
+    tx.onerror = tx.onabort = () => reject(tx.error);
+  }));
+  const range = id => IDBKeyRange.bound([id, 0], [id, Infinity]);
+  return {
+    saveRec: u => u.isFile ? Promise.resolve() : run(['recs'], 'readwrite', tx => tx.objectStore('recs').put({
+      id: u.id, at: u.at, relayId: u.relayId, key: u.key, type: u.type, ext: u.ext, nextSeq: u.nextSeq, sent: u.sent, stopped: u.stopped,
+    })).catch(() => {}),
+    savePart: (u, part) => run(['parts'], 'readwrite', tx => tx.objectStore('parts').put({ id: u.id, seq: part.seq, blob: part.blob })).catch(() => {}),
+    recs: () => run(['recs'], 'readonly', tx => tx.objectStore('recs').getAll()).catch(() => []),
+    parts: id => run(['parts'], 'readonly', tx => tx.objectStore('parts').getAll(range(id))).catch(() => []),
+    remove: id => run(['recs', 'parts'], 'readwrite', tx => { tx.objectStore('recs').delete(id); tx.objectStore('parts').delete(range(id)); }).catch(() => {}),
+  };
+})();
+const newId = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
 let recorder = null;
 let stream = null;
 // جزء كل 30 ثانية: يحدّ الضياع عند الانقطاع بدون طلبات كثيرة على الاستضافة.
@@ -275,19 +309,27 @@ async function startRecording() {
   recorder = mimeType ? new MediaRecorder(recordStream, { mimeType }) : new MediaRecorder(recordStream);
 
   const type = recorder.mimeType || mimeType || 'audio/mp4';
-  upload = { relayId: null, key: null, type, ext: extensionFor(type), parts: [], nextSeq: 0, sent: 0, stopped: false, done: false, pumping: false };
+  upload = { id: newId(), at: Date.now(), relayId: null, key: null, type, ext: extensionFor(type), parts: [], nextSeq: 0, sent: 0, stopped: false, done: false, pumping: false };
   uploads.push(upload);
+  outbox.saveRec(upload);
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
+  // نفس التسجيل يبقى مربوط بمتغير محلي: لو بدأ تسجيل جديد ما تختلط الأجزاء.
+  const u = upload;
   recorder.ondataavailable = e => {
     if (e.data && e.data.size > 0) {
-      upload.parts.push({ seq: upload.nextSeq++, blob: e.data });
-      pumpUpload(upload);
+      const part = { seq: u.nextSeq++, blob: e.data };
+      u.parts.push(part);
+      outbox.savePart(u, part);
+      outbox.saveRec(u);
+      pumpUpload(u);
     }
   };
   recorder.onstop = () => {
-    upload.stopped = true;
+    u.stopped = true;
     recorder = null;
-    pumpUpload(upload);
+    outbox.saveRec(u);
+    pumpUpload(u);
   };
 
   recorder.start(CHUNK_MS);
@@ -333,13 +375,31 @@ async function sendPart(u, part) {
   const response = await fetch('/api/cj/recordings/' + u.relayId + '/chunk', {
     method: 'POST', headers: { 'Accept': 'application/json' }, body: form
   });
-  if (!response.ok) throw new Error('HTTP ' + response.status);
+  if (!response.ok) {
+    const error = new Error('HTTP ' + response.status);
+    error.status = response.status;
+    error.body = await response.json().catch(() => ({}));
+    throw error;
+  }
 }
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+// ينتظر، أو يصحى أول ما يرجع النت.
+const wakers = new Set();
+const nap = ms => new Promise(resolve => {
+  const done = () => { clearTimeout(timer); wakers.delete(done); resolve(); };
+  const timer = setTimeout(done, ms);
+  wakers.add(done);
+});
+window.addEventListener('online', () => [...wakers].forEach(wake => wake()));
 
-// يرفع الأجزاء بالترتيب ويعيد المحاولة بلا توقف لين ترجع الشبكة؛ أي جزء ما
-// وصل يبقى في الصفحة. بعد الإيقاف يقفل التسجيل على السيرفر.
+// كل أجزاء التسجيل من الجهاز (ملف جاهز: من الملف نفسه).
+async function savedParts(u) {
+  if (u.isFile) return u.allParts.slice();
+  return (await outbox.parts(u.id)).map(p => ({ seq: p.seq, blob: p.blob }));
+}
+
+// يرفع الأجزاء بالترتيب ويعيد المحاولة بلا توقف لين ترجع الشبكة؛ كل جزء
+// محفوظ بالجهاز لين يكتمل الرفع. بعد الإيقاف يقفل التسجيل على السيرفر.
 async function pumpUpload(u) {
   if (u.pumping || u.done) return;
   u.pumping = true;
@@ -350,6 +410,7 @@ async function pumpUpload(u) {
   while (!u.done && (u.parts.length || u.stopped)) {
     if (u.stopped && u.nextSeq === 0) {
       u.done = true;
+      outbox.remove(u.id);
       show('❌ التسجيل طلع فاضي — ما التقط الجهاز صوت. حدّث الصفحة وجرّب مرة ثانية.');
       break;
     }
@@ -358,11 +419,44 @@ async function pumpUpload(u) {
         const started = await postJson('/api/cj/recordings/start', { extension: u.ext, mime_type: u.type });
         u.relayId = started.relay_id;
         u.key = started.upload_key;
+        outbox.saveRec(u);
       }
       if (u.parts.length) {
-        await sendPart(u, u.parts[0]);
+        try {
+          await sendPart(u, u.parts[0]);
+        } catch (error) {
+          const all = await savedParts(u);
+          if (error.status === 409 && error.body && Number.isInteger(error.body.next_seq)) {
+            // السيرفر ناقصه أجزاء قبل هذا: نرجع نرسل من عند آخر جزء وصله.
+            const from = all.filter(p => p.seq >= error.body.next_seq);
+            if (!from.length || from[0].seq !== error.body.next_seq) {
+              u.done = true;
+              show('❌ جزء من التسجيل ناقص بالجهاز وما نقدر نكمل الرفع. التسجيل المرفوع لين الحين محفوظ: ' + u.relayId);
+              break;
+            }
+            u.parts = from;
+            u.sent = error.body.next_seq;
+            continue;
+          }
+          if ([403, 404, 409].includes(error.status) && all.length === u.nextSeq) {
+            // السيرفر قفل التسجيل (انقطاع طويل) — نرفع نسخة كاملة جديدة من الجهاز.
+            show('♻️ السيرفر قفل التسجيل بسبب الانقطاع — نرفع نسخة كاملة من جهازك...');
+            Object.assign(u, { relayId: null, key: null, sent: 0, parts: all });
+            outbox.saveRec(u);
+            continue;
+          }
+          if ([403, 404, 409, 413].includes(error.status)) {
+            u.done = true;
+            show(error.status === 413
+              ? '❌ التسجيل أكبر من الحد المسموح على السيرفر.'
+              : '❌ السيرفر قفل التسجيل والجهاز ما عنده نسخة كاملة. اللي انرفع محفوظ: ' + u.relayId);
+            break;
+          }
+          throw error;
+        }
         u.parts.shift();
         u.sent++;
+        outbox.saveRec(u);
         if (u.isFile) {
           const pct = Math.round(u.sent / u.nextSeq * 100);
           progressBox.firstElementChild.style.width = pct + '%';
@@ -373,14 +467,17 @@ async function pumpUpload(u) {
       } else {
         const finished = await postJson('/api/cj/recordings/' + u.relayId + '/finish', { key: u.key, chunks: u.nextSeq });
         u.done = true;
+        outbox.remove(u.id);
         if (u.isFile) uploadFileButton.disabled = false;
         show('✅ ' + (u.isFile ? 'وصل الملف' : 'تم حفظ التسجيل') + ': ' + finished.relay_id);
         if (u === upload) pollStatus(finished.relay_id);
       }
       delay = 2000;
     } catch (error) {
-      show('⏳ ما وصل الإنترنت — ' + (u.parts.length || 1) + ' جزء بانتظار الرفع، لا تقفل الصفحة. يعيد المحاولة تلقائيًا.');
-      await sleep(delay);
+      show(u.isFile
+        ? '⏳ ما وصل الإنترنت — ' + (u.parts.length || 1) + ' جزء بانتظار الرفع، لا تقفل الصفحة. يعيد المحاولة تلقائيًا.'
+        : '⏳ ما وصل الإنترنت — ' + (u.parts.length || 1) + ' جزء محفوظ بجهازك وبيترفع أول ما يرجع النت. حتى لو انقفلت الصفحة، افتح /cj مرة ثانية ويكمل.');
+      await nap(delay);
       delay = Math.min(delay * 2, 30000);
     }
   }
@@ -443,7 +540,7 @@ fileInput.addEventListener('change', () => {
     parts.push({ seq, blob: file.slice(offset, offset + FILE_CHUNK_BYTES) });
   }
 
-  upload = { relayId: null, key: null, type: file.type || 'application/octet-stream', ext, parts, nextSeq: parts.length,
+  upload = { id: newId(), relayId: null, key: null, type: file.type || 'application/octet-stream', ext, parts, allParts: parts.slice(), nextSeq: parts.length,
              sent: 0, stopped: true, done: false, pumping: false, isFile: true };
   uploads.push(upload);
 
@@ -465,6 +562,25 @@ recordButton.addEventListener('click', async () => {
     setStatus('❌ تعذر بدء التسجيل: ' + error.message);
   }
 });
+
+// تسجيلات ما كمل رفعها (انقطاع نت، صفحة انقفلت أو انحدّثت): نكمل رفعها من الجهاز.
+(async function resumeSaved() {
+  const recs = (await outbox.recs()).sort((a, b) => a.at - b.at);
+  for (const r of recs) {
+    const all = (await outbox.parts(r.id)).map(p => ({ seq: p.seq, blob: p.blob }));
+    if (!all.length) { outbox.remove(r.id); continue; }
+    const u = Object.assign({}, r, {
+      nextSeq: Math.max(r.nextSeq || 0, all[all.length - 1].seq + 1),
+      parts: all.filter(p => p.seq >= (r.sent || 0)),
+      stopped: true, done: false, pumping: false,
+    });
+    uploads.push(u);
+    if (!recorder) upload = u;
+    outbox.saveRec(u);
+    if (u === upload) setStatus('♻️ لقينا تسجيل سابق ما كمل رفعه — يكمل رفعه الحين من جهازك...');
+    pumpUpload(u);
+  }
+})();
 
 window.addEventListener('beforeunload', e => {
   if ((recorder && recorder.state !== 'inactive') || uploads.some(u => !u.done)) {
