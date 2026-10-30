@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Support\Interviews\GuestLinkExpiry;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -15,6 +17,9 @@ class CyberxAnswerUploadTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // الأداة انقفلت فعليًا؛ نختبر سلوكها وهي مفتوحة (قبل الإقفال بيوم).
+        Carbon::setTestNow(Carbon::parse(GuestLinkExpiry::TOOL_CLOSES_AT, 'Asia/Muscat')->subDay());
 
         Storage::fake('public');
         Storage::fake('local');
