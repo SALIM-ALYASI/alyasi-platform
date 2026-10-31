@@ -52,7 +52,9 @@
         .letters .low { border-color: var(--danger); color: var(--danger); }
         .letters .mid { border-color: var(--warn); color: var(--warn); }
         .letters .ok { border-color: var(--ok); color: var(--ok); }
-        #read-text mark { background: none; color: var(--danger); text-decoration: underline; text-underline-offset: 6px; }
+        #read-text { margin: 0; font-size: 22px; line-height: 2; font-weight: 600; text-wrap: pretty; }
+        .focus { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+        .focus b { display: inline-grid; place-items: center; min-width: 34px; height: 34px; border-radius: 10px; font-size: 19px; color: var(--primary); background: var(--surface-2); border: 1px solid var(--line); }
         .app { max-width: 620px; margin: 0 auto; display: grid; gap: 14px; }
         header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
         .brand img { height: 38px; width: auto; display: block; }
@@ -131,8 +133,8 @@
     <section class="card" id="read">
         <div class="row"><b>📖 اقرأ وسجّل</b><span class="badge" id="read-count"></span></div>
         <p class="sub" style="margin:0">أسرع طريقة يتعلّم صوتك: اقرأ الجملة بصوتك الطبيعي، وتنحفظ درس بنصها الصحيح بدون ما تعدّل شي.</p>
-        <p id="read-text" style="margin:0; font-size:20px; line-height:1.9; font-weight:600">…</p>
-        <p class="sub" style="margin:0">الحروف اللي تحتها خط ناقصها تسجيل بصوتك. الجمل مرتّبة عشان تغطّيها أول.</p>
+        <p id="read-text">…</p>
+        <div class="focus" id="read-focus" hidden></div>
         <div class="actions"><button type="button" class="primary" id="read-rec" style="flex:1; padding:14px; font-size:16px">🎙 اقرأ الجملة</button><button type="button" id="read-skip">تخطّ</button></div>
     </section>
 
@@ -268,18 +270,24 @@
     // ---- «اقرأ وسجّل»: جمل مرتّبة حسب الحروف الناقصة بصوتك ← تقرأها ← تنحفظ درس بنصها الصحيح.
     // الخادم يشيل الجمل اللي قرأتها ويرتّب الباقي، فنبدأ دايمًا من أول القائمة.
     const FORMS = { 'أ': 'ء', 'إ': 'ء', 'ؤ': 'ء', 'ئ': 'ء', 'آ': 'ء', 'ٱ': 'ا', 'ة': 'ت', 'ى': 'ا' };
-    let sentences = [], sIdx = 0, weak = new Set();
+    let sentences = [], sIdx = 0, need = new Map();
     const showSentence = () => {
         if (!sentences.length) { $('read-text').textContent = 'ما في جمل متاحة الحين.'; $('read-count').textContent = ''; return; }
         sIdx = sIdx % sentences.length;
-        $('read-text').innerHTML = [...sentences[sIdx]].map((c) => (weak.has(FORMS[c] || c) ? '<mark>' + esc(c) + '</mark>' : esc(c))).join('');
+        // الجملة تنعرض نظيفة (تلوين حروف وسط الكلمة يقطع الاتصال ويصعّب القراءة)،
+        // وتحتها أكثر الحروف اللي ناقصها تسجيل في هذي الجملة.
+        $('read-text').textContent = sentences[sIdx];
+        const inSentence = [...new Set([...sentences[sIdx]].map((c) => FORMS[c] || c))].filter((c) => need.has(c));
+        const top = inSentence.sort((a, b) => need.get(a) - need.get(b)).slice(0, 4);
+        $('read-focus').hidden = !top.length;
+        $('read-focus').innerHTML = top.length ? 'هذي الجملة تمرّن: ' + top.map((c) => '<b>' + esc(c) + '</b>').join('') : '';
         $('read-count').textContent = 'باقي ' + (sentences.length - sIdx) + ' جملة';
     };
     const showLetters = (letters, target) => {
         if (!letters) return;
-        weak = new Set(letters.filter((l) => l.count < target).map((l) => l.letter));
+        need = new Map(letters.filter((l) => l.count < target).map((l) => [l.letter, l.count]));
         $('letters-target').textContent = target;
-        $('letters-label').textContent = (letters.length - weak.size) + ' من ' + letters.length + ' حرف';
+        $('letters-label').textContent = (letters.length - need.size) + ' من ' + letters.length + ' حرف مكتمل';
         $('letters').innerHTML = letters.map((l) => {
             const cls = l.count >= target ? 'ok' : (l.count >= target / 2 ? 'mid' : 'low');
             return '<span class="' + cls + '" title="' + esc(l.letter) + ': ' + l.count + '">' + esc(l.letter) + '<small>' + Math.min(l.count, 999) + '</small></span>';
