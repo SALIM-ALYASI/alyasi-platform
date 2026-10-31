@@ -6,6 +6,7 @@ use App\Http\Controllers\VoiceNotesController;
 use App\Models\Article;
 use App\Models\VoiceDictionaryEntry;
 use App\Models\VoiceNote;
+use App\Support\Voice\LetterCoverage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
@@ -115,6 +116,40 @@ class VoiceNotesTest extends TestCase
 
         $prompt = $this->getJson('/api/cj/agent/voice/next', $this->agent())->json('note.prompt');
         $this->assertStringEndsWith($sentences[0], $prompt);
+    }
+
+    public function test_script_puts_sentences_with_missing_letters_first_and_hides_read_ones(): void
+    {
+        Article::query()->create([
+            'title_ar' => 'مقال',
+            'status' => 'published',
+            'published_at' => now()->subDay(),
+            'content_ar' => '<p>المنصة تنشر الأخبار كل يوم من مسقط إلى العالم.</p><p>ظل الثعلب الغاضب يذوب في ظهيرة الصيف الحارة.</p>',
+        ]);
+        VoiceNote::create(['uuid' => 'take-7777-aaaa', 'status' => 'done', 'language' => 'ar', 'original_path' => 'x',
+            'edited_text' => 'المنصة تنشر الأخبار كل يوم من مسقط إلى العالم.', 'approved_at' => now()]);
+
+        $out = $this->getJson($this->base().'/script')->assertOk()->json();
+
+        // الجملة المقروءة انشالت، والباقية فيها ظ وث وغ اللي ما انسجّلت.
+        $this->assertSame(['ظل الثعلب الغاضب يذوب في ظهيرة الصيف الحارة.'], $out['sentences']);
+        $letters = collect($out['letters'])->pluck('count', 'letter');
+        $this->assertCount(29, $letters);
+        $this->assertSame(0, $letters['ظ']);
+        $this->assertSame(3, $letters['ن']); // المنصة، تنشر، من
+        $this->assertSame(LetterCoverage::TARGET, $out['target']);
+    }
+
+    public function test_letter_ranking_prefers_rare_letters_and_merges_letter_forms(): void
+    {
+        $counts = LetterCoverage::count('أإآة');
+        $this->assertSame(3, $counts['ء']);
+        $this->assertSame(1, $counts['ت']);
+
+        $have = array_fill_keys(LetterCoverage::LETTERS, LetterCoverage::TARGET);
+        $have['ظ'] = 0;
+        $ranked = LetterCoverage::rank(['كتب الولد الدرس', 'ظهر الظل'], $have);
+        $this->assertSame(['ظهر الظل', 'كتب الولد الدرس'], $ranked);
     }
 
     public function test_failed_note_retries_then_stops(): void

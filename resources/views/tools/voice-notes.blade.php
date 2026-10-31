@@ -46,6 +46,13 @@
             padding: 14px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px));
         }
         [hidden] { display: none !important; }
+        .letters { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 6px; }
+        .letters span { display: grid; place-items: center; gap: 1px; padding: 6px 0; border-radius: 10px; font: 700 18px/1.1 var(--ui); background: var(--surface-2); border: 1px solid var(--line); }
+        .letters small { font: 500 11px/1 var(--ui); color: var(--muted); }
+        .letters .low { border-color: var(--danger); color: var(--danger); }
+        .letters .mid { border-color: var(--warn); color: var(--warn); }
+        .letters .ok { border-color: var(--ok); color: var(--ok); }
+        #read-text mark { background: none; color: var(--danger); text-decoration: underline; text-underline-offset: 6px; }
         .app { max-width: 620px; margin: 0 auto; display: grid; gap: 14px; }
         header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
         .brand img { height: 38px; width: auto; display: block; }
@@ -125,7 +132,14 @@
         <div class="row"><b>📖 اقرأ وسجّل</b><span class="badge" id="read-count"></span></div>
         <p class="sub" style="margin:0">أسرع طريقة يتعلّم صوتك: اقرأ الجملة بصوتك الطبيعي، وتنحفظ درس بنصها الصحيح بدون ما تعدّل شي.</p>
         <p id="read-text" style="margin:0; font-size:20px; line-height:1.9; font-weight:600">…</p>
+        <p class="sub" style="margin:0">الحروف اللي تحتها خط ناقصها تسجيل بصوتك. الجمل مرتّبة عشان تغطّيها أول.</p>
         <div class="actions"><button type="button" class="primary" id="read-rec" style="flex:1; padding:14px; font-size:16px">🎙 اقرأ الجملة</button><button type="button" id="read-skip">تخطّ</button></div>
+    </section>
+
+    <section class="card" id="letters-card" style="gap:8px">
+        <div class="row"><b>🔤 حروفك</b><span class="badge" id="letters-label"></span></div>
+        <p class="sub" style="margin:0">كم مرة نطقت كل حرف في نص أكّدته. لما يوصل كل حرف <span id="letters-target">20</span> مرة، يكون عند النموذج أمثلة كافية يتعلّم منها نطقك له.</p>
+        <div class="letters" id="letters"></div>
     </section>
 
     <section id="notes" style="display:grid; gap:12px"></section>
@@ -251,23 +265,43 @@
     $('rec').dataset.idle = '🎙 ابدأ الكلام'; $('rec').dataset.stop = '⏹ وقّف وحوّل لنص';
     $('rec').addEventListener('click', () => (rec && rec.state === 'recording' ? rec.stop() : startRec($('rec'))));
 
-    // ---- «اقرأ وسجّل»: جملة من مقالاتك ← تقرأها ← تنحفظ درس بنصها الصحيح.
-    let sentences = [], sIdx = Number(pref.get('script-idx')) || 0;
+    // ---- «اقرأ وسجّل»: جمل مرتّبة حسب الحروف الناقصة بصوتك ← تقرأها ← تنحفظ درس بنصها الصحيح.
+    // الخادم يشيل الجمل اللي قرأتها ويرتّب الباقي، فنبدأ دايمًا من أول القائمة.
+    const FORMS = { 'أ': 'ء', 'إ': 'ء', 'ؤ': 'ء', 'ئ': 'ء', 'آ': 'ء', 'ٱ': 'ا', 'ة': 'ت', 'ى': 'ا' };
+    let sentences = [], sIdx = 0, weak = new Set();
     const showSentence = () => {
-        if (!sentences.length) { $('read-text').textContent = 'ما في جمل متاحة الحين.'; return; }
+        if (!sentences.length) { $('read-text').textContent = 'ما في جمل متاحة الحين.'; $('read-count').textContent = ''; return; }
         sIdx = sIdx % sentences.length;
-        $('read-text').textContent = sentences[sIdx];
-        $('read-count').textContent = 'جملة ' + (sIdx + 1) + ' من ' + sentences.length;
-        pref.set('script-idx', String(sIdx));
+        $('read-text').innerHTML = [...sentences[sIdx]].map((c) => (weak.has(FORMS[c] || c) ? '<mark>' + esc(c) + '</mark>' : esc(c))).join('');
+        $('read-count').textContent = 'باقي ' + (sentences.length - sIdx) + ' جملة';
     };
+    const showLetters = (letters, target) => {
+        if (!letters) return;
+        weak = new Set(letters.filter((l) => l.count < target).map((l) => l.letter));
+        $('letters-target').textContent = target;
+        $('letters-label').textContent = (letters.length - weak.size) + ' من ' + letters.length + ' حرف';
+        $('letters').innerHTML = letters.map((l) => {
+            const cls = l.count >= target ? 'ok' : (l.count >= target / 2 ? 'mid' : 'low');
+            return '<span class="' + cls + '" title="' + esc(l.letter) + ': ' + l.count + '">' + esc(l.letter) + '<small>' + Math.min(l.count, 999) + '</small></span>';
+        }).join('');
+    };
+    const loadScript = (keepSentences) => api('/script').then((out) => {
+        showLetters(out.letters, out.target || 20);
+        if (!keepSentences) { sentences = out.sentences || []; sIdx = 0; }
+        showSentence();
+    }).catch(() => {});
     $('read-rec').dataset.idle = '🎙 اقرأ الجملة'; $('read-rec').dataset.stop = '⏹ خلصت';
     $('read-rec').addEventListener('click', () => {
         if (rec && rec.state === 'recording') { rec.stop(); return; }
         if (!sentences.length) return;
-        startRec($('read-rec'), sentences[sIdx], () => { sIdx++; showSentence(); });
+        startRec($('read-rec'), sentences[sIdx], () => {
+            sIdx++; showSentence();
+            // العدّاد يتحدّث بعد ما يوصل التسجيل للخادم.
+            setTimeout(() => loadScript(true), 5000);
+        });
     });
     $('read-skip').addEventListener('click', () => { if (rec) return; sIdx++; showSentence(); });
-    api('/script').then((out) => { sentences = out.sentences || []; showSentence(); }).catch(() => {});
+    loadScript(false);
     window.addEventListener('beforeunload', (e) => { if (rec && rec.state === 'recording') { e.preventDefault(); e.returnValue = ''; } });
 
     $('pick').addEventListener('click', () => $('file').click());

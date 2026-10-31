@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\VoiceDictionaryEntry;
 use App\Models\VoiceNote;
+use App\Support\Voice\LetterCoverage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -94,8 +95,9 @@ class VoiceNotesController extends Controller
     }
 
     /**
-     * جمل «اقرأ وسجّل»: من مقالات سالم المنشورة (أسلوبه ومصطلحاته)، 6–24 كلمة،
-     * بترتيب ثابت عشان الصفحة تكمل من آخر جملة.
+     * جمل «اقرأ وسجّل»: من مقالات سالم المنشورة (أسلوبه ومصطلحاته)، 6–24 كلمة.
+     * الجمل اللي قرأها تنشال، والباقي مرتّب حسب الحروف اللي ناقصها بصوته
+     * (LetterCoverage)، ويرجع معها عدّاد كل حرف للصفحة.
      */
     public function script(string $token): JsonResponse
     {
@@ -118,7 +120,17 @@ class VoiceNotesController extends Controller
             return array_slice(array_keys($out), 0, 400);
         });
 
-        return response()->json(['sentences' => $sentences]);
+        $approved = VoiceNote::whereNotNull('approved_at')->get(['edited_text', 'transcript']);
+        $texts = $approved->map(fn (VoiceNote $n) => (string) ($n->edited_text ?: $n->transcript));
+        $read = array_flip($texts->all());
+        $have = LetterCoverage::totals($texts);
+        $remaining = array_values(array_filter($sentences, fn ($s) => ! isset($read[$s])));
+
+        return response()->json([
+            'sentences' => LetterCoverage::rank($remaining, $have),
+            'letters' => LetterCoverage::report($have),
+            'target' => LetterCoverage::TARGET,
+        ]);
     }
 
     public function audio(string $token, string $uuid): StreamedResponse
